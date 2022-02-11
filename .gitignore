@@ -32,11 +32,12 @@ node_modules
 
 # Custom
 bower_components
-dist
 .temp-dist
 build
 src/vendor
 cache
 teste.py
+LICENSE
+preview.png
 
 ignore-*

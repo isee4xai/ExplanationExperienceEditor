@@ -203,7 +203,15 @@
     block._width = w;
     block._height = h;
 
-    makeAnchor(shape, -w/2-anchorOffsetX, 0, 
+    var x = 0;
+    var y = 0;
+    if (settings.get('layout') === 'horizontal') {
+      x = w/2+anchorOffsetX;
+    } else {
+      y = h/2+anchorOffsetX;
+    }
+
+    makeAnchor(shape, -x, -y, 
         settings.get('anchor_radius'),
         settings.get('anchor_background_color'),
         settings.get('anchor_border_width'),

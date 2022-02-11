@@ -20,12 +20,12 @@
     snap_y        : 12,
     snap_offset_x : 0,
     snap_offset_y : 0,
-    layout        : 'horizontal', // vertical
+    layout        : 'vertical', // vertical
     max_history   : 100,
 
     // COLORS
     background_color        : '#171717',
-    selection_color         : '#4BB2FD',
+    selection_color         : '#FFFFFF',
     block_border_color      : '#6D6D6D',
     block_symbol_color      : '#333333',
     anchor_background_color : '#EFEFEF',
@@ -35,8 +35,8 @@
     decorator_color         : '#FFFFFF',
     composite_color         : '#FFFFFF',
     tree_color              : '#FFFFFF',
-    action_color            : '#FFFFFF',
-    condition_color         : '#FFFFFF',
+    action_color            : '#57A3EA',
+    condition_color         : '#E16425',
 
     // CONNECTION
     connection_width       : 2,
