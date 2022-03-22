@@ -12,4 +12,6 @@ COPY . .
 
 EXPOSE 8000
 
+RUN npm install
+
 CMD [ "gulp", "serve" ]
