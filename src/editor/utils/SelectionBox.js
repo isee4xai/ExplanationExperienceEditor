@@ -9,7 +9,6 @@
    */
   var SelectionBox = function() {
     this.Shape_constructor();
-
     this._settings = null;
     this.alpha = 0.3;
     this.visible = false;

@@ -1,38 +1,41 @@
 angular
-  .module('app')
-  .factory('editorService', editorService);
+    .module('app')
+    .factory('editorService', editorService);
 
 editorService.$inject = ['$window'];
 
 function editorService($window) {
-  var service = {
-    getDefaultSettings : getDefaultSettings,
-    applySettings      : applySettings,
-    newProject         : newProject,
-    openProject        : openProject,
-    closeProject       : closeProject,
-    exportProject      : exportProject,
-  };
-  return service;
+    var service = {
+        getDefaultSettings: getDefaultSettings,
+        applySettings: applySettings,
+        newProject: newProject,
+        openProject: openProject,
+        closeProject: closeProject,
+        exportProject: exportProject,
+    };
+    return service;
 
-  function getDefaultSettings() {
-    return $window.b3e.DEFAULT_SETTINGS;
-  }
-  function applySettings(settings) {
-    $window.editor.applySettings(settings);
-  }
+    function getDefaultSettings() {
+        return $window.b3e.DEFAULT_SETTINGS;
+    }
 
-  function newProject() {
-    $window.editor.project.create();
-  }
-  function openProject(data) {
-    $window.editor.project.open(data);
-  }
-  function closeProject() {
-    $window.editor.project.close();
-  }
+    function applySettings(settings) {
+        $window.editor.applySettings(settings);
+    }
 
-  function exportProject() {
-    return $window.editor.export.projectToData();
-  }
+    function newProject() {
+        $window.editor.project.create();
+    }
+
+    function openProject(data) {
+        $window.editor.project.open(data);
+    }
+
+    function closeProject() {
+        $window.editor.project.close();
+    }
+
+    function exportProject() {
+        return $window.editor.export.projectToData();
+    }
 }

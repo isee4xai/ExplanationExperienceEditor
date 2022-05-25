@@ -103,7 +103,6 @@ function dialogService($window, $q, $document, nodejsService) {
         if (!multiple) {
           value = value[0];
         }
-        console.log(value);
         resolve(value);
       } else {
         reject();

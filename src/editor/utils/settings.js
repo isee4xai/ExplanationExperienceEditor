@@ -35,8 +35,8 @@
     decorator_color         : '#FFFFFF',
     composite_color         : '#FFFFFF',
     tree_color              : '#FFFFFF',
-    action_color            : '#57A3EA',
-    condition_color         : '#E16425',
+    action_color            : '#94ccfc',
+    condition_color         : '#ff894f',
 
     // CONNECTION
     connection_width       : 2,

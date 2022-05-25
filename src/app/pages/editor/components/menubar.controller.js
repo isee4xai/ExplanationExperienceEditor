@@ -11,7 +11,8 @@
     '$state',
     'dialogService',
     'projectModel',
-    'notificationService'
+    'notificationService',
+    '$http'
   ];
 
   function MenubarController($scope, 
@@ -19,7 +20,8 @@
                              $state,
                              dialogService,
                              projectModel,
-                             notificationService) {
+                             notificationService,
+                             $http) {
     var vm = this;
     vm.onNewTree           = onNewTree;
     vm.onCloseProject      = onCloseProject;
@@ -167,7 +169,7 @@
             'Project couldn\'t be saved'
           );
         });
-      return false;
+      return false; 
     }
     function onNewTree() {
       var project = _getProject();
