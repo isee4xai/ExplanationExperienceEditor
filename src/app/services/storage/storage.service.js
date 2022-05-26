@@ -36,7 +36,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             data.date = dateTime;
             //save project in json server 
             $http.get(httpAddresProjectsPath + path).success(function(dataJson) {
-                //update date in json server 
+                //update data on the server json if it already exists otherwise it is saved as a new json with a new id
                 if (dataJson.length != 0) {
                     fetch(httpAddresProjects + '/' + dataJson[0].id, {
                             method: 'PATCH',
