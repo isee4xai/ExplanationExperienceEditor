@@ -9,8 +9,10 @@ EditorController.$inject = [
 ];
 
 function EditorController($state, $location, projectModel) {
+    //get id from url
     var url = $location.url().slice(1);
     var Id = url.slice(3);
+    //regular expression to accept only numbers
     const regex = /^id=[0-9]*$/;
     const onlyNumbers = regex.test(Id);
 
@@ -24,6 +26,7 @@ function EditorController($state, $location, projectModel) {
             projectModel
                 .openProjectId(Id)
                 .then(function(x) {
+                    // send you to the error page if the call to the service does not return data
                     if (x == null) {
                         $state.go('id.error');
                     }
