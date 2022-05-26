@@ -9,7 +9,6 @@ EditorController.$inject = [
 ];
 
 function EditorController($state, $location, projectModel) {
-    console.log("asdsa");
     var url = $location.url().slice(1);
     var Id = url.slice(3);
     const regex = /^id=[0-9]*$/;

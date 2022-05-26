@@ -205,7 +205,7 @@
         function getConditionsExplanationMethod() {
             return $q(function(resolve, reject) {
                 try {
-                    var data = storageService.loadEvaluation();
+                    var data = storageService.loadExplanation();
                     resolve(data);
                 } catch (e) {
 
