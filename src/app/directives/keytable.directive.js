@@ -70,8 +70,15 @@
         }
 
         function remove(i) {
+            //Delete properties
+            var keyDrop = vm.rows[i].key;
             vm.rows.splice(i, 1);
-            change();
+
+            delete vm.model[keyDrop];
+            if (vm._onChange) {
+                console.log($scope);
+                vm._onChange($scope);
+            }
         }
 
         function change() {

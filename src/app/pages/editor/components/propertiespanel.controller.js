@@ -116,7 +116,7 @@
 
         function UpdateProperties(option) {
             //update Explanation and Evaluation method properties
-
+            update();
             var json = {};
             //we verify if the selected data have properties
             if (!option.hasOwnProperty('properties')) {
@@ -126,7 +126,7 @@
                     description: option.description
                 };
             } else {
-                update();
+
                 option.properties.forEach(element => {
                     json[element.key] = element.value;
                 });
@@ -135,10 +135,8 @@
                     properties: tine.merge({}, json),
                     description: option.description
                 };
-
-                update();
             }
-
+            update();
         }
 
         function _event(e) {
