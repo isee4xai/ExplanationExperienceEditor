@@ -68,9 +68,6 @@
                             );
                             return;
                         }
-                        console.log("+++++++");
-                        console.log(vm.isDesktop);
-                        console.log("+++++++");
                         // If desktop, open file dialog
                         if (vm.isDesktop) {
                             var placeholder = name.replace(/\s+/g, "_").toLowerCase();

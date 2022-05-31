@@ -116,8 +116,7 @@
 
         function UpdateProperties(option) {
             //update Explanation and Evaluation method properties
-            update();
-            console.log(option);
+
             var json = {};
             //we verify if the selected data have properties
             if (!option.hasOwnProperty('properties')) {
@@ -127,6 +126,7 @@
                     description: option.description
                 };
             } else {
+                update();
                 option.properties.forEach(element => {
                     json[element.key] = element.value;
                 });
@@ -135,8 +135,10 @@
                     properties: tine.merge({}, json),
                     description: option.description
                 };
+
+                update();
             }
-            update();
+
         }
 
         function _event(e) {
@@ -174,7 +176,9 @@
             t.blocks.update(vm.original, vm.block);
 
             // verify that we have data from the Explanation and Evaluation method
-            if (vm.TitleSelect.length != null) {
+            if (vm.TitleSelect == null) {
+
+            } else if (vm.TitleSelect.length != null) {
                 for (let index = 0; index < vm.TitleSelect.length; index++) {
                     //verify that the option selected in the properties title is in that data
                     if (vm.TitleSelect[index].value == vm.block.title) {
@@ -197,7 +201,7 @@
                             //We assign it to the selected property
                             vm.TitleSelect[index].properties = ArrayPropertie;
                         } else {
-                            vm.block.properties = null;
+                            //  vm.block.properties = null;
                             t.blocks.update(vm.original, vm.block);
                         }
                         //we define the description of the property
