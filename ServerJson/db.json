@@ -1,525 +1,158 @@
 {
   "Projects": [
     {
-      "name": "Project v1",
+      "name": "Projects",
       "description": "",
       "data": {
         "version": "0.1.0",
         "scope": "project",
-        "selectedTree": "07747f88-bfb4-47e8-929f-c438e92ebfe0",
+        "selectedTree": "bc8856ed-b569-487b-8484-c6806963fa0a",
         "trees": [
           {
             "version": "0.1.0",
             "scope": "tree",
-            "id": "07747f88-bfb4-47e8-929f-c438e92ebfe0",
-            "title": "root ",
+            "id": "bc8856ed-b569-487b-8484-c6806963fa0a",
+            "title": "root",
             "description": "",
-            "root": "621b302d-de2f-48ad-8e38-4f30a3d1bea1",
+            "root": "be8f687b-2a9a-4930-83a8-02b8166d8d42",
             "properties": {
-              "as": "as",
-              "dsffff": "fffff",
-              "sss": "sssss"
+              "t": "5fff"
             },
             "nodes": {
-              "eb9ef207-36ef-425a-bbc4-396f925eb32e": {
-                "id": "eb9ef207-36ef-425a-bbc4-396f925eb32e",
+              "be8f687b-2a9a-4930-83a8-02b8166d8d42": {
+                "id": "be8f687b-2a9a-4930-83a8-02b8166d8d42",
                 "name": "Sequence",
                 "title": "Sequence",
                 "description": "",
                 "properties": {
-                  "asdasd": "asd",
-                  "ssss": "ssss"
+                  "e": 6
                 },
                 "display": {
-                  "x": -468,
-                  "y": 12
+                  "x": 0,
+                  "y": -60
                 },
                 "children": [
-                  "718df8ec-cf47-4e34-bbb9-a12121311302",
-                  "a0201f8f-6204-44e1-8e42-54983f4da6c3"
+                  "929be0f6-2486-443b-add6-5f0945e145cd",
+                  "85c70fab-b8ee-49c6-bc69-5c71c5ea7771"
                 ]
               },
-              "718df8ec-cf47-4e34-bbb9-a12121311302": {
-                "id": "718df8ec-cf47-4e34-bbb9-a12121311302",
-                "name": "Evaluation Method",
-                "title": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {
-                  "x": 1,
-                  "Key 2": "Value 2",
-                  "Key 3": "Value 3",
-                  "y": 3
-                },
-                "display": {
-                  "x": -576,
-                  "y": 144
-                }
-              },
-              "a0201f8f-6204-44e1-8e42-54983f4da6c3": {
-                "id": "a0201f8f-6204-44e1-8e42-54983f4da6c3",
-                "name": "Explanation Method",
-                "title": "Explanation method 1 ",
-                "description": "od 1",
-                "properties": {
-                  "sd": "sad"
-                },
-                "display": {
-                  "x": -372,
-                  "y": 144
-                }
-              },
-              "621b302d-de2f-48ad-8e38-4f30a3d1bea1": {
-                "id": "621b302d-de2f-48ad-8e38-4f30a3d1bea1",
-                "name": "Priority",
-                "title": "Priority",
-                "description": "",
-                "properties": {
-                  "dsfsdf": "sdfsdfsd"
-                },
-                "display": {
-                  "x": -312,
-                  "y": -120
-                },
-                "children": [
-                  "eb9ef207-36ef-425a-bbc4-396f925eb32e",
-                  "ae1e7586-cb1b-41b4-92b5-2ae2a58813dc"
-                ]
-              },
-              "ae1e7586-cb1b-41b4-92b5-2ae2a58813dc": {
-                "id": "ae1e7586-cb1b-41b4-92b5-2ae2a58813dc",
-                "name": "Sequence",
-                "title": "Sequence",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": -156,
-                  "y": 12
-                },
-                "children": [
-                  "e72f1306-c0ce-4ea2-8648-00d3b8a48175"
-                ]
-              },
-              "e72f1306-c0ce-4ea2-8648-00d3b8a48175": {
-                "id": "e72f1306-c0ce-4ea2-8648-00d3b8a48175",
-                "name": "Failer",
-                "title": "Failer",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": -156,
-                  "y": 144
-                }
-              },
-              "5aa47559-4446-4731-8c90-405bca289df5": {
-                "id": "5aa47559-4446-4731-8c90-405bca289df5",
+              "929be0f6-2486-443b-add6-5f0945e145cd": {
+                "id": "929be0f6-2486-443b-add6-5f0945e145cd",
                 "name": "Explanation Method",
                 "title": "Explanation method 1 ",
                 "description": "Description Explanation method 1",
                 "properties": {
-                  "sad": "asdas"
+                  "r": 3
                 },
                 "display": {
-                  "x": -600,
-                  "y": -180
+                  "x": -84,
+                  "y": 60
                 }
               },
-              "cd905349-53de-4234-be9a-6215d34ef907": {
-                "id": "cd905349-53de-4234-be9a-6215d34ef907",
-                "name": "Explanation Method",
-                "title": "Explanation Method",
-                "description": "",
-                "properties": {
-                  "asd": "asd"
-                },
-                "display": {
-                  "x": -576,
-                  "y": -168
-                }
-              },
-              "d7a00d0b-7cda-4e65-83e1-b3ace3fa5e12": {
-                "id": "d7a00d0b-7cda-4e65-83e1-b3ace3fa5e12",
+              "85c70fab-b8ee-49c6-bc69-5c71c5ea7771": {
+                "id": "85c70fab-b8ee-49c6-bc69-5c71c5ea7771",
                 "name": "Evaluation Method",
                 "title": "Evaluation method 2",
                 "description": "Description Evaluation method 2",
                 "properties": {
-                  "xxx": "xxxx"
+                  "x": 2
                 },
                 "display": {
-                  "x": -660,
-                  "y": -60
-                }
-              },
-              "aa599748-e5b9-4f51-8551-912ee1486ae5": {
-                "id": "aa599748-e5b9-4f51-8551-912ee1486ae5",
-                "name": "Explanation Method",
-                "title": "Explanation Method",
-                "description": "",
-                "properties": {
-                  "xxx": "xxx"
-                },
-                "display": {
-                  "x": -636,
-                  "y": 12
-                }
-              },
-              "3dc2662a-ee64-4240-abdf-85d88b286e0b": {
-                "id": "3dc2662a-ee64-4240-abdf-85d88b286e0b",
-                "name": "Evaluation Method",
-                "title": "Evaluation Method",
-                "description": "",
-                "properties": {
-                  "asda": "sdasd"
-                },
-                "display": {
-                  "x": -696,
-                  "y": 72
+                  "x": 132,
+                  "y": 60
                 }
               }
             },
             "display": {
-              "camera_x": 1033.2999997138977,
-              "camera_y": 328.5,
-              "camera_z": 1,
-              "x": -312,
-              "y": -240
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-ced5db12-9691-4010-9716-608570883127",
-      "date": "2022-5-30 14:24:27",
-      "id": 1
-    },
-    {
-      "name": "Project v2",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "d7ce309f-2a72-4e4d-833e-2e14c9dad571",
-        "trees": [
-          {
-            "version": "0.1.0",
-            "scope": "tree",
-            "id": "d7ce309f-2a72-4e4d-833e-2e14c9dad571",
-            "title": "Root",
-            "description": "",
-            "root": "95795b6b-27c6-4e6a-b84b-99336d759e96",
-            "properties": {
-              "sa": "asdsftt"
-            },
-            "nodes": {
-              "95795b6b-27c6-4e6a-b84b-99336d759e96": {
-                "id": "95795b6b-27c6-4e6a-b84b-99336d759e96",
-                "name": "Sequence",
-                "title": "Sequence",
-                "description": "",
-                "properties": {
-                  "sdfsd": "fsdfsd"
-                },
-                "display": {
-                  "x": -36,
-                  "y": -36
-                },
-                "children": [
-                  "e89d40aa-2449-4411-bf67-f93a9c71d737",
-                  "c521ba4b-2cd9-4956-80c8-177b1085b8f3"
-                ]
-              },
-              "e89d40aa-2449-4411-bf67-f93a9c71d737": {
-                "id": "e89d40aa-2449-4411-bf67-f93a9c71d737",
-                "name": "Explanation Method",
-                "title": "Explanation method 1 ",
-                "description": "Description Explanation method 1",
-                "properties": {
-                  "1": 1
-                },
-                "display": {
-                  "x": -168,
-                  "y": 84
-                }
-              },
-              "c521ba4b-2cd9-4956-80c8-177b1085b8f3": {
-                "id": "c521ba4b-2cd9-4956-80c8-177b1085b8f3",
-                "name": "Evaluation Method",
-                "title": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {
-                  "4": 4
-                },
-                "display": {
-                  "x": 24,
-                  "y": 36
-                }
-              },
-              "85814b0d-592f-4698-b893-c38d8f0487e6": {
-                "id": "85814b0d-592f-4698-b893-c38d8f0487e6",
-                "name": "Explanation Method",
-                "title": "Explanation method 2",
-                "description": "Description Explanation method 2",
-                "properties": {
-                  "111": 111,
-                  "asdas": "dasdasd"
-                },
-                "display": {
-                  "x": 0,
-                  "y": -216
-                }
-              },
-              "94a39b39-5336-4fc5-b30d-04531b0aa612": {
-                "id": "94a39b39-5336-4fc5-b30d-04531b0aa612",
-                "name": "Explanation Method",
-                "title": "Explanation method 1 ",
-                "description": "Description Explanation method 1",
-                "properties": {
-                  "1": 1
-                },
-                "display": {
-                  "x": -276,
-                  "y": -168
-                }
-              },
-              "2d96e418-b0b2-4759-a185-ec56fd9708b6": {
-                "id": "2d96e418-b0b2-4759-a185-ec56fd9708b6",
-                "name": "Evaluation Method",
-                "title": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {
-                  "1": 1
-                },
-                "display": {
-                  "x": -240,
-                  "y": -60
-                }
-              },
-              "07dd161c-3034-47e4-b825-4e771ef80ff9": {
-                "id": "07dd161c-3034-47e4-b825-4e771ef80ff9",
-                "name": "Explanation Method",
-                "title": "Explanation Method",
-                "description": "",
-                "properties": {
-                  "1": 1
-                },
-                "display": {
-                  "x": 24,
-                  "y": 204
-                }
-              },
-              "4f5e46c6-60b3-47b1-9647-990bb96c1415": {
-                "id": "4f5e46c6-60b3-47b1-9647-990bb96c1415",
-                "name": "Explanation Method",
-                "title": "Explanation Method",
-                "description": "",
-                "properties": {
-                  "xxxxxxxxxxxxxxx": "xxxxxxxxxxxxxx"
-                },
-                "display": {
-                  "x": -204,
-                  "y": 168
-                }
-              }
-            },
-            "display": {
-              "camera_x": 630.2000000476837,
+              "camera_x": 431.5,
               "camera_y": 328.5,
               "camera_z": 1,
               "x": -36,
-              "y": -156
+              "y": -168
             }
           }
         ],
         "custom_nodes": []
       },
-      "path": "b3projects-c0e1942e-6b60-4657-9f88-d74effbf91e7",
-      "date": "2022-5-31 13:53:55",
-      "id": 2
+      "path": "b3projects-bb1d4c35-83e0-47f6-8db0-4abdd584cbc7",
+      "date": "2022-6-1 12:11:25",
+      "id": 1
     },
     {
-      "name": "Project v3",
+      "name": "Project 2",
       "description": "",
       "data": {
         "version": "0.1.0",
         "scope": "project",
-        "selectedTree": "28fa2aee-a8d8-4c07-8429-9a7b1ed5803a",
+        "selectedTree": "6b22b0a4-3042-417c-8d2d-edcfe0277c54",
         "trees": [
           {
             "version": "0.1.0",
             "scope": "tree",
-            "id": "28fa2aee-a8d8-4c07-8429-9a7b1ed5803a",
+            "id": "6b22b0a4-3042-417c-8d2d-edcfe0277c54",
             "title": "Explanation Experience",
             "description": "",
-            "root": "47d6844b-2af3-45f8-8590-a0e2c1d432e7",
+            "root": "fa5839d5-674d-4cdb-a3b4-367953f71e16",
             "properties": {},
             "nodes": {
-              "b737a837-5567-4a24-a6af-000bc1763184": {
-                "id": "b737a837-5567-4a24-a6af-000bc1763184",
+              "ec0c0f8e-1084-45d0-819a-a98c89d5e903": {
+                "id": "ec0c0f8e-1084-45d0-819a-a98c89d5e903",
                 "name": "Explanation Method",
-                "title": "Explanation Method",
-                "description": "",
-                "properties": {},
+                "title": "Explanation method 1 ",
+                "description": "Description Explanation method 1",
+                "properties": {
+                  "x": 4
+                },
                 "display": {
-                  "x": -108,
-                  "y": 252
+                  "x": -72,
+                  "y": 144
                 }
               },
-              "24b47028-f835-43ae-9878-4746764f7b5d": {
-                "id": "24b47028-f835-43ae-9878-4746764f7b5d",
+              "ff04545e-0771-4cff-b63c-b7b0288d4471": {
+                "id": "ff04545e-0771-4cff-b63c-b7b0288d4471",
                 "name": "Evaluation Method",
-                "title": "Evaluation Method",
-                "description": "",
-                "properties": {},
+                "title": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3"
+                },
                 "display": {
-                  "x": 96,
-                  "y": 252
+                  "x": 108,
+                  "y": 132
                 }
               },
-              "47d6844b-2af3-45f8-8590-a0e2c1d432e7": {
-                "id": "47d6844b-2af3-45f8-8590-a0e2c1d432e7",
+              "fa5839d5-674d-4cdb-a3b4-367953f71e16": {
+                "id": "fa5839d5-674d-4cdb-a3b4-367953f71e16",
                 "name": "Sequence",
                 "title": "Sequence",
                 "description": "",
                 "properties": {},
                 "display": {
                   "x": 0,
-                  "y": 120
+                  "y": -84
                 },
                 "children": [
-                  "b737a837-5567-4a24-a6af-000bc1763184",
-                  "24b47028-f835-43ae-9878-4746764f7b5d"
+                  "ec0c0f8e-1084-45d0-819a-a98c89d5e903",
+                  "ff04545e-0771-4cff-b63c-b7b0288d4471"
                 ]
               }
             },
             "display": {
-              "camera_x": 683,
+              "camera_x": 431.5,
               "camera_y": 328.5,
               "camera_z": 1,
               "x": 0,
-              "y": 0
+              "y": -216
             }
           }
         ],
         "custom_nodes": []
       },
-      "path": "b3projects-7faa421b-1d26-4948-87bc-1f399e74808d",
-      "date": "2022-5-27 14:22:13",
-      "id": 3
-    },
-    {
-      "name": "Proyecto 4",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "daa4f984-f006-4eb6-85cb-2a1e1cfa4556",
-        "trees": [
-          {
-            "version": "0.1.0",
-            "scope": "tree",
-            "id": "daa4f984-f006-4eb6-85cb-2a1e1cfa4556",
-            "title": "Explanation Experience",
-            "description": "",
-            "root": "6bf67944-cddd-4fc4-8f44-bda51abbaff9",
-            "properties": {},
-            "nodes": {
-              "6bf67944-cddd-4fc4-8f44-bda51abbaff9": {
-                "id": "6bf67944-cddd-4fc4-8f44-bda51abbaff9",
-                "name": "Sequence",
-                "title": "Sequence",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": -60,
-                  "y": -60
-                },
-                "children": [
-                  "91bbc53d-5bc1-46c6-8370-80539300592c",
-                  "50bd6e3c-35a5-4aeb-9f74-78eaa4dff272"
-                ]
-              },
-              "91bbc53d-5bc1-46c6-8370-80539300592c": {
-                "id": "91bbc53d-5bc1-46c6-8370-80539300592c",
-                "name": "Explanation Method",
-                "title": "Explanation method 2",
-                "description": "Description Explanation method 2",
-                "properties": {},
-                "display": {
-                  "x": -168,
-                  "y": 72
-                }
-              },
-              "50bd6e3c-35a5-4aeb-9f74-78eaa4dff272": {
-                "id": "50bd6e3c-35a5-4aeb-9f74-78eaa4dff272",
-                "name": "Evaluation Method",
-                "title": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {},
-                "display": {
-                  "x": 36,
-                  "y": 72
-                }
-              },
-              "f6f47be3-8679-446b-8350-641d35db6805": {
-                "id": "f6f47be3-8679-446b-8350-641d35db6805",
-                "name": "Evaluation Method",
-                "title": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {},
-                "display": {
-                  "x": 24,
-                  "y": -48
-                }
-              },
-              "40c7d0c1-fac0-46fd-9747-f6894675fd5a": {
-                "id": "40c7d0c1-fac0-46fd-9747-f6894675fd5a",
-                "name": "Evaluation Method",
-                "title": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {},
-                "display": {
-                  "x": -12,
-                  "y": 12
-                }
-              },
-              "6cae5aad-083b-46ed-8de4-446c00f9a20b": {
-                "id": "6cae5aad-083b-46ed-8de4-446c00f9a20b",
-                "name": "Explanation Method",
-                "title": "Explanation Method",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": -192,
-                  "y": -168
-                }
-              },
-              "f49b2b79-48a8-4797-8c55-92781301d107": {
-                "id": "f49b2b79-48a8-4797-8c55-92781301d107",
-                "name": "Evaluation Method",
-                "title": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {
-                  "Key 3": "Value 3"
-                },
-                "display": {
-                  "x": -96,
-                  "y": 144
-                }
-              }
-            },
-            "display": {
-              "camera_x": 507.5,
-              "camera_y": 328,
-              "camera_z": 1,
-              "x": -60,
-              "y": -180
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-96c1de23-8fe1-4622-8c07-f985834a6559",
-      "date": "2022-5-31 14:29:18",
-      "id": 4
+      "path": "b3projects-7baf35b0-ce0f-4733-b7f7-745b0811b2fe",
+      "date": "2022-6-1 12:24:31",
+      "id": 2
     }
   ],
   "Evaluation": [
@@ -545,6 +178,7 @@
     {
       "value": "Evaluation method 2",
       "description": "Description Evaluation method 2",
+      "properties": [],
       "id": 2
     }
   ],
@@ -552,11 +186,13 @@
     {
       "value": "Explanation method 1 ",
       "description": "Description Explanation method 1",
+      "properties": [],
       "id": 1
     },
     {
       "value": "Explanation method 2",
       "description": "Description Explanation method 2",
+      "properties": [],
       "id": 2
     }
   ]

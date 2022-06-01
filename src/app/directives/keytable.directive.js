@@ -76,7 +76,6 @@
 
             delete vm.model[keyDrop];
             if (vm._onChange) {
-                console.log($scope);
                 vm._onChange($scope);
             }
         }

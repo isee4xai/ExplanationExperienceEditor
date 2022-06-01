@@ -45,8 +45,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                                 'Content-type': 'application/json; charset=UTF-8',
                             },
                         })
-                        .then((response) => response.json())
-                        .then((json) => console.log(json));
+                        .then((response) => response.json());
                 } else {
                     fetch(httpAddresProjects, {
                             method: 'POST',
@@ -55,8 +54,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                                 'Content-type': 'application/json; charset=UTF-8',
                             },
                         })
-                        .then((response) => response.json())
-                        .then((json) => console.log(json));
+                        .then((response) => response.json());
                 }
             });
         }

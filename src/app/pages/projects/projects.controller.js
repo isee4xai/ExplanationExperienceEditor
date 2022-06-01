@@ -38,7 +38,6 @@
         // BODY //
         function _activate() {
             vm.isDesktop = systemService.isDesktop;
-            console.log(vm.isDesktop);
             projectModel
                 .getRecentProjects()
                 .then(function(recents) {
