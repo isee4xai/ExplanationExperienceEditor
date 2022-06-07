@@ -10,7 +10,6 @@
         '$window',
         'dialogService',
         'notificationService',
-        '$http',
         'projectModel'
     ];
 
@@ -18,7 +17,6 @@
         $window,
         dialogService,
         notificationService,
-        $http,
         projectModel) {
         var vm = this;
         vm.original = null;
@@ -36,6 +34,7 @@
         vm.TitleSelect = null;
         vm.TitleName = null;
 
+        vm.AllProperties = [];
         _create();
         _activate();
 
@@ -43,13 +42,11 @@
 
 
         function _activate() {
+            vm.TitleSelect = null;
+
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
             var s = t.blocks.getSelected();
-
-            if (vm.evaluation == null && vm.explanation == null) {
-                _getJsonProperties();
-            }
 
             if (s.length === 1) {
                 vm.original = s[0];
@@ -59,16 +56,23 @@
                     description: vm.original.description,
                     properties: tine.merge({}, vm.original.properties)
                 };
+
+                if (vm.evaluation == null && vm.explanation == null) {
+                    _getJsonProperties();
+                }
+
                 //  check if the property that is selected to define its values ​​in the properties component
                 //  is the explain method and the evaluate method or intends
                 switch (vm.original.name) {
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.explanation;
+                        AddListAllProperties();
                         break;
                     case "Evaluation Method":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.evaluation;
+                        AddListAllProperties();
                         break;
                     case "Root":
                         vm.TitleName = vm.original.name;
@@ -109,35 +113,10 @@
                         );
                     } else {
                         vm.block.title = name;
-                        update();
                     }
                 });
         }
 
-        function UpdateProperties(option) {
-            //update Explanation and Evaluation method properties
-            update();
-            var json = {};
-            //we verify if the selected data have properties
-            if (!option.hasOwnProperty('properties')) {
-                vm.block = {
-                    title: option.value,
-                    properties: null,
-                    description: option.description
-                };
-            } else {
-
-                option.properties.forEach(element => {
-                    json[element.key] = element.value;
-                });
-                vm.block = {
-                    title: option.value,
-                    properties: tine.merge({}, json),
-                    description: option.description
-                };
-            }
-            update();
-        }
 
         function _event(e) {
             setTimeout(function() { $scope.$apply(function() { _activate(); }); }, 0);
@@ -167,48 +146,66 @@
             return false;
         }
 
+        function AddListAllProperties() {
+            //we buy if there is id and title
+            var estaEnLaLista = vm.AllProperties.findIndex(element => element.id == vm.original.id &&
+                (vm.original.title == element.value ||
+                    vm.original.title == "Evaluation Method" ||
+                    vm.original.title == "Explanation Method"));
+
+            //If it is not in AllPropertis we add it
+            if (estaEnLaLista == -1) {
+                vm.TitleSelect.forEach(element => {
+                    var a = new Object();
+                    //we check if the property we are adding already exists in the editor
+                    if (vm.original.title == element.value) {
+                        //we define the properties with the values of the properties of editor
+                        a.value = vm.original.title;
+                        a.properties = vm.original.properties;
+                        a.description = vm.original.description;
+                    } else {
+                        //we define the properties with the values of the properties of ServerJson
+                        var json = {};
+                        element.properties.forEach(element => {
+                            json[element.key] = element.value;
+                        });
+                        a.value = element.value;
+                        a.properties = tine.merge({}, json);
+                        a.description = element.description;
+                    }
+                    a.id = vm.original.id;
+                    vm.AllProperties.push(a);
+                });
+            }
+        }
+
+        function UpdateProperties(option) {
+            //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
+            var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
+            //define the properties
+            vm.block = {
+                title: selecionado.value,
+                properties: tine.merge({}, selecionado.properties),
+                description: selecionado.description
+            };
+            update();
+
+        }
+
         function update() {
             //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
             t.blocks.update(vm.original, vm.block);
 
-            // verify that we have data from the Explanation and Evaluation method
-            if (vm.TitleSelect == null) {
+            //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
+            //returns the position in the AllPropertis
+            var estaEnLaLista = vm.AllProperties.findIndex(element => element.id == vm.original.id && vm.original.title == element.value);
 
-            } else if (vm.TitleSelect.length != null) {
-                for (let index = 0; index < vm.TitleSelect.length; index++) {
-                    //verify that the option selected in the properties title is in that data
-                    if (vm.TitleSelect[index].value == vm.block.title) {
-                        //we verify that the selected data have properties
-                        if (vm.TitleSelect[index].properties != null) {
-                            var json = {};
-                            var ArrayPropertie = [];
-                            // extract the properties keys and value in objects
-                            var PropertiesValue = Object.values(vm.block.properties);
-                            var Propertieskey = Object.keys(vm.block.properties);
-                            //loop through all the properties and insert them into an array
-                            for (let index = 0; index < PropertiesValue.length; index++) {
-                                var JsonPropertie = {
-                                    key: Propertieskey[index],
-                                    value: PropertiesValue[index],
-                                };
-                                ArrayPropertie.push(JsonPropertie);
-                                json[Propertieskey[index]] = PropertiesValue[index];
-                            }
-                            //We assign it to the selected property
-                            vm.TitleSelect[index].properties = ArrayPropertie;
-                        } else {
-                            //  vm.block.properties = null;
-                            t.blocks.update(vm.original, vm.block);
-                        }
-                        //we define the description of the property
-                        vm.TitleSelect[index].description = vm.block.description;
-                    }
-
-                }
-            }
-
+            if (estaEnLaLista != -1) {
+                vm.AllProperties[estaEnLaLista].description = vm.block.description;
+                vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
+            };
         }
 
     }

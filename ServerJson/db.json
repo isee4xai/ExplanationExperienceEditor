@@ -39,11 +39,9 @@
               "929be0f6-2486-443b-add6-5f0945e145cd": {
                 "id": "929be0f6-2486-443b-add6-5f0945e145cd",
                 "name": "Explanation Method",
-                "title": "Explanation method 1 ",
-                "description": "Description Explanation method 1",
-                "properties": {
-                  "r": 3
-                },
+                "title": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
                 "display": {
                   "x": -84,
                   "y": 60
@@ -52,14 +50,62 @@
               "85c70fab-b8ee-49c6-bc69-5c71c5ea7771": {
                 "id": "85c70fab-b8ee-49c6-bc69-5c71c5ea7771",
                 "name": "Evaluation Method",
-                "title": "Evaluation method 2",
-                "description": "Description Evaluation method 2",
+                "title": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
                 "properties": {
-                  "x": 2
+                  "sad": "sd",
+                  "Key 2": "Value 2",
+                  "sda": "asd 3"
                 },
                 "display": {
                   "x": 132,
                   "y": 60
+                }
+              },
+              "ec240eaf-5163-459e-9273-89682b701d7e": {
+                "id": "ec240eaf-5163-459e-9273-89682b701d7e",
+                "name": "Evaluation Method",
+                "title": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3",
+                  "sada": "sdasdad"
+                },
+                "display": {
+                  "x": 72,
+                  "y": -192
+                }
+              },
+              "979b9d59-656d-4f4f-8c1b-e5e718c1ac9b": {
+                "id": "979b9d59-656d-4f4f-8c1b-e5e718c1ac9b",
+                "name": "Evaluation Method",
+                "title": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "1": 1,
+                  "2": 2,
+                  "3": 3,
+                  "4": 4,
+                  "5": 5
+                },
+                "display": {
+                  "x": 24,
+                  "y": 168
+                }
+              },
+              "7174dfb1-3858-4d8a-88bc-df645dd704c2": {
+                "id": "7174dfb1-3858-4d8a-88bc-df645dd704c2",
+                "name": "Evaluation Method",
+                "title": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1"
+                },
+                "display": {
+                  "x": 252,
+                  "y": -72
                 }
               }
             },
@@ -75,7 +121,7 @@
         "custom_nodes": []
       },
       "path": "b3projects-bb1d4c35-83e0-47f6-8db0-4abdd584cbc7",
-      "date": "2022-6-1 12:11:25",
+      "date": "2022-6-7 11:2:22",
       "id": 1
     },
     {
@@ -101,7 +147,8 @@
                 "title": "Explanation method 1 ",
                 "description": "Description Explanation method 1",
                 "properties": {
-                  "x": 4
+                  "x": 4,
+                  "y": 5
                 },
                 "display": {
                   "x": -72,
@@ -116,11 +163,12 @@
                 "properties": {
                   "Key 1": "Value 1",
                   "Key 2": "Value 2",
-                  "Key 3": "Value 3"
+                  "Key 3": "Value 3",
+                  "x": 7
                 },
                 "display": {
-                  "x": 108,
-                  "y": 132
+                  "x": 156,
+                  "y": 24
                 }
               },
               "fa5839d5-674d-4cdb-a3b4-367953f71e16": {
@@ -137,6 +185,44 @@
                   "ec0c0f8e-1084-45d0-819a-a98c89d5e903",
                   "ff04545e-0771-4cff-b63c-b7b0288d4471"
                 ]
+              },
+              "ee3651d7-e74a-4ed9-bee6-6a5ad7bd4436": {
+                "id": "ee3651d7-e74a-4ed9-bee6-6a5ad7bd4436",
+                "name": "Explanation Method",
+                "title": "Explanation method 1 ",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": 144,
+                  "y": -156
+                }
+              },
+              "3ce169f4-0c0f-4b4b-8398-38b7d283cd83": {
+                "id": "3ce169f4-0c0f-4b4b-8398-38b7d283cd83",
+                "name": "Explanation Method",
+                "title": "Explanation method 1 ",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": 120,
+                  "y": 120
+                }
+              },
+              "bd9c7043-8982-424b-8036-12a35b7210c7": {
+                "id": "bd9c7043-8982-424b-8036-12a35b7210c7",
+                "name": "Evaluation Method",
+                "title": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3",
+                  "x": 7
+                },
+                "display": {
+                  "x": 108,
+                  "y": 204
+                }
               }
             },
             "display": {
@@ -151,7 +237,7 @@
         "custom_nodes": []
       },
       "path": "b3projects-7baf35b0-ce0f-4733-b7f7-745b0811b2fe",
-      "date": "2022-6-1 12:24:31",
+      "date": "2022-6-1 14:44:53",
       "id": 2
     }
   ],
@@ -184,7 +270,7 @@
   ],
   "Explanation": [
     {
-      "value": "Explanation method 1 ",
+      "value": "Explanation method 1",
       "description": "Description Explanation method 1",
       "properties": [],
       "id": 1
