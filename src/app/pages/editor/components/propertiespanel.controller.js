@@ -113,6 +113,7 @@
                         );
                     } else {
                         vm.block.title = name;
+                        update();
                     }
                 });
         }

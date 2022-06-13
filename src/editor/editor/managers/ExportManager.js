@@ -62,7 +62,7 @@ b3e.editor.ExportManager = function(editor) {
             version: b3e.VERSION,
             scope: 'tree',
             id: tree._id,
-            title: root.title,
+            Instance: root.title,
             description: root.description,
             root: first[0] || null,
             properties: root.properties,
@@ -84,18 +84,41 @@ b3e.editor.ExportManager = function(editor) {
             if (block.category !== 'root') {
                 var d = {
                     id: block.id,
-                    name: block.name,
-                    title: block.title,
+                    Concept: block.name,
+                    Instance: block.title,
                     description: block.description,
                     properties: block.properties,
                     display: { x: block.x, y: block.y }
                 };
 
                 var children = getBlockChildrenIds(block);
+
                 if (block.category === 'composite') {
-                    d.children = children;
+                    var propertieNext = ["Next"];
+                    var RouteOfObject;
+
+                    children.forEach(element => {
+                        if (!d.hasOwnProperty("firstChild")) {
+                            d.firstChild = { Id: element, Next: null };
+                            RouteOfObject = d.firstChild;
+                        } else {
+                            RouteOfObject[propertieNext] = { Id: element, Next: null };
+                            RouteOfObject = RouteOfObject[propertieNext];
+                        }
+                    });
                 } else if (block.category === 'decorator') {
-                    d.child = children[0];
+                    var propertieNext = ["Next"];
+                    var RouteOfObject;
+
+                    children.forEach(element => {
+                        if (!d.hasOwnProperty("firstChild")) {
+                            d.firstChild = { Id: element, Next: null };
+                            RouteOfObject = d.firstChild;
+                        } else {
+                            RouteOfObject[propertieNext] = { Id: element, Next: null };
+                            RouteOfObject = RouteOfObject[propertieNext];
+                        }
+                    });
                 }
 
                 data.nodes[block.id] = d;
@@ -115,9 +138,9 @@ b3e.editor.ExportManager = function(editor) {
                 data.push({
                     version: b3e.VERSION,
                     scope: 'node',
-                    name: node.name,
+                    Concept: node.name,
                     category: node.category,
-                    title: node.title,
+                    Instance: node.title,
                     description: node.description,
                     properties: node.properties,
                 });
