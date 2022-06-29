@@ -21,13 +21,11 @@ b3e.tree.BlockManager = function(editor, project, tree) {
     this.add = function(name, x, y) {
         // If name is a block
         var block;
-
         if (name instanceof b3e.Block) {
             block = name;
             block._snap();
             tree._blocks.addChild(block);
             editor.trigger('blockadded', block);
-
         }
 
         // Otherwise

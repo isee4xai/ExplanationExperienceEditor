@@ -48,12 +48,24 @@
         vm.onSelectAll = onSelectAll;
         vm.onDeselectAll = onDeselectAll;
         vm.onInvertSelection = onInvertSelection;
+        vm.RandomGenerate = RandomGenerate;
+        vm.NameNodes = ["Explanation Method", "Evaluation Method"];
+        vm.NameCompositites = ["Sequence", "Priority"];
+        vm.ArrayComposites = [];
+        vm.ArrayCompositesNew = [];
+
+        vm.explanation = null;
+        vm.evaluation = null;
 
         _create();
         _activate();
         $scope.$on('$destroy', _destroy);
 
-        function _activate() {}
+        function _activate() {
+            if (vm.evaluation == null && vm.explanation == null) {
+                _getJsonProperties();
+            }
+        }
 
         function _shortcut_projectclose(f) {
             if (!$scope.$$phase) {
@@ -281,6 +293,125 @@
             var tree = _getTree();
             tree.selection.invertSelection();
             return false;
+        }
+
+        function RandomGenerate(DataInput) {
+            if (DataInput === undefined) {
+                DataInput = { MinSlibings: 0, MaxSlibings: 0 }
+            }
+
+            var MinSlibings = DataInput.MinSlibings;
+            var MaxSlibings = DataInput.MaxSlibings;
+            var subtrees = DataInput.subtrees;
+            var depth = DataInput.depth;
+
+            if (MaxSlibings != "" && MinSlibings != "" && MinSlibings < MaxSlibings) {
+                //Create a new project
+                var project = $window.editor.project.get();
+                project.trees.add();
+                var tree = project.trees.getSelected();
+                var point = tree.view.getLocalPoint(0, 0);
+                //Select the root and add a newly created composites
+                var blockRoot = tree.blocks.getAll();
+                var blockComposites = tree.blocks.add("Sequence", point.x, point.y);
+                tree.connections.add(blockRoot[0], blockComposites);
+                //we add in a array the Composites that did not finish their journey
+                vm.ArrayComposites.push(blockComposites);
+                for (let index = 0; index < depth; index++) {
+                    //travel all the composites that are unfinished to continue them
+                    vm.ArrayComposites.forEach(element => {
+
+                        var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
+                        for (let x = 0; x < NumeroAle; x++) {
+                            var y = getRndInteger(0, 1);
+                            var p = getRndInteger(0, 1);
+                            //create a method evaluation or explanation
+                            var BlockConditions = tree.blocks.add(vm.NameNodes[p], point.x, point.y);
+                            tree.connections.add(element, BlockConditions);
+                            //define properties a method of evaluation or explanation
+                            BlockConditions = PropertieSelect(p, y);
+                            var s = tree.blocks.getSelected();
+                            tree.blocks.update(s[0], BlockConditions);
+                        }
+                        if ((depth - index) != 1) {
+                            var NumeroAle1 = getRndInteger(1, subtrees);
+                            var SubBlockComposites = null;
+                            for (let x = 0; x < NumeroAle1; x++) {
+                                var y = getRndInteger(0, 1);
+                                //create a Compositites
+                                SubBlockComposites = tree.blocks.add(vm.NameCompositites[y], point.x, point.y);
+                                tree.connections.add(element, SubBlockComposites);
+                                vm.ArrayCompositesNew.push(SubBlockComposites);
+                            }
+                            blockComposites = SubBlockComposites;
+                        }
+
+                    });
+                    //clean ArrayComposites and add the new composites created
+                    vm.ArrayComposites = [];
+                    vm.ArrayComposites = vm.ArrayCompositesNew;
+                    vm.ArrayCompositesNew = [];
+                }
+                vm.ArrayCompositesNew = [];
+                vm.ArrayComposites = [];
+                onAutoOrganize();
+                notificationService.success(
+                    'New Tree generate',
+                    'A new tree was randomly generated in the project'
+                );
+            } else {
+                notificationService.error(
+                    'Invalid Generate',
+                    'Error in the maximum or minimum of slibings'
+                );
+            }
+        }
+
+        function PropertieSelect(IndexNameNodeNodes, IndexPropertie) {
+            var BlockCondition;
+            switch (vm.NameNodes[IndexNameNodeNodes]) {
+                case "Explanation Method":
+                    BlockCondition = PropertiesCreate(vm.explanation[IndexPropertie]);
+                    break;
+                case "Evaluation Method":
+                    BlockCondition = PropertiesCreate(vm.evaluation[IndexPropertie]);
+            }
+            return BlockCondition;
+        }
+
+
+        function PropertiesCreate(DataJson) {
+            //define properties a method of evaluation or explanation
+            var json = null;
+            if (DataJson.properties != null) {
+                json = {};
+                DataJson.properties.forEach(element => {
+                    json[element.key] = element.value;
+                });
+            }
+            var BlockConditions = {
+                title: DataJson.value,
+                properties: tine.merge({}, json),
+                description: DataJson.description
+            };
+            return BlockConditions;
+        }
+
+        function getRndInteger(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+
+        function _getJsonProperties() {
+            //Get the properties of the explain method and the evaluate method
+            projectModel.getConditionsExplanationMethod()
+                .then(function(x) {
+                    vm.explanation = x;
+                });
+            projectModel.getConditionsEvaluationMethod()
+                .then(function(x) {
+                    vm.evaluation = x;
+                });
         }
     }
 })();

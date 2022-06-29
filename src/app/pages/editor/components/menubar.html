@@ -147,6 +147,24 @@
                 </ul>
             </li>
 
+            <li><a>Random generator</a>
+                <ul>
+                    <li>
+                        <a>Min slibings </a>
+                        <input class="form-control" id="inputMin" type="number" ng-model="Random.MinSlibings" min="0" />
+                        <a>Max slibings </a>
+                        <input class="form-control" id="inputMax" type="number" ng-model="Random.MaxSlibings" max="200" />
+                        <a>Max subtrees </a>
+                        <input class="form-control" id="inputMax" type="number" ng-model="Random.subtrees" min="0" />
+                        <a>Max depth1 </a>
+                        <input class="form-control" id="inputMax" type="number" ng-model="Random.depth" min="0" />
+                    </li>
+                    <li>
+                        <a ng-click="menubar.RandomGenerate(Random)">Generate</a>
+                    </li>
+                </ul>
+            </li>
+
         </ul>
     </div>
     <!-- 
