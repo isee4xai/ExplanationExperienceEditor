@@ -6,7 +6,7 @@
       "data": {
         "version": "0.1.0",
         "scope": "project",
-        "selectedTree": "12e190de-8d74-48e1-b68b-ddeb01b087a8",
+        "selectedTree": "4f5a814c-9189-418d-ac91-1b25ad527899",
         "trees": [
           {
             "version": "0.1.0",
@@ -393,12 +393,362 @@
               "x": -12,
               "y": -168
             }
+          },
+          {
+            "version": "0.1.0",
+            "scope": "tree",
+            "id": "4f5a814c-9189-418d-ac91-1b25ad527899",
+            "Instance": "Explanation Experience",
+            "description": "",
+            "root": "0846822b-4164-428e-816f-48912570413f",
+            "properties": {},
+            "nodes": {
+              "0846822b-4164-428e-816f-48912570413f": {
+                "id": "0846822b-4164-428e-816f-48912570413f",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 0,
+                  "y": 120
+                },
+                "firstChild": {
+                  "Id": "6fe4269c-3222-4a10-8ac7-a63cc9cd5c9b",
+                  "Next": {
+                    "Id": "33352d31-b147-4809-87f5-b0842772b0f3",
+                    "Next": {
+                      "Id": "31a2641f-c492-419a-b9f0-a403042e0b98",
+                      "Next": {
+                        "Id": "f434840c-770c-4e0a-967c-74ba833a3fa3",
+                        "Next": {
+                          "Id": "4c4efe3c-c8b1-4869-89b3-240b82ccc488",
+                          "Next": {
+                            "Id": "4c38fb07-4f3c-4f35-85df-2c600a504aea",
+                            "Next": null
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "6fe4269c-3222-4a10-8ac7-a63cc9cd5c9b": {
+                "id": "6fe4269c-3222-4a10-8ac7-a63cc9cd5c9b",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": -924,
+                  "y": 252
+                }
+              },
+              "33352d31-b147-4809-87f5-b0842772b0f3": {
+                "id": "33352d31-b147-4809-87f5-b0842772b0f3",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": -708,
+                  "y": 252
+                }
+              },
+              "31a2641f-c492-419a-b9f0-a403042e0b98": {
+                "id": "31a2641f-c492-419a-b9f0-a403042e0b98",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": -504,
+                  "y": 252
+                }
+              },
+              "f434840c-770c-4e0a-967c-74ba833a3fa3": {
+                "id": "f434840c-770c-4e0a-967c-74ba833a3fa3",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3"
+                },
+                "display": {
+                  "x": -300,
+                  "y": 252
+                }
+              },
+              "4c4efe3c-c8b1-4869-89b3-240b82ccc488": {
+                "id": "4c4efe3c-c8b1-4869-89b3-240b82ccc488",
+                "Concept": "Priority",
+                "Instance": "Priority",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 384,
+                  "y": 252
+                },
+                "firstChild": {
+                  "Id": "7a5e6437-90f8-4af8-8fed-fa9806886a2b",
+                  "Next": {
+                    "Id": "e6886701-4a03-47be-b046-fb31c557cf81",
+                    "Next": {
+                      "Id": "b1fadb15-41e8-4fcf-8293-ff1410e030b6",
+                      "Next": {
+                        "Id": "9820fe1c-1d74-4219-8dfa-23ca1ff5c3df",
+                        "Next": {
+                          "Id": "6371eb66-5ed1-4a6e-89a1-edc2a77ada55",
+                          "Next": null
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "4c38fb07-4f3c-4f35-85df-2c600a504aea": {
+                "id": "4c38fb07-4f3c-4f35-85df-2c600a504aea",
+                "Concept": "Priority",
+                "Instance": "Priority",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 2016,
+                  "y": 252
+                },
+                "firstChild": {
+                  "Id": "b2a776bb-5aba-4af8-bf37-871d01c579e0",
+                  "Next": {
+                    "Id": "8bacced4-71d2-4732-83ea-494f1cfbf039",
+                    "Next": {
+                      "Id": "91fc96d2-86e7-49c9-9591-efba1924bdad",
+                      "Next": {
+                        "Id": "5301af0a-5570-40de-88a2-03e05d1c3444",
+                        "Next": {
+                          "Id": "4550f740-5d54-43f9-8331-b69c1790fc6f",
+                          "Next": null
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "7a5e6437-90f8-4af8-8fed-fa9806886a2b": {
+                "id": "7a5e6437-90f8-4af8-8fed-fa9806886a2b",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 1",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": -84,
+                  "y": 384
+                }
+              },
+              "e6886701-4a03-47be-b046-fb31c557cf81": {
+                "id": "e6886701-4a03-47be-b046-fb31c557cf81",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 1",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": 120,
+                  "y": 384
+                }
+              },
+              "b1fadb15-41e8-4fcf-8293-ff1410e030b6": {
+                "id": "b1fadb15-41e8-4fcf-8293-ff1410e030b6",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": 324,
+                  "y": 384
+                }
+              },
+              "9820fe1c-1d74-4219-8dfa-23ca1ff5c3df": {
+                "id": "9820fe1c-1d74-4219-8dfa-23ca1ff5c3df",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": 540,
+                  "y": 384
+                }
+              },
+              "6371eb66-5ed1-4a6e-89a1-edc2a77ada55": {
+                "id": "6371eb66-5ed1-4a6e-89a1-edc2a77ada55",
+                "Concept": "Priority",
+                "Instance": "Priority",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 1056,
+                  "y": 384
+                },
+                "firstChild": {
+                  "Id": "b3dde6f4-dc54-4cc2-8071-e5854ea1cf86",
+                  "Next": {
+                    "Id": "f048e809-2273-417a-876c-c3176058f365",
+                    "Next": {
+                      "Id": "97ce531a-a500-4cad-9253-c9ed49729953",
+                      "Next": {
+                        "Id": "c5814e2e-c825-4578-8d98-8087449b0f50",
+                        "Next": null
+                      }
+                    }
+                  }
+                }
+              },
+              "b2a776bb-5aba-4af8-bf37-871d01c579e0": {
+                "id": "b2a776bb-5aba-4af8-bf37-871d01c579e0",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3"
+                },
+                "display": {
+                  "x": 1572,
+                  "y": 384
+                }
+              },
+              "8bacced4-71d2-4732-83ea-494f1cfbf039": {
+                "id": "8bacced4-71d2-4732-83ea-494f1cfbf039",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": 1788,
+                  "y": 384
+                }
+              },
+              "91fc96d2-86e7-49c9-9591-efba1924bdad": {
+                "id": "91fc96d2-86e7-49c9-9591-efba1924bdad",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 1",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": 1992,
+                  "y": 384
+                }
+              },
+              "5301af0a-5570-40de-88a2-03e05d1c3444": {
+                "id": "5301af0a-5570-40de-88a2-03e05d1c3444",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": 2196,
+                  "y": 384
+                }
+              },
+              "4550f740-5d54-43f9-8331-b69c1790fc6f": {
+                "id": "4550f740-5d54-43f9-8331-b69c1790fc6f",
+                "Concept": "Priority",
+                "Instance": "Priority",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 2508,
+                  "y": 384
+                },
+                "firstChild": {
+                  "Id": "a74d072e-6c6a-49fe-867d-edfe0da951a6",
+                  "Next": {
+                    "Id": "fbad8405-29b0-4187-8faa-17fa19d06a1b",
+                    "Next": null
+                  }
+                }
+              },
+              "b3dde6f4-dc54-4cc2-8071-e5854ea1cf86": {
+                "id": "b3dde6f4-dc54-4cc2-8071-e5854ea1cf86",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": 744,
+                  "y": 516
+                }
+              },
+              "f048e809-2273-417a-876c-c3176058f365": {
+                "id": "f048e809-2273-417a-876c-c3176058f365",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": 948,
+                  "y": 516
+                }
+              },
+              "97ce531a-a500-4cad-9253-c9ed49729953": {
+                "id": "97ce531a-a500-4cad-9253-c9ed49729953",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": 1164,
+                  "y": 516
+                }
+              },
+              "c5814e2e-c825-4578-8d98-8087449b0f50": {
+                "id": "c5814e2e-c825-4578-8d98-8087449b0f50",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": 1368,
+                  "y": 516
+                }
+              },
+              "a74d072e-6c6a-49fe-867d-edfe0da951a6": {
+                "id": "a74d072e-6c6a-49fe-867d-edfe0da951a6",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": 2412,
+                  "y": 516
+                }
+              },
+              "fbad8405-29b0-4187-8faa-17fa19d06a1b": {
+                "id": "fbad8405-29b0-4187-8faa-17fa19d06a1b",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": 2616,
+                  "y": 516
+                }
+              }
+            },
+            "display": {
+              "camera_x": 528.6999998092651,
+              "camera_y": 328.5,
+              "camera_z": 0.25,
+              "x": 0,
+              "y": 0
+            }
           }
         ],
         "custom_nodes": []
       },
       "path": "b3projects-a0aafa76-2e36-4082-83f2-2447a6965e56",
-      "date": "2022-6-27 11:54:16",
+      "date": "2022-6-29 16:39:5",
       "id": 1
     },
     {
@@ -475,7 +825,7 @@
         "custom_nodes": []
       },
       "path": "b3projects-745bd002-371c-4e09-8772-77682f38f870",
-      "date": "2022-6-27 18:38:4",
+      "date": "2022-6-29 17:59:5",
       "id": 2
     }
   ],

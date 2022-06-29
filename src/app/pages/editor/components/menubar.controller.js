@@ -49,6 +49,8 @@
         vm.onDeselectAll = onDeselectAll;
         vm.onInvertSelection = onInvertSelection;
         vm.RandomGenerate = RandomGenerate;
+        vm.RandomGenerate10 = RandomGenerate10;
+        vm.NotificationSuccess = NotificationSuccess;
         vm.NameNodes = ["Explanation Method", "Evaluation Method"];
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
@@ -295,7 +297,8 @@
             return false;
         }
 
-        function RandomGenerate(DataInput) {
+        function RandomGenerate(DataInput, IndexSucces) {
+
             if (DataInput === undefined) {
                 DataInput = { MinSlibings: 0, MaxSlibings: 0 }
             }
@@ -355,15 +358,32 @@
                 vm.ArrayCompositesNew = [];
                 vm.ArrayComposites = [];
                 onAutoOrganize();
-                notificationService.success(
-                    'New Tree generate',
-                    'A new tree was randomly generated in the project'
-                );
+                NotificationSuccess(IndexSucces);
+
             } else {
                 notificationService.error(
                     'Invalid Generate',
                     'Error in the maximum or minimum of slibings'
                 );
+            }
+        }
+
+        function NotificationSuccess(index) {
+            switch (index) {
+                case 0:
+                    notificationService.success(
+                        'New 10 Tree generate',
+                        'A new tree was randomly generated in the project'
+                    );
+                    break;
+                case undefined:
+                    notificationService.success(
+                        'New Tree generate',
+                        'A new tree was randomly generated in the project'
+                    );
+                    break;
+                default:
+
             }
         }
 
@@ -413,5 +433,14 @@
                     vm.evaluation = x;
                 });
         }
+
+        function RandomGenerate10(Data) {
+            for (let index = 0; index < 10; index++) {
+                RandomGenerate(Data, index);
+            }
+            onSaveProject();
+        }
+
+
     }
 })();
