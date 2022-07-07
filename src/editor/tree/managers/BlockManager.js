@@ -109,12 +109,12 @@ b3e.tree.BlockManager = function(editor, project, tree) {
     };
     this.update = function(block, template, merge) {
         var mustSave = !!template;
-
         var _oldValues = {
             name: block.name,
             title: block.title,
             description: block.description,
             properties: block.properties,
+            propertyExpl: block.propertyExpl
         };
 
         template = template || {};
@@ -139,6 +139,11 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         } else {
             block.properties = tine.merge({}, node.properties, block.properties);
         }
+        if (typeof template.propertyExpl !== 'undefined') {
+            block.propertyExpl = tine.merge({}, node.propertyExpl, template.propertyExpl);
+        } else {
+            block.propertyExpl = tine.merge({}, node.propertyExpl, block.propertyExpl);
+        }
         block._redraw();
 
         var _newValues = {
@@ -146,8 +151,8 @@ b3e.tree.BlockManager = function(editor, project, tree) {
             title: block.title,
             description: block.description,
             properties: block.properties,
+            propertyExpl: block.propertyExpl,
         };
-
         // redraw connections linked to the entity
         if (block._inConnection) {
             block._inConnection._redraw();

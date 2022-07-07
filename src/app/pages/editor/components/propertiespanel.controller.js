@@ -50,11 +50,11 @@
 
             if (s.length === 1) {
                 vm.original = s[0];
-
                 vm.block = {
                     title: vm.original.title,
                     description: vm.original.description,
-                    properties: tine.merge({}, vm.original.properties)
+                    properties: tine.merge({}, vm.original.properties),
+                    propertyExpl: vm.original.propertyExpl
                 };
 
                 if (vm.evaluation == null && vm.explanation == null) {
@@ -68,6 +68,7 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.explanation;
                         AddListAllProperties();
+
                         break;
                     case "Evaluation Method":
                         vm.TitleName = vm.original.name;
@@ -86,7 +87,6 @@
                 vm.original = false;
                 vm.block = false;
             }
-
         }
 
         function _getJsonProperties() {
@@ -158,13 +158,16 @@
             if (estaEnLaLista == -1) {
                 vm.TitleSelect.forEach(element => {
                     var a = new Object();
+                    var propertiesExplanation = PropertiesExplanation(element);
                     //we check if the property we are adding already exists in the editor
                     if (vm.original.title == element.value) {
                         //we define the properties with the values of the properties of editor
                         a.value = vm.original.title;
                         a.properties = vm.original.properties;
                         a.description = vm.original.description;
+                        a.propertyExpl = propertiesExplanation;
                     } else {
+
                         //we define the properties with the values of the properties of ServerJson
                         var json = {};
                         element.properties.forEach(element => {
@@ -173,11 +176,43 @@
                         a.value = element.value;
                         a.properties = tine.merge({}, json);
                         a.description = element.description;
+                        a.propertyExpl = propertiesExplanation;
                     }
                     a.id = vm.original.id;
                     vm.AllProperties.push(a);
                 });
             }
+        }
+
+        function PropertiesExplanation(option) {
+            var propertiesExpl = {};
+            let ArrayNameProperties = Object.keys(option);
+
+            for (let index = 0; index < ArrayNameProperties.length; index++) {
+                switch (ArrayNameProperties[index]) {
+                    case "value":
+                        break;
+                    case "properties":
+                        break;
+                    case "description":
+                        break;
+                    case "id":
+                        break;
+                    case "$$hashKey":
+                        break;
+                    default:
+                        if (Array.isArray(option[ArrayNameProperties[index]])) {
+                            //   option[claves[index]]
+                            propertiesExpl[ArrayNameProperties[index]] = option[ArrayNameProperties[index]];
+                        } else {
+                            propertiesExpl[ArrayNameProperties[index]] = option[ArrayNameProperties[index]];
+                        }
+
+                        break;
+                }
+            }
+
+            return propertiesExpl;
         }
 
         function UpdateProperties(option) {
@@ -187,10 +222,10 @@
             vm.block = {
                 title: selecionado.value,
                 properties: tine.merge({}, selecionado.properties),
-                description: selecionado.description
+                description: selecionado.description,
+                propertyExpl: selecionado.propertyExpl
             };
             update();
-
         }
 
         function update() {

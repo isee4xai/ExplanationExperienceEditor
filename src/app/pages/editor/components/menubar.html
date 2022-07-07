@@ -158,12 +158,14 @@
                         <input class="form-control" id="inputMax" type="number" ng-model="Random.subtrees" min="0" />
                         <a>Max depth1 </a>
                         <input class="form-control" id="inputMax" type="number" ng-model="Random.depth" min="0" />
-                    </li>
-                    <li>
+
                         <a ng-click="menubar.RandomGenerate(Random)">Generate</a>
                     </li>
                     <li>
-                        <a ng-click="menubar.RandomGenerate10(Random)">Generate 10 Intends</a>
+                        <a>tree number </a>
+                        <input class="form-control" id="inputMax" type="number" ng-model="Random.TreeNumber" min="2" />
+
+                        <a ng-click="menubar.RandomGenerate10(Random)">Generate x Intends</a>
                     </li>
                 </ul>
             </li>

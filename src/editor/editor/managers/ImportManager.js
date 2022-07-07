@@ -33,7 +33,8 @@ b3e.editor.ImportManager = function(editor) {
         root.title = data.Instance;
         root.description = data.description;
         root.properties = data.properties;
-        root.x = display.x || 0;
+        root.propertyExpl = data.Instance,
+            root.x = display.x || 0;
         root.y = display.y || 0;
 
         // Custom nodes
@@ -41,8 +42,18 @@ b3e.editor.ImportManager = function(editor) {
 
         var id, spec;
 
+
+
+
+
+
+
         // Add blocks
         for (id in data.nodes) {
+
+
+
+
             spec = data.nodes[id];
             var block = null;
             display = spec.display || {};
@@ -52,6 +63,41 @@ b3e.editor.ImportManager = function(editor) {
             block.title = spec.Instance;
             block.description = spec.description;
             block.properties = tine.merge({}, block.properties, spec.properties);
+
+            //
+            var propertiesExpl = {};
+            let ArrayNameProperties = Object.keys(spec);
+
+            for (let index = 0; index < ArrayNameProperties.length; index++) {
+                switch (ArrayNameProperties[index]) {
+                    case "value":
+                        break;
+                    case "properties":
+                        break;
+                    case "description":
+                        break;
+                    case "id":
+                        break;
+                    case "$$hashKey":
+                        break;
+                    case "Concept":
+                        break;
+                    case "Instance":
+                        break;
+                    case "display":
+                        break;
+                    default:
+                        if (Array.isArray(spec[ArrayNameProperties[index]])) {
+
+                            propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                        } else {
+                            propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                        }
+
+                        break;
+                }
+            }
+            block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
             block._redraw();
 
             if (spec.id === data.root) {

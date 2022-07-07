@@ -358,21 +358,22 @@
                 vm.ArrayCompositesNew = [];
                 vm.ArrayComposites = [];
                 onAutoOrganize();
-                NotificationSuccess(IndexSucces);
-
+                NotificationSuccess(IndexSucces, DataInput.TreeNumber);
+                return true;
             } else {
                 notificationService.error(
                     'Invalid Generate',
                     'Error in the maximum or minimum of slibings'
                 );
+                return false;
             }
         }
 
-        function NotificationSuccess(index) {
+        function NotificationSuccess(index, NumTree) {
             switch (index) {
                 case 0:
                     notificationService.success(
-                        'New 10 Tree generate',
+                        'New ' + NumTree + ' Tree generate',
                         'A new tree was randomly generated in the project'
                     );
                     break;
@@ -435,12 +436,26 @@
         }
 
         function RandomGenerate10(Data) {
-            for (let index = 0; index < 10; index++) {
-                RandomGenerate(Data, index);
+
+            var result;
+            if (Data === undefined) {
+                notificationService.error(
+                    'Invalid Generate',
+                    'Tree number cannot be empty'
+                );
+            } else if (Data.TreeNumber <= 1) {
+                notificationService.error(
+                    'Invalid Generate',
+                    'Tree number must be greater than 1'
+                );
+            } else {
+                for (let index = 0; index < Data.TreeNumber; index++) {
+                    result = RandomGenerate(Data, index);
+                }
+                if (result == true) {
+                    onSaveProject();
+                }
             }
-            onSaveProject();
         }
-
-
     }
 })();

@@ -90,6 +90,18 @@ b3e.editor.ExportManager = function(editor) {
                     properties: block.properties,
                     display: { x: block.x, y: block.y }
                 };
+                if (block.name === 'Explanation Method') {
+                    if (block.propertyExpl != undefined) {
+                        let ArrayNameProperties = Object.keys(block.propertyExpl);
+
+                        for (let index = 0; index < ArrayNameProperties.length; index++) {
+                            d[ArrayNameProperties[index]] = block.propertyExpl[ArrayNameProperties[index]];
+
+                        }
+                    }
+
+                }
+
 
                 var children = getBlockChildrenIds(block);
 
@@ -143,6 +155,7 @@ b3e.editor.ExportManager = function(editor) {
                     Instance: node.title,
                     description: node.description,
                     properties: node.properties,
+                    propertyExpl: node.propertyExpl,
                 });
             }
         });

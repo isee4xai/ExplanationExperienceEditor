@@ -22,7 +22,7 @@ b3e.project.NodeManager = function(editor, project) {
             n.title = node.title;
             n.description = node.description;
             n.properties = tine.merge({}, node.properties || node.parameters);
-
+            n.propertyExpl = node.propertyExpl;
             node = n;
         }
 
@@ -62,6 +62,7 @@ b3e.project.NodeManager = function(editor, project) {
             description: node.description,
             category: node.category,
             properties: node.properties,
+            propertyExpl: node.propertyExpl,
         };
 
         if (typeof template.name !== 'undefined') {
@@ -79,6 +80,9 @@ b3e.project.NodeManager = function(editor, project) {
         if (typeof template.properties !== 'undefined') {
             node.properties = tine.merge({}, template.properties);
         }
+        if (typeof template.propertyExpl !== 'undefined') {
+            node.propertyExpl = tine.merge({}, template.propertyExpl);
+        }
 
         var _newValues = {
             name: node.name,
@@ -86,6 +90,7 @@ b3e.project.NodeManager = function(editor, project) {
             description: node.description,
             category: node.category,
             properties: node.properties,
+            propertyExpl: node.propertyExpl,
         };
 
         project.history._beginBatch();
