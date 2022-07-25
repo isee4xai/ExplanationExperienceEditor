@@ -3,39 +3,40 @@
 
     angular
         .module('app')
-        .directive('b3KeyTable', keytable)
-        .controller('KeyTableController', KeyTableController);
+        .directive('b3KeyTableExpl', keytableExpl)
+        .controller('KeyTableControllerExpl', KeyTableControllerExpl);
 
-    keytable.$inject = ['$parse'];
+    keytableExpl.$inject = ['$parse'];
 
-    function keytable($parse) {
+    function keytableExpl($parse) {
         var directive = {
             require: '^ngModel',
             restrict: 'EA',
             replace: true,
             bindToController: true,
-            controller: 'KeyTableController',
-            controllerAs: 'keytable',
-            templateUrl: 'directives/keytable.html',
+            controller: 'KeyTableControllerExpl',
+            controllerAs: 'keytableExpl',
+            templateUrl: 'directives/keytableExpl.html',
+
             link: link
         };
         return directive;
 
         function link(scope, element, attrs) {
             // get the value of the `ng-model` attribute
-            scope.keytable.heading = attrs.heading;
-            scope.keytable._onChange = $parse(attrs.ngChange);
+            scope.keytableExpl.heading = attrs.heading;
+            scope.keytableExpl._onChange = $parse(attrs.ngChange);
 
             var variable = attrs.ngModel;
             scope.$watch(variable, function(model) {
-                scope.keytable.reset(model);
+                scope.keytableExpl.reset(model);
             });
         }
     }
 
-    KeyTableController.$inject = ['$scope'];
+    KeyTableControllerExpl.$inject = ['$scope'];
 
-    function KeyTableController($scope) {
+    function KeyTableControllerExpl($scope) {
         // HEAD //
         var vm = this;
         vm._onChange = null;
@@ -46,6 +47,7 @@
         vm.change = change;
         vm.reset = reset;
 
+        $scope.isArray = angular.isArray;
         _activate();
 
         // BODY //

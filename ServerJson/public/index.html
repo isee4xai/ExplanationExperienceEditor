@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <title>iSee Projects </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js"></script>
+    <script src="https://angular-ui.github.io/ui-utils/dist/ui-utils.js"></script>-->
+    <script src="app.js"></script>
+</head>
+
+<body>
+
+    <div class="page" ng-app="filterApp">
+        <div ng-controller="filterAppCtrl">
+            <h1 class="pen-title">Projects iSee</br>
+                <span>Count {{NumberProjects}}</span>
+            </h1>
+            <div class="header">
+                <div class="headerFilter">
+                    <input placeholder="Filter Projects" class="filterInput" ng-model="filterText" ng-minlength="filterLength" ng-change="getFilterLength(filterText)">
+                    <button type="button" class="filterButton" ng-click='filterText=""'>x</button>
+                </div>
+                <div class="dropdown">
+                    <select class="dropdown-select" ng-model="limitLoads" ng-change="setTableLimit(limitLoads)" ng-options="Loadrows as Loadrows.nombre for Loadrows in Loadrows">
+					</select>
+                </div>
+            </div>
+            <table class="dataTable">
+                <tbody>
+                    <tr class="tableHeader">
+                        <td class="id">ID</td>
+                        <td>Project</td>
+                        <td>Date </td>
+                    </tr>
+                    <tr class="tableItem" id={{entry.id}} ng-click="check(entry.id)" ng-repeat="entry in entries | filter: filterText | limitTo: Loadrowsss">
+                        <td>
+                            <span>{{entry.id}}</span>
+                        </td>
+                        <td>
+                            <span>{{entry.name}}</span>
+                        </td>
+                        <td>
+                            <span>{{entry.date}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

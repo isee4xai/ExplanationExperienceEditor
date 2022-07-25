@@ -82,10 +82,11 @@
 
   p.trigger = function(name, target, variables) {
     variables = variables || {};
-
+    
     var event = new createjs.Event(name);
     event._target = target;
     event._data = variables;
+    
     this.dispatchEvent(event);
   };
 
