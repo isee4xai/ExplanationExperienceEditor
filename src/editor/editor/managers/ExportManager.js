@@ -101,6 +101,11 @@ b3e.editor.ExportManager = function(editor) {
                     }
 
                 }
+                if (block.name === 'Condition') {
+                    d.DataType = block.DataType;
+                    d.VariableName = block.VariableName;
+                    delete d.description;
+                }
 
 
                 var children = getBlockChildrenIds(block);
@@ -156,6 +161,8 @@ b3e.editor.ExportManager = function(editor) {
                     description: node.description,
                     properties: node.properties,
                     propertyExpl: node.propertyExpl,
+                    DataType: node.DataType,
+                    VariableName: node.VariableName,
                 });
             }
         });

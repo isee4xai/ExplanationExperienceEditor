@@ -42,16 +42,23 @@
 
             var p = $window.editor.project.get();
 
+
             p.nodes.each(function(node) {
+
                 if (node.category === 'tree') return;
 
                 var list = vm.nodes[node.category];
+
                 if (!list) return;
                 list.push({
                     name: node.name,
                     title: _getTitle(node),
                     isDefault: node.isDefault
                 });
+                /*
+                console.log(node);
+                console.log(list);
+                */
             });
 
             var selected = p.trees.getSelected();
@@ -63,6 +70,8 @@
                     'active': tree === selected,
                 });
             });
+
+
         }
 
         function _event(e) {

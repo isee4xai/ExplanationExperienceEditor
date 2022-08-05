@@ -326,13 +326,16 @@
 
                         var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
                         for (let x = 0; x < NumeroAle; x++) {
-                            var y = getRndInteger(0, 1);
                             var p = getRndInteger(0, 1);
                             //create a method evaluation or explanation
+                            // make sure they always have an explainer
+
                             var BlockConditions = tree.blocks.add(vm.NameNodes[p], point.x, point.y);
                             tree.connections.add(element, BlockConditions);
                             //define properties a method of evaluation or explanation
-                            BlockConditions = PropertieSelect(p, y);
+                            BlockConditions = PropertieSelect(p);
+
+
                             var s = tree.blocks.getSelected();
                             tree.blocks.update(s[0], BlockConditions);
                         }
@@ -388,20 +391,23 @@
             }
         }
 
-        function PropertieSelect(IndexNameNodeNodes, IndexPropertie) {
+        function PropertieSelect(IndexNameNodeNodes) {
             var BlockCondition;
             switch (vm.NameNodes[IndexNameNodeNodes]) {
                 case "Explanation Method":
-                    BlockCondition = PropertiesCreate(vm.explanation[IndexPropertie]);
+                    var indexExplanation = getRndInteger(0, vm.explanation.length - 1);
+                    BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
                     break;
                 case "Evaluation Method":
-                    BlockCondition = PropertiesCreate(vm.evaluation[IndexPropertie]);
+                    var indexEvaluation = getRndInteger(0, vm.evaluation.length - 1);
+                    BlockCondition = PropertiesCreate(vm.evaluation[indexEvaluation], "Evaluation Method");
+                    break;
             }
             return BlockCondition;
         }
 
 
-        function PropertiesCreate(DataJson) {
+        function PropertiesCreate(DataJson, NameNode) {
             //define properties a method of evaluation or explanation
             var json = null;
             if (DataJson.properties != null) {
@@ -415,6 +421,43 @@
                 properties: tine.merge({}, json),
                 description: DataJson.description
             };
+
+            if (NameNode == "Explanation Method") {
+                var propertiesExpl = {};
+                let ArrayNameProperties = Object.keys(DataJson);
+
+                for (let index = 0; index < ArrayNameProperties.length; index++) {
+                    switch (ArrayNameProperties[index]) {
+                        case "value":
+                            break;
+                        case "properties":
+                            break;
+                        case "description":
+                            break;
+                        case "id":
+                            break;
+                        case "$$hashKey":
+                            break;
+                        case "Concept":
+                            break;
+                        case "Instance":
+                            break;
+                        case "display":
+                            break;
+                        default:
+                            if (Array.isArray(DataJson[ArrayNameProperties[index]])) {
+
+                                propertiesExpl[ArrayNameProperties[index]] = DataJson[ArrayNameProperties[index]];
+                            } else {
+                                propertiesExpl[ArrayNameProperties[index]] = DataJson[ArrayNameProperties[index]];
+                            }
+
+                            break;
+                    }
+                }
+                BlockConditions.propertyExpl = tine.merge({}, BlockConditions.propertyExpl, propertiesExpl);
+
+            }
             return BlockConditions;
         }
 

@@ -35,6 +35,12 @@
         vm.TitleName = null;
 
         vm.AllProperties = [];
+
+        vm.TypeOfData = ["Integer", "Boolean"];
+        vm.DataType = "Datatype";
+        vm.AllCondition = [];
+        vm.SelectTypeOfData = SelectTypeOfData;
+
         _create();
         _activate();
 
@@ -54,7 +60,9 @@
                     title: vm.original.title,
                     description: vm.original.description,
                     properties: tine.merge({}, vm.original.properties),
-                    propertyExpl: vm.original.propertyExpl
+                    propertyExpl: vm.original.propertyExpl,
+                    DataType: vm.original.DataType,
+                    VariableName: vm.original.VariableName,
                 };
 
                 if (vm.evaluation == null && vm.explanation == null) {
@@ -68,12 +76,18 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.explanation;
                         AddListAllProperties();
-
                         break;
                     case "Evaluation Method":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.evaluation;
                         AddListAllProperties();
+                        break;
+                    case "Condition":
+                        vm.TitleName = null;
+                        vm.TitleSelect = null;
+                        if (vm.block.DataType == undefined) {
+                            vm.block.DataType = vm.DataType;
+                        }
                         break;
                     case "Root":
                         vm.TitleName = vm.original.name;
@@ -149,13 +163,13 @@
 
         function AddListAllProperties() {
             //we buy if there is id and title
-            var estaEnLaLista = vm.AllProperties.findIndex(element => element.id == vm.original.id &&
+            var Exist = vm.AllProperties.findIndex(element => element.id == vm.original.id &&
                 (vm.original.title == element.value ||
                     vm.original.title == "Evaluation Method" ||
                     vm.original.title == "Explanation Method"));
 
             //If it is not in AllPropertis we add it
-            if (estaEnLaLista == -1) {
+            if (Exist == -1) {
                 vm.TitleSelect.forEach(element => {
                     var a = new Object();
                     var propertiesExplanation = PropertiesExplanation(element);
@@ -227,6 +241,22 @@
             };
             update();
         }
+
+        function SelectTypeOfData(TypeData) {
+
+            console.log(TypeData);
+            vm.block = {
+                title: vm.original.title,
+                properties: tine.merge({}, vm.original.properties),
+                DataType: TypeData,
+                VariableName: vm.original.VariableName,
+            };
+            update();
+            console.log(vm.block);
+
+            console.log(vm.original);
+        }
+
 
         function update() {
             //update Explanation and Evaluation method properties

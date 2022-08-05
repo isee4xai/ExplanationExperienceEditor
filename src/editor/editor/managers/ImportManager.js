@@ -33,7 +33,9 @@ b3e.editor.ImportManager = function(editor) {
         root.title = data.Instance;
         root.description = data.description;
         root.properties = data.properties;
-        root.propertyExpl = data.Instance,
+        root.propertyExpl = data.Instance;
+        root.DataType = data.DataType,
+            root.VariableName = data.VariableName,
             root.x = display.x || 0;
         root.y = display.y || 0;
 
@@ -42,17 +44,8 @@ b3e.editor.ImportManager = function(editor) {
 
         var id, spec;
 
-
-
-
-
-
-
         // Add blocks
         for (id in data.nodes) {
-
-
-
 
             spec = data.nodes[id];
             var block = null;
@@ -98,6 +91,9 @@ b3e.editor.ImportManager = function(editor) {
                 }
             }
             block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
+            block.DataType = spec.DataType;
+            block.VariableName = spec.VariableName;
+
             block._redraw();
 
             if (spec.id === data.root) {

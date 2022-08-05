@@ -1,37 +1,44 @@
 <table class="table table-condensed keytable">
-  <thead>
-    <tr>
-      <th colspan="3">
-        <input type="button" class="btn btn-success btn-xs pull-right" value="+" ng-click="keytable.add()">
-        <label class="control-label">{{keytable.heading}}</label>
-      </th>
-    </tr>
-  </thead>
+    <thead>
+        <tr>
+            <th colspan="3">
+                <input ng-if="keytable.Condition == false" type="button" class="btn btn-success btn-xs pull-right" value="+" ng-click="keytable.add()">
+                <label class="control-label">{{keytable.heading}}</label>
+            </th>
+        </tr>
+    </thead>
 
-  <tbody>
-    <tr ng-repeat="item in keytable.rows">
-      <td><input type="text"
-                 class="form-control"
-                 placeholder="key"
-                 value="{{item.key}}"
-                 ng-disabled="item.fixed"
-                 ng-model="item.key"
-                 ng-change="keytable.change()"/>
-      </td>
-      <td><input type="text" 
-                 class="form-control"
-                 placeholder="value"
-                 value="{{item.value}}"
-                 ng-model="item.value"
-                 ng-change="keytable.change()"/>
-      </td>
-      <td class="text-right">
-        <input type="button" 
-               class="btn btn-danger btn-xs"
-               ng-disabled="item.fixed"
-               ng-click="keytable.remove($index)"
-               value="-">
-      </td>
-    </tr>
-  </tbody>
+    <tbody>
+        <tr ng-repeat="item in keytable.rows">
+
+            <td ng-if="keytable.Condition == false">
+                <input type="text" class="form-control" placeholder="key" value="{{item.key}}" ng-disabled="item.fixed" ng-model="item.key" ng-change="keytable.change()" />
+            </td>
+            <td ng-if="keytable.Condition == true">
+
+                <div id="headerCond">
+                    <ul class="navCondi">
+                        <li>
+                            <a class="form-control" ng-model="keytable.cond">{{item.key}}</a>
+                            <ul>
+                                <li ng-repeat="data in keytable.ConditionProperties" ng-click="keytable.changeCondition(data,item.key)">
+                                    <a>{{data}}</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </td>
+
+
+            <td>
+                <input type="text" class="form-control" placeholder="value" value="{{item.value}}" ng-model="item.value" ng-change="keytable.change()" />
+            </td>
+            <td class="text-right" ng-if="keytable.Condition == false">
+                <input type="button" class="btn btn-danger btn-xs" ng-disabled="item.fixed" ng-click="keytable.remove($index)" value="-">
+            </td>
+        </tr>
+    </tbody>
 </table>
