@@ -39,6 +39,12 @@
             removeProject: removeProject,
             getConditionsEvaluationMethod: getConditionsEvaluationMethod,
             getConditionsExplanationMethod: getConditionsExplanationMethod,
+            getConditionsEvaluationEXP: getConditionsEvaluationEXP,
+            getModelsRoot: getModelsRoot,
+            PostModelId: PostModelId,
+            getExplainers: getExplainers,
+            getQueryImgTab: getQueryImgTab,
+            PostExplainerLibraries: PostExplainerLibraries
         };
         return service;
 
@@ -213,5 +219,74 @@
                 }
             });
         }
+
+        function getConditionsEvaluationEXP(x) {
+
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.loadExplanationExp(x);
+
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+        function getExplainers() {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.loadExplainers();
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+        function getModelsRoot() {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.loadModels();
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+        function PostModelId(ModelId, Quey, Image) {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.PostModelIdLoadModel(ModelId, Quey, Image);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+        function getQueryImgTab(IdModel, Quey_id) {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.GetQuery(IdModel, Quey_id);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+        function PostExplainerLibraries(Model, Params, Instance) {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.PostExplainers(Model, Params, Instance);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
     }
 })();

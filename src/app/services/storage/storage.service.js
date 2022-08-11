@@ -2,7 +2,7 @@ angular
     .module('app')
     .factory('storageService', storageService);
 
-storageService.$inject = ['$state', '$q', 'localStorageService', 'fileStorageService', '$http', 'editorService'];
+storageService.$inject = ['$state', '$q', 'localStorageService', 'fileStorageService', '$http'];
 
 function storageService($state, $q, localStorageService, fileStorageService, $http) {
     var storage = (fileStorageService.ok ? fileStorageService : localStorageService);
@@ -18,6 +18,12 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         removeAsync: removeAsync,
         loadEvaluation: loadEvaluation,
         loadExplanation: loadExplanation,
+        loadExplanationExp: loadExplanationExp,
+        loadModels: loadModels,
+        PostModelIdLoadModel: PostModelIdLoadModel,
+        loadExplainers: loadExplainers,
+        GetQuery: GetQuery,
+        PostExplainers: PostExplainers,
     };
     return service;
 
@@ -120,6 +126,189 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                 $http.get(httpAddresEvaluation).success(function(data) {
                     resolve(data);
                 });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+
+    function loadExplainers() {
+        //We set the server URL, make sure it's the one in your machine.
+        let server_url = AddresExplainers;
+        return $q(function(resolve, reject) {
+            try {
+                axios.get(server_url).then(function(response) {
+                    resolve(response.data);
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+
+    function loadExplanationExp(method) {
+        //We set the server URL, make sure it's the one in your machine.
+        let server_url = AddresExplanation;
+
+        //We set the method from which we want to take the params
+        let method_url = method;
+
+
+        return $q(function(resolve, reject) {
+            try {
+                axios.get(server_url + method_url).then(function(response) {
+                    resolve(response.data.params);
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    function loadModels() {
+        //We set the server URL, make sure it's the one in your machine.
+        let server_url = AddresModels;
+        return $q(function(resolve, reject) {
+            try {
+                axios.get(server_url).then(function(response) {
+                    resolve(response.data);
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    function PostModelIdLoadModel(ModelId, Quey, Image) {
+        //We set the server URL, make sure it's the one in your machine.
+        let server_url = AddresQuery;
+
+        var data = new FormData();
+        data.append('id', ModelId);
+
+        if (Quey != "") {
+            data.append('query', Quey);
+        }
+        if (Image != "") {
+            data.append("image", Image.files[0]);
+        }
+
+        var config = {
+            method: 'post',
+            url: server_url,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            data: data
+        };
+
+        return $q(function(resolve, reject) {
+            try {
+                axios(config)
+                    .then(function(response) {
+                        resolve(response.data);
+                    });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    function GetQuery(Id, QueyId) {
+        //We set the server URL, make sure it's the one in your machine.
+        var server_url = AddresQuery;
+
+        var url = server_url + "?query_id=" + QueyId + "&id=" + Id;
+
+        console.log(url);
+
+        return $q(function(resolve, reject) {
+            try {
+                axios.get(url, { responseType: "blob" })
+                    .then(function(response) {
+
+                        var reader = new window.FileReader();
+                        reader.readAsDataURL(response.data);
+                        reader.onload = function() {
+                            var imageDataUrl = reader.result;
+                            console.log(imageDataUrl);
+                            var newStr = imageDataUrl.slice(23)
+                            console.log(newStr);
+
+
+                            resolve(imageDataUrl);
+                            // imageElement.setAttribute("src", imageDataUrl);
+
+                        }
+                    });
+            } catch (e) {
+                reject(e);
+            }
+        });
+
+        /*
+        return $q(function(resolve, reject) {
+            try {
+                axios.get(url).then(function(response) {
+                    console.log(response.status);
+                    if (response.data.hasOwnProperty('query')) {
+                        resolve(response.data);
+                    } else {
+                        console.log(JSON.stringify(response.data));
+
+                        resolve(response.data);
+                    }
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });*/
+
+    }
+
+
+    function PostExplainers(Model, Params, Instance) {
+        //We set the server URL, make sure it's the one in your machine.
+        var server_url = AddresExplainerLibrariesGetIngJason + Instance;
+
+        console.log(Model);
+        // var instanceCounterfactuals = 
+        //var paramss = "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]"
+
+        var data = new FormData();
+        data.append('id', Model.id);
+
+        if (Model.hasOwnProperty('Query')) {
+            data.append('instance', Model.Query);
+        }
+        data.append('params', Params);
+
+        if (Model.hasOwnProperty('Img')) {
+            data.append('image', Model.Img);
+        }
+        data.append('url', "");
+
+        console.log(Model.id + "--" + Model.Query + "---" + Params);
+
+        var config = {
+            method: 'post',
+            url: server_url,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            data: data
+        };
+
+
+        return $q(function(resolve, reject) {
+            try {
+                axios(config)
+                    .then(function(response) {
+                        console.log(response);
+                        resolve(response.data);
+                    });
             } catch (e) {
                 reject(e);
             }

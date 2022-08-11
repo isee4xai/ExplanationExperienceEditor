@@ -26,10 +26,13 @@
 
         vm.UpdateProperties = UpdateProperties;
         vm.renameIntends = renameIntends;
+        vm.change = change;
+        vm.Run = Run;
 
         vm.node = null;
         vm.explanation = null;
         vm.evaluation = null;
+        vm.Explainers = null;
 
         vm.TitleSelect = null;
         vm.TitleName = null;
@@ -40,6 +43,14 @@
         vm.DataType = "Datatype";
         vm.AllCondition = [];
         vm.SelectTypeOfData = SelectTypeOfData;
+
+        vm.ArrayParams = [];
+        vm.JsonParams = {};
+        vm.TypeDataExp = "";
+        vm.IdModel = {
+            query_id: "",
+            id: ""
+        }
 
         _create();
         _activate();
@@ -75,6 +86,7 @@
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.explanation;
+                        _getArrayExplainers();
                         AddListAllProperties();
                         break;
                     case "Evaluation Method":
@@ -101,6 +113,35 @@
                 vm.original = false;
                 vm.block = false;
             }
+        }
+
+        function _getArrayExplainers() {
+            //Get name Explainers
+            projectModel.getExplainers()
+                .then(function(x) {
+                    vm.Explainers = x;
+                });
+
+        }
+
+        function Run() {
+            console.log(vm.IdModel);
+
+            var jsonParam = {};
+            for (var i = 0; i < vm.ArrayParams.length; i++) {
+                if (vm.ArrayParams[i].value != "") {
+                    jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
+                }
+            }
+
+            var params = JSON.stringify(jsonParam);
+            console.log(params);
+
+            projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
+                .then(function(x) {
+                    console.log(x);
+                });
+
         }
 
         function _getJsonProperties() {
@@ -230,21 +271,70 @@
         }
 
         function UpdateProperties(option) {
+
+            // quitar 
+            var a = option.substring(1);
+            const myArray = a.split("/");
+            vm.TypeDataExp = myArray[0];
+            vm.ArrayParams = [];
+            vm.ArrayParams = paramsExp(option);
+
+            // vm.JsonParams = paramsExp(option);
+
+
+
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
             var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
             //define the properties
-            vm.block = {
-                title: selecionado.value,
-                properties: tine.merge({}, selecionado.properties),
-                description: selecionado.description,
-                propertyExpl: selecionado.propertyExpl
-            };
+
+            if (selecionado != undefined) {
+                vm.block = {
+                    title: selecionado.value,
+                    properties: tine.merge({}, selecionado.properties),
+                    description: selecionado.description,
+                    propertyExpl: selecionado.propertyExpl
+                };
+            } else {
+                vm.block = {
+                    title: option,
+                    properties: tine.merge({}, vm.original.properties),
+                    description: vm.original.description
+                };
+            }
+
             update();
         }
 
-        function SelectTypeOfData(TypeData) {
 
-            console.log(TypeData);
+        function change() {
+            console.log(vm.ArrayParams);
+            /*
+            for (var i = 0; i < vm.ArrayParams.length; i++) {
+                var r = vm.ArrayParams[i];
+                console.log(r);
+            }*/
+        }
+
+
+        function paramsExp(option) {
+            var JsonParams = {}
+            var ArrayParamsGet = [];
+            projectModel.getConditionsEvaluationEXP(option)
+                .then(function(x) {
+                    for (const property in x) {
+                        // ArrayParamsGet.push(property);
+
+                        ArrayParamsGet.push({ "key": property, "value": "" });
+                        //console.log(`${property}: ${x[property]}`);
+                        // JsonParams[property] = "";
+                    }
+                });
+            return ArrayParamsGet;
+
+        }
+
+
+        function SelectTypeOfData(TypeData) {
             vm.block = {
                 title: vm.original.title,
                 properties: tine.merge({}, vm.original.properties),
@@ -252,9 +342,6 @@
                 VariableName: vm.original.VariableName,
             };
             update();
-            console.log(vm.block);
-
-            console.log(vm.original);
         }
 
 

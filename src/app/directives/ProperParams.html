@@ -1,0 +1,57 @@
+<div class="ProperParams" ng-controller="ProperParamsController as ProperParams">
+
+
+    <div class="form-group">
+        <div id="header">
+            <ul class="nav">
+                <li>
+                    <a ng-model="ProperParams.Models">{{ProperParams.modelsSelect}}</a>
+                    <ul>
+                        <li ng-repeat="Model in ProperParams.models" ng-click="ProperParams.SelectModel(Model)">
+                            <a>{{Model}}</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div id="header">
+            <ul class="nav">
+                <li>
+                    <a ng-model="ProperParams.TypeQuery">{{ProperParams.TypeQuerySelect}}</a>
+                    <ul>
+                        <li ng-repeat="type in ProperParams.TypeQuery" ng-click="ProperParams.SelectTypeData(type)">
+                            <a>{{type}}</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="form-group" ng-if="ProperParams.TypeQuerySelect == 'Tabular'">
+        <textarea name="Query" rows="4" class="form-control" ng-model="ProperParams.QueryText">
+        </textarea>
+    </div>
+
+    <div id="ddd" class="form-group" ng-if="ProperParams.TypeQuerySelect == 'File'">
+        <label for="btnSelecionar" id="labelSelecionar">Load File</label>
+        <input id="btnSelecionar" class="inputfile" type="file" accept="image/*" onchange="angular.element(this).scope().imageChange(this.files)">
+    </div>
+
+
+
+
+    <div class="form-group">
+        <button id="ButtonSave" type="button" ng-click="ProperParams.Save()">SAVE</button>
+    </div>
+
+
+
+
+</div>

@@ -55,6 +55,8 @@
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
+        vm.date = "version 08/11/22";
+
 
         vm.explanation = null;
         vm.evaluation = null;

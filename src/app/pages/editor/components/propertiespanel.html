@@ -19,8 +19,10 @@
                     <ul class="nav">
                         <li ng-if="propertiespanel.original.category != 'root'"><a ng-model="propertiespanel.block.title">{{propertiespanel.block.title}}</a>
                             <ul>
-                                <li ng-repeat="option in propertiespanel.TitleSelect" ng-click="propertiespanel.UpdateProperties(option)">
+                                <li ng-if="propertiespanel.original.name == 'Evaluation Method'" ng-repeat="option in propertiespanel.TitleSelect" ng-click="propertiespanel.UpdateProperties(option)">
                                     <a>{{option.value}}</a></li>
+                                <li ng-if="propertiespanel.original.name == 'Explanation Method'" ng-repeat="option in propertiespanel.Explainers" ng-click="propertiespanel.UpdateProperties(option)">
+                                    <a>{{option}}</a></li>
                             </ul>
                         </li>
                         <li ng-if="propertiespanel.original.category == 'root'">
@@ -68,6 +70,50 @@
                 <b3-key-table-Expl heading="Properties EXP" ng-model="propertiespanel.block.propertyExpl" class="no-border">
                 </b3-key-table-Expl>
             </div>
+
+            <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
+                <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.IdModel" class="no-border">
+                </b3-Proper-Params>
+            </div>
+
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <thead>
+                    <tr>
+                        <th colspan="3">
+                            <label class="control-label">PARAMS</label>
+                        </th>
+                    </tr>
+                </thead>
+            </div>
+
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <table class="table table-condensed keytable">
+                    <tbody>
+                        <tr ng-repeat="item in propertiespanel.ArrayParams">
+                            <td class="keyPropertiesTdParams">
+                                <input type="text" class="form-control" ng-model="item.key" disabled />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value" ng-change="propertiespanel.change()" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <button id="ButtonRun" type="button" ng-click="propertiespanel.Run()">Run</button>
+            </div>
+            <div ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <div class="form-group" ng-if="propertiespanel.TypeDataExp != 'Images'">
+                    <textarea name="json" rows="4" class="form-control">
+                </textarea>
+                </div>
+
+                <div id="DivImg" class="form-group" ng-if="propertiespanel.TypeDataExp == 'Images'">
+                    <img src="{{propertiespanel.Imagen}}" alt="Imagen">
+                </div>
+            </div>
+
 
         </form>
     </div>
