@@ -33,6 +33,13 @@ b3e.editor.ImportManager = function(editor) {
         root.title = data.Instance;
         root.description = data.description;
         root.properties = data.properties;
+        root.params = data.params;
+        root.Image = data.Image;
+        root.Json = data.Json;
+        root.idModel = data.idModel;
+        root.query = data.query;
+        root.query_id = data.query_id;
+        root.img = data.img;
         root.propertyExpl = data.Instance;
         root.DataType = data.DataType,
             root.VariableName = data.VariableName,
@@ -56,6 +63,13 @@ b3e.editor.ImportManager = function(editor) {
             block.title = spec.Instance;
             block.description = spec.description;
             block.properties = tine.merge({}, block.properties, spec.properties);
+            block.params = tine.merge({}, block.params, spec.params);
+            block.idModel = spec.idModel;
+            block.query = spec.query;
+            block.query_id = spec.query_id;
+            block.img = spec.img;
+            block.Image = spec.Image;
+            block.Json = spec.Json;
 
             //
             var propertiesExpl = {};
@@ -78,6 +92,10 @@ b3e.editor.ImportManager = function(editor) {
                     case "Instance":
                         break;
                     case "display":
+                        break;
+                    case "params":
+                        break;
+                    case "Image":
                         break;
                     default:
                         if (Array.isArray(spec[ArrayNameProperties[index]])) {

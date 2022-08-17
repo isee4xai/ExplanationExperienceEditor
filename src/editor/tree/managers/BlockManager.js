@@ -109,6 +109,8 @@ b3e.tree.BlockManager = function(editor, project, tree) {
     };
     this.update = function(block, template, merge) {
         var mustSave = !!template;
+        console.log(template);
+        console.log(block);
         var _oldValues = {
             name: block.name,
             title: block.title,
@@ -116,7 +118,14 @@ b3e.tree.BlockManager = function(editor, project, tree) {
             properties: block.properties,
             propertyExpl: block.propertyExpl,
             DataType: block.DataType,
-            VariableName: block.VariableName
+            VariableName: block.VariableName,
+            params: block.params,
+            idModel: block.idModel,
+            query: block.query,
+            query_id: block.query_id,
+            img: block.img,
+            Image: block.Image,
+            Json: block.Json
         };
 
         template = template || {};
@@ -156,6 +165,28 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         } else {
             block.VariableName = node.VariableName || block.VariableName;
         }
+        if (typeof template.params !== 'undefined') {
+            block.params = tine.merge({}, node.params, template.params);
+        } else {
+            block.params = tine.merge({}, node.params, block.params);
+        }
+        if (typeof template.ModelRoot !== 'undefined') {
+            block.ModelRoot = tine.merge({}, node.ModelRoot, template.ModelRoot);
+        } else {
+            block.ModelRoot = tine.merge({}, node.ModelRoot, block.ModelRoot);
+        }
+        if (typeof template.Image !== 'undefined') {
+            block.Image = template.Image;
+        } else {
+            block.Image = node.Image || block.Image;
+        }
+        if (typeof template.Json !== 'undefined') {
+            block.Json = template.Json;
+        } else {
+            block.Json = node.Json || block.Json;
+        }
+
+
         block._redraw();
 
         var _newValues = {
@@ -166,7 +197,15 @@ b3e.tree.BlockManager = function(editor, project, tree) {
             propertyExpl: block.propertyExpl,
             DataType: block.DataType,
             VariableName: block.VariableName,
+            params: block.params,
+            idModel: block.ModelRoot.idModel,
+            query: block.ModelRoot.query,
+            query_id: block.ModelRoot.query_id,
+            img: block.ModelRoot.img,
+            Image: block.Image,
+            Json: block.Json
         };
+
         // redraw connections linked to the entity
         if (block._inConnection) {
             block._inConnection._redraw();

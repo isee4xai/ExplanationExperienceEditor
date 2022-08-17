@@ -28,6 +28,8 @@
         vm.renameIntends = renameIntends;
         vm.change = change;
         vm.Run = Run;
+        vm.PopUpImg = PopUpImg;
+        vm.PopUpImgClose = PopUpImgClose;
 
         vm.node = null;
         vm.explanation = null;
@@ -47,10 +49,11 @@
         vm.ArrayParams = [];
         vm.JsonParams = {};
         vm.TypeDataExp = "";
-        vm.IdModel = {
-            query_id: "",
-            id: ""
-        }
+        vm.IdModel = {};
+
+
+        vm.Imagen = "";
+        vm.Json = {};
 
         _create();
         _activate();
@@ -60,6 +63,7 @@
 
         function _activate() {
             vm.TitleSelect = null;
+            vm.ArrayParams = [];
 
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
@@ -67,6 +71,35 @@
 
             if (s.length === 1) {
                 vm.original = s[0];
+                var ModelGet = {};
+
+                if (vm.original.hasOwnProperty("ModelRoot")) {
+                    ModelGet = {
+                        idModel: vm.original.ModelRoot.idModel,
+                        query_id: vm.original.ModelRoot.query_id
+                    };
+
+                    if (vm.original.ModelRoot.img != undefined) {
+                        ModelGet.img = vm.original.ModelRoot.img;
+                    } else {
+                        ModelGet.query = vm.original.ModelRoot.query;
+                    }
+                } else {
+                    ModelGet = {
+                        idModel: vm.original.idModel,
+                        query_id: vm.original.query_id
+                    };
+                    if (vm.original.img != undefined) {
+                        var file = new File([(vm.original.img)], "ImgModel.png", { type: "image/png" });
+                        ModelGet.img = file;
+                    } else {
+                        ModelGet.query = vm.original.query;
+                    }
+                }
+
+                console.log(ModelGet);
+                console.log(vm.original);
+
                 vm.block = {
                     title: vm.original.title,
                     description: vm.original.description,
@@ -74,7 +107,12 @@
                     propertyExpl: vm.original.propertyExpl,
                     DataType: vm.original.DataType,
                     VariableName: vm.original.VariableName,
+                    params: tine.merge({}, vm.original.params),
+                    ModelRoot: ModelGet,
+                    Image: vm.original.Image,
+                    Json: vm.original.Json
                 };
+                console.log(vm.block);
 
                 if (vm.evaluation == null && vm.explanation == null) {
                     _getJsonProperties();
@@ -86,6 +124,11 @@
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.explanation;
+                        if (vm.block.params) {
+                            for (const property in vm.block.params) {
+                                vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
+                            }
+                        }
                         _getArrayExplainers();
                         AddListAllProperties();
                         break;
@@ -104,6 +147,7 @@
                     case "Root":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
+                        vm.IdModel = vm.block.ModelRoot;
                         break;
                     default:
                         vm.TitleName = null;
@@ -113,6 +157,7 @@
                 vm.original = false;
                 vm.block = false;
             }
+
         }
 
         function _getArrayExplainers() {
@@ -125,7 +170,7 @@
         }
 
         function Run() {
-            console.log(vm.IdModel);
+            console.log(vm.block.ModelRoot);
 
             var jsonParam = {};
             for (var i = 0; i < vm.ArrayParams.length; i++) {
@@ -135,11 +180,14 @@
             }
 
             var params = JSON.stringify(jsonParam);
-            console.log(params);
 
             projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
                 .then(function(x) {
-                    console.log(x);
+                    if (x.hasOwnProperty('plot_png')) {
+                        vm.block.Image = x.plot_png;
+                    } else {
+                        vm.block.Json = JSON.stringify(x);
+                    }
                 });
 
         }
@@ -210,7 +258,8 @@
                     vm.original.title == "Explanation Method"));
 
             //If it is not in AllPropertis we add it
-            if (Exist == -1) {
+            console.log(vm.TitleSelect);
+            if (Exist == -1 && vm.hasOwnProperty("TitleSelect") && vm.TitleSelect != undefined) {
                 vm.TitleSelect.forEach(element => {
                     var a = new Object();
                     var propertiesExplanation = PropertiesExplanation(element);
@@ -238,6 +287,7 @@
                 });
             }
         }
+
 
         function PropertiesExplanation(option) {
             var propertiesExpl = {};
@@ -271,16 +321,22 @@
         }
 
         function UpdateProperties(option) {
+            var ArrayParamsss = [];
+            if (vm.original.name == "Explanation Method") {
+                var TitleSelect = option.substring(1);
+                const myArray = TitleSelect.split("/");
+                vm.TypeDataExp = myArray[0];
+                paramsExp(option);
 
-            // quitar 
-            var a = option.substring(1);
-            const myArray = a.split("/");
-            vm.TypeDataExp = myArray[0];
-            vm.ArrayParams = [];
-            vm.ArrayParams = paramsExp(option);
+                /*  ArrayParamsss = paramsExp(option);
+                  console.log(ArrayParamsss);
 
-            // vm.JsonParams = paramsExp(option);
-
+                  var listaParams = [];
+                  for (const property in ArrayParamsss) {
+                      listaParams.push({ "key": property, "value": "", fixed: false });
+                  }
+                  console.log(listaParams);*/
+            }
 
 
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
@@ -307,31 +363,60 @@
 
 
         function change() {
-            console.log(vm.ArrayParams);
-            /*
+            for (var key in vm.block.params) {
+                if (vm.block.params.hasOwnProperty(key)) {
+                    delete vm.block.params[key];
+                }
+            }
+            var jsonParam = {};
             for (var i = 0; i < vm.ArrayParams.length; i++) {
                 var r = vm.ArrayParams[i];
-                console.log(r);
-            }*/
+                if (!r.key) continue;
+
+                var key = r.key
+
+                //if no me los guarda al selecionar un expla
+                //    if (vm.ArrayParams[i].value != "") {
+                jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
+                //    }
+            }
+            vm.block.params = jsonParam;
+            update();
+        }
+
+        function PopUpImg(ImagenSrc) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("modal-img");
+
+            modal.style.display = "block";
+            modalImg.src = ImagenSrc;
+        }
+
+        function PopUpImgClose() {
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
         }
 
 
         function paramsExp(option) {
-            var JsonParams = {}
-            var ArrayParamsGet = [];
             projectModel.getConditionsEvaluationEXP(option)
                 .then(function(x) {
+                    vm.ArrayParams = [];
                     for (const property in x) {
-                        // ArrayParamsGet.push(property);
-
-                        ArrayParamsGet.push({ "key": property, "value": "" });
-                        //console.log(`${property}: ${x[property]}`);
-                        // JsonParams[property] = "";
+                        vm.ArrayParams.push({ "key": property, "value": "", fixed: false });
                     }
+                    change();
                 });
-            return ArrayParamsGet;
+
 
         }
+
+
 
 
         function SelectTypeOfData(TypeData) {
@@ -346,10 +431,13 @@
 
 
         function update() {
+
             //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
             t.blocks.update(vm.original, vm.block);
+
+            console.log(vm.original);
 
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
             //returns the position in the AllPropertis

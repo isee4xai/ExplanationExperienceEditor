@@ -31,17 +31,21 @@
 
             var variable = attrs.ngModel;
             scope.$watch(variable, function(model) {
-                scope.ProperParams.model = model;
-                // scope.ProperParams.reset(model);
+                //scope.ProperParams.model = model;
+                scope.ProperParams.reset(model);
+                //    scope.ProperParams.GetModels(model);
+                scope.ProperParams.Imprimir(model);
             });
+
+
 
         }
 
     }
 
-    ProperParamsController.$inject = ['$scope', 'dialogService', 'projectModel'];
+    ProperParamsController.$inject = ['$scope', 'projectModel'];
 
-    function ProperParamsController($scope, dialogService, projectModel) {
+    function ProperParamsController($scope, projectModel) {
         // HEAD //
         var vm = this;
         vm._onChange = null;
@@ -55,10 +59,12 @@
         vm.SelectModel = SelectModel;
         vm.GetModels = GetModels;
         vm.getQueryData = getQueryData;
-        vm.models = {};
+        vm.models = [];
         vm.modelsSelect = "Model";
         vm.keyModel = "";
         vm.IdQuery = "";
+        vm.reset = reset;
+        vm.Imprimir = Imprimir;
 
         _activate();
 
@@ -67,92 +73,115 @@
             //get all models
             GetModels();
 
+            console.log(vm.model);
         }
 
-        $scope.imageChange = (e) => {
-            var FileInput = document.getElementById("labelSelecionar");
-            if (e.length > 0) {
-                FileInput.innerHTML = 'Loaded';
-                FileInput.style.backgroundColor = "rgb(102,178,255)";
-            } else {
-                FileInput.innerHTML = 'Load File';
-                FileInput.style.backgroundColor = "rgb(44,62,80)";
+        function Imprimir(model) {
+            if (model) {
+                if (model.hasOwnProperty('query') && model.query != undefined) {
+                    vm.TypeQuerySelect = 'Tabular';
+                    vm.QueryText = model.query;
+                } else if (model.hasOwnProperty('img') && model.img != undefined) {
+                    vm.TypeQuerySelect = 'File';
+                    vm.QueryText = model.img;
+                }
+                _activate();
             }
         }
 
 
-
-
-        function SelectModel(data) {
-            vm.modelsSelect = data;
-            vm.keyModel = Object.keys(vm.models).find(key => vm.models[key] === data);
-            console.log(vm.keyModel);
+        function reset(model) {
+            vm.rows = [];
+            vm.model = model;
+            _activate();
         }
 
+        function SelectModel(data) {
+
+            vm.modelsSelect = data;
+            vm.model.idModel = Object.keys(vm.models).find(key => vm.models[key] === data);
+            if (vm._onChange) {
+                vm._onChange($scope);
+            }
+        }
+
+
         function SelectTypeData(data) {
+            console.log(data);
             switch (data) {
                 case "Tabular":
-
+                    delete vm.model.img;
+                    vm.model.query = "";
                     break;
                 case "File":
-                    vm.QueryText = "";
+                    delete vm.model.query;
+                    vm.model.img = "";
                     break;
                 default:
                     break;
             }
+            console.log(vm.model);
             vm.TypeQuerySelect = data;
+
+            /* if (vm._onChange) {
+                 vm._onChange($scope);
+             }*/
         }
 
         function Save() {
-            vm.model.id = vm.keyModel;
+            // vm.model.id = vm.keyModel;
             if (vm.TypeQuerySelect != "Type Data") {
                 var imagefile = "";
+                var NameImage = "";
+                var imagefileHtml = "";
+
                 if (vm.TypeQuerySelect == 'File') {
-                    imagefile = document.querySelector('#btnSelecionar');
-                    console.log(imagefile.files);
-                    console.log(imagefile.files[0]);
+                    imagefileHtml = document.querySelector('#btnSelecionar');
+                    console.log(imagefileHtml.files[0]);
+                    if (imagefileHtml != "") {
+                        imagefile = imagefileHtml.files[0];
+                        NameImage = imagefileHtml.files[0].name;
+                    } else {
+                        imagefile = vm.model.img;
+                        NameImage = vm.model.img.name;
+                    }
+
                 }
-                projectModel.PostModelId(vm.keyModel, vm.QueryText, imagefile)
+                console.log("Mandar server OOscar");
+                console.log(vm.model.idModel + "+++" + vm.QueryText + "+++" + imagefile);
+                console.log("devolver server OOscar");
+                projectModel.PostModelId(vm.model.idModel, vm.QueryText, imagefile)
                     .then(function(x) {
+                        console.log(x);
                         vm.IdQuery = x.substring(21, 31);
-                        //   console.log(vm.IdModel);
                         vm.model.query_id = vm.IdQuery;
-                        getQueryData(vm.IdQuery, vm.keyModel);
+                        getQueryData(vm.IdQuery, vm.model.idModel, NameImage);
                     });
             }
         }
 
-        function getQueryData(QueryId, ModelId) {
 
-            console.log(QueryId + "//" + ModelId);
 
-            projectModel.getQueryImgTab(ModelId, QueryId)
+        function getQueryData(QueryId, ModelId, imagefile) {
+
+            console.log("etroooooo");
+            projectModel.getQueryImgTab(ModelId, QueryId, imagefile)
                 .then(function(x) {
+                    console.log(x);
                     if (x.hasOwnProperty('query')) {
-                        vm.model.Query = x.query;
+                        delete vm.model.img;
+                        vm.model.query = x.query;
                     } else {
-                        var elemento = document.getElementById("ddd");
+                        delete vm.model.Query;
+                        vm.model.img = x;
+                    }
 
-                        var image = new Image();
-                        image.src = x;
-                        image.style.visibility = 'hidden';
-                        elemento.appendChild(image);
-
-                        console.log(image.src);
-
-                        const img = x;
-                        var input = document.createElement("input");
-                        input.id = "InputImagen";
-                        input.value = img;
-
-                        var imagefile = document.querySelector('#InputImagen');
-                        console.log(img);
-                        console.log(imagefile.files);
-                        console.log(imagefile.files[0]);
-
-                        vm.model.Img = imagefile.files[0];
+                    console.log(vm.model);
+                    if (vm._onChange) {
+                        vm._onChange($scope);
                     }
                 });
+
         }
 
 
@@ -161,10 +190,12 @@
             projectModel.getModelsRoot()
                 .then(function(x) {
                     vm.models = x;
+                    if (vm.model.hasOwnProperty('idModel') && vm.model.idModel != undefined) {
+
+                        vm.modelsSelect = vm.models[vm.model.idModel];
+                    }
                 });
         }
-
-
     }
 
 })();

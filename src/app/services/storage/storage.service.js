@@ -135,7 +135,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function loadExplainers() {
         //We set the server URL, make sure it's the one in your machine.
-        let server_url = AddresExplainers;
+        var server_url = AddresExplainers;
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url).then(function(response) {
@@ -148,14 +148,20 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
 
-    function loadExplanationExp(method) {
+    async function loadExplanationExp(method) {
         //We set the server URL, make sure it's the one in your machine.
-        let server_url = AddresExplanation;
-
+        var server_url = AddresExplanation;
         //We set the method from which we want to take the params
-        let method_url = method;
+        var method_url = method;
+        var resp;
+        try {
+            resp = await axios.get(server_url + method_url);
+        } catch (error) {
+            console.log(error);
+        }
 
-
+        return resp.data.params;
+        /*
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url + method_url).then(function(response) {
@@ -165,11 +171,12 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                 reject(e);
             }
         });
+        */
     }
 
     function loadModels() {
         //We set the server URL, make sure it's the one in your machine.
-        let server_url = AddresModels;
+        var server_url = AddresModels;
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url).then(function(response) {
@@ -183,7 +190,9 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function PostModelIdLoadModel(ModelId, Quey, Image) {
         //We set the server URL, make sure it's the one in your machine.
-        let server_url = AddresQuery;
+        var server_url = AddresQuery;
+
+        console.log(ModelId + "---" + Quey + "-----+" + Image);
 
         var data = new FormData();
         data.append('id', ModelId);
@@ -192,7 +201,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             data.append('query', Quey);
         }
         if (Image != "") {
-            data.append("image", Image.files[0]);
+            data.append("image", Image);
         }
 
         var config = {
@@ -216,56 +225,36 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         });
     }
 
-    function GetQuery(Id, QueyId) {
+    function GetQuery(Id, QueyId, imagefile) {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = AddresQuery;
 
         var url = server_url + "?query_id=" + QueyId + "&id=" + Id;
 
-        console.log(url);
-
         return $q(function(resolve, reject) {
             try {
-                axios.get(url, { responseType: "blob" })
-                    .then(function(response) {
-
-                        var reader = new window.FileReader();
-                        reader.readAsDataURL(response.data);
-                        reader.onload = function() {
-                            var imageDataUrl = reader.result;
-                            console.log(imageDataUrl);
-                            var newStr = imageDataUrl.slice(23)
-                            console.log(newStr);
-
-
-                            resolve(imageDataUrl);
-                            // imageElement.setAttribute("src", imageDataUrl);
-
-                        }
+                if (imagefile == "") {
+                    axios.get(url).then(function(response) {
+                        resolve(response.data);
                     });
+                } else {
+                    axios.get(url, { responseType: "blob" })
+                        .then(function(response) {
+
+                            var reader = new window.FileReader();
+                            reader.readAsDataURL(response.data);
+                            var file = new File([response.data], imagefile, { type: "image/png" });
+
+                            console.log(file);
+
+                            resolve(file);
+                        });
+                }
+
             } catch (e) {
                 reject(e);
             }
         });
-
-        /*
-        return $q(function(resolve, reject) {
-            try {
-                axios.get(url).then(function(response) {
-                    console.log(response.status);
-                    if (response.data.hasOwnProperty('query')) {
-                        resolve(response.data);
-                    } else {
-                        console.log(JSON.stringify(response.data));
-
-                        resolve(response.data);
-                    }
-                });
-            } catch (e) {
-                reject(e);
-            }
-        });*/
-
     }
 
 
@@ -273,24 +262,21 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         //We set the server URL, make sure it's the one in your machine.
         var server_url = AddresExplainerLibrariesGetIngJason + Instance;
 
+        console.log("servicio inicio  eeeeee");
         console.log(Model);
-        // var instanceCounterfactuals = 
-        //var paramss = "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]"
 
         var data = new FormData();
-        data.append('id', Model.id);
+        data.append('id', Model.idModel);
 
-        if (Model.hasOwnProperty('Query')) {
-            data.append('instance', Model.Query);
+        if (Model.hasOwnProperty('query')) {
+            data.append('instance', Model.query);
         }
         data.append('params', Params);
 
-        if (Model.hasOwnProperty('Img')) {
-            data.append('image', Model.Img);
+        if (Model.hasOwnProperty('img')) {
+            data.append('image', Model.img);
         }
         data.append('url', "");
-
-        console.log(Model.id + "--" + Model.Query + "---" + Params);
 
         var config = {
             method: 'post',
@@ -301,6 +287,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             data: data
         };
 
+        console.log("servicio Fin  eeeeee");
 
         return $q(function(resolve, reject) {
             try {

@@ -266,10 +266,10 @@
             });
         }
 
-        function getQueryImgTab(IdModel, Quey_id) {
+        function getQueryImgTab(IdModel, Quey_id, imagefile) {
             return $q(function(resolve, reject) {
                 try {
-                    var data = storageService.GetQuery(IdModel, Quey_id);
+                    var data = storageService.GetQuery(IdModel, Quey_id, imagefile);
                     resolve(data);
                 } catch (e) {
                     reject(e);

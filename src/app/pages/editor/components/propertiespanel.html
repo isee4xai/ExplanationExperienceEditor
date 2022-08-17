@@ -25,7 +25,8 @@
                                     <a>{{option}}</a></li>
                             </ul>
                         </li>
-                        <li ng-if="propertiespanel.original.category == 'root'">
+                        <li ng-if="propertiespanel.original.category == 'root'" ng-click="propertiespanel.UpdateProperties(option)">
+                            <!--borrar-->
                             <a ng-model="propertiespanel.block.title" ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}</a>
                         </li>
                     </ul>
@@ -72,7 +73,10 @@
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
-                <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.IdModel" class="no-border">
+                <!--  <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.IdModel" class="no-border">
+                </b3-Proper-Params>-->
+
+                <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.block.ModelRoot" ng-change="propertiespanel.update()" class="no-border">
                 </b3-Proper-Params>
             </div>
 
@@ -91,7 +95,7 @@
                     <tbody>
                         <tr ng-repeat="item in propertiespanel.ArrayParams">
                             <td class="keyPropertiesTdParams">
-                                <input type="text" class="form-control" ng-model="item.key" disabled />
+                                <input type="text" class="form-control" value="{{item.key}}" ng-disabled="item.fixed" ng-model="item.key" disabled />
                             </td>
                             <td>
                                 <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value" ng-change="propertiespanel.change()" />
@@ -103,15 +107,25 @@
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <button id="ButtonRun" type="button" ng-click="propertiespanel.Run()">Run</button>
             </div>
+
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <div class="form-group" ng-if="propertiespanel.TypeDataExp != 'Images'">
-                    <textarea name="json" rows="4" class="form-control">
+                <div class="form-group" ng-if="propertiespanel.block.Json != undefined">
+                    <textarea name="json" rows="4" class="form-control" ng-model="propertiespanel.block.Json" disabled>
                 </textarea>
                 </div>
 
-                <div id="DivImg" class="form-group" ng-if="propertiespanel.TypeDataExp == 'Images'">
-                    <img src="{{propertiespanel.Imagen}}" alt="Imagen">
+                <div id="DivImg" class="form-group" ng-if="propertiespanel.block.Image != undefined">
+                    <img src="{{propertiespanel.block.Image}}" alt="Imagen" ng-click="propertiespanel.PopUpImg(propertiespanel.block.Image)">
                 </div>
+            </div>
+
+            <div id="myModal" class="modal">
+                <div id="contenedor" class="p-8 bg-light border">
+                    <img id="modal-img" class="modal-content">
+                    <span id="closeImg" class="close" ng-click="propertiespanel.PopUpImgClose()">&times;</span>
+                </div>
+
+                <div id="caption"></div>
             </div>
 
 
