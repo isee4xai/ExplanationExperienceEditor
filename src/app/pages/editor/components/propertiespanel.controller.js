@@ -97,8 +97,6 @@
                     }
                 }
 
-                console.log(ModelGet);
-                console.log(vm.original);
 
                 vm.block = {
                     title: vm.original.title,
@@ -112,7 +110,6 @@
                     Image: vm.original.Image,
                     Json: vm.original.Json
                 };
-                console.log(vm.block);
 
                 if (vm.evaluation == null && vm.explanation == null) {
                     _getJsonProperties();
@@ -170,7 +167,6 @@
         }
 
         function Run() {
-            console.log(vm.block.ModelRoot);
 
             var jsonParam = {};
             for (var i = 0; i < vm.ArrayParams.length; i++) {
@@ -258,7 +254,6 @@
                     vm.original.title == "Explanation Method"));
 
             //If it is not in AllPropertis we add it
-            console.log(vm.TitleSelect);
             if (Exist == -1 && vm.hasOwnProperty("TitleSelect") && vm.TitleSelect != undefined) {
                 vm.TitleSelect.forEach(element => {
                     var a = new Object();
@@ -328,14 +323,6 @@
                 vm.TypeDataExp = myArray[0];
                 paramsExp(option);
 
-                /*  ArrayParamsss = paramsExp(option);
-                  console.log(ArrayParamsss);
-
-                  var listaParams = [];
-                  for (const property in ArrayParamsss) {
-                      listaParams.push({ "key": property, "value": "", fixed: false });
-                  }
-                  console.log(listaParams);*/
             }
 
 
@@ -436,8 +423,6 @@
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
             t.blocks.update(vm.original, vm.block);
-
-            console.log(vm.original);
 
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
             //returns the position in the AllPropertis

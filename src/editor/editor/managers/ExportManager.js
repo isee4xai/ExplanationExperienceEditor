@@ -192,25 +192,24 @@ b3e.editor.ExportManager = function(editor) {
 
         var data = [];
         project.nodes.each(function(node) {
-
             if (!node.isDefault) {
                 data.push({
                     version: b3e.VERSION,
                     scope: 'node',
                     Concept: node.name,
                     category: node.category,
-                    Instance: node.title,
+                    title: node.title,
                     description: node.description,
                     properties: node.properties,
-                    propertyExpl: node.propertyExpl,
-                    DataType: node.DataType,
-                    VariableName: node.VariableName,
-                    img: node.img,
-                    params: node.params
-                        /*,
-                        query: node.query,
-                        query_id: node.query_id,
-                        idModel: node.idModel*/
+                    //propertyExpl: node.propertyExpl,
+                    //  DataType: node.DataType,
+                    //    VariableName: node.VariableName,
+                    //      img: node.img,
+                    //    params: node.params
+                    /*,
+                       query: node.query,
+                       query_id: node.query_id,
+                       idModel: node.idModel*/
                 });
             }
         });

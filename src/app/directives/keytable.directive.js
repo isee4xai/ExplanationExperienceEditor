@@ -108,7 +108,6 @@
                 if (!isNaN(value) && value !== '') {
                     value = parseFloat(value);
                 }
-                console.log(r.key);
                 vm.model.properties[r.key] = value;
 
 

@@ -55,10 +55,7 @@
                     title: _getTitle(node),
                     isDefault: node.isDefault
                 });
-                /*
-                console.log(node);
-                console.log(list);
-                */
+
             });
 
             var selected = p.trees.getSelected();
@@ -103,7 +100,11 @@
 
         function _getTitle(node) {
             var title = node.title || node.name;
-            title = title.replace(/(<\w+>)/g, function(match, key) { return '@'; });
+            try {
+                title = title.replace(/(<\w+>)/g, function(match, key) { return '@'; });
+            } catch (error) {
+                console.log(error);
+            }
             return title;
         }
 

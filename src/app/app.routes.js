@@ -16,6 +16,24 @@ angular.module('app')
                 controller: 'EditorController',
                 controllerAs: 'editor',
             })
+            .state('id.editnode', {
+                url: "/node/:name",
+                templateUrl: 'pages/id/modals/editnode.html',
+                controller: 'EditNodeController',
+                controllerAs: 'editnode',
+            })
+            .state('id.export', {
+                url: "/export/:type/:format",
+                templateUrl: 'pages/editor/modals/export.html',
+                controller: 'ExportController',
+                controllerAs: 'export',
+            })
+            .state('id.import', {
+                url: "/import/:type/:format",
+                templateUrl: 'pages/editor/modals/import.html',
+                controller: 'ImportController',
+                controllerAs: 'import',
+            })
             .state('id.error', {
                 url: "/error",
                 templateUrl: 'pages/error/error.html',

@@ -28,9 +28,9 @@ b3e.editor.ImportManager = function(editor) {
         tree.scaleX = display.camera_z || 1;
         tree.scaleY = display.camera_z || 1;
         var treeNode = project.nodes.get(tree._id);
-        treeNode.title = data.Instance;
+        treeNode.title = data.Instance || data.title;
 
-        root.title = data.Instance;
+        root.title = data.Instance || data.title;
         root.description = data.description;
         root.properties = data.properties;
         root.params = data.params;
@@ -41,9 +41,9 @@ b3e.editor.ImportManager = function(editor) {
         root.query_id = data.query_id;
         root.img = data.img;
         root.propertyExpl = data.Instance;
-        root.DataType = data.DataType,
-            root.VariableName = data.VariableName,
-            root.x = display.x || 0;
+        root.DataType = data.DataType;
+        root.VariableName = data.VariableName;
+        root.x = display.x || 0;
         root.y = display.y || 0;
 
         // Custom nodes
@@ -58,9 +58,9 @@ b3e.editor.ImportManager = function(editor) {
             var block = null;
             display = spec.display || {};
 
-            block = tree.blocks.add(spec.Concept, spec.display.x, spec.display.y);
+            block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
             block.id = spec.id;
-            block.title = spec.Instance;
+            block.title = spec.Instance || spec.title;
             block.description = spec.description;
             block.properties = tine.merge({}, block.properties, spec.properties);
             block.params = tine.merge({}, block.params, spec.params);
@@ -154,7 +154,7 @@ b3e.editor.ImportManager = function(editor) {
                 tree.connections.add(inBlock, outBlock);
             }
 
-            /*
+
             var children = null;
             if (inBlock.category === 'composite' && spec.children) {
                 children = spec.children;
@@ -169,7 +169,7 @@ b3e.editor.ImportManager = function(editor) {
                     tree.connections.add(inBlock, outBlock);
                 }
             }
-            */
+
         }
 
         // Finish

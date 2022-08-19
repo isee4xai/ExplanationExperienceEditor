@@ -60,6 +60,8 @@
 
         vm.explanation = null;
         vm.evaluation = null;
+        vm.url = window.location.href;
+        vm.isEditor;
 
         _create();
         _activate();
@@ -69,6 +71,9 @@
             if (vm.evaluation == null && vm.explanation == null) {
                 _getJsonProperties();
             }
+
+            vm.isEditor = vm.url.includes("id");
+
         }
 
         function _shortcut_projectclose(f) {
@@ -131,32 +136,57 @@
         }
 
         function onExportProjectJson() {
-            $state.go('editor.export', { type: 'project', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.export', { type: 'project', format: 'json' });
+            } else {
+                $state.go('editor.export', { type: 'project', format: 'json' });
+            }
             return false;
         }
 
         function onExportTreeJson() {
-            $state.go('editor.export', { type: 'tree', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.export', { type: 'tree', format: 'json' });
+            } else {
+                $state.go('editor.export', { type: 'tree', format: 'json' });
+            }
             return false;
         }
 
         function onExportNodesJson() {
-            $state.go('editor.export', { type: 'nodes', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.export', { type: 'nodes', format: 'json' });
+            } else {
+                $state.go('editor.export', { type: 'nodes', format: 'json' });
+            }
             return false;
         }
 
         function onImportProjectJson() {
-            $state.go('editor.import', { type: 'project', format: 'json' });
+
+            if (vm.isEditor) {
+                $state.go('id.import', { type: 'project', format: 'json' });
+            } else {
+                $state.go('editor.import', { type: 'project', format: 'json' });
+            }
             return false;
         }
 
         function onImportTreeJson() {
-            $state.go('editor.import', { type: 'tree', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.import', { type: 'tree', format: 'json' });
+            } else {
+                $state.go('editor.import', { type: 'tree', format: 'json' });
+            }
             return false;
         }
 
         function onImportNodesJson() {
-            $state.go('editor.import', { type: 'nodes', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.import', { type: 'nodes', format: 'json' });
+            } else {
+                $state.go('editor.import', { type: 'nodes', format: 'json' });
+            }
             return false;
         }
 

@@ -40,6 +40,8 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             var dateTime = date + ' ' + time;
             data.date = dateTime;
+
+            console.log(data);
             //save project in json server 
             $http.get(httpAddresProjectsPath + path).success(function(dataJson) {
                 //update data on the server json if it already exists otherwise it is saved as a new json with a new id
@@ -192,8 +194,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         //We set the server URL, make sure it's the one in your machine.
         var server_url = AddresQuery;
 
-        console.log(ModelId + "---" + Quey + "-----+" + Image);
-
         var data = new FormData();
         data.append('id', ModelId);
 
@@ -240,13 +240,9 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                 } else {
                     axios.get(url, { responseType: "blob" })
                         .then(function(response) {
-
                             var reader = new window.FileReader();
                             reader.readAsDataURL(response.data);
                             var file = new File([response.data], imagefile, { type: "image/png" });
-
-                            console.log(file);
-
                             resolve(file);
                         });
                 }
@@ -261,9 +257,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     function PostExplainers(Model, Params, Instance) {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = AddresExplainerLibrariesGetIngJason + Instance;
-
-        console.log("servicio inicio  eeeeee");
-        console.log(Model);
 
         var data = new FormData();
         data.append('id', Model.idModel);
@@ -287,13 +280,10 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             data: data
         };
 
-        console.log("servicio Fin  eeeeee");
-
         return $q(function(resolve, reject) {
             try {
                 axios(config)
                     .then(function(response) {
-                        console.log(response);
                         resolve(response.data);
                     });
             } catch (e) {

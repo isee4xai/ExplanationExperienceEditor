@@ -73,7 +73,6 @@
             //get all models
             GetModels();
 
-            console.log(vm.model);
         }
 
         function Imprimir(model) {
@@ -107,7 +106,6 @@
 
 
         function SelectTypeData(data) {
-            console.log(data);
             switch (data) {
                 case "Tabular":
                     delete vm.model.img;
@@ -120,7 +118,6 @@
                 default:
                     break;
             }
-            console.log(vm.model);
             vm.TypeQuerySelect = data;
 
             /* if (vm._onChange) {
@@ -137,7 +134,6 @@
 
                 if (vm.TypeQuerySelect == 'File') {
                     imagefileHtml = document.querySelector('#btnSelecionar');
-                    console.log(imagefileHtml.files[0]);
                     if (imagefileHtml != "") {
                         imagefile = imagefileHtml.files[0];
                         NameImage = imagefileHtml.files[0].name;
@@ -147,12 +143,8 @@
                     }
 
                 }
-                console.log("Mandar server OOscar");
-                console.log(vm.model.idModel + "+++" + vm.QueryText + "+++" + imagefile);
-                console.log("devolver server OOscar");
                 projectModel.PostModelId(vm.model.idModel, vm.QueryText, imagefile)
                     .then(function(x) {
-                        console.log(x);
                         vm.IdQuery = x.substring(21, 31);
                         vm.model.query_id = vm.IdQuery;
                         getQueryData(vm.IdQuery, vm.model.idModel, NameImage);
@@ -164,10 +156,8 @@
 
         function getQueryData(QueryId, ModelId, imagefile) {
 
-            console.log("etroooooo");
             projectModel.getQueryImgTab(ModelId, QueryId, imagefile)
                 .then(function(x) {
-                    console.log(x);
                     if (x.hasOwnProperty('query')) {
                         delete vm.model.img;
                         vm.model.query = x.query;
@@ -176,7 +166,6 @@
                         vm.model.img = x;
                     }
 
-                    console.log(vm.model);
                     if (vm._onChange) {
                         vm._onChange($scope);
                     }
