@@ -55,9 +55,13 @@
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
+        vm.date = "version 08/11/22";
+
 
         vm.explanation = null;
         vm.evaluation = null;
+        vm.url = window.location.href;
+        vm.isEditor = false;
 
         _create();
         _activate();
@@ -67,6 +71,9 @@
             if (vm.evaluation == null && vm.explanation == null) {
                 _getJsonProperties();
             }
+
+            vm.isEditor = vm.url.includes("id");
+
         }
 
         function _shortcut_projectclose(f) {
@@ -129,32 +136,57 @@
         }
 
         function onExportProjectJson() {
-            $state.go('editor.export', { type: 'project', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.export', { type: 'project', format: 'json' });
+            } else {
+                $state.go('editor.export', { type: 'project', format: 'json' });
+            }
             return false;
         }
 
         function onExportTreeJson() {
-            $state.go('editor.export', { type: 'tree', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.export', { type: 'tree', format: 'json' });
+            } else {
+                $state.go('editor.export', { type: 'tree', format: 'json' });
+            }
             return false;
         }
 
         function onExportNodesJson() {
-            $state.go('editor.export', { type: 'nodes', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.export', { type: 'nodes', format: 'json' });
+            } else {
+                $state.go('editor.export', { type: 'nodes', format: 'json' });
+            }
             return false;
         }
 
         function onImportProjectJson() {
-            $state.go('editor.import', { type: 'project', format: 'json' });
+
+            if (vm.isEditor) {
+                $state.go('id.import', { type: 'project', format: 'json' });
+            } else {
+                $state.go('editor.import', { type: 'project', format: 'json' });
+            }
             return false;
         }
 
         function onImportTreeJson() {
-            $state.go('editor.import', { type: 'tree', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.import', { type: 'tree', format: 'json' });
+            } else {
+                $state.go('editor.import', { type: 'tree', format: 'json' });
+            }
             return false;
         }
 
         function onImportNodesJson() {
-            $state.go('editor.import', { type: 'nodes', format: 'json' });
+            if (vm.isEditor) {
+                $state.go('id.import', { type: 'nodes', format: 'json' });
+            } else {
+                $state.go('editor.import', { type: 'nodes', format: 'json' });
+            }
             return false;
         }
 
@@ -300,7 +332,7 @@
         function RandomGenerate(DataInput, IndexSucces) {
 
             if (DataInput === undefined) {
-                DataInput = { MinSlibings: 0, MaxSlibings: 0 }
+                DataInput = { MinSlibings: 0, MaxSlibings: 0 };
             }
 
             var MinSlibings = DataInput.MinSlibings;
@@ -320,26 +352,29 @@
                 tree.connections.add(blockRoot[0], blockComposites);
                 //we add in a array the Composites that did not finish their journey
                 vm.ArrayComposites.push(blockComposites);
-                for (let index = 0; index < depth; index++) {
+                for (var index = 0; index < depth; index++) {
                     //travel all the composites that are unfinished to continue them
                     vm.ArrayComposites.forEach(element => {
 
                         var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
-                        for (let x = 0; x < NumeroAle; x++) {
-                            var y = getRndInteger(0, 1);
+                        for (var x = 0; x < NumeroAle; x++) {
                             var p = getRndInteger(0, 1);
                             //create a method evaluation or explanation
+                            // make sure they always have an explainer
+
                             var BlockConditions = tree.blocks.add(vm.NameNodes[p], point.x, point.y);
                             tree.connections.add(element, BlockConditions);
                             //define properties a method of evaluation or explanation
-                            BlockConditions = PropertieSelect(p, y);
+                            BlockConditions = PropertieSelect(p);
+
+
                             var s = tree.blocks.getSelected();
                             tree.blocks.update(s[0], BlockConditions);
                         }
                         if ((depth - index) != 1) {
                             var NumeroAle1 = getRndInteger(1, subtrees);
                             var SubBlockComposites = null;
-                            for (let x = 0; x < NumeroAle1; x++) {
+                            for (var x = 0; x < NumeroAle1; x++) {
                                 var y = getRndInteger(0, 1);
                                 //create a Compositites
                                 SubBlockComposites = tree.blocks.add(vm.NameCompositites[y], point.x, point.y);
@@ -388,20 +423,23 @@
             }
         }
 
-        function PropertieSelect(IndexNameNodeNodes, IndexPropertie) {
+        function PropertieSelect(IndexNameNodeNodes) {
             var BlockCondition;
             switch (vm.NameNodes[IndexNameNodeNodes]) {
                 case "Explanation Method":
-                    BlockCondition = PropertiesCreate(vm.explanation[IndexPropertie]);
+                    var indexExplanation = getRndInteger(0, vm.explanation.length - 1);
+                    BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
                     break;
                 case "Evaluation Method":
-                    BlockCondition = PropertiesCreate(vm.evaluation[IndexPropertie]);
+                    var indexEvaluation = getRndInteger(0, vm.evaluation.length - 1);
+                    BlockCondition = PropertiesCreate(vm.evaluation[indexEvaluation], "Evaluation Method");
+                    break;
             }
             return BlockCondition;
         }
 
 
-        function PropertiesCreate(DataJson) {
+        function PropertiesCreate(DataJson, NameNode) {
             //define properties a method of evaluation or explanation
             var json = null;
             if (DataJson.properties != null) {
@@ -415,6 +453,43 @@
                 properties: tine.merge({}, json),
                 description: DataJson.description
             };
+
+            if (NameNode == "Explanation Method") {
+                var propertiesExpl = {};
+                var ArrayNameProperties = Object.keys(DataJson);
+
+                for (var index = 0; index < ArrayNameProperties.length; index++) {
+                    switch (ArrayNameProperties[index]) {
+                        case "value":
+                            break;
+                        case "properties":
+                            break;
+                        case "description":
+                            break;
+                        case "id":
+                            break;
+                        case "$$hashKey":
+                            break;
+                        case "Concept":
+                            break;
+                        case "Instance":
+                            break;
+                        case "display":
+                            break;
+                        default:
+                            if (Array.isArray(DataJson[ArrayNameProperties[index]])) {
+
+                                propertiesExpl[ArrayNameProperties[index]] = DataJson[ArrayNameProperties[index]];
+                            } else {
+                                propertiesExpl[ArrayNameProperties[index]] = DataJson[ArrayNameProperties[index]];
+                            }
+
+                            break;
+                    }
+                }
+                BlockConditions.propertyExpl = tine.merge({}, BlockConditions.propertyExpl, propertiesExpl);
+
+            }
             return BlockConditions;
         }
 
@@ -449,7 +524,7 @@
                     'Tree number must be greater than 1'
                 );
             } else {
-                for (let index = 0; index < Data.TreeNumber; index++) {
+                for (var index = 0; index < Data.TreeNumber; index++) {
                     result = RandomGenerate(Data, index);
                 }
                 if (result == true) {

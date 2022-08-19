@@ -114,7 +114,16 @@ b3e.tree.BlockManager = function(editor, project, tree) {
             title: block.title,
             description: block.description,
             properties: block.properties,
-            propertyExpl: block.propertyExpl
+            propertyExpl: block.propertyExpl,
+            DataType: block.DataType,
+            VariableName: block.VariableName,
+            params: block.params,
+            idModel: block.idModel,
+            query: block.query,
+            query_id: block.query_id,
+            img: block.img,
+            Image: block.Image,
+            Json: block.Json
         };
 
         template = template || {};
@@ -144,6 +153,38 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         } else {
             block.propertyExpl = tine.merge({}, node.propertyExpl, block.propertyExpl);
         }
+        if (typeof template.DataType !== 'undefined') {
+            block.DataType = template.DataType;
+        } else {
+            block.DataType = node.DataType || block.DataType;
+        }
+        if (typeof template.VariableName !== 'undefined') {
+            block.VariableName = template.VariableName;
+        } else {
+            block.VariableName = node.VariableName || block.VariableName;
+        }
+        if (typeof template.params !== 'undefined') {
+            block.params = tine.merge({}, node.params, template.params);
+        } else {
+            block.params = tine.merge({}, node.params, block.params);
+        }
+        if (typeof template.ModelRoot !== 'undefined') {
+            block.ModelRoot = tine.merge({}, node.ModelRoot, template.ModelRoot);
+        } else {
+            block.ModelRoot = tine.merge({}, node.ModelRoot, block.ModelRoot);
+        }
+        if (typeof template.Image !== 'undefined') {
+            block.Image = template.Image;
+        } else {
+            block.Image = node.Image || block.Image;
+        }
+        if (typeof template.Json !== 'undefined') {
+            block.Json = template.Json;
+        } else {
+            block.Json = node.Json || block.Json;
+        }
+
+
         block._redraw();
 
         var _newValues = {
@@ -152,7 +193,17 @@ b3e.tree.BlockManager = function(editor, project, tree) {
             description: block.description,
             properties: block.properties,
             propertyExpl: block.propertyExpl,
+            DataType: block.DataType,
+            VariableName: block.VariableName,
+            params: block.params,
+            idModel: block.ModelRoot.idModel,
+            query: block.ModelRoot.query,
+            query_id: block.ModelRoot.query_id,
+            img: block.ModelRoot.img,
+            Image: block.Image,
+            Json: block.Json
         };
+
         // redraw connections linked to the entity
         if (block._inConnection) {
             block._inConnection._redraw();

@@ -38,6 +38,7 @@ b3e.editor.ExportManager = function(editor) {
             custom_nodes: this.nodesToData()
         };
         project.trees.each(function(tree) {
+
             var d = this.treeToData(tree, true);
             d.id = tree._id;
             data.trees.push(d);
@@ -57,7 +58,9 @@ b3e.editor.ExportManager = function(editor) {
         }
 
         var root = tree.blocks.getRoot();
+
         var first = getBlockChildrenIds(root);
+
         var data = {
             version: b3e.VERSION,
             scope: 'tree',
@@ -66,19 +69,44 @@ b3e.editor.ExportManager = function(editor) {
             description: root.description,
             root: first[0] || null,
             properties: root.properties,
-            nodes: {},
-            display: {
-                camera_x: tree.x,
-                camera_y: tree.y,
-                camera_z: tree.scaleX,
-                x: root.x,
-                y: root.y,
-            },
         };
+
+        if (root.hasOwnProperty("ModelRoot")) {
+            if (root.ModelRoot.hasOwnProperty("query")) {
+                data.query = root.ModelRoot.query;
+            }
+            if (root.ModelRoot.hasOwnProperty("img")) {
+                var reader = new FileReader();
+                reader.readAsDataURL(root.ModelRoot.img);
+                reader.onload = function() {
+                    data.img = reader.result;
+                };
+                reader.onerror = function(error) {
+                    console.log('Error: ', error);
+                };
+
+            }
+            if (root.ModelRoot.hasOwnProperty("idModel")) {
+                data.idModel = root.ModelRoot.idModel;
+            }
+            if (root.ModelRoot.hasOwnProperty("query_id")) {
+                data.query_id = root.ModelRoot.query_id;
+            }
+        }
 
         if (!ignoreNodes) {
             data.custom_nodes = this.nodesToData();
         }
+
+        data.nodes = {};
+        data.display = {
+            camera_x: tree.x,
+            camera_y: tree.y,
+            camera_z: tree.scaleX,
+            x: root.x,
+            y: root.y,
+        };
+
 
         tree.blocks.each(function(block) {
             if (block.category !== 'root') {
@@ -91,24 +119,43 @@ b3e.editor.ExportManager = function(editor) {
                     display: { x: block.x, y: block.y }
                 };
                 if (block.name === 'Explanation Method') {
-                    if (block.propertyExpl != undefined) {
-                        let ArrayNameProperties = Object.keys(block.propertyExpl);
 
-                        for (let index = 0; index < ArrayNameProperties.length; index++) {
+                    if (block.hasOwnProperty("params")) {
+                        if (Object.keys(block.params).length != 0) {
+                            d.params = block.params;
+                        }
+                    }
+
+                    if (block.Json != undefined) {
+                        d.Json = block.Json;
+                    }
+                    if (block.Image != undefined) {
+                        d.Image = block.Image;
+                    }
+
+                    if (block.propertyExpl != undefined) {
+                        var ArrayNameProperties = Object.keys(block.propertyExpl);
+
+                        for (var index = 0; index < ArrayNameProperties.length; index++) {
                             d[ArrayNameProperties[index]] = block.propertyExpl[ArrayNameProperties[index]];
 
                         }
                     }
 
                 }
+                if (block.name === 'Condition') {
+                    d.DataType = block.DataType;
+                    d.VariableName = block.VariableName;
+                    delete d.description;
+                }
 
 
                 var children = getBlockChildrenIds(block);
 
-                if (block.category === 'composite') {
-                    var propertieNext = ["Next"];
-                    var RouteOfObject;
+                var propertieNext = ["Next"];
+                var RouteOfObject;
 
+                if (block.category === 'composite') {
                     children.forEach(element => {
                         if (!d.hasOwnProperty("firstChild")) {
                             d.firstChild = { Id: element, Next: null };
@@ -119,9 +166,6 @@ b3e.editor.ExportManager = function(editor) {
                         }
                     });
                 } else if (block.category === 'decorator') {
-                    var propertieNext = ["Next"];
-                    var RouteOfObject;
-
                     children.forEach(element => {
                         if (!d.hasOwnProperty("firstChild")) {
                             d.firstChild = { Id: element, Next: null };
@@ -136,7 +180,6 @@ b3e.editor.ExportManager = function(editor) {
                 data.nodes[block.id] = d;
             }
         });
-
         return data;
     };
 
@@ -152,10 +195,18 @@ b3e.editor.ExportManager = function(editor) {
                     scope: 'node',
                     Concept: node.name,
                     category: node.category,
-                    Instance: node.title,
+                    title: node.title,
                     description: node.description,
                     properties: node.properties,
-                    propertyExpl: node.propertyExpl,
+                    //propertyExpl: node.propertyExpl,
+                    //  DataType: node.DataType,
+                    //    VariableName: node.VariableName,
+                    //      img: node.img,
+                    //    params: node.params
+                    /*,
+                       query: node.query,
+                       query_id: node.query_id,
+                       idModel: node.idModel*/
                 });
             }
         });

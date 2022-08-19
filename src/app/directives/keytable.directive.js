@@ -42,17 +42,31 @@
         vm.model = $scope.keytable.model || $scope.model || null;
         vm.rows = [];
         vm.add = add;
+        vm.ConditionProperties = ["equals", "not-equals", "less", "greater"];
+        vm.Condition = false;
+        vm.cond = "Ss";
         vm.remove = remove;
         vm.change = change;
         vm.reset = reset;
+        vm.changeCondition = changeCondition;
 
         _activate();
 
         // BODY //
         function _activate() {
+            vm.Condition = false;
             if (vm.model) {
-                for (var key in vm.model) {
-                    add(key, vm.model[key], false);
+                for (var key in vm.model.properties) {
+                    add(key, vm.model.properties[key], false);
+                }
+
+                if (vm.model.DataType == "Datatype" || vm.model.DataType == "Integer" || vm.model.DataType == "Boolean") {
+                    vm.Condition = true;
+
+                    if (!vm.model.properties.hasOwnProperty(key)) {
+                        vm.model.properties[""] = "";
+                        add(" ", " ", false);
+                    }
                 }
             } else {
                 vm.model = {};
@@ -74,16 +88,16 @@
             var keyDrop = vm.rows[i].key;
             vm.rows.splice(i, 1);
 
-            delete vm.model[keyDrop];
+            delete vm.model.properties[keyDrop];
             if (vm._onChange) {
                 vm._onChange($scope);
             }
         }
 
         function change() {
-            for (var key in vm.model) {
-                if (vm.model.hasOwnProperty(key)) {
-                    delete vm.model[key];
+            for (var key in vm.model.properties) {
+                if (vm.model.properties.hasOwnProperty(key)) {
+                    delete vm.model.properties[key];
                 }
             }
             for (var i = 0; i < vm.rows.length; i++) {
@@ -94,12 +108,23 @@
                 if (!isNaN(value) && value !== '') {
                     value = parseFloat(value);
                 }
+                vm.model.properties[r.key] = value;
 
-                vm.model[r.key] = value;
 
                 if (vm._onChange) {
                     vm._onChange($scope);
                 }
+            }
+        }
+
+        function changeCondition(keyCond, actualkey) {
+            vm.rows[0].key = keyCond;
+            delete vm.model.properties[actualkey];
+
+            vm.model.properties[keyCond] = vm.rows[0].value;
+
+            if (vm._onChange) {
+                vm._onChange($scope);
             }
         }
     }

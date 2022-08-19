@@ -9,6 +9,7 @@ b3e.project.NodeManager = function(editor, project) {
      * - a generic object containing the node prototype.
      */
     this.add = function(node, isDefault) {
+
         if (node.prototype) node = node.prototype;
 
         if (project._nodes[node.name]) {
@@ -23,7 +24,10 @@ b3e.project.NodeManager = function(editor, project) {
             n.description = node.description;
             n.properties = tine.merge({}, node.properties || node.parameters);
             n.propertyExpl = node.propertyExpl;
+            n.DataType = node.DataType;
+            n.VariableName = node.VariableName;
             node = n;
+
         }
 
         project._nodes[node.name] = node;
@@ -63,6 +67,8 @@ b3e.project.NodeManager = function(editor, project) {
             category: node.category,
             properties: node.properties,
             propertyExpl: node.propertyExpl,
+            DataType: node.DataType,
+            VariableName: node.VariableName,
         };
 
         if (typeof template.name !== 'undefined') {
@@ -83,6 +89,12 @@ b3e.project.NodeManager = function(editor, project) {
         if (typeof template.propertyExpl !== 'undefined') {
             node.propertyExpl = tine.merge({}, template.propertyExpl);
         }
+        if (typeof template.DataType !== 'undefined') {
+            node.DataType = tine.merge({}, template.DataType);
+        }
+        if (typeof template.VariableName !== 'undefined') {
+            node.VariableName = tine.merge({}, template.VariableName);
+        }
 
         var _newValues = {
             name: node.name,
@@ -91,6 +103,8 @@ b3e.project.NodeManager = function(editor, project) {
             category: node.category,
             properties: node.properties,
             propertyExpl: node.propertyExpl,
+            DataType: node.DataType,
+            VariableName: node.VariableName,
         };
 
         project.history._beginBatch();

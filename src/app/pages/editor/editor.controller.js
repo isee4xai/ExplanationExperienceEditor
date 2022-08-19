@@ -13,8 +13,8 @@ function EditorController($state, $location, projectModel) {
     var url = $location.url().slice(1);
     var Id = url.slice(3);
     //regular expression to accept only numbers
-    const regex = /^id=[0-9]*$/;
-    const onlyNumbers = regex.test(Id);
+    var regex = /^id=[0-9]*$/;
+    var onlyNumbers = regex.test(Id);
 
     _activate();
 

@@ -26,15 +26,35 @@
 
         vm.UpdateProperties = UpdateProperties;
         vm.renameIntends = renameIntends;
+        vm.change = change;
+        vm.Run = Run;
+        vm.PopUpImg = PopUpImg;
+        vm.PopUpImgClose = PopUpImgClose;
 
         vm.node = null;
         vm.explanation = null;
         vm.evaluation = null;
+        vm.Explainers = null;
 
         vm.TitleSelect = null;
         vm.TitleName = null;
 
         vm.AllProperties = [];
+
+        vm.TypeOfData = ["Integer", "Boolean"];
+        vm.DataType = "Datatype";
+        vm.AllCondition = [];
+        vm.SelectTypeOfData = SelectTypeOfData;
+
+        vm.ArrayParams = [];
+        vm.JsonParams = {};
+        vm.TypeDataExp = "";
+        vm.IdModel = {};
+
+
+        vm.Imagen = "";
+        vm.Json = {};
+
         _create();
         _activate();
 
@@ -43,6 +63,7 @@
 
         function _activate() {
             vm.TitleSelect = null;
+            vm.ArrayParams = [];
 
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
@@ -50,11 +71,44 @@
 
             if (s.length === 1) {
                 vm.original = s[0];
+                var ModelGet = {};
+
+                if (vm.original.hasOwnProperty("ModelRoot")) {
+                    ModelGet = {
+                        idModel: vm.original.ModelRoot.idModel,
+                        query_id: vm.original.ModelRoot.query_id
+                    };
+
+                    if (vm.original.ModelRoot.img != undefined) {
+                        ModelGet.img = vm.original.ModelRoot.img;
+                    } else {
+                        ModelGet.query = vm.original.ModelRoot.query;
+                    }
+                } else {
+                    ModelGet = {
+                        idModel: vm.original.idModel,
+                        query_id: vm.original.query_id
+                    };
+                    if (vm.original.img != undefined) {
+                        var file = new File([(vm.original.img)], "ImgModel.png", { type: "image/png" });
+                        ModelGet.img = file;
+                    } else {
+                        ModelGet.query = vm.original.query;
+                    }
+                }
+
+
                 vm.block = {
                     title: vm.original.title,
                     description: vm.original.description,
                     properties: tine.merge({}, vm.original.properties),
-                    propertyExpl: vm.original.propertyExpl
+                    propertyExpl: vm.original.propertyExpl,
+                    DataType: vm.original.DataType,
+                    VariableName: vm.original.VariableName,
+                    params: tine.merge({}, vm.original.params),
+                    ModelRoot: ModelGet,
+                    Image: vm.original.Image,
+                    Json: vm.original.Json
                 };
 
                 if (vm.evaluation == null && vm.explanation == null) {
@@ -67,17 +121,30 @@
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.explanation;
+                        if (vm.block.params) {
+                            for (var property in vm.block.params) {
+                                vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
+                            }
+                        }
+                        _getArrayExplainers();
                         AddListAllProperties();
-
                         break;
                     case "Evaluation Method":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.evaluation;
                         AddListAllProperties();
                         break;
+                    case "Condition":
+                        vm.TitleName = null;
+                        vm.TitleSelect = null;
+                        if (vm.block.DataType == undefined) {
+                            vm.block.DataType = vm.DataType;
+                        }
+                        break;
                     case "Root":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
+                        vm.IdModel = vm.block.ModelRoot;
                         break;
                     default:
                         vm.TitleName = null;
@@ -87,6 +154,38 @@
                 vm.original = false;
                 vm.block = false;
             }
+
+        }
+
+        function _getArrayExplainers() {
+            //Get name Explainers
+            projectModel.getExplainers()
+                .then(function(x) {
+                    vm.Explainers = x;
+                });
+
+        }
+
+        function Run() {
+
+            var jsonParam = {};
+            for (var i = 0; i < vm.ArrayParams.length; i++) {
+                if (vm.ArrayParams[i].value != "") {
+                    jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
+                }
+            }
+
+            var params = JSON.stringify(jsonParam);
+
+            projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
+                .then(function(x) {
+                    if (x.hasOwnProperty('plot_png')) {
+                        vm.block.Image = x.plot_png;
+                    } else {
+                        vm.block.Json = JSON.stringify(x);
+                    }
+                });
+
         }
 
         function _getJsonProperties() {
@@ -149,15 +248,15 @@
 
         function AddListAllProperties() {
             //we buy if there is id and title
-            var estaEnLaLista = vm.AllProperties.findIndex(element => element.id == vm.original.id &&
+            var Exist = vm.AllProperties.findIndex(element => element.id == vm.original.id &&
                 (vm.original.title == element.value ||
                     vm.original.title == "Evaluation Method" ||
                     vm.original.title == "Explanation Method"));
 
             //If it is not in AllPropertis we add it
-            if (estaEnLaLista == -1) {
+            if (Exist == -1 && vm.hasOwnProperty("TitleSelect") && vm.TitleSelect != undefined) {
                 vm.TitleSelect.forEach(element => {
-                    var a = new Object();
+                    var a = new Object({});
                     var propertiesExplanation = PropertiesExplanation(element);
                     //we check if the property we are adding already exists in the editor
                     if (vm.original.title == element.value) {
@@ -184,11 +283,12 @@
             }
         }
 
+
         function PropertiesExplanation(option) {
             var propertiesExpl = {};
-            let ArrayNameProperties = Object.keys(option);
+            var ArrayNameProperties = Object.keys(option);
 
-            for (let index = 0; index < ArrayNameProperties.length; index++) {
+            for (var index = 0; index < ArrayNameProperties.length; index++) {
                 switch (ArrayNameProperties[index]) {
                     case "value":
                         break;
@@ -216,19 +316,108 @@
         }
 
         function UpdateProperties(option) {
+            if (vm.original.name == "Explanation Method") {
+                var TitleSelect = option.substring(1);
+                var myArray = TitleSelect.split("/");
+                vm.TypeDataExp = myArray[0];
+                paramsExp(option);
+
+            }
+
+
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
             var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
             //define the properties
+
+            if (selecionado != undefined) {
+                vm.block = {
+                    title: selecionado.value,
+                    properties: tine.merge({}, selecionado.properties),
+                    description: selecionado.description,
+                    propertyExpl: selecionado.propertyExpl
+                };
+            } else {
+                vm.block = {
+                    title: option,
+                    properties: tine.merge({}, vm.original.properties),
+                    description: vm.original.description
+                };
+            }
+
+            update();
+        }
+
+
+        function change() {
+            for (var keyParam in vm.block.params) {
+                if (vm.block.params.hasOwnProperty(keyParam)) {
+                    delete vm.block.params[keyParam];
+                }
+            }
+            var jsonParam = {};
+            for (var i = 0; i < vm.ArrayParams.length; i++) {
+                var r = vm.ArrayParams[i];
+                if (!r.key) continue;
+
+                var key = r.key;
+
+                //if no me los guarda al selecionar un expla
+                //    if (vm.ArrayParams[i].value != "") {
+                jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
+                //    }
+            }
+            vm.block.params = jsonParam;
+            update();
+        }
+
+        function PopUpImg(ImagenSrc) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("modal-img");
+
+            modal.style.display = "block";
+            modalImg.src = ImagenSrc;
+        }
+
+        function PopUpImgClose() {
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            };
+        }
+
+
+        function paramsExp(option) {
+            projectModel.getConditionsEvaluationEXP(option)
+                .then(function(x) {
+                    vm.ArrayParams = [];
+                    for (var property in x) {
+                        vm.ArrayParams.push({ "key": property, "value": "", fixed: false });
+                    }
+                    change();
+                });
+
+
+        }
+
+
+
+
+        function SelectTypeOfData(TypeData) {
             vm.block = {
-                title: selecionado.value,
-                properties: tine.merge({}, selecionado.properties),
-                description: selecionado.description,
-                propertyExpl: selecionado.propertyExpl
+                title: vm.original.title,
+                properties: tine.merge({}, vm.original.properties),
+                DataType: TypeData,
+                VariableName: vm.original.VariableName,
             };
             update();
         }
 
+
         function update() {
+
             //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
@@ -241,7 +430,7 @@
             if (estaEnLaLista != -1) {
                 vm.AllProperties[estaEnLaLista].description = vm.block.description;
                 vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
-            };
+            }
         }
 
     }

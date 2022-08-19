@@ -42,16 +42,20 @@
 
             var p = $window.editor.project.get();
 
+
             p.nodes.each(function(node) {
+
                 if (node.category === 'tree') return;
 
                 var list = vm.nodes[node.category];
+
                 if (!list) return;
                 list.push({
                     name: node.name,
                     title: _getTitle(node),
                     isDefault: node.isDefault
                 });
+
             });
 
             var selected = p.trees.getSelected();
@@ -63,6 +67,8 @@
                     'active': tree === selected,
                 });
             });
+
+
         }
 
         function _event(e) {
@@ -94,7 +100,11 @@
 
         function _getTitle(node) {
             var title = node.title || node.name;
-            title = title.replace(/(<\w+>)/g, function(match, key) { return '@'; });
+            try {
+                title = title.replace(/(<\w+>)/g, function(match, key) { return '@'; });
+            } catch (error) {
+                console.log(error);
+            }
             return title;
         }
 

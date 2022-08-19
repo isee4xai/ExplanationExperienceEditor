@@ -28,13 +28,22 @@ b3e.editor.ImportManager = function(editor) {
         tree.scaleX = display.camera_z || 1;
         tree.scaleY = display.camera_z || 1;
         var treeNode = project.nodes.get(tree._id);
-        treeNode.title = data.Instance;
+        treeNode.title = data.Instance || data.title;
 
-        root.title = data.Instance;
+        root.title = data.Instance || data.title;
         root.description = data.description;
         root.properties = data.properties;
-        root.propertyExpl = data.Instance,
-            root.x = display.x || 0;
+        root.params = data.params;
+        root.Image = data.Image;
+        root.Json = data.Json;
+        root.idModel = data.idModel;
+        root.query = data.query;
+        root.query_id = data.query_id;
+        root.img = data.img;
+        root.propertyExpl = data.Instance;
+        root.DataType = data.DataType;
+        root.VariableName = data.VariableName;
+        root.x = display.x || 0;
         root.y = display.y || 0;
 
         // Custom nodes
@@ -42,33 +51,31 @@ b3e.editor.ImportManager = function(editor) {
 
         var id, spec;
 
-
-
-
-
-
-
         // Add blocks
         for (id in data.nodes) {
-
-
-
 
             spec = data.nodes[id];
             var block = null;
             display = spec.display || {};
 
-            block = tree.blocks.add(spec.Concept, spec.display.x, spec.display.y);
+            block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
             block.id = spec.id;
-            block.title = spec.Instance;
+            block.title = spec.Instance || spec.title;
             block.description = spec.description;
             block.properties = tine.merge({}, block.properties, spec.properties);
+            block.params = tine.merge({}, block.params, spec.params);
+            block.idModel = spec.idModel;
+            block.query = spec.query;
+            block.query_id = spec.query_id;
+            block.img = spec.img;
+            block.Image = spec.Image;
+            block.Json = spec.Json;
 
             //
             var propertiesExpl = {};
-            let ArrayNameProperties = Object.keys(spec);
+            var ArrayNameProperties = Object.keys(spec);
 
-            for (let index = 0; index < ArrayNameProperties.length; index++) {
+            for (var index = 0; index < ArrayNameProperties.length; index++) {
                 switch (ArrayNameProperties[index]) {
                     case "value":
                         break;
@@ -86,6 +93,10 @@ b3e.editor.ImportManager = function(editor) {
                         break;
                     case "display":
                         break;
+                    case "params":
+                        break;
+                    case "Image":
+                        break;
                     default:
                         if (Array.isArray(spec[ArrayNameProperties[index]])) {
 
@@ -98,6 +109,9 @@ b3e.editor.ImportManager = function(editor) {
                 }
             }
             block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
+            block.DataType = spec.DataType;
+            block.VariableName = spec.VariableName;
+
             block._redraw();
 
             if (spec.id === data.root) {
@@ -111,6 +125,8 @@ b3e.editor.ImportManager = function(editor) {
             var inBlock = tree.blocks.get(id);
 
             var children = null;
+            var outBlock;
+
             if (inBlock.category === 'composite' && spec.firstChild) {
                 children = spec.firstChild;
             } else if (spec.firstChild && (inBlock.category == 'decorator' ||
@@ -120,6 +136,7 @@ b3e.editor.ImportManager = function(editor) {
 
 
             if (children) {
+
                 var propertieNext = ["Next"];
                 var IdProper = ["Id"];
 
@@ -129,19 +146,18 @@ b3e.editor.ImportManager = function(editor) {
 
                 while (RouteOfObject != null) {
 
-                    var outBlock = tree.blocks.get(RouteOfObjectId);
+                    outBlock = tree.blocks.get(RouteOfObjectId);
                     tree.connections.add(inBlock, outBlock);
 
                     RouteOfObjectId = RouteOfObject[IdProper];
                     RouteOfObject = RouteOfObject[propertieNext];
 
                 }
-                var outBlock = tree.blocks.get(RouteOfObjectId);
+                outBlock = tree.blocks.get(RouteOfObjectId);
                 tree.connections.add(inBlock, outBlock);
             }
 
-            /*
-            var children = null;
+
             if (inBlock.category === 'composite' && spec.children) {
                 children = spec.children;
             } else if (spec.child && (inBlock.category == 'decorator' ||
@@ -151,11 +167,11 @@ b3e.editor.ImportManager = function(editor) {
 
             if (children) {
                 for (var i = 0; i < children.length; i++) {
-                    var outBlock = tree.blocks.get(children[i]);
+                    outBlock = tree.blocks.get(children[i]);
                     tree.connections.add(inBlock, outBlock);
                 }
             }
-            */
+
         }
 
         // Finish

@@ -19,11 +19,14 @@
                     <ul class="nav">
                         <li ng-if="propertiespanel.original.category != 'root'"><a ng-model="propertiespanel.block.title">{{propertiespanel.block.title}}</a>
                             <ul>
-                                <li ng-repeat="option in propertiespanel.TitleSelect" ng-click="propertiespanel.UpdateProperties(option)">
+                                <li ng-if="propertiespanel.original.name == 'Evaluation Method'" ng-repeat="option in propertiespanel.TitleSelect" ng-click="propertiespanel.UpdateProperties(option)">
                                     <a>{{option.value}}</a></li>
+                                <li ng-if="propertiespanel.original.name == 'Explanation Method'" ng-repeat="option in propertiespanel.Explainers" ng-click="propertiespanel.UpdateProperties(option)">
+                                    <a>{{option}}</a></li>
                             </ul>
                         </li>
-                        <li ng-if="propertiespanel.original.category == 'root'">
+                        <li ng-if="propertiespanel.original.category == 'root'" ng-click="propertiespanel.UpdateProperties(option)">
+                            <!--borrar-->
                             <a ng-model="propertiespanel.block.title" ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}</a>
                         </li>
                     </ul>
@@ -32,14 +35,35 @@
                 <input ng-if="!propertiespanel.TitleName" type="text" class="form-control" name="title" placeholder="Title" ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.title" ng-change="propertiespanel.update()">
             </div>
 
-            <div class="form-group">
+            <div class="form-group" ng-if="propertiespanel.original.name != 'Condition'">
                 <label for="description">Description</label>
                 <textarea name="description" rows="4" class="form-control" placeholder="Description" ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.description" ng-change="propertiespanel.update()">
                 </textarea>
             </div>
 
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Condition'">
+                <div id="header">
+                    <ul class="nav">
+                        <li>
+                            <a ng-model="propertiespanel.DataType">{{propertiespanel.block.DataType}}</a>
+                            <ul>
+                                <li ng-repeat="data in propertiespanel.TypeOfData" ng-click="propertiespanel.SelectTypeOfData(data)">
+                                    <a>{{data}}</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Condition'">
+                <label for="title">Varible Name</label>
+                <input type="text" placeholder="Varible Name" class="form-control" name="title" ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.VariableName" ng-change="propertiespanel.update()">
+            </div>
+
             <div class="form-group">
-                <b3-key-table heading="Properties" ng-model="propertiespanel.block.properties" ng-change="propertiespanel.update()" class="no-border">
+                <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()" class="no-border">
                 </b3-key-table>
             </div>
 
@@ -47,6 +71,63 @@
                 <b3-key-table-Expl heading="Properties EXP" ng-model="propertiespanel.block.propertyExpl" class="no-border">
                 </b3-key-table-Expl>
             </div>
+
+            <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
+                <!--  <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.IdModel" class="no-border">
+                </b3-Proper-Params>-->
+
+                <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.block.ModelRoot" ng-change="propertiespanel.update()" class="no-border">
+                </b3-Proper-Params>
+            </div>
+
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <thead>
+                    <tr>
+                        <th colspan="3">
+                            <label class="control-label">PARAMS</label>
+                        </th>
+                    </tr>
+                </thead>
+            </div>
+
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <table class="table table-condensed keytable">
+                    <tbody>
+                        <tr ng-repeat="item in propertiespanel.ArrayParams">
+                            <td class="keyPropertiesTdParams">
+                                <input type="text" class="form-control" value="{{item.key}}" ng-disabled="item.fixed" ng-model="item.key" disabled />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value" ng-change="propertiespanel.change()" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <button id="ButtonRun" type="button" ng-click="propertiespanel.Run()">Run</button>
+            </div>
+
+            <div ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <div class="form-group" ng-if="propertiespanel.block.Json != undefined">
+                    <textarea name="json" rows="4" class="form-control" ng-model="propertiespanel.block.Json" disabled>
+                </textarea>
+                </div>
+
+                <div id="DivImg" class="form-group" ng-if="propertiespanel.block.Image != undefined">
+                    <img src="{{propertiespanel.block.Image}}" alt="Imagen" ng-click="propertiespanel.PopUpImg(propertiespanel.block.Image)">
+                </div>
+            </div>
+
+            <div id="myModal" class="modal">
+                <div id="contenedor" class="p-8 bg-light border">
+                    <img id="modal-img" class="modal-content">
+                    <span id="closeImg" class="close" ng-click="propertiespanel.PopUpImgClose()">&times;</span>
+                </div>
+
+                <div id="caption"></div>
+            </div>
+
 
         </form>
     </div>
