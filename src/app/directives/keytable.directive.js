@@ -118,10 +118,10 @@
         }
 
         function changeCondition(keyCond, actualkey) {
-            vm.rows[0]["key"] = keyCond;
+            vm.rows[0].key = keyCond;
             delete vm.model.properties[actualkey];
 
-            vm.model.properties[keyCond] = vm.rows[0]["value"];
+            vm.model.properties[keyCond] = vm.rows[0].value;
 
             if (vm._onChange) {
                 vm._onChange($scope);

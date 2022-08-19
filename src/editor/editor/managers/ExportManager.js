@@ -134,9 +134,9 @@ b3e.editor.ExportManager = function(editor) {
                     }
 
                     if (block.propertyExpl != undefined) {
-                        let ArrayNameProperties = Object.keys(block.propertyExpl);
+                        var ArrayNameProperties = Object.keys(block.propertyExpl);
 
-                        for (let index = 0; index < ArrayNameProperties.length; index++) {
+                        for (var index = 0; index < ArrayNameProperties.length; index++) {
                             d[ArrayNameProperties[index]] = block.propertyExpl[ArrayNameProperties[index]];
 
                         }
@@ -152,10 +152,10 @@ b3e.editor.ExportManager = function(editor) {
 
                 var children = getBlockChildrenIds(block);
 
-                if (block.category === 'composite') {
-                    var propertieNext = ["Next"];
-                    var RouteOfObject;
+                var propertieNext = ["Next"];
+                var RouteOfObject;
 
+                if (block.category === 'composite') {
                     children.forEach(element => {
                         if (!d.hasOwnProperty("firstChild")) {
                             d.firstChild = { Id: element, Next: null };
@@ -166,9 +166,6 @@ b3e.editor.ExportManager = function(editor) {
                         }
                     });
                 } else if (block.category === 'decorator') {
-                    var propertieNext = ["Next"];
-                    var RouteOfObject;
-
                     children.forEach(element => {
                         if (!d.hasOwnProperty("firstChild")) {
                             d.firstChild = { Id: element, Next: null };

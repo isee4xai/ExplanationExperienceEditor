@@ -73,9 +73,9 @@ b3e.editor.ImportManager = function(editor) {
 
             //
             var propertiesExpl = {};
-            let ArrayNameProperties = Object.keys(spec);
+            var ArrayNameProperties = Object.keys(spec);
 
-            for (let index = 0; index < ArrayNameProperties.length; index++) {
+            for (var index = 0; index < ArrayNameProperties.length; index++) {
                 switch (ArrayNameProperties[index]) {
                     case "value":
                         break;
@@ -125,6 +125,8 @@ b3e.editor.ImportManager = function(editor) {
             var inBlock = tree.blocks.get(id);
 
             var children = null;
+            var outBlock;
+
             if (inBlock.category === 'composite' && spec.firstChild) {
                 children = spec.firstChild;
             } else if (spec.firstChild && (inBlock.category == 'decorator' ||
@@ -134,6 +136,7 @@ b3e.editor.ImportManager = function(editor) {
 
 
             if (children) {
+
                 var propertieNext = ["Next"];
                 var IdProper = ["Id"];
 
@@ -143,19 +146,18 @@ b3e.editor.ImportManager = function(editor) {
 
                 while (RouteOfObject != null) {
 
-                    var outBlock = tree.blocks.get(RouteOfObjectId);
+                    outBlock = tree.blocks.get(RouteOfObjectId);
                     tree.connections.add(inBlock, outBlock);
 
                     RouteOfObjectId = RouteOfObject[IdProper];
                     RouteOfObject = RouteOfObject[propertieNext];
 
                 }
-                var outBlock = tree.blocks.get(RouteOfObjectId);
+                outBlock = tree.blocks.get(RouteOfObjectId);
                 tree.connections.add(inBlock, outBlock);
             }
 
 
-            var children = null;
             if (inBlock.category === 'composite' && spec.children) {
                 children = spec.children;
             } else if (spec.child && (inBlock.category == 'decorator' ||
@@ -165,7 +167,7 @@ b3e.editor.ImportManager = function(editor) {
 
             if (children) {
                 for (var i = 0; i < children.length; i++) {
-                    var outBlock = tree.blocks.get(children[i]);
+                    outBlock = tree.blocks.get(children[i]);
                     tree.connections.add(inBlock, outBlock);
                 }
             }

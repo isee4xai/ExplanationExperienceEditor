@@ -61,7 +61,7 @@
         vm.explanation = null;
         vm.evaluation = null;
         vm.url = window.location.href;
-        vm.isEditor;
+        vm.isEditor = false;
 
         _create();
         _activate();
@@ -332,7 +332,7 @@
         function RandomGenerate(DataInput, IndexSucces) {
 
             if (DataInput === undefined) {
-                DataInput = { MinSlibings: 0, MaxSlibings: 0 }
+                DataInput = { MinSlibings: 0, MaxSlibings: 0 };
             }
 
             var MinSlibings = DataInput.MinSlibings;
@@ -352,12 +352,12 @@
                 tree.connections.add(blockRoot[0], blockComposites);
                 //we add in a array the Composites that did not finish their journey
                 vm.ArrayComposites.push(blockComposites);
-                for (let index = 0; index < depth; index++) {
+                for (var index = 0; index < depth; index++) {
                     //travel all the composites that are unfinished to continue them
                     vm.ArrayComposites.forEach(element => {
 
                         var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
-                        for (let x = 0; x < NumeroAle; x++) {
+                        for (var x = 0; x < NumeroAle; x++) {
                             var p = getRndInteger(0, 1);
                             //create a method evaluation or explanation
                             // make sure they always have an explainer
@@ -374,7 +374,7 @@
                         if ((depth - index) != 1) {
                             var NumeroAle1 = getRndInteger(1, subtrees);
                             var SubBlockComposites = null;
-                            for (let x = 0; x < NumeroAle1; x++) {
+                            for (var x = 0; x < NumeroAle1; x++) {
                                 var y = getRndInteger(0, 1);
                                 //create a Compositites
                                 SubBlockComposites = tree.blocks.add(vm.NameCompositites[y], point.x, point.y);
@@ -456,9 +456,9 @@
 
             if (NameNode == "Explanation Method") {
                 var propertiesExpl = {};
-                let ArrayNameProperties = Object.keys(DataJson);
+                var ArrayNameProperties = Object.keys(DataJson);
 
-                for (let index = 0; index < ArrayNameProperties.length; index++) {
+                for (var index = 0; index < ArrayNameProperties.length; index++) {
                     switch (ArrayNameProperties[index]) {
                         case "value":
                             break;
@@ -524,7 +524,7 @@
                     'Tree number must be greater than 1'
                 );
             } else {
-                for (let index = 0; index < Data.TreeNumber; index++) {
+                for (var index = 0; index < Data.TreeNumber; index++) {
                     result = RandomGenerate(Data, index);
                 }
                 if (result == true) {

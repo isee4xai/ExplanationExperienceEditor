@@ -122,7 +122,7 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.explanation;
                         if (vm.block.params) {
-                            for (const property in vm.block.params) {
+                            for (var property in vm.block.params) {
                                 vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
                             }
                         }
@@ -256,7 +256,7 @@
             //If it is not in AllPropertis we add it
             if (Exist == -1 && vm.hasOwnProperty("TitleSelect") && vm.TitleSelect != undefined) {
                 vm.TitleSelect.forEach(element => {
-                    var a = new Object();
+                    var a = new Object({});
                     var propertiesExplanation = PropertiesExplanation(element);
                     //we check if the property we are adding already exists in the editor
                     if (vm.original.title == element.value) {
@@ -286,9 +286,9 @@
 
         function PropertiesExplanation(option) {
             var propertiesExpl = {};
-            let ArrayNameProperties = Object.keys(option);
+            var ArrayNameProperties = Object.keys(option);
 
-            for (let index = 0; index < ArrayNameProperties.length; index++) {
+            for (var index = 0; index < ArrayNameProperties.length; index++) {
                 switch (ArrayNameProperties[index]) {
                     case "value":
                         break;
@@ -316,10 +316,9 @@
         }
 
         function UpdateProperties(option) {
-            var ArrayParamsss = [];
             if (vm.original.name == "Explanation Method") {
                 var TitleSelect = option.substring(1);
-                const myArray = TitleSelect.split("/");
+                var myArray = TitleSelect.split("/");
                 vm.TypeDataExp = myArray[0];
                 paramsExp(option);
 
@@ -350,9 +349,9 @@
 
 
         function change() {
-            for (var key in vm.block.params) {
-                if (vm.block.params.hasOwnProperty(key)) {
-                    delete vm.block.params[key];
+            for (var keyParam in vm.block.params) {
+                if (vm.block.params.hasOwnProperty(keyParam)) {
+                    delete vm.block.params[keyParam];
                 }
             }
             var jsonParam = {};
@@ -360,7 +359,7 @@
                 var r = vm.ArrayParams[i];
                 if (!r.key) continue;
 
-                var key = r.key
+                var key = r.key;
 
                 //if no me los guarda al selecionar un expla
                 //    if (vm.ArrayParams[i].value != "") {
@@ -386,7 +385,7 @@
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
                 modal.style.display = "none";
-            }
+            };
         }
 
 
@@ -394,7 +393,7 @@
             projectModel.getConditionsEvaluationEXP(option)
                 .then(function(x) {
                     vm.ArrayParams = [];
-                    for (const property in x) {
+                    for (var property in x) {
                         vm.ArrayParams.push({ "key": property, "value": "", fixed: false });
                     }
                     change();
@@ -431,7 +430,7 @@
             if (estaEnLaLista != -1) {
                 vm.AllProperties[estaEnLaLista].description = vm.block.description;
                 vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
-            };
+            }
         }
 
     }
