@@ -195,18 +195,9 @@ b3e.editor.ExportManager = function(editor) {
                     scope: 'node',
                     Concept: node.name,
                     category: node.category,
-                    title: node.title,
+                    title: node.title || node.Instance,
                     description: node.description,
                     properties: node.properties,
-                    //propertyExpl: node.propertyExpl,
-                    //  DataType: node.DataType,
-                    //    VariableName: node.VariableName,
-                    //      img: node.img,
-                    //    params: node.params
-                    /*,
-                       query: node.query,
-                       query_id: node.query_id,
-                       idModel: node.idModel*/
                 });
             }
         });

@@ -41,7 +41,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             var dateTime = date + ' ' + time;
             data.date = dateTime;
 
-            console.log(data);
             //save project in json server 
             $http.get(httpAddresProjectsPath + path).success(function(dataJson) {
                 //update data on the server json if it already exists otherwise it is saved as a new json with a new id
@@ -217,7 +216,11 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             try {
                 axios(config)
                     .then(function(response) {
-                        resolve(response.data);
+                        if (response.status == 200) {
+                            resolve(response.data);
+                        } else {
+                            reject(e);
+                        }
                     });
             } catch (e) {
                 reject(e);
@@ -284,7 +287,11 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             try {
                 axios(config)
                     .then(function(response) {
-                        resolve(response.data);
+                        if (response.status == 200) {
+                            resolve(response.data);
+                        } else {
+                            reject(e);
+                        }
                     });
             } catch (e) {
                 reject(e);

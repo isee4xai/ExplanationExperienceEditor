@@ -145,6 +145,9 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
                         vm.IdModel = vm.block.ModelRoot;
+                        if (vm.original.ModelRoot == undefined) {
+                            update();
+                        }
                         break;
                     default:
                         vm.TitleName = null;
@@ -168,6 +171,9 @@
 
         function Run() {
 
+            var button = document.querySelector("#ButtonRun");
+            button.disabled = true;
+
             var jsonParam = {};
             for (var i = 0; i < vm.ArrayParams.length; i++) {
                 if (vm.ArrayParams[i].value != "") {
@@ -181,9 +187,22 @@
                 .then(function(x) {
                     if (x.hasOwnProperty('plot_png')) {
                         vm.block.Image = x.plot_png;
+                        delete vm.block.Json;
+                        delete vm.original.Json;
                     } else {
                         vm.block.Json = JSON.stringify(x);
+                        delete vm.block.Image;
+                        delete vm.original.Image;
                     }
+                    notificationService.success(
+                        "Run completed"
+                    );
+                    button.disabled = false;
+                    update();
+                }, function() {
+                    notificationService.error(
+                        'Run not completed '
+                    );
                 });
 
         }

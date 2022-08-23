@@ -43,9 +43,9 @@
 
     }
 
-    ProperParamsController.$inject = ['$scope', 'projectModel'];
+    ProperParamsController.$inject = ['$scope', 'projectModel', 'notificationService'];
 
-    function ProperParamsController($scope, projectModel) {
+    function ProperParamsController($scope, projectModel, notificationService) {
         // HEAD //
         var vm = this;
         vm._onChange = null;
@@ -145,9 +145,25 @@
                 }
                 projectModel.PostModelId(vm.model.idModel, vm.QueryText, imagefile)
                     .then(function(x) {
-                        vm.IdQuery = x.substring(21, 31);
-                        vm.model.query_id = vm.IdQuery;
-                        getQueryData(vm.IdQuery, vm.model.idModel, NameImage);
+                        if (x == "The query and image field are missing") {
+                            notificationService.error(
+                                'Error',
+                                x
+                            );
+                        } else {
+                            vm.IdQuery = x.substring(21, 31);
+                            vm.model.query_id = vm.IdQuery;
+                            notificationService.success(
+                                "Get Id Query ",
+                                vm.IdQuery
+                            );
+                            getQueryData(vm.IdQuery, vm.model.idModel, NameImage);
+                        }
+
+                    }, function() {
+                        notificationService.error(
+                            'Error'
+                        );
                     });
             }
         }
@@ -165,10 +181,17 @@
                         delete vm.model.Query;
                         vm.model.img = x;
                     }
+                    notificationService.success(
+                        "Get Model Query "
+                    );
 
                     if (vm._onChange) {
                         vm._onChange($scope);
                     }
+                }, function() {
+                    notificationService.error(
+                        'Error'
+                    );
                 });
 
         }

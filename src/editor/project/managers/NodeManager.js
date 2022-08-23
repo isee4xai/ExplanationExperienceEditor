@@ -9,7 +9,6 @@ b3e.project.NodeManager = function(editor, project) {
      * - a generic object containing the node prototype.
      */
     this.add = function(node, isDefault) {
-
         if (node.prototype) node = node.prototype;
 
         if (project._nodes[node.name]) {
@@ -18,7 +17,7 @@ b3e.project.NodeManager = function(editor, project) {
 
         if (!(node instanceof b3e.Node)) {
             var n = new b3e.Node(isDefault);
-            n.name = node.name;
+            n.name = node.name || node.Concept;
             n.category = node.category;
             n.title = node.title;
             n.description = node.description;
