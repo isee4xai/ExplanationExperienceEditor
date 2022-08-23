@@ -1,370 +1,315 @@
 {
-  "Projects": [
-    {
-      "name": "Project 1",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "3d425326-e14b-4baa-83f4-4f3497072d9d",
-        "trees": [
-          {
-            "version": "0.1.0",
-            "scope": "tree",
-            "id": "3d425326-e14b-4baa-83f4-4f3497072d9d",
-            "Instance": "Explanation Experience",
-            "description": "",
-            "root": "4caa4e9e-5ba0-471f-8979-9024e0cb00ec",
-            "properties": {},
-            "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
-            "idModel": "PSYCHOLOGY",
-            "query_id": "OEGVOHG60T",
-            "nodes": {
-              "4caa4e9e-5ba0-471f-8979-9024e0cb00ec": {
-                "id": "4caa4e9e-5ba0-471f-8979-9024e0cb00ec",
-                "Concept": "Explanation Method",
-                "Instance": "/Tabular/Anchors",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": -36,
-                  "y": 36
+    "Projects": [],
+    "Evaluation": [{
+            "value": "Evaluation method 1",
+            "description": "Description Evaluation method 1",
+            "properties": [{
+                    "key": "Key 1",
+                    "value": "Value 1"
                 },
-                "params": {
-                  "threshold": "0.9"
+                {
+                    "key": "Key 2",
+                    "value": "Value 2"
+                },
+                {
+                    "key": "Key 3",
+                    "value": "Value 3"
                 }
-              }
-            },
-            "display": {
-              "camera_x": 758.5,
-              "camera_y": 365,
-              "camera_z": 1,
-              "x": -24,
-              "y": -120
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-22bea094-704c-4c77-801f-67a97295ff88",
-      "date": "2022-8-19 8:59:19",
-      "id": 1
-    }
-  ],
-  "Evaluation": [
-    {
-      "value": "Evaluation method 1",
-      "description": "Description Evaluation method 1",
-      "properties": [
-        {
-          "key": "Key 1",
-          "value": "Value 1"
+            ],
+            "id": 1
         },
         {
-          "key": "Key 2",
-          "value": "Value 2"
-        },
-        {
-          "key": "Key 3",
-          "value": "Value 3"
+            "value": "Evaluation method 2",
+            "description": "Description Evaluation method 2",
+            "properties": [],
+            "id": 2
         }
-      ],
-      "id": 1
-    },
-    {
-      "value": "Evaluation method 2",
-      "description": "Description Evaluation method 2",
-      "properties": [],
-      "id": 2
-    }
-  ],
-  "Explanation": [
-    {
-      "value": "Tabular/DicePublic",
-      "description": "Description Explanation method 1",
-      "properties": [],
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": [
-        "Sklearn",
-        "TensorFlow1.0",
-        "TensorFlow2.0",
-        "Torch"
-      ],
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local",
-      "id": 1
-    },
-    {
-      "value": "Tabular/DicePrivate",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Tabular",
-      "TrainingData": "No",
-      "ModelBackend": [
-        "TensorFlow1.0",
-        "TensorFlow2.0"
-      ],
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local",
-      "id": 2
-    },
-    {
-      "value": "Tabular/LIME",
-      "description": "Description Explanation method 1",
-      "properties": [],
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local",
-      "id": 3
-    },
-    {
-      "value": "Tabular/SHAP",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local",
-      "id": 4
-    },
-    {
-      "value": "Tabular/ALE",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Global",
-      "id": 5
-    },
-    {
-      "value": "Tabular/Anchors",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local",
-      "id": 6
-    },
-    {
-      "value": "Tabular/Importance",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": [
-        "Sklearn",
-        "TensorFlow1.0",
-        "TensorFlow2.0",
-        "Torch"
-      ],
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Global",
-      "id": 7
-    },
-    {
-      "value": "Images/LIME",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Image",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "Black&White": "No",
-      "ExplanationScope": "Local",
-      "id": 8
-    },
-    {
-      "value": "Images/Anchors",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Image",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "Black&White": "Yes",
-      "ExplanationScope": "Local",
-      "id": 9
-    },
-    {
-      "value": "Images/Counterfactuals",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Image",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "Black&White": "Yes",
-      "ExplanationScope": "Local",
-      "id": 10
-    },
-    {
-      "value": "Text/LIME",
-      "description": "Description Explanation method 2",
-      "properties": [],
-      "DataType": "Text",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local",
-      "id": 11
-    }
-  ],
-  "Explainers": [
-    {
-      "ExplainerName": "Tabular/SHAP",
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local"
-    },
-    {
-      "ExplainerName": "Tabular/LIME",
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local"
-    },
-    {
-      "ExplainerName": "Tabular/ALE",
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Global"
-    },
-    {
-      "ExplainerName": "Tabular/Anchors",
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local"
-    },
-    {
-      "ExplainerName": "Tabular/Importance",
-      "DataType": "Tabular",
-      "TrainingData": "Yes",
-      "ModelBackend": [
-        "Sklearn",
-        "TensorFlow1.0",
-        "TensorFlow2.0",
-        "Torch"
-      ],
-      "AITask": [
-        "Regression",
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Global"
-    },
-    {
-      "ExplainerName": "Images/LIME",
-      "DataType": "Image",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "Black&White": "No",
-      "ExplanationScope": "Local"
-    },
-    {
-      "ExplainerName": "Images/Anchors",
-      "DataType": "Image",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "Black&White": "Yes",
-      "ExplanationScope": "Local"
-    },
-    {
-      "ExplainerName": "Images/Counterfactuals",
-      "DataType": "Image",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "Black&White": "Yes",
-      "ExplanationScope": "Local"
-    },
-    {
-      "ExplainerName": "Text/LIME",
-      "DataType": "Text",
-      "TrainingData": "No",
-      "ModelBackend": "Any",
-      "AITask": [
-        "Classification"
-      ],
-      "ModelType": "Any",
-      "ExplanationScope": "Local"
-    }
-  ]
+    ],
+    "Explanation": [{
+            "value": "Tabular/DicePublic",
+            "description": "Description Explanation method 1",
+            "properties": [],
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": [
+                "Sklearn",
+                "TensorFlow1.0",
+                "TensorFlow2.0",
+                "Torch"
+            ],
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local",
+            "id": 1
+        },
+        {
+            "value": "Tabular/DicePrivate",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Tabular",
+            "TrainingData": "No",
+            "ModelBackend": [
+                "TensorFlow1.0",
+                "TensorFlow2.0"
+            ],
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local",
+            "id": 2
+        },
+        {
+            "value": "Tabular/LIME",
+            "description": "Description Explanation method 1",
+            "properties": [],
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local",
+            "id": 3
+        },
+        {
+            "value": "Tabular/SHAP",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local",
+            "id": 4
+        },
+        {
+            "value": "Tabular/ALE",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Global",
+            "id": 5
+        },
+        {
+            "value": "Tabular/Anchors",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local",
+            "id": 6
+        },
+        {
+            "value": "Tabular/Importance",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": [
+                "Sklearn",
+                "TensorFlow1.0",
+                "TensorFlow2.0",
+                "Torch"
+            ],
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Global",
+            "id": 7
+        },
+        {
+            "value": "Images/LIME",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Image",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "Black&White": "No",
+            "ExplanationScope": "Local",
+            "id": 8
+        },
+        {
+            "value": "Images/Anchors",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Image",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "Black&White": "Yes",
+            "ExplanationScope": "Local",
+            "id": 9
+        },
+        {
+            "value": "Images/Counterfactuals",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Image",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "Black&White": "Yes",
+            "ExplanationScope": "Local",
+            "id": 10
+        },
+        {
+            "value": "Text/LIME",
+            "description": "Description Explanation method 2",
+            "properties": [],
+            "DataType": "Text",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local",
+            "id": 11
+        }
+    ],
+    "Explainers": [{
+            "ExplainerName": "Tabular/SHAP",
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local"
+        },
+        {
+            "ExplainerName": "Tabular/LIME",
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local"
+        },
+        {
+            "ExplainerName": "Tabular/ALE",
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Global"
+        },
+        {
+            "ExplainerName": "Tabular/Anchors",
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local"
+        },
+        {
+            "ExplainerName": "Tabular/Importance",
+            "DataType": "Tabular",
+            "TrainingData": "Yes",
+            "ModelBackend": [
+                "Sklearn",
+                "TensorFlow1.0",
+                "TensorFlow2.0",
+                "Torch"
+            ],
+            "AITask": [
+                "Regression",
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Global"
+        },
+        {
+            "ExplainerName": "Images/LIME",
+            "DataType": "Image",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "Black&White": "No",
+            "ExplanationScope": "Local"
+        },
+        {
+            "ExplainerName": "Images/Anchors",
+            "DataType": "Image",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "Black&White": "Yes",
+            "ExplanationScope": "Local"
+        },
+        {
+            "ExplainerName": "Images/Counterfactuals",
+            "DataType": "Image",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "Black&White": "Yes",
+            "ExplanationScope": "Local"
+        },
+        {
+            "ExplainerName": "Text/LIME",
+            "DataType": "Text",
+            "TrainingData": "No",
+            "ModelBackend": "Any",
+            "AITask": [
+                "Classification"
+            ],
+            "ModelType": "Any",
+            "ExplanationScope": "Local"
+        }
+    ]
 }
