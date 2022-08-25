@@ -1,17 +1,17 @@
-FROM node:11.15.0
+FROM node:11
 WORKDIR /app
 
-RUN npm install -g bower gulp
+COPY ServerJson ServerJson/
+COPY src src/
+COPY package.json bower.json db.json gulpfile.js preview.png entrypoint.sh ./
 
-COPY ["package.json","bower.json", "package-lock.json*", "./"]
-
-RUN npm install --production
+RUN npm install --omit=dev -g  bower gulp json-server@0.16.3
 RUN bower install --allow-root
-
-COPY . .
+RUN npm install 
 
 EXPOSE 8000
 
-RUN npm install
+RUN chmod +x /app/entrypoint.sh
 
-CMD [ "gulp", "serve" ]
+ENTRYPOINT ["/app/entrypoint.sh"]
+
