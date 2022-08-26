@@ -150,13 +150,13 @@
             <li><a>Random generator</a>
                 <ul>
                     <li>
-                        <a>Min slibings </a>
+                        <a>Min siblings </a>
                         <input class="form-control" id="inputMin" type="number" ng-model="Random.MinSlibings" min="0" />
-                        <a>Max slibings </a>
+                        <a>Max siblings </a>
                         <input class="form-control" id="inputMax" type="number" ng-model="Random.MaxSlibings" max="200" />
                         <a>Max subtrees </a>
                         <input class="form-control" id="inputMax" type="number" ng-model="Random.subtrees" min="0" />
-                        <a>Max depth1 </a>
+                        <a>depth </a>
                         <input class="form-control" id="inputMax" type="number" ng-model="Random.depth" min="0" />
 
                         <a ng-click="menubar.RandomGenerate(Random)">Generate</a>
@@ -165,7 +165,7 @@
                         <a>tree number </a>
                         <input class="form-control" id="inputMax" type="number" ng-model="Random.TreeNumber" min="2" />
 
-                        <a ng-click="menubar.RandomGenerate10(Random)">Generate x Intends</a>
+                        <a ng-click="menubar.RandomGenerate10(Random)">Generate x Tree</a>
                     </li>
                 </ul>
             </li>

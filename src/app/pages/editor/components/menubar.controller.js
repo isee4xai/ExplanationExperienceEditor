@@ -12,7 +12,8 @@
         'dialogService',
         'projectModel',
         'notificationService',
-        '$http'
+        '$http',
+        '$q'
     ];
 
     function MenubarController($scope,
@@ -21,7 +22,8 @@
         dialogService,
         projectModel,
         notificationService,
-        $http) {
+        $http,
+        $q) {
         var vm = this;
         vm.onNewTree = onNewTree;
         vm.onCloseProject = onCloseProject;
@@ -51,11 +53,12 @@
         vm.RandomGenerate = RandomGenerate;
         vm.RandomGenerate10 = RandomGenerate10;
         vm.NotificationSuccess = NotificationSuccess;
-        vm.NameNodes = ["Explanation Method", "Evaluation Method"];
+        vm.NameNodes = ["Explanation Method", "Evaluation Method", "Failer", "Succeeder"];
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
-        vm.date = "version 08/11/22";
+        vm.models = [];
+        vm.date = "version 08/26/22";
 
 
         vm.explanation = null;
@@ -68,12 +71,15 @@
         $scope.$on('$destroy', _destroy);
 
         function _activate() {
+            if (vm.models != []) {
+                GetModels();
+            }
+
             if (vm.evaluation == null && vm.explanation == null) {
                 _getJsonProperties();
             }
 
             vm.isEditor = vm.url.includes("id");
-
         }
 
         function _shortcut_projectclose(f) {
@@ -329,6 +335,19 @@
             return false;
         }
 
+        function GetModels() {
+            projectModel.getModelsRoot()
+                .then(function(x) {
+                    vm.models = x;
+                });
+        }
+
+        function GetIdModels() {
+            var RandomNumber = getRndInteger(0, Object.keys(vm.models).length - 1);
+            var resultado = Object.keys(vm.models)[RandomNumber];
+            return resultado;
+        }
+
         function RandomGenerate(DataInput, IndexSucces) {
 
             if (DataInput === undefined) {
@@ -348,6 +367,7 @@
                 var point = tree.view.getLocalPoint(0, 0);
                 //Select the root and add a newly created composites
                 var blockRoot = tree.blocks.getAll();
+                blockRoot[0].idModel = GetIdModels();
                 var blockComposites = tree.blocks.add("Sequence", point.x, point.y);
                 tree.connections.add(blockRoot[0], blockComposites);
                 //we add in a array the Composites that did not finish their journey
@@ -358,19 +378,40 @@
 
                         var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
                         for (var x = 0; x < NumeroAle; x++) {
-                            var p = getRndInteger(0, 1);
-                            //create a method evaluation or explanation
-                            // make sure they always have an explainer
 
+                            if (NumeroAle == 1 || x == NumeroAle - 1) {
+                                var p = 0;
+                            } else {
+                                var NumeroAle1 = getRndInteger(1, 3);
+                                var p = NumeroAle1;
+                            }
+
+                            //Create a method evaluation or explanation
+                            //Make sure they always have an explainer
                             var BlockConditions = tree.blocks.add(vm.NameNodes[p], point.x, point.y);
                             tree.connections.add(element, BlockConditions);
                             //define properties a method of evaluation or explanation
+
                             BlockConditions = PropertieSelect(p);
 
-
                             var s = tree.blocks.getSelected();
-                            tree.blocks.update(s[0], BlockConditions);
+
+                            if (vm.NameNodes[p] == "Explanation Method") {
+                                getParams(BlockConditions.title)
+                                    .then(function(x) {
+                                        var jsonParmsDefin = {};
+                                        Object.keys(x).forEach(resultJson => {
+                                            jsonParmsDefin[resultJson] = "";
+                                        });
+                                        BlockConditions.params = jsonParmsDefin;
+                                        tree.blocks.update(s[0], BlockConditions);
+                                    });
+
+                            } else {
+                                tree.blocks.update(s[0], BlockConditions);
+                            }
                         }
+
                         if ((depth - index) != 1) {
                             var NumeroAle1 = getRndInteger(1, subtrees);
                             var SubBlockComposites = null;
@@ -427,15 +468,21 @@
             var BlockCondition;
             switch (vm.NameNodes[IndexNameNodeNodes]) {
                 case "Explanation Method":
-                    var indexExplanation = getRndInteger(0, vm.explanation.length - 1);
+                    var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
                     BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
-                    break;
+                    return BlockCondition;
                 case "Evaluation Method":
+
                     var indexEvaluation = getRndInteger(0, vm.evaluation.length - 1);
                     BlockCondition = PropertiesCreate(vm.evaluation[indexEvaluation], "Evaluation Method");
-                    break;
+                    return BlockCondition;
+                case "Succeeder":
+                    BlockCondition = PropertiesCreate(vm.NameNodes[IndexNameNodeNodes], "Evaluation Method");
+                    return BlockCondition;
+                case "Failer":
+                    BlockCondition = PropertiesCreate(vm.NameNodes[IndexNameNodeNodes], "Evaluation Method");
+                    return BlockCondition;
             }
-            return BlockCondition;
         }
 
 
@@ -449,49 +496,28 @@
                 });
             }
             var BlockConditions = {
-                title: DataJson.value,
+                title: DataJson.value || DataJson,
                 properties: tine.merge({}, json),
                 description: DataJson.description
             };
-
-            if (NameNode == "Explanation Method") {
-                var propertiesExpl = {};
-                var ArrayNameProperties = Object.keys(DataJson);
-
-                for (var index = 0; index < ArrayNameProperties.length; index++) {
-                    switch (ArrayNameProperties[index]) {
-                        case "value":
-                            break;
-                        case "properties":
-                            break;
-                        case "description":
-                            break;
-                        case "id":
-                            break;
-                        case "$$hashKey":
-                            break;
-                        case "Concept":
-                            break;
-                        case "Instance":
-                            break;
-                        case "display":
-                            break;
-                        default:
-                            if (Array.isArray(DataJson[ArrayNameProperties[index]])) {
-
-                                propertiesExpl[ArrayNameProperties[index]] = DataJson[ArrayNameProperties[index]];
-                            } else {
-                                propertiesExpl[ArrayNameProperties[index]] = DataJson[ArrayNameProperties[index]];
-                            }
-
-                            break;
-                    }
-                }
-                BlockConditions.propertyExpl = tine.merge({}, BlockConditions.propertyExpl, propertiesExpl);
-
-            }
             return BlockConditions;
         }
+
+        function getParams(Explanation) {
+
+            return $q(function(resolve, reject) {
+                try {
+                    projectModel.getConditionsEvaluationEXP(Explanation)
+                        .then(function(x) {
+                            resolve(x.params);
+                        });
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+
 
         function getRndInteger(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -500,7 +526,7 @@
 
         function _getJsonProperties() {
             //Get the properties of the explain method and the evaluate method
-            projectModel.getConditionsExplanationMethod()
+            projectModel.getExplainers()
                 .then(function(x) {
                     vm.explanation = x;
                 });

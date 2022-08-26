@@ -38,7 +38,6 @@
             closeProject: closeProject,
             removeProject: removeProject,
             getConditionsEvaluationMethod: getConditionsEvaluationMethod,
-            getConditionsExplanationMethod: getConditionsExplanationMethod,
             getConditionsEvaluationEXP: getConditionsEvaluationEXP,
             getModelsRoot: getModelsRoot,
             PostModelId: PostModelId,
@@ -200,18 +199,6 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.loadEvaluation();
-                    resolve(data);
-                } catch (e) {
-
-                    reject(e);
-                }
-            });
-        }
-
-        function getConditionsExplanationMethod() {
-            return $q(function(resolve, reject) {
-                try {
-                    var data = storageService.loadExplanation();
                     resolve(data);
                 } catch (e) {
 
