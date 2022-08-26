@@ -108,6 +108,7 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         return tree._root;
     };
     this.update = function(block, template, merge) {
+
         var mustSave = !!template;
         var _oldValues = {
             name: block.name,

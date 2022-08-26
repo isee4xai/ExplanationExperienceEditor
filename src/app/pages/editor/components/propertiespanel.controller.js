@@ -30,6 +30,7 @@
         vm.Run = Run;
         vm.PopUpImg = PopUpImg;
         vm.PopUpImgClose = PopUpImgClose;
+        vm.GetInfoParam = GetInfoParam;
 
         vm.node = null;
         vm.explanation = null;
@@ -52,6 +53,7 @@
         vm.IdModel = {};
 
 
+        vm.datatooltipParam = "";
         vm.Imagen = "";
         vm.Json = {};
 
@@ -111,7 +113,7 @@
                     Json: vm.original.Json
                 };
 
-                if (vm.evaluation == null && vm.explanation == null) {
+                if (vm.evaluation == null) {
                     _getJsonProperties();
                 }
 
@@ -120,12 +122,17 @@
                 switch (vm.original.name) {
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
-                        vm.TitleSelect = vm.explanation;
+                        // vm.TitleSelect = vm.explanation;
+                        if (vm.original.title != "Explanation Method") {
+                            paramsExpValue(vm.original.title);
+                        }
+
                         if (vm.block.params) {
                             for (var property in vm.block.params) {
                                 vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
                             }
                         }
+
                         _getArrayExplainers();
                         AddListAllProperties();
                         break;
@@ -208,11 +215,8 @@
         }
 
         function _getJsonProperties() {
-            //Get the properties of the explain method and the evaluate method
-            projectModel.getConditionsExplanationMethod()
-                .then(function(x) {
-                    vm.explanation = x;
-                });
+            //Get the properties of the evaluate method
+
             projectModel.getConditionsEvaluationMethod()
                 .then(function(x) {
                     vm.evaluation = x;
@@ -338,6 +342,11 @@
             if (vm.original.name == "Explanation Method") {
                 var TitleSelect = option.substring(1);
                 var myArray = TitleSelect.split("/");
+                //
+                //
+                //  vm.TypeDataExp ?
+                //
+                //
                 vm.TypeDataExp = myArray[0];
                 paramsExp(option);
 
@@ -380,10 +389,8 @@
 
                 var key = r.key;
 
-                //if no me los guarda al selecionar un expla
-                //    if (vm.ArrayParams[i].value != "") {
                 jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
-                //    }
+
             }
             vm.block.params = jsonParam;
             update();
@@ -411,17 +418,28 @@
         function paramsExp(option) {
             projectModel.getConditionsEvaluationEXP(option)
                 .then(function(x) {
+                    vm.JsonParams = {};
                     vm.ArrayParams = [];
-                    for (var property in x) {
+                    vm.JsonParams = x.params;
+                    for (var property in x.params) {
                         vm.ArrayParams.push({ "key": property, "value": "", fixed: false });
                     }
                     change();
                 });
+        }
 
-
+        function paramsExpValue(option) {
+            vm.JsonParams = {};
+            projectModel.getConditionsEvaluationEXP(option)
+                .then(function(x) {
+                    vm.JsonParams = x.params;
+                });
         }
 
 
+        function GetInfoParam(Param) {
+            vm.datatooltipParam = vm.JsonParams[Param];
+        }
 
 
         function SelectTypeOfData(TypeData) {

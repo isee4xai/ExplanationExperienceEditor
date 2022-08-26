@@ -2,9 +2,11 @@ angular
     .module('app')
     .factory('storageService', storageService);
 
-storageService.$inject = ['$state', '$q', 'localStorageService', 'fileStorageService', '$http'];
+storageService.$inject = ['$state', '$q', 'localStorageService', 'fileStorageService', '$http',
+    'editorService'
+];
 
-function storageService($state, $q, localStorageService, fileStorageService, $http) {
+function storageService($state, $q, localStorageService, fileStorageService, $http, editorService) {
     var storage = (fileStorageService.ok ? fileStorageService : localStorageService);
 
     var service = {
@@ -17,7 +19,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         remove: remove,
         removeAsync: removeAsync,
         loadEvaluation: loadEvaluation,
-        loadExplanation: loadExplanation,
         loadExplanationExp: loadExplanationExp,
         loadModels: loadModels,
         PostModelIdLoadModel: PostModelIdLoadModel,
@@ -102,21 +103,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             }
         });
     }
-    /**
-     * get data from json server
-     * @returns data on Explanation method
-     */
-    function loadExplanation() {
-        return $q(function(resolve, reject) {
-            try {
-                $http.get(httpAddresExplanation).success(function(data) {
-                    resolve(data);
-                });
-            } catch (e) {
-                reject(e);
-            }
-        });
-    }
+
     /**
      * get data from json server
      * @returns data on Evaluation method
@@ -154,6 +141,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         var server_url = AddresExplanation;
         //We set the method from which we want to take the params
         var method_url = method;
+        /*
         var resp;
         try {
             resp = await axios.get(server_url + method_url);
@@ -162,7 +150,27 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         }
 
         return resp.data.params;
+
+        */
+        return $q(function(resolve, reject) {
+            try {
+                axios.get(server_url + method_url).then(function(response) {
+                    resolve(response.data);
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
         /*
+        return $q(function(resolve, reject) {
+            try {
+                axios.get(server_url + method_url).then(function(response) {
+                    resolve(response.data.Params);
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url + method_url).then(function(response) {
@@ -191,7 +199,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function PostModelIdLoadModel(ModelId, Quey, Image) {
         //We set the server URL, make sure it's the one in your machine.
-        var server_url = AddresQuery;
+        var server_url = settingsAddres.AddresQuery;
 
         var data = new FormData();
         data.append('id', ModelId);
