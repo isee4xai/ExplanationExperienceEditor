@@ -53,12 +53,15 @@
         vm.RandomGenerate = RandomGenerate;
         vm.RandomGenerate10 = RandomGenerate10;
         vm.NotificationSuccess = NotificationSuccess;
+        vm.addListPara = addListPara;
         vm.NameNodes = ["Explanation Method", "Evaluation Method", "Failer", "Succeeder"];
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 08/26/22";
+        vm.date = "version 08/29/22";
+
+        vm.ListaPara = {};
 
 
         vm.explanation = null;
@@ -80,6 +83,29 @@
             }
 
             vm.isEditor = vm.url.includes("id");
+
+
+        }
+
+
+        function addListPara() {
+            if (Object.keys(vm.ListaPara).length == 0) {
+                vm.explanation.forEach(element => {
+                    try {
+                        getParams(element)
+                            .then(function(x) {
+                                var jsonParmsDefin = {};
+                                Object.keys(x).forEach(resultJson => {
+                                    jsonParmsDefin[resultJson] = "";
+                                });
+                                vm.ListaPara[element] = jsonParmsDefin;
+                            });
+                    } catch (error) {
+                        console.log(error);
+                    }
+                });
+            }
+
         }
 
         function _shortcut_projectclose(f) {
@@ -396,20 +422,30 @@
 
                             var s = tree.blocks.getSelected();
 
+                            /*
                             if (vm.NameNodes[p] == "Explanation Method") {
-                                getParams(BlockConditions.title)
-                                    .then(function(x) {
-                                        var jsonParmsDefin = {};
-                                        Object.keys(x).forEach(resultJson => {
-                                            jsonParmsDefin[resultJson] = "";
-                                        });
-                                        BlockConditions.params = jsonParmsDefin;
-                                        tree.blocks.update(s[0], BlockConditions);
-                                    });
+                                  try {
+                                      getParams(BlockConditions.title)
+                                          .then(function(x) {
+                                              var jsonParmsDefin = {};
+                                              Object.keys(x).forEach(resultJson => {
+                                                  jsonParmsDefin[resultJson] = "";
+                                              });
+                                              BlockConditions.params = jsonParmsDefin;
+                                              tree.blocks.update(s[0], BlockConditions);
+                                          });
+                                  } catch (error) {
+                                      tree.blocks.update(s[0], BlockConditions);
+                                      console.log(error);
+                                  }
+                                  
 
+                                tree.blocks.update(s[0], BlockConditions);
                             } else {
                                 tree.blocks.update(s[0], BlockConditions);
                             }
+                            */
+                            tree.blocks.update(s[0], BlockConditions);
                         }
 
                         if ((depth - index) != 1) {
@@ -468,8 +504,13 @@
             var BlockCondition;
             switch (vm.NameNodes[IndexNameNodeNodes]) {
                 case "Explanation Method":
-                    var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
-                    BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
+                    if (vm.explanation != null) {
+                        var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
+                        BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
+                    } else {
+                        BlockCondition = PropertiesCreate("Explanation Method", "Explanation Method");
+                    }
+
                     return BlockCondition;
                 case "Evaluation Method":
 
@@ -495,11 +536,26 @@
                     json[element.key] = element.value;
                 });
             }
-            var BlockConditions = {
-                title: DataJson.value || DataJson,
-                properties: tine.merge({}, json),
-                description: DataJson.description
-            };
+
+
+            if (NameNode == "Explanation Method") {
+
+                var BlockConditions = {
+                    title: DataJson.value || DataJson,
+                    properties: tine.merge({}, json),
+                    description: DataJson.description,
+                    params: vm.ListaPara[DataJson] || {}
+                };
+            } else {
+                var BlockConditions = {
+                    title: DataJson.value || DataJson,
+                    properties: tine.merge({}, json),
+                    description: DataJson.description
+                };
+            }
+
+
+
             return BlockConditions;
         }
 

@@ -71,7 +71,10 @@
         // BODY //
         function _activate() {
             //get all models
-            GetModels();
+            if (vm.models.length == 0) {
+                GetModels();
+            }
+
 
         }
 

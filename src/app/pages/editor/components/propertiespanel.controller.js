@@ -123,7 +123,7 @@
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
                         // vm.TitleSelect = vm.explanation;
-                        if (vm.original.title != "Explanation Method") {
+                        if (vm.original.title != "Explanation Method" && vm.JsonParams == {}) {
                             paramsExpValue(vm.original.title);
                         }
 
@@ -132,8 +132,10 @@
                                 vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
                             }
                         }
+                        if (vm.Explainers == null) {
+                            _getArrayExplainers();
+                        }
 
-                        _getArrayExplainers();
                         AddListAllProperties();
                         break;
                     case "Evaluation Method":
