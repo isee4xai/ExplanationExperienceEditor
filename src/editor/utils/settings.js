@@ -63,18 +63,35 @@
         block_condition_height: 40,
 
         //ADDRESS
-        httpAddres: "http://localhost:3000/",
-        httpAddresExplanation: httpAddres + "Explanation",
-        httpAddresEvaluation: httpAddres + "Evaluation",
-        httpAddresProjects: httpAddres + "Projects",
-        httpAddresProjectsPath: httpAddres + "Projects?path=",
-        AddresExplanation: "http://192.168.1.145:5000/",
-        AddresModels: "http://192.168.1.145:4000/model_list",
-        AddresExplainerLibraries: "http://192.168.1.145:5000/",
-        AddresExplainerLibrariesGetIngJason: "http://192.168.1.145:5000",
-        AddresExplainers: "http://192.168.1.145:5000/Explainers",
-        AddresQuery: "http://192.168.1.145:4000/query",
+        httpAddresModels: "http://localhost:4000/",
+        httpAddresExplanations: "http://localhost:5000/",
+        httpAddresEvaluationsAndProject: "http://localhost:3000/",
+
+        /*
+        httpAddresEvaluation: httpAddresEvaluationsAndProject + "Evaluation",
+        httpAddresProjects: httpAddresEvaluationsAndProject + "Projects",
+        httpAddresProjectsPath: httpAddresEvaluationsAndProject + "Projects?path=",
+
+        //ADDRESS - Explanation
+        AddresExplainers: httpAddresExplanations + "Explainers",
+
+        //ADDRESS - Models
+        AddresModels: httpAddresModels + "model_list",
+        AddresQuery: httpAddresModels + "query"
+        */
     };
+
+    //ADDRESS - Evaluations And Project
+    DEFAULT_SETTINGS.httpAddresEvaluation = DEFAULT_SETTINGS.httpAddresEvaluationsAndProject + "Evaluation";
+    DEFAULT_SETTINGS.httpAddresProjects = DEFAULT_SETTINGS.httpAddresEvaluationsAndProject + "Projects";
+    DEFAULT_SETTINGS.httpAddresProjectsPath = DEFAULT_SETTINGS.httpAddresEvaluationsAndProject + "Projects?path=";
+
+    //ADDRESS - Explanation
+    DEFAULT_SETTINGS.AddresExplainers = DEFAULT_SETTINGS.httpAddresExplanations + "Explainers";
+
+    //ADDRESS - Models
+    DEFAULT_SETTINGS.AddresModels = DEFAULT_SETTINGS.httpAddresModels + "model_list";
+    DEFAULT_SETTINGS.AddresQuery = DEFAULT_SETTINGS.httpAddresModels + "query";
 
     b3e.DEFAULT_SETTINGS = DEFAULT_SETTINGS;
 })();

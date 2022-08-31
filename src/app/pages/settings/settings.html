@@ -142,10 +142,31 @@
 
             <h2>Address</h2>
 
+            <div class="form-group">
+                <label class="col-sm-3 control-label"></label>
+                <label class="col-sm-9 "><i>If addresses are updated, you must restart the editor <br>
+                  *Save the project if you won't lose it</i></label>
+
+            </div>
+
             <div class="form-group" ng-class="{'has-error':settingsForm.snap_x.$invalid}">
-                <label for="snap_x" class="col-sm-3 control-label">Models</label>
+                <label for="snap_x" class="col-sm-3 control-label">Models </label>
                 <div class="col-sm-9">
-                    <input type="url" class="form-control" name="httpAddres" ng-model="settings.settings.AddresModels" required>
+                    <input type="url" class="form-control" name="httpAddres" ng-model="settings.settings.httpAddresModels" required>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error':settingsForm.snap_x.$invalid}">
+                <label for="snap_x" class="col-sm-3 control-label">Explanation </label>
+                <div class="col-sm-9">
+                    <input type="url" class="form-control" name="httpAddres" ng-model="settings.settings.httpAddresExplanations" required>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error':settingsForm.snap_x.$invalid}">
+                <label for="snap_x" class="col-sm-3 control-label">Evaluation </label>
+                <div class="col-sm-9">
+                    <input type="url" class="form-control" name="httpAddres" ng-model="settings.settings.httpAddresEvaluationsAndProject" required>
                 </div>
             </div>
 

@@ -192,8 +192,12 @@
 
             var params = JSON.stringify(jsonParam);
 
+            document.getElementById("loader").style.display = "block";
+
+
             projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
                 .then(function(x) {
+                    document.getElementById("loader").style.display = "none";
                     if (x.hasOwnProperty('plot_png')) {
                         vm.block.Image = x.plot_png;
                         delete vm.block.Json;
@@ -209,6 +213,7 @@
                     button.disabled = false;
                     update();
                 }, function() {
+                    document.getElementById("loader").style.display = "none";
                     notificationService.error(
                         'Run not completed '
                     );

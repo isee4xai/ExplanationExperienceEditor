@@ -18,6 +18,10 @@
         // HEADER //
         var vm = this;
         vm.settings = {};
+        vm.httpAddresModels;
+        vm.httpAddresExplanations;
+        vm.httpAddresEvaluationsAndProject;
+
         vm.saveSettings = saveSettings;
         vm.resetSettings = resetSettings;
 
@@ -30,15 +34,27 @@
             settingsModel
                 .getSettings()
                 .then(function(settings) {
-                    console.log("----- cargar setings -------");
-                    console.log(settings);
                     vm.settings = settings;
+                    vm.httpAddresModels = settings.httpAddresModels;
+                    vm.httpAddresExplanations = settings.httpAddresExplanations;
+                    vm.httpAddresEvaluationsAndProject = settings.httpAddresEvaluationsAndProject;
                 });
         }
 
         function saveSettings() {
-            console.log("se guarda ");
-            console.log(vm.settings);
+
+            if (vm.httpAddresEvaluationsAndProject != vm.settings.httpAddresEvaluationsAndProject ||
+                vm.httpAddresExplanations != vm.settings.httpAddresExplanations ||
+                vm.httpAddresModels != vm.settings.httpAddresModels) {
+
+                vm.settings.httpAddresEvaluation = vm.settings.httpAddresEvaluationsAndProject + "Evaluation";
+                vm.settings.httpAddresProjects = vm.settings.httpAddresEvaluationsAndProject + "Projects";
+                vm.settings.httpAddresProjectsPath = vm.settings.httpAddresEvaluationsAndProject + "Projects?path=";
+                vm.settings.AddresExplainers = vm.settings.httpAddresExplanations + "Explainers";
+                vm.settings.AddresModels = vm.settings.httpAddresModels + "model_list";
+                vm.settings.AddresQuery = vm.settings.httpAddresModels + "query";
+            }
+
             settingsModel
                 .saveSettings(vm.settings)
                 .then(function() {
@@ -46,6 +62,7 @@
                         'Settings saved',
                         'The editor settings has been updated.'
                     );
+                    _activate();
                 });
         }
 

@@ -3,11 +3,14 @@ angular
     .factory('storageService', storageService);
 
 storageService.$inject = ['$state', '$q', 'localStorageService', 'fileStorageService', '$http',
-    'editorService'
+    'editorService', 'systemService'
 ];
 
-function storageService($state, $q, localStorageService, fileStorageService, $http, editorService) {
+function storageService($state, $q, localStorageService, fileStorageService, $http, editorService, systemService) {
     var storage = (fileStorageService.ok ? fileStorageService : localStorageService);
+
+    var settingsPath = systemService.join(systemService.getDataPath(), 'settings.json');
+    var SettingsAddres = load(settingsPath);
 
     var service = {
         save: save,
@@ -43,10 +46,10 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             data.date = dateTime;
 
             //save project in json server 
-            $http.get(httpAddresProjectsPath + path).success(function(dataJson) {
+            $http.get(SettingsAddres.httpAddresProjectsPath + path).success(function(dataJson) {
                 //update data on the server json if it already exists otherwise it is saved as a new json with a new id
                 if (dataJson.length != 0) {
-                    fetch(httpAddresProjects + '/' + dataJson[0].id, {
+                    fetch(SettingsAddres.httpAddresProjects + '/' + dataJson[0].id, {
                             method: 'PATCH',
                             body: JSON.stringify(data),
                             headers: {
@@ -88,7 +91,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         return $q(function(resolve, reject) {
             try {
                 var data;
-                $http.get(httpAddresProjects + '/' + id).then(function(dataJson) {
+                $http.get(SettingsAddres.httpAddresProjects + '/' + id).then(function(dataJson) {
                     storage.save(dataJson.data.path, dataJson.data);
                     data = storage.load(dataJson.data.path);
                     resolve(dataJson.data);
@@ -111,7 +114,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     function loadEvaluation() {
         return $q(function(resolve, reject) {
             try {
-                $http.get(httpAddresEvaluation).success(function(data) {
+                $http.get(SettingsAddres.httpAddresEvaluation).success(function(data) {
                     resolve(data);
                 });
             } catch (e) {
@@ -123,7 +126,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function loadExplainers() {
         //We set the server URL, make sure it's the one in your machine.
-        var server_url = AddresExplainers;
+        var server_url = SettingsAddres.AddresExplainers;
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url).then(function(response) {
@@ -138,20 +141,10 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     async function loadExplanationExp(method) {
         //We set the server URL, make sure it's the one in your machine.
-        var server_url = AddresExplanation;
+        var server_url = SettingsAddres.httpAddresExplanations;
         //We set the method from which we want to take the params
         var method_url = method;
-        /*
-        var resp;
-        try {
-            resp = await axios.get(server_url + method_url);
-        } catch (error) {
-            console.log(error);
-        }
 
-        return resp.data.params;
-
-        */
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url + method_url).then(function(response) {
@@ -185,7 +178,10 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function loadModels() {
         //We set the server URL, make sure it's the one in your machine.
-        var server_url = AddresModels;
+        var server_url = SettingsAddres.AddresModels;
+        console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+        console.log(SettingsAddres);
+        console.log(server_url);
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url).then(function(response) {
@@ -199,7 +195,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function PostModelIdLoadModel(ModelId, Quey, Image) {
         //We set the server URL, make sure it's the one in your machine.
-        var server_url = settingsAddres.AddresQuery;
+        var server_url = SettingsAddres.AddresQuery;
 
         var data = new FormData();
         data.append('id', ModelId);
@@ -238,7 +234,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function GetQuery(Id, QueyId, imagefile) {
         //We set the server URL, make sure it's the one in your machine.
-        var server_url = AddresQuery;
+        var server_url = SettingsAddres.AddresQuery;
 
         var url = server_url + "?query_id=" + QueyId + "&id=" + Id;
 
@@ -267,7 +263,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function PostExplainers(Model, Params, Instance) {
         //We set the server URL, make sure it's the one in your machine.
-        var server_url = AddresExplainerLibrariesGetIngJason + Instance;
+        var server_url = SettingsAddres.httpAddresExplanations + Instance;
 
         var data = new FormData();
         data.append('id', Model.idModel);
