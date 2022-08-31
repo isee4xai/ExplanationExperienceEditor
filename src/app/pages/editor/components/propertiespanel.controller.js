@@ -49,7 +49,6 @@
 
         vm.ArrayParams = [];
         vm.JsonParams = {};
-        vm.TypeDataExp = "";
         vm.IdModel = {};
 
 
@@ -123,7 +122,7 @@
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
                         // vm.TitleSelect = vm.explanation;
-                        if (vm.original.title != "Explanation Method" && vm.JsonParams == {}) {
+                        if (vm.original.title != "Explanation Method" && Object.keys(vm.JsonParams).length == 0) {
                             paramsExpValue(vm.original.title);
                         }
 
@@ -347,14 +346,6 @@
 
         function UpdateProperties(option) {
             if (vm.original.name == "Explanation Method") {
-                var TitleSelect = option.substring(1);
-                var myArray = TitleSelect.split("/");
-                //
-                //
-                //  vm.TypeDataExp ?
-                //
-                //
-                vm.TypeDataExp = myArray[0];
                 paramsExp(option);
 
             }
@@ -445,7 +436,10 @@
 
 
         function GetInfoParam(Param) {
+
             vm.datatooltipParam = vm.JsonParams[Param];
+
+
         }
 
 

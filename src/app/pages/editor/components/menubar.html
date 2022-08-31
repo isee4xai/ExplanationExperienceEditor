@@ -147,13 +147,13 @@
                 </ul>
             </li>
 
-            <li><a ng-mouseover="menubar.addListPara()">Random generator</a>
+            <li><a>Random generator</a>
                 <ul>
                     <li>
                         <a>Min siblings </a>
-                        <input class="form-control" id="inputMin" type="number" ng-model="Random.MinSlibings" min="0" />
+                        <input class="form-control" id="inputMin" type="number" ng-model="Random.MinSlibings" min="0" ng-mouseover="menubar.addListPara()" />
                         <a>Max siblings </a>
-                        <input class="form-control" id="inputMax" type="number" ng-model="Random.MaxSlibings" max="200" />
+                        <input class="form-control" id="inputMax" type="number" ng-model="Random.MaxSlibings" max="20" />
                         <a>Max subtrees </a>
                         <input class="form-control" id="inputMax" type="number" ng-model="Random.subtrees" min="0" />
                         <a>Depth </a>

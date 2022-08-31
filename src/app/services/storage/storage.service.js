@@ -58,7 +58,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                         })
                         .then((response) => response.json());
                 } else {
-                    fetch(httpAddresProjects, {
+                    fetch(SettingsAddres.httpAddresProjects, {
                             method: 'POST',
                             body: JSON.stringify(data),
                             headers: {
@@ -179,9 +179,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     function loadModels() {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.AddresModels;
-        console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
-        console.log(SettingsAddres);
-        console.log(server_url);
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url).then(function(response) {
