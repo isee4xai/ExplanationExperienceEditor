@@ -108,6 +108,11 @@
                 <button id="ButtonRun" type="button" ng-click="propertiespanel.Run()">Run</button>
             </div>
 
+            <div id="loader" style="display: none;">
+                <div class="spinner"></div>
+                <div class="txt">loading Explainer</div>
+            </div>
+
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <div class="form-group" ng-if="propertiespanel.block.Json != undefined">
                     <textarea name="json" rows="4" class="form-control" ng-model="propertiespanel.block.Json" disabled>
@@ -118,6 +123,7 @@
                     <img src="{{propertiespanel.block.Image}}" alt="Imagen" ng-click="propertiespanel.PopUpImg(propertiespanel.block.Image)">
                 </div>
             </div>
+
 
             <div id="myModal" class="modal">
                 <div id="contenedor" class="p-8 bg-light border">

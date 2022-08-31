@@ -44,7 +44,6 @@
         vm.add = add;
         vm.ConditionProperties = ["equals", "not-equals", "less", "greater"];
         vm.Condition = false;
-        vm.cond = "Ss";
         vm.remove = remove;
         vm.change = change;
         vm.reset = reset;

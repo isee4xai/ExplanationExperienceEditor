@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 08/29/22";
+        vm.date = "version 08/31/22";
 
         vm.ListaPara = {};
 
@@ -422,29 +422,6 @@
 
                             var s = tree.blocks.getSelected();
 
-                            /*
-                            if (vm.NameNodes[p] == "Explanation Method") {
-                                  try {
-                                      getParams(BlockConditions.title)
-                                          .then(function(x) {
-                                              var jsonParmsDefin = {};
-                                              Object.keys(x).forEach(resultJson => {
-                                                  jsonParmsDefin[resultJson] = "";
-                                              });
-                                              BlockConditions.params = jsonParmsDefin;
-                                              tree.blocks.update(s[0], BlockConditions);
-                                          });
-                                  } catch (error) {
-                                      tree.blocks.update(s[0], BlockConditions);
-                                      console.log(error);
-                                  }
-                                  
-
-                                tree.blocks.update(s[0], BlockConditions);
-                            } else {
-                                tree.blocks.update(s[0], BlockConditions);
-                            }
-                            */
                             tree.blocks.update(s[0], BlockConditions);
                         }
 
