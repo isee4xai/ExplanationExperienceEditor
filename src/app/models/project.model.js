@@ -161,7 +161,6 @@
                     storageService
                         .loadProjectId(id)
                         .then(function(json) {
-
                             editorService.openProject(json.data);
                             _setProject(json);
                             resolve(json.data);
