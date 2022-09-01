@@ -1,82 +1,76 @@
 {
-  "Projects": [
-    {
-      "name": "proj",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
-        "trees": [
-          {
+    "Projects": [{
+        "name": "proj",
+        "description": "",
+        "data": {
             "version": "0.1.0",
-            "scope": "tree",
-            "id": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
-            "Instance": "Explanation Experience",
-            "description": "",
-            "root": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
-            "properties": {},
-            "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
-            "idModel": "PSYCHOLOGY",
-            "query_id": "8NLUJF9L4K",
-            "nodes": {
-              "3afcdee1-7a92-4467-873a-aa2ae8d49f8e": {
-                "id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
-                "Concept": "Explanation Method",
-                "Instance": "/Tabular/Anchors",
+            "scope": "project",
+            "selectedTree": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
+            "trees": [{
+                "version": "0.1.0",
+                "scope": "tree",
+                "id": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
+                "Instance": "Explanation Experience",
                 "description": "",
+                "root": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
                 "properties": {},
+                "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
+                "idModel": "PSYCHOLOGY",
+                "query_id": "8NLUJF9L4K",
+                "nodes": {
+                    "3afcdee1-7a92-4467-873a-aa2ae8d49f8e": {
+                        "id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
+                        "Concept": "Explanation Method",
+                        "Instance": "/Tabular/Anchors",
+                        "description": "",
+                        "properties": {},
+                        "display": {
+                            "x": -12,
+                            "y": 84
+                        },
+                        "params": {
+                            "threshold": ""
+                        },
+                        "Json": "{\"anchor\":\"97. People who commit crimes have their reasons for doing it > 0.00 AND 56. I manage my schedule as I always have <= 0.00 AND 13. I felt more encouraged to do my daily activities before > 0.00 AND 2. I don't feel like doing my daily duties <= 0.00\",\"precision\":1,\"coverage\":0.028985507246376812}"
+                    }
+                },
                 "display": {
-                  "x": -12,
-                  "y": 84
+                    "camera_x": 428.5,
+                    "camera_y": 365,
+                    "camera_z": 1,
+                    "x": -36,
+                    "y": -144
+                }
+            }],
+            "custom_nodes": []
+        },
+        "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
+        "date": "2022-9-1 12:23:40",
+        "id": 1
+    }],
+    "Evaluation": [{
+            "value": "Evaluation method 1",
+            "description": "Description Evaluation method 1",
+            "properties": [{
+                    "key": "Key 1",
+                    "value": "Value 1"
                 },
-                "params": {
-                  "threshold": ""
+                {
+                    "key": "Key 2",
+                    "value": "Value 2"
                 },
-                "Json": "{\"anchor\":\"97. People who commit crimes have their reasons for doing it > 0.00 AND 56. I manage my schedule as I always have <= 0.00 AND 13. I felt more encouraged to do my daily activities before > 0.00 AND 2. I don't feel like doing my daily duties <= 0.00\",\"precision\":1,\"coverage\":0.028985507246376812}"
-              }
-            },
-            "display": {
-              "camera_x": 428.5,
-              "camera_y": 365,
-              "camera_z": 1,
-              "x": -36,
-              "y": -144
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
-      "date": "2022-8-31 12:22:25",
-      "id": 1
-    }
-  ],
-  "Evaluation": [
-    {
-      "value": "Evaluation method 1",
-      "description": "Description Evaluation method 1",
-      "properties": [
-        {
-          "key": "Key 1",
-          "value": "Value 1"
+                {
+                    "key": "Key 3",
+                    "value": "Value 3"
+                }
+            ],
+            "id": 1
         },
         {
-          "key": "Key 2",
-          "value": "Value 2"
-        },
-        {
-          "key": "Key 3",
-          "value": "Value 3"
+            "value": "Evaluation method 2",
+            "description": "Description Evaluation method 2",
+            "properties": [],
+            "id": 2
         }
-      ],
-      "id": 1
-    },
-    {
-      "value": "Evaluation method 2",
-      "description": "Description Evaluation method 2",
-      "properties": [],
-      "id": 2
-    }
-  ]
+    ]
 }
