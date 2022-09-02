@@ -108,9 +108,9 @@
                 <button id="ButtonRun" type="button" ng-click="propertiespanel.Run()">Run</button>
             </div>
 
-            <div id="loader" style="display: none;">
+            <div id="loader" style="display: none;" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <div class="spinner"></div>
-                <div class="txt">loading Explainer</div>
+                <div class="txt">loading 1 Explainer</div>
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
