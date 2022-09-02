@@ -14,9 +14,10 @@ angular.module('app', [
     }
 ])
 
-.run(['$state', '$window', '$animate', '$location', '$document', '$timeout', 'settingsModel', 'projectModel', 'editorService',
+.run(['$state', '$window', 'dialogService', '$animate', '$location', '$document', '$timeout', 'settingsModel', 'projectModel', 'editorService',
     function Execute($state,
         $window,
+        dialogService,
         $animate,
         $location,
         $document,
@@ -58,6 +59,14 @@ angular.module('app', [
                     }, 500);
                 }
 
+                function _newProject(path, name) {
+                    projectModel
+                        .newProject(path, name)
+                        .then(function() {
+                            $state.go('editor');
+                        });
+                }
+
                 if (projects.length > 0 && projects[0].isOpen) {
                     projectModel
                         .openProject(projects[0].path)
@@ -67,8 +76,28 @@ angular.module('app', [
 
                 } else {
 
-                    closePreload();
+                    var nameProject = "Project 1";
+                    projectModel
+                        .getRecentProjects()
+                        .then(function(recents) {
+                            if (recents.length == 0) {
+                                var path = 'b3projects-' + b3.createUUID();
+                                _newProject(path, nameProject);
+
+                                projectModel
+                                    .openProject(path)
+                                    .then(function() {
+                                        closePreload();
+                                        location.reload();
+                                    });
+
+                            }
+                        });
+
+
                 }
             });
+
+
     }
 ]);

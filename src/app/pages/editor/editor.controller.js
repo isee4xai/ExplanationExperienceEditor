@@ -25,6 +25,7 @@ function EditorController($state, $location, projectModel, dialogService, system
     function _activate() {
         //if we pass an id to the editor we open the project
         if (url == "editor" || url == "") {
+            /*
             projectModel
                 .getRecentProjects()
                 .then(function(recents) {
@@ -56,7 +57,7 @@ function EditorController($state, $location, projectModel, dialogService, system
                                 location.reload();
                             });
                     }
-                });
+                });*/
 
         } else if (Id == "" || onlyNumbers) {
             $state.go('id.error');
