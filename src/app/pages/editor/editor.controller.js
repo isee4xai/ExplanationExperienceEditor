@@ -53,7 +53,7 @@ function EditorController($state, $location, projectModel, dialogService, system
                                     var path = 'b3projects-' + b3.createUUID();
                                     _newProject(path, name);
                                 }
-                                window.location.reload();
+                                location.reload();
                             });
                     }
                 });
@@ -74,7 +74,7 @@ function EditorController($state, $location, projectModel, dialogService, system
                 .getRecentProjects()
                 .then(function(recents) {
                     if (recents.length == 0) {
-                        window.location.reload();
+                        location.reload();
                     }
                 });
         }
