@@ -1,337 +1,76 @@
 {
-  "Projects": [
-    {
-      "name": "proj",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
-        "trees": [
-          {
+    "Projects": [{
+        "name": "proj",
+        "description": "",
+        "data": {
             "version": "0.1.0",
-            "scope": "tree",
-            "id": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
-            "Instance": "Explanation Experience",
-            "description": "",
-            "root": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
-            "properties": {},
-            "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
-            "idModel": "PSYCHOLOGY",
-            "query_id": "8NLUJF9L4K",
-            "nodes": {
-              "3afcdee1-7a92-4467-873a-aa2ae8d49f8e": {
-                "id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
-                "Concept": "Explanation Method",
-                "Instance": "/Tabular/Anchors",
+            "scope": "project",
+            "selectedTree": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
+            "trees": [{
+                "version": "0.1.0",
+                "scope": "tree",
+                "id": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
+                "Instance": "Explanation Experience",
                 "description": "",
+                "root": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
                 "properties": {},
-                "display": {
-                  "x": -12,
-                  "y": 84
-                },
-                "params": {
-                  "threshold": ""
-                },
-                "Json": "{\"anchor\":\"97. People who commit crimes have their reasons for doing it > 0.00 AND 56. I manage my schedule as I always have <= 0.00 AND 13. I felt more encouraged to do my daily activities before > 0.00 AND 2. I don't feel like doing my daily duties <= 0.00\",\"precision\":1,\"coverage\":0.028985507246376812}"
-              }
-            },
-            "display": {
-              "camera_x": 428.5,
-              "camera_y": 365,
-              "camera_z": 1,
-              "x": -36,
-              "y": -144
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
-      "date": "2022-9-1 12:23:40",
-      "id": 1
-    },
-    {
-      "name": "Project 1",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "52b14d13-9873-4bc8-8467-abec9a529671",
-        "trees": [
-          {
-            "version": "0.1.0",
-            "scope": "tree",
-            "id": "52b14d13-9873-4bc8-8467-abec9a529671",
-            "Instance": "Explanation Experience",
-            "description": "",
-            "root": null,
-            "properties": {},
-            "idModel": "ANIMALS000",
-            "nodes": {
-              "185a67b2-0a7d-41d5-8cf9-69f33cbb1dc3": {
-                "id": "185a67b2-0a7d-41d5-8cf9-69f33cbb1dc3",
-                "Concept": "Explanation Method",
-                "Instance": "Explanation Method",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": -228,
-                  "y": -168
-                }
-              },
-              "20cebb68-a3ec-44ce-bddd-86bdf76e192a": {
-                "id": "20cebb68-a3ec-44ce-bddd-86bdf76e192a",
-                "Concept": "Evaluation Method",
-                "Instance": "Evaluation method 1",
-                "description": "Description Evaluation method 1",
-                "properties": {
-                  "Key 1": "Value 1",
-                  "Key 2": "Value 2",
-                  "Key 3": "Value 3"
-                },
-                "display": {
-                  "x": 108,
-                  "y": -132
-                }
-              }
-            },
-            "display": {
-              "camera_x": 558.7000000476837,
-              "camera_y": 365,
-              "camera_z": 1,
-              "x": 0,
-              "y": 0
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-32d6d14c-311b-4421-8457-2e2f51b5b26e",
-      "date": "2022-9-2 14:39:52",
-      "id": 2
-    },
-    {
-      "name": "fdsfsdf",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "06433310-7217-4672-9baa-c1b1b79c029e",
-        "trees": [
-          {
-            "version": "0.1.0",
-            "scope": "tree",
-            "id": "b7d110ba-38d1-4a0a-8c5f-cf40f4910ee2",
-            "Instance": "Explanation Experience",
-            "description": "",
-            "root": null,
-            "properties": {},
-            "nodes": {
-              "f66723f2-525e-4c2c-8567-1c986253e0ee": {
-                "id": "f66723f2-525e-4c2c-8567-1c986253e0ee",
-                "Concept": "Explanation Method",
-                "Instance": "Explanation Method",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 96,
-                  "y": -168
-                }
-              },
-              "0778f14d-8fbc-40f5-9245-ef51a66f50b3": {
-                "id": "0778f14d-8fbc-40f5-9245-ef51a66f50b3",
-                "Concept": "Evaluation Method",
-                "Instance": "Evaluation Method",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 72,
-                  "y": -108
-                }
-              }
-            },
-            "display": {
-              "camera_x": 350.5,
-              "camera_y": 365,
-              "camera_z": 1,
-              "x": 0,
-              "y": 0
-            }
-          },
-          {
-            "version": "0.1.0",
-            "scope": "tree",
-            "id": "06433310-7217-4672-9baa-c1b1b79c029e",
-            "Instance": "Explanation Experience",
-            "description": "",
-            "root": "4d5e95a0-0720-4779-8e9f-1bcd74544540",
-            "properties": {},
-            "idModel": "TITANICTFW",
-            "nodes": {
-              "4d5e95a0-0720-4779-8e9f-1bcd74544540": {
-                "id": "4d5e95a0-0720-4779-8e9f-1bcd74544540",
-                "Concept": "Sequence",
-                "Instance": "Sequence",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 0,
-                  "y": 120
-                },
-                "firstChild": {
-                  "Id": "7e46ffc3-2c0b-4acc-8fbe-1113edf75bf7",
-                  "Next": {
-                    "Id": "239dc285-1151-4410-a7e9-9935bc6efb06",
-                    "Next": {
-                      "Id": "b4a9328c-5270-4f86-96b6-6ba9f3d03963",
-                      "Next": null
+                "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
+                "idModel": "PSYCHOLOGY",
+                "query_id": "8NLUJF9L4K",
+                "nodes": {
+                    "3afcdee1-7a92-4467-873a-aa2ae8d49f8e": {
+                        "id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
+                        "Concept": "Explanation Method",
+                        "Instance": "/Tabular/Anchors",
+                        "description": "",
+                        "properties": {},
+                        "display": {
+                            "x": -12,
+                            "y": 84
+                        },
+                        "params": {
+                            "threshold": ""
+                        },
+                        "Json": "{\"anchor\":\"97. People who commit crimes have their reasons for doing it > 0.00 AND 56. I manage my schedule as I always have <= 0.00 AND 13. I felt more encouraged to do my daily activities before > 0.00 AND 2. I don't feel like doing my daily duties <= 0.00\",\"precision\":1,\"coverage\":0.028985507246376812}"
                     }
-                  }
-                }
-              },
-              "7e46ffc3-2c0b-4acc-8fbe-1113edf75bf7": {
-                "id": "7e46ffc3-2c0b-4acc-8fbe-1113edf75bf7",
-                "Concept": "Failer",
-                "Instance": "Failer",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": -216,
-                  "y": 252
-                }
-              },
-              "239dc285-1151-4410-a7e9-9935bc6efb06": {
-                "id": "239dc285-1151-4410-a7e9-9935bc6efb06",
-                "Concept": "Explanation Method",
-                "Instance": "/Images/GradCamTorch",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 0,
-                  "y": 252
                 },
-                "params": {
-                  "target_layer_index": "",
-                  "target_class": "",
-                  "aug_smooth": ""
-                }
-              },
-              "b4a9328c-5270-4f86-96b6-6ba9f3d03963": {
-                "id": "b4a9328c-5270-4f86-96b6-6ba9f3d03963",
-                "Concept": "Sequence",
-                "Instance": "Sequence",
-                "description": "",
-                "properties": {},
                 "display": {
-                  "x": 204,
-                  "y": 252
+                    "camera_x": 428.5,
+                    "camera_y": 365,
+                    "camera_z": 1,
+                    "x": -36,
+                    "y": -144
+                }
+            }],
+            "custom_nodes": []
+        },
+        "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
+        "date": "2022-9-1 12:23:40",
+        "id": 1
+    }],
+    "Evaluation": [{
+            "value": "Evaluation method 1",
+            "description": "Description Evaluation method 1",
+            "properties": [{
+                    "key": "Key 1",
+                    "value": "Value 1"
                 },
-                "firstChild": {
-                  "Id": "105917a0-d3a7-42b8-aee8-613639633461",
-                  "Next": null
-                }
-              },
-              "105917a0-d3a7-42b8-aee8-613639633461": {
-                "id": "105917a0-d3a7-42b8-aee8-613639633461",
-                "Concept": "Explanation Method",
-                "Instance": "/Tabular/TreeSHAPGlobal",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 204,
-                  "y": 384
+                {
+                    "key": "Key 2",
+                    "value": "Value 2"
                 },
-                "params": {
-                  "output_index": ""
+                {
+                    "key": "Key 3",
+                    "value": "Value 3"
                 }
-              }
-            },
-            "display": {
-              "camera_x": 477.89999985694885,
-              "camera_y": 146,
-              "camera_z": 1,
-              "x": 0,
-              "y": 0
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-41cf85d0-7e08-4b14-8a62-4fcd6fe6f532",
-      "date": "2022-9-2 14:39:58",
-      "id": 3
-    },
-    {
-      "name": "Project 1",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "4daf2678-421c-4f17-8f0c-b6cafd028d79",
-        "trees": [
-          {
-            "version": "0.1.0",
-            "scope": "tree",
-            "id": "4daf2678-421c-4f17-8f0c-b6cafd028d79",
-            "Instance": "Explanation Experience",
-            "description": "",
-            "root": null,
-            "properties": {},
-            "nodes": {
-              "88c2d7b3-e023-4d58-8856-f5d148520e10": {
-                "id": "88c2d7b3-e023-4d58-8856-f5d148520e10",
-                "Concept": "Evaluation Method",
-                "Instance": "Evaluation Method",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 24,
-                  "y": -120
-                }
-              }
-            },
-            "display": {
-              "camera_x": 443,
-              "camera_y": 365,
-              "camera_z": 1,
-              "x": 0,
-              "y": 0
-            }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-86df86b0-0cdf-4ddd-b46d-50799ad87e79",
-      "date": "2022-9-2 14:58:7",
-      "id": 4
-    }
-  ],
-  "Evaluation": [
-    {
-      "value": "Evaluation method 1",
-      "description": "Description Evaluation method 1",
-      "properties": [
-        {
-          "key": "Key 1",
-          "value": "Value 1"
+            ],
+            "id": 1
         },
         {
-          "key": "Key 2",
-          "value": "Value 2"
-        },
-        {
-          "key": "Key 3",
-          "value": "Value 3"
+            "value": "Evaluation method 2",
+            "description": "Description Evaluation method 2",
+            "properties": [],
+            "id": 2
         }
-      ],
-      "id": 1
-    },
-    {
-      "value": "Evaluation method 2",
-      "description": "Description Evaluation method 2",
-      "properties": [],
-      "id": 2
-    }
-  ]
+    ]
 }

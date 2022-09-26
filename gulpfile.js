@@ -196,7 +196,7 @@ gulp.task('_app_build', [
 // TASKS (LIVE RELOAD) ========================================================
 gulp.task('_livereload', function() {
     connect.server({
-        livereload: true,
+        livereload: false,
         root: 'build',
         port: 8000,
     });
