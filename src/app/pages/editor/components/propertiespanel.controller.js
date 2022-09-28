@@ -31,6 +31,7 @@
         vm.PopUpImg = PopUpImg;
         vm.PopUpImgClose = PopUpImgClose;
         vm.GetInfoParam = GetInfoParam;
+        vm.RunBt = RunBt;
 
         vm.node = null;
         vm.explanation = null;
@@ -50,11 +51,16 @@
         vm.ArrayParams = [];
         vm.JsonParams = {};
         vm.IdModel = {};
+        vm.jsonData = {};
 
 
         vm.datatooltipParam = "";
         vm.Imagen = "";
         vm.Json = {};
+
+        var root;
+        var modelid;
+        var exp_instance;
 
         _create();
         _activate();
@@ -192,7 +198,6 @@
             var params = JSON.stringify(jsonParam);
 
             document.getElementById("loader").style.display = "block";
-
 
             projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
                 .then(function(x) {
@@ -436,10 +441,7 @@
 
 
         function GetInfoParam(Param) {
-
             vm.datatooltipParam = vm.JsonParams[Param];
-
-
         }
 
 
@@ -469,6 +471,136 @@
                 vm.AllProperties[estaEnLaLista].description = vm.block.description;
                 vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
             }
+        }
+
+        function RunBt() {
+            vm.jsonData = projectModel.runBT();
+            root = vm.jsonData.root;
+            modelid = vm.jsonData.idModel;
+            exp_instance = vm.jsonData.query;
+
+            runNode(root);
+        }
+
+        async function runNode(id) {
+
+            switch (vm.jsonData.nodes[id].Concept) {
+                case "Sequence":
+                    return await sequence(vm.jsonData.nodes[id]);
+                case "Priority":
+                    return await priority(vm.jsonData.nodes[id]);
+                case "Failer":
+                    return await failer(vm.jsonData.nodes[id]);
+                case "Succeeder":
+                    return await succeeder(vm.jsonData.nodes[id]);
+                case "Explanation Method":
+                    return await explanationMethod(vm.jsonData.nodes[id]);
+                case "Evaluation Method":
+                    return await evaluationMethod(vm.jsonData.nodes[id]);
+                case "Repeater":
+                    return await repeater(vm.jsonData.nodes[id]);
+                case "RepeatUntilFailure":
+                    return await repeatUntilFailure(vm.jsonData.nodes[id]);
+                case "RepeatUntilSuccess":
+                    return await repeatUntilSuccess(vm.jsonData.nodes[id]);
+                case "Inverter":
+                    return await inverter(vm.jsonData.nodes[id]);
+                default:
+                    break;
+            }
+        }
+
+        async function sequence(node) {
+            let child = node.firstChild;
+            do {
+                if (!(await runNode(child.Id))) {
+                    return false;
+                }
+                child = child.Next;
+            } while (child != null);
+            return true;
+        }
+
+        async function priority(node) {
+            let child = node.firstChild;
+            do {
+                if (await runNode(child.Id)) {
+                    return true;
+                }
+                child = child.Next;
+            } while (child != null);
+            return false;
+        }
+
+        async function failer(node) {
+            return false;
+        }
+
+        async function succeeder(node) {
+            return true;
+        }
+
+        async function explanationMethod(node) {
+            // await post_request(node);
+            var Model = {
+                idModel: modelid,
+                query: exp_instance
+            }
+
+            var p = $window.editor.project.get();
+            var t = p.trees.getSelected();
+            var ExpBlock = t.blocks.get(node.id);
+
+
+            return projectModel.PostExplainerLibraries(Model, JSON.stringify(node.params), node.Instance)
+                .then(function(response) {
+
+                    var ExpBlockEdit = {
+                        Json: JSON.stringify(response)
+                    };
+                    t.blocks.update(ExpBlock, ExpBlockEdit);
+                    return true;
+                })
+                .catch(function(error) {
+                    return false;
+                });
+        }
+
+        async function evaluationMethod(node) {
+            //Lanzar ventada de desea continuar o no, si dice que no devuelve False, en caso contrario true
+            //The return value should depend on the return value of the evaluation method
+            return dialogService
+                .continueBt('Continue execution of the editor?', null)
+                .then(function(name) {
+                    if (name !== false) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+        }
+
+        async function repeater(node) {
+            for (var i = 0; i < node.properties.maxLoop; i++) {
+                if (!(await runNode(node.firstChild.Id))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        async function repeatUntilFailure(node) {
+            while (await runNode(node.firstChild.Id));
+            return true;
+        }
+
+        async function repeatUntilSuccess(node) {
+            while (!(await runNode(node.firstChild.Id)));
+            return true;
+        }
+
+        async function inverter(node) {
+            return !(await runNode(node.firstChild.Id));
         }
 
     }

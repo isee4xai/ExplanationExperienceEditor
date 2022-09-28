@@ -194,15 +194,13 @@ gulp.task('_app_build', [
 
 
 // TASKS (LIVE RELOAD) ========================================================
-gulp.task('_livereload', function() {
+
+
+gulp.task('_watch', function() {
     connect.server({
-        livereload: false,
         root: 'build',
         port: 8000,
     });
-});
-
-gulp.task('_watch', ['_livereload'], function() {
     gulp.watch(preload_js, ['_preload_js']);
     gulp.watch(preload_css, ['_preload_css']);
     gulp.watch(app_js, ['_app_js_dev']);

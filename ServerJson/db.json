@@ -1,76 +1,191 @@
 {
-    "Projects": [{
-        "name": "proj",
-        "description": "",
-        "data": {
+  "Projects": [
+    {
+      "name": "proj",
+      "description": "",
+      "data": {
+        "version": "0.1.0",
+        "scope": "project",
+        "selectedTree": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
+        "trees": [
+          {
             "version": "0.1.0",
-            "scope": "project",
-            "selectedTree": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
-            "trees": [{
-                "version": "0.1.0",
-                "scope": "tree",
-                "id": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
-                "Instance": "Explanation Experience",
+            "scope": "tree",
+            "id": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
+            "Instance": "Explanation Experience",
+            "description": "",
+            "root": "bf056156-0091-4579-82d1-f8357d5330d1",
+            "properties": {},
+            "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
+            "idModel": "PSYCHOLOGY",
+            "query_id": "8NLUJF9L4K",
+            "nodes": {
+              "3afcdee1-7a92-4467-873a-aa2ae8d49f8e": {
+                "id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
+                "Concept": "Explanation Method",
+                "Instance": "/Tabular/Anchors",
                 "description": "",
-                "root": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
                 "properties": {},
-                "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
-                "idModel": "PSYCHOLOGY",
-                "query_id": "8NLUJF9L4K",
-                "nodes": {
-                    "3afcdee1-7a92-4467-873a-aa2ae8d49f8e": {
-                        "id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
-                        "Concept": "Explanation Method",
-                        "Instance": "/Tabular/Anchors",
-                        "description": "",
-                        "properties": {},
-                        "display": {
-                            "x": -12,
-                            "y": 84
-                        },
-                        "params": {
-                            "threshold": ""
-                        },
-                        "Json": "{\"anchor\":\"97. People who commit crimes have their reasons for doing it > 0.00 AND 56. I manage my schedule as I always have <= 0.00 AND 13. I felt more encouraged to do my daily activities before > 0.00 AND 2. I don't feel like doing my daily duties <= 0.00\",\"precision\":1,\"coverage\":0.028985507246376812}"
-                    }
+                "display": {
+                  "x": -252,
+                  "y": 108
+                },
+                "params": {
+                  "threshold": "0.9"
+                },
+                "Json": "{\"anchor\":\"97. People who commit crimes have their reasons for doing it > 0.00 AND 56. I manage my schedule as I always have <= 0.00 AND 13. I felt more encouraged to do my daily activities before > 0.00 AND 2. I don't feel like doing my daily duties <= 0.00\",\"precision\":1,\"coverage\":0.028985507246376812}"
+              },
+              "6dc41b1f-0a45-497b-805a-9b2f3d91ef6f": {
+                "id": "6dc41b1f-0a45-497b-805a-9b2f3d91ef6f",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3"
                 },
                 "display": {
-                    "camera_x": 428.5,
-                    "camera_y": 365,
-                    "camera_z": 1,
-                    "x": -36,
-                    "y": -144
+                  "x": -36,
+                  "y": 108
                 }
-            }],
-            "custom_nodes": []
-        },
-        "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
-        "date": "2022-9-1 12:23:40",
-        "id": 1
-    }],
-    "Evaluation": [{
-            "value": "Evaluation method 1",
-            "description": "Description Evaluation method 1",
-            "properties": [{
-                    "key": "Key 1",
-                    "value": "Value 1"
+              },
+              "bf056156-0091-4579-82d1-f8357d5330d1": {
+                "id": "bf056156-0091-4579-82d1-f8357d5330d1",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": -36,
+                  "y": -24
                 },
-                {
-                    "key": "Key 2",
-                    "value": "Value 2"
-                },
-                {
-                    "key": "Key 3",
-                    "value": "Value 3"
+                "firstChild": {
+                  "Id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
+                  "Next": {
+                    "Id": "6dc41b1f-0a45-497b-805a-9b2f3d91ef6f",
+                    "Next": {
+                      "Id": "b139a85b-9a0d-49af-a398-91846a647a8c",
+                      "Next": null
+                    }
+                  }
                 }
-            ],
-            "id": 1
+              },
+              "b139a85b-9a0d-49af-a398-91846a647a8c": {
+                "id": "b139a85b-9a0d-49af-a398-91846a647a8c",
+                "Concept": "Failer",
+                "Instance": "Failer",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 168,
+                  "y": 108
+                }
+              }
+            },
+            "display": {
+              "camera_x": 428.5,
+              "camera_y": 365,
+              "camera_z": 1,
+              "x": -36,
+              "y": -144
+            }
+          }
+        ],
+        "custom_nodes": []
+      },
+      "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
+      "date": "2022-9-27 15:27:18",
+      "id": 1
+    },
+    {
+      "name": "sad",
+      "description": "",
+      "data": {
+        "version": "0.1.0",
+        "scope": "project",
+        "selectedTree": "988c3560-3754-432e-8a9f-6c23742108f7",
+        "trees": [
+          {
+            "version": "0.1.0",
+            "scope": "tree",
+            "id": "988c3560-3754-432e-8a9f-6c23742108f7",
+            "Instance": "Explanation Experience",
+            "description": "",
+            "root": "d88f9a39-d00e-4547-8a65-563236c2a718",
+            "properties": {},
+            "nodes": {
+              "d88f9a39-d00e-4547-8a65-563236c2a718": {
+                "id": "d88f9a39-d00e-4547-8a65-563236c2a718",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": -12,
+                  "y": 120
+                },
+                "firstChild": {
+                  "Id": "2a0fbb0c-23a5-4eb4-8f57-0087b72d78a3",
+                  "Next": null
+                }
+              },
+              "2a0fbb0c-23a5-4eb4-8f57-0087b72d78a3": {
+                "id": "2a0fbb0c-23a5-4eb4-8f57-0087b72d78a3",
+                "Concept": "Explanation Method",
+                "Instance": "/Tabular/Anchors",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": -84,
+                  "y": 216
+                },
+                "params": {
+                  "threshold": "0.9"
+                }
+              }
+            },
+            "display": {
+              "camera_x": 462,
+              "camera_y": 364,
+              "camera_z": 1,
+              "x": 0,
+              "y": 0
+            }
+          }
+        ],
+        "custom_nodes": []
+      },
+      "path": "b3projects-ff62227f-1061-4106-9b6f-98d734e0b342",
+      "date": "2022-9-27 13:20:41",
+      "id": 2
+    }
+  ],
+  "Evaluation": [
+    {
+      "value": "Evaluation method 1",
+      "description": "Description Evaluation method 1",
+      "properties": [
+        {
+          "key": "Key 1",
+          "value": "Value 1"
         },
         {
-            "value": "Evaluation method 2",
-            "description": "Description Evaluation method 2",
-            "properties": [],
-            "id": 2
+          "key": "Key 2",
+          "value": "Value 2"
+        },
+        {
+          "key": "Key 3",
+          "value": "Value 3"
         }
-    ]
+      ],
+      "id": 1
+    },
+    {
+      "value": "Evaluation method 2",
+      "description": "Description Evaluation method 2",
+      "properties": [],
+      "id": 2
+    }
+  ]
 }

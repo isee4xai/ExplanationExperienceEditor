@@ -11,6 +11,14 @@
     <div ng-show="propertiespanel.block" class="properties">
         <form>
             <div class="form-group">
+                <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
+                    <button id="ButtonSave" type="button" ng-click="propertiespanel.RunBt()">RUN BT</button>
+                </div>
+
+
+            </div>
+
+            <div class="form-group">
 
                 <label for="title" ng-if="propertiespanel.original.category == 'root'">Intent</label>
                 <label for="title" ng-if="propertiespanel.original.category != 'root'">Title</label>
@@ -73,9 +81,6 @@
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
-                <!--  <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.IdModel" class="no-border">
-                </b3-Proper-Params>-->
-
                 <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.block.ModelRoot" ng-change="propertiespanel.update()" class="no-border">
                 </b3-Proper-Params>
             </div>
@@ -133,7 +138,6 @@
 
                 <div id="caption"></div>
             </div>
-
 
         </form>
     </div>
