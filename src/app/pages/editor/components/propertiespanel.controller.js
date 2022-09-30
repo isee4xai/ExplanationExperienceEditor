@@ -541,6 +541,7 @@
         }
 
         async function explanationMethod(node) {
+
             // await post_request(node);
             var Model = {
                 idModel: modelid,
@@ -551,13 +552,24 @@
             var t = p.trees.getSelected();
             var ExpBlock = t.blocks.get(node.id);
 
-
             return projectModel.PostExplainerLibraries(Model, JSON.stringify(node.params), node.Instance)
                 .then(function(response) {
 
-                    var ExpBlockEdit = {
-                        Json: JSON.stringify(response)
-                    };
+                    if (response.hasOwnProperty('plot_png')) {
+                        var ExpBlockEdit = {
+                            Image: response.plot_png
+                        };
+
+                        delete ExpBlock.Json;
+                        delete ExpBlockEdit.Json;
+                    } else {
+                        var ExpBlockEdit = {
+                            Json: JSON.stringify(response)
+                        };
+                        delete ExpBlock.Image;
+                        delete ExpBlockEdit.Image;
+                    }
+
                     t.blocks.update(ExpBlock, ExpBlockEdit);
                     return true;
                 })
