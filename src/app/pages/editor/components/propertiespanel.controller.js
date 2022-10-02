@@ -10,14 +10,16 @@
         '$window',
         'dialogService',
         'notificationService',
-        'projectModel'
+        'projectModel',
+        '$state'
     ];
 
     function PropertiespanelController($scope,
         $window,
         dialogService,
         notificationService,
-        projectModel) {
+        projectModel,
+        $state) {
         var vm = this;
         vm.original = null;
         vm.block = null;
@@ -57,6 +59,10 @@
         vm.datatooltipParam = "";
         vm.Imagen = "";
         vm.Json = {};
+
+        vm.lastItem = 0;
+        vm.Primero;
+        vm.RunBtString = [];
 
         var root;
         var modelid;
@@ -171,7 +177,6 @@
                 vm.original = false;
                 vm.block = false;
             }
-
         }
 
         function _getArrayExplainers() {
@@ -479,7 +484,11 @@
             modelid = vm.jsonData.idModel;
             exp_instance = vm.jsonData.query;
 
+            vm.lastItem = 0;
+            vm.Primero = "";
+
             runNode(root);
+
         }
 
         async function runNode(id) {
@@ -505,43 +514,87 @@
                     return await repeatUntilSuccess(vm.jsonData.nodes[id]);
                 case "Inverter":
                     return await inverter(vm.jsonData.nodes[id]);
+                case "Condition":
+                    return await Condition(vm.jsonData.nodes[id]);
                 default:
                     break;
             }
         }
 
         async function sequence(node) {
+            vm.RunBtString.push("Running sequence node = Id : " + node.id + " Name : " + node.Instance);
+            vm.lastItem++;
+
+            if (vm.lastItem == 1) {
+                vm.Primero = node.id;
+            }
+
             let child = node.firstChild;
             do {
                 if (!(await runNode(child.Id))) {
                     return false;
                 }
+                vm.RunBtString.push("End execution node = Id : " + vm.jsonData.nodes[child.Id].id + " Name : " + vm.jsonData.nodes[child.Id].Concept);
                 child = child.Next;
+
             } while (child != null);
+            if (vm.Primero == node.id) {
+                vm.RunBtString.push("End execution node = Id : " + node.id + " Name : " + node.Concept);
+                vm.RunBtString.push("End of editor execution");
+                var myJsonString = JSON.stringify(vm.RunBtString);
+                var url = $state.href('dash.run', { data: myJsonString });
+
+                vm.RunBtString = [];
+                $window.open(url, '_blank');
+            }
             return true;
         }
 
         async function priority(node) {
+            vm.RunBtString.push("Running priority node = Id : " + node.id + " Name : " + node.Instance);
+
             let child = node.firstChild;
+            vm.lastItem++;
+
+            if (vm.lastItem == 1) {
+                vm.Primero = node.id;
+            }
+
             do {
                 if (await runNode(child.Id)) {
+                    vm.RunBtString.push("End execution node = Id : " + vm.jsonData.nodes[child.Id].id + " Name : " + vm.jsonData.nodes[child.Id].Concept);
                     return true;
                 }
                 child = child.Next;
             } while (child != null);
+            vm.RunBtString.push("End execution node = Id : " + node.id + " Name : " + node.Concept);
+            if (vm.Primero == node.id) {
+                vm.RunBtString.push("End of editor execution");
+                var myJsonString = JSON.stringify(vm.RunBtString);
+                var url = $state.href('dash.run', { data: myJsonString });
+
+                $window.open(url, '_blank');
+            }
+            return false;
+        }
+
+        async function Condition(node) {
+            vm.RunBtString.push("Running Condition node || Id : " + node.id + " Name : " + node.Instance);
             return false;
         }
 
         async function failer(node) {
+            vm.RunBtString.push("Running Failer node || Id : " + node.id + " Name : " + node.Instance);
             return false;
         }
 
         async function succeeder(node) {
+            vm.RunBtString.push("Running Succeeder node || Id : " + node.id + " Name : " + node.Instance);
             return true;
         }
 
         async function explanationMethod(node) {
-
+            vm.RunBtString.push("Running Explanation Method || Id : " + node.id + " Name : " + node.Instance);
             // await post_request(node);
             var Model = {
                 idModel: modelid,
@@ -579,6 +632,7 @@
         }
 
         async function evaluationMethod(node) {
+            vm.RunBtString.push("Running Evaluation Method || Id : " + node.id + " Name : " + node.Instance);
             //Lanzar ventada de desea continuar o no, si dice que no devuelve False, en caso contrario true
             //The return value should depend on the return value of the evaluation method
             return dialogService
@@ -593,6 +647,7 @@
         }
 
         async function repeater(node) {
+            vm.RunBtString.push("Running Repeater || Id : " + node.id + " Name : " + node.Instance);
             for (var i = 0; i < node.properties.maxLoop; i++) {
                 if (!(await runNode(node.firstChild.Id))) {
                     return false;
@@ -602,16 +657,19 @@
         }
 
         async function repeatUntilFailure(node) {
+            vm.RunBtString.push("Running Repeat Until Failure || Id : " + node.id + " Name : " + node.Instance);
             while (await runNode(node.firstChild.Id));
             return true;
         }
 
         async function repeatUntilSuccess(node) {
+            vm.RunBtString.push("Running Repeat Until Success || Id : " + node.id + " Name : " + node.Instance);
             while (!(await runNode(node.firstChild.Id)));
             return true;
         }
 
         async function inverter(node) {
+            vm.RunBtString.push("Running Inverter || Id : " + node.id + " Name : " + node.Instance);
             return !(await runNode(node.firstChild.Id));
         }
 

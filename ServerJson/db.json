@@ -27,7 +27,7 @@
                 "description": "",
                 "properties": {},
                 "display": {
-                  "x": -252,
+                  "x": -348,
                   "y": 108
                 },
                 "params": {
@@ -46,7 +46,7 @@
                   "Key 3": "Value 3"
                 },
                 "display": {
-                  "x": -36,
+                  "x": -144,
                   "y": 108
                 }
               },
@@ -65,26 +65,99 @@
                   "Next": {
                     "Id": "6dc41b1f-0a45-497b-805a-9b2f3d91ef6f",
                     "Next": {
-                      "Id": "b139a85b-9a0d-49af-a398-91846a647a8c",
-                      "Next": null
+                      "Id": "25785adc-1d9d-4280-960e-51cd06e51af9",
+                      "Next": {
+                        "Id": "13d0986d-4879-44ab-81a6-bc256c31403c",
+                        "Next": {
+                          "Id": "c0f2fc33-c323-48da-8523-d5588deac498",
+                          "Next": null
+                        }
+                      }
                     }
                   }
                 }
               },
-              "b139a85b-9a0d-49af-a398-91846a647a8c": {
-                "id": "b139a85b-9a0d-49af-a398-91846a647a8c",
-                "Concept": "Failer",
-                "Instance": "Failer",
+              "25785adc-1d9d-4280-960e-51cd06e51af9": {
+                "id": "25785adc-1d9d-4280-960e-51cd06e51af9",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
                 "description": "",
                 "properties": {},
                 "display": {
-                  "x": 168,
+                  "x": 60,
                   "y": 108
+                },
+                "firstChild": {
+                  "Id": "0de19648-0a0e-44df-9ab0-1d205b4fc3af",
+                  "Next": null
+                }
+              },
+              "0de19648-0a0e-44df-9ab0-1d205b4fc3af": {
+                "id": "0de19648-0a0e-44df-9ab0-1d205b4fc3af",
+                "Concept": "Succeeder",
+                "Instance": "Succeeder",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 60,
+                  "y": 240
+                }
+              },
+              "13d0986d-4879-44ab-81a6-bc256c31403c": {
+                "id": "13d0986d-4879-44ab-81a6-bc256c31403c",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 276,
+                  "y": 108
+                },
+                "firstChild": {
+                  "Id": "5a31b72a-5e34-42aa-8434-7840c5c72942",
+                  "Next": null
+                }
+              },
+              "5a31b72a-5e34-42aa-8434-7840c5c72942": {
+                "id": "5a31b72a-5e34-42aa-8434-7840c5c72942",
+                "Concept": "Succeeder",
+                "Instance": "Succeeder",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 300,
+                  "y": 240
+                }
+              },
+              "c0f2fc33-c323-48da-8523-d5588deac498": {
+                "id": "c0f2fc33-c323-48da-8523-d5588deac498",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 444,
+                  "y": 96
+                },
+                "firstChild": {
+                  "Id": "3a655eb6-0abf-48ec-ac9a-789ffb94e107",
+                  "Next": null
+                }
+              },
+              "3a655eb6-0abf-48ec-ac9a-789ffb94e107": {
+                "id": "3a655eb6-0abf-48ec-ac9a-789ffb94e107",
+                "Concept": "Succeeder",
+                "Instance": "Succeeder",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 648,
+                  "y": 216
                 }
               }
             },
             "display": {
-              "camera_x": 428.5,
+              "camera_x": 564.6000001430511,
               "camera_y": 365,
               "camera_z": 1,
               "x": -36,
@@ -95,7 +168,7 @@
         "custom_nodes": []
       },
       "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
-      "date": "2022-9-27 15:27:18",
+      "date": "2022-10-1 19:10:41",
       "id": 1
     },
     {

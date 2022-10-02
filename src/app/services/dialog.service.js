@@ -61,7 +61,7 @@ function dialogService($window, $q, $document, nodejsService) {
         options.cancelButtonText = 'No';
         options.showCancelButton = true;
         options.showCancelButton = true;
-        console.log(options);
+
 
         return $q(function(resolve, reject) {
             swal(options, function(val) {
