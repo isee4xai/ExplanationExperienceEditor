@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 09/02/22";
+        vm.date = "version 09/28/22";
 
         vm.ListaPara = {};
 

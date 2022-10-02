@@ -41,7 +41,6 @@ angular.module('app')
                 controllerAs: 'error',
             })
 
-
         // Dash
         .state('dash', {
                 url: '/dash',
@@ -49,6 +48,12 @@ angular.module('app')
                 templateUrl: 'pages/dash/dash.html',
                 controller: 'DashController',
                 controllerAs: 'dash',
+            })
+            .state('dash.run', {
+                url: '/run/:data',
+                templateUrl: 'pages/dash/run/run.html',
+                controller: 'RunController',
+                controllerAs: 'run',
             })
             .state('dash.projects', {
                 url: "/projects",

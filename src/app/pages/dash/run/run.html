@@ -1,0 +1,13 @@
+<div ng-controller="RunController as runbt" class="error">
+    <div id='error_box'>
+        <H1> RUN BT EDITOR</H1>
+        <div id="global">
+            <div id="mensajes" ng-repeat="item in runbt.ExecutionsRunEditor track by $index">
+                <div class="texto">{{$index}} - {{item}}</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

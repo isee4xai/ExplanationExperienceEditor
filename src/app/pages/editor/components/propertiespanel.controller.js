@@ -10,14 +10,16 @@
         '$window',
         'dialogService',
         'notificationService',
-        'projectModel'
+        'projectModel',
+        '$state'
     ];
 
     function PropertiespanelController($scope,
         $window,
         dialogService,
         notificationService,
-        projectModel) {
+        projectModel,
+        $state) {
         var vm = this;
         vm.original = null;
         vm.block = null;
@@ -31,6 +33,7 @@
         vm.PopUpImg = PopUpImg;
         vm.PopUpImgClose = PopUpImgClose;
         vm.GetInfoParam = GetInfoParam;
+        vm.RunBt = RunBt;
 
         vm.node = null;
         vm.explanation = null;
@@ -50,11 +53,20 @@
         vm.ArrayParams = [];
         vm.JsonParams = {};
         vm.IdModel = {};
+        vm.jsonData = {};
 
 
         vm.datatooltipParam = "";
         vm.Imagen = "";
         vm.Json = {};
+
+        vm.lastItem = 0;
+        vm.Primero;
+        vm.RunBtString = [];
+
+        var root;
+        var modelid;
+        var exp_instance;
 
         _create();
         _activate();
@@ -165,7 +177,6 @@
                 vm.original = false;
                 vm.block = false;
             }
-
         }
 
         function _getArrayExplainers() {
@@ -192,7 +203,6 @@
             var params = JSON.stringify(jsonParam);
 
             document.getElementById("loader").style.display = "block";
-
 
             projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
                 .then(function(x) {
@@ -436,10 +446,7 @@
 
 
         function GetInfoParam(Param) {
-
             vm.datatooltipParam = vm.JsonParams[Param];
-
-
         }
 
 
@@ -469,6 +476,201 @@
                 vm.AllProperties[estaEnLaLista].description = vm.block.description;
                 vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
             }
+        }
+
+        function RunBt() {
+            vm.jsonData = projectModel.runBT();
+            root = vm.jsonData.root;
+            modelid = vm.jsonData.idModel;
+            exp_instance = vm.jsonData.query;
+
+            vm.lastItem = 0;
+            vm.Primero = "";
+
+            runNode(root);
+
+        }
+
+        async function runNode(id) {
+
+            switch (vm.jsonData.nodes[id].Concept) {
+                case "Sequence":
+                    return await sequence(vm.jsonData.nodes[id]);
+                case "Priority":
+                    return await priority(vm.jsonData.nodes[id]);
+                case "Failer":
+                    return await failer(vm.jsonData.nodes[id]);
+                case "Succeeder":
+                    return await succeeder(vm.jsonData.nodes[id]);
+                case "Explanation Method":
+                    return await explanationMethod(vm.jsonData.nodes[id]);
+                case "Evaluation Method":
+                    return await evaluationMethod(vm.jsonData.nodes[id]);
+                case "Repeater":
+                    return await repeater(vm.jsonData.nodes[id]);
+                case "RepeatUntilFailure":
+                    return await repeatUntilFailure(vm.jsonData.nodes[id]);
+                case "RepeatUntilSuccess":
+                    return await repeatUntilSuccess(vm.jsonData.nodes[id]);
+                case "Inverter":
+                    return await inverter(vm.jsonData.nodes[id]);
+                case "Condition":
+                    return await Condition(vm.jsonData.nodes[id]);
+                default:
+                    break;
+            }
+        }
+
+        async function sequence(node) {
+            vm.RunBtString.push("Running sequence node = Id : " + node.id + " Name : " + node.Instance);
+            vm.lastItem++;
+
+            if (vm.lastItem == 1) {
+                vm.Primero = node.id;
+            }
+
+            let child = node.firstChild;
+            do {
+                if (!(await runNode(child.Id))) {
+                    return false;
+                }
+                vm.RunBtString.push("End execution node = Id : " + vm.jsonData.nodes[child.Id].id + " Name : " + vm.jsonData.nodes[child.Id].Concept);
+                child = child.Next;
+
+            } while (child != null);
+            if (vm.Primero == node.id) {
+                vm.RunBtString.push("End execution node = Id : " + node.id + " Name : " + node.Concept);
+                vm.RunBtString.push("End of editor execution");
+                var myJsonString = JSON.stringify(vm.RunBtString);
+                var url = $state.href('dash.run', { data: myJsonString });
+
+                vm.RunBtString = [];
+                $window.open(url, '_blank');
+            }
+            return true;
+        }
+
+        async function priority(node) {
+            vm.RunBtString.push("Running priority node = Id : " + node.id + " Name : " + node.Instance);
+
+            let child = node.firstChild;
+            vm.lastItem++;
+
+            if (vm.lastItem == 1) {
+                vm.Primero = node.id;
+            }
+
+            do {
+                if (await runNode(child.Id)) {
+                    vm.RunBtString.push("End execution node = Id : " + vm.jsonData.nodes[child.Id].id + " Name : " + vm.jsonData.nodes[child.Id].Concept);
+                    return true;
+                }
+                child = child.Next;
+            } while (child != null);
+            vm.RunBtString.push("End execution node = Id : " + node.id + " Name : " + node.Concept);
+            if (vm.Primero == node.id) {
+                vm.RunBtString.push("End of editor execution");
+                var myJsonString = JSON.stringify(vm.RunBtString);
+                var url = $state.href('dash.run', { data: myJsonString });
+
+                $window.open(url, '_blank');
+            }
+            return false;
+        }
+
+        async function Condition(node) {
+            vm.RunBtString.push("Running Condition node || Id : " + node.id + " Name : " + node.Instance);
+            return false;
+        }
+
+        async function failer(node) {
+            vm.RunBtString.push("Running Failer node || Id : " + node.id + " Name : " + node.Instance);
+            return false;
+        }
+
+        async function succeeder(node) {
+            vm.RunBtString.push("Running Succeeder node || Id : " + node.id + " Name : " + node.Instance);
+            return true;
+        }
+
+        async function explanationMethod(node) {
+            vm.RunBtString.push("Running Explanation Method || Id : " + node.id + " Name : " + node.Instance);
+            // await post_request(node);
+            var Model = {
+                idModel: modelid,
+                query: exp_instance
+            }
+
+            var p = $window.editor.project.get();
+            var t = p.trees.getSelected();
+            var ExpBlock = t.blocks.get(node.id);
+
+            return projectModel.PostExplainerLibraries(Model, JSON.stringify(node.params), node.Instance)
+                .then(function(response) {
+
+                    if (response.hasOwnProperty('plot_png')) {
+                        var ExpBlockEdit = {
+                            Image: response.plot_png
+                        };
+
+                        delete ExpBlock.Json;
+                        delete ExpBlockEdit.Json;
+                    } else {
+                        var ExpBlockEdit = {
+                            Json: JSON.stringify(response)
+                        };
+                        delete ExpBlock.Image;
+                        delete ExpBlockEdit.Image;
+                    }
+
+                    t.blocks.update(ExpBlock, ExpBlockEdit);
+                    return true;
+                })
+                .catch(function(error) {
+                    return false;
+                });
+        }
+
+        async function evaluationMethod(node) {
+            vm.RunBtString.push("Running Evaluation Method || Id : " + node.id + " Name : " + node.Instance);
+            //Lanzar ventada de desea continuar o no, si dice que no devuelve False, en caso contrario true
+            //The return value should depend on the return value of the evaluation method
+            return dialogService
+                .continueBt('Continue execution of the editor?', null)
+                .then(function(name) {
+                    if (name !== false) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+        }
+
+        async function repeater(node) {
+            vm.RunBtString.push("Running Repeater || Id : " + node.id + " Name : " + node.Instance);
+            for (var i = 0; i < node.properties.maxLoop; i++) {
+                if (!(await runNode(node.firstChild.Id))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        async function repeatUntilFailure(node) {
+            vm.RunBtString.push("Running Repeat Until Failure || Id : " + node.id + " Name : " + node.Instance);
+            while (await runNode(node.firstChild.Id));
+            return true;
+        }
+
+        async function repeatUntilSuccess(node) {
+            vm.RunBtString.push("Running Repeat Until Success || Id : " + node.id + " Name : " + node.Instance);
+            while (!(await runNode(node.firstChild.Id)));
+            return true;
+        }
+
+        async function inverter(node) {
+            vm.RunBtString.push("Running Inverter || Id : " + node.id + " Name : " + node.Instance);
+            return !(await runNode(node.firstChild.Id));
         }
 
     }

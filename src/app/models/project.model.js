@@ -43,7 +43,8 @@
             PostModelId: PostModelId,
             getExplainers: getExplainers,
             getQueryImgTab: getQueryImgTab,
-            PostExplainerLibraries: PostExplainerLibraries
+            PostExplainerLibraries: PostExplainerLibraries,
+            runBT: runBT
         };
         return service;
 
@@ -273,6 +274,15 @@
                 }
             });
         }
+
+        function runBT(project) {
+            project = project || currentProject;
+            project.data = editorService.exportProject();
+
+            return project.data.trees[0];;
+        }
+
+
 
     }
 })();

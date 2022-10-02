@@ -63,8 +63,8 @@
         block_condition_height: 40,
 
         //ADDRESS
-        httpAddresModels: "http://localhost:4000/",
-        httpAddresExplanations: "http://localhost:5000/",
+        httpAddresModels: "https://modelhub-dev.isee4xai.com/",
+        httpAddresExplanations: "https://explainers-dev.isee4xai.com/",
         httpAddresEvaluationsAndProject: "http://localhost:3000/",
 
         /*
