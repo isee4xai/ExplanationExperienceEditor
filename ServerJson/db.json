@@ -1,42 +1,73 @@
 {
   "Projects": [
     {
-      "name": "proj",
+      "name": "Project 1",
       "description": "",
       "data": {
         "version": "0.1.0",
         "scope": "project",
-        "selectedTree": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
+        "selectedTree": "12e190de-8d74-48e1-b68b-ddeb01b087a8",
         "trees": [
           {
             "version": "0.1.0",
             "scope": "tree",
-            "id": "a247f985-bb1f-4033-8ca4-d955d11e38c1",
-            "Instance": "Explanation Experience",
+            "id": "eef3a590-799a-49c7-a68f-5dbf245293e0",
+            "Instance": "Root v1",
             "description": "",
-            "root": "bf056156-0091-4579-82d1-f8357d5330d1",
+            "root": "73aa4538-6468-4f60-9ae9-eddf24bdf861",
             "properties": {},
-            "query": "[0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,\r\n        1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1,\r\n        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0,\r\n        1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0,\r\n        0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1]",
-            "idModel": "PSYCHOLOGY",
-            "query_id": "8NLUJF9L4K",
             "nodes": {
-              "3afcdee1-7a92-4467-873a-aa2ae8d49f8e": {
-                "id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
-                "Concept": "Explanation Method",
-                "Instance": "/Tabular/Anchors",
+              "73aa4538-6468-4f60-9ae9-eddf24bdf861": {
+                "id": "73aa4538-6468-4f60-9ae9-eddf24bdf861",
+                "Concept": "Priority",
+                "Instance": "Priority",
                 "description": "",
                 "properties": {},
                 "display": {
-                  "x": -348,
-                  "y": 108
+                  "x": -36,
+                  "y": -156
                 },
-                "params": {
-                  "threshold": "0.9"
-                },
-                "Json": "{\"anchor\":\"97. People who commit crimes have their reasons for doing it > 0.00 AND 56. I manage my schedule as I always have <= 0.00 AND 13. I felt more encouraged to do my daily activities before > 0.00 AND 2. I don't feel like doing my daily duties <= 0.00\",\"precision\":1,\"coverage\":0.028985507246376812}"
+                "firstChild": {
+                  "Id": "70b9dbed-6fd2-438e-924a-4e1cb2685e6d",
+                  "Next": {
+                    "Id": "f23eeeb9-ac7e-4519-8838-a008d606f361",
+                    "Next": {
+                      "Id": "1a234070-b6b3-4213-83fc-7c48261aee61",
+                      "Next": null
+                    }
+                  }
+                }
               },
-              "6dc41b1f-0a45-497b-805a-9b2f3d91ef6f": {
-                "id": "6dc41b1f-0a45-497b-805a-9b2f3d91ef6f",
+              "70b9dbed-6fd2-438e-924a-4e1cb2685e6d": {
+                "id": "70b9dbed-6fd2-438e-924a-4e1cb2685e6d",
+                "Concept": "RepeatUntilSuccess",
+                "Instance": "Repeat Until Success",
+                "description": "",
+                "properties": {
+                  "maxLoop": -1
+                },
+                "display": {
+                  "x": -312,
+                  "y": -72
+                },
+                "firstChild": {
+                  "Id": "81591e86-040e-4d48-86c6-61d3cd7ab8d0",
+                  "Next": null
+                }
+              },
+              "81591e86-040e-4d48-86c6-61d3cd7ab8d0": {
+                "id": "81591e86-040e-4d48-86c6-61d3cd7ab8d0",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": -312,
+                  "y": 60
+                }
+              },
+              "1a234070-b6b3-4213-83fc-7c48261aee61": {
+                "id": "1a234070-b6b3-4213-83fc-7c48261aee61",
                 "Concept": "Evaluation Method",
                 "Instance": "Evaluation method 1",
                 "description": "Description Evaluation method 1",
@@ -46,181 +77,395 @@
                   "Key 3": "Value 3"
                 },
                 "display": {
-                  "x": -144,
-                  "y": 108
+                  "x": 252,
+                  "y": 36
                 }
               },
-              "bf056156-0091-4579-82d1-f8357d5330d1": {
-                "id": "bf056156-0091-4579-82d1-f8357d5330d1",
+              "f23eeeb9-ac7e-4519-8838-a008d606f361": {
+                "id": "f23eeeb9-ac7e-4519-8838-a008d606f361",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": -60,
+                  "y": 36
+                }
+              }
+            },
+            "display": {
+              "camera_x": 683,
+              "camera_y": 328.5,
+              "camera_z": 1,
+              "x": -36,
+              "y": -264
+            }
+          },
+          {
+            "version": "0.1.0",
+            "scope": "tree",
+            "id": "6456fefc-27c1-4555-8d20-8e88ba6feca3",
+            "Instance": "Root v2",
+            "description": "",
+            "root": "83caca7b-6a54-4895-8f08-90808e91416b",
+            "properties": {},
+            "nodes": {
+              "90b5ab36-ed94-4011-8f22-3dee74a700da": {
+                "id": "90b5ab36-ed94-4011-8f22-3dee74a700da",
+                "Concept": "Limiter",
+                "Instance": "Limit <maxLoop> Activations",
+                "description": "",
+                "properties": {
+                  "maxLoop": 3
+                },
+                "display": {
+                  "x": -204,
+                  "y": -12
+                },
+                "firstChild": {
+                  "Id": "2b942644-b939-479c-aee8-92f96696e99e",
+                  "Next": null
+                }
+              },
+              "2b942644-b939-479c-aee8-92f96696e99e": {
+                "id": "2b942644-b939-479c-aee8-92f96696e99e",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": -216,
+                  "y": 168
+                }
+              },
+              "10af0cb7-e1a6-40c1-809d-c35d65f63cba": {
+                "id": "10af0cb7-e1a6-40c1-809d-c35d65f63cba",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 1",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": 288,
+                  "y": -96
+                }
+              },
+              "3ab85db9-b84a-464d-84b5-dd00c85ff773": {
+                "id": "3ab85db9-b84a-464d-84b5-dd00c85ff773",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": 288,
+                  "y": 84
+                }
+              },
+              "83caca7b-6a54-4895-8f08-90808e91416b": {
+                "id": "83caca7b-6a54-4895-8f08-90808e91416b",
                 "Concept": "Sequence",
                 "Instance": "Sequence",
                 "description": "",
                 "properties": {},
                 "display": {
-                  "x": -36,
-                  "y": -24
+                  "x": 12,
+                  "y": -60
                 },
                 "firstChild": {
-                  "Id": "3afcdee1-7a92-4467-873a-aa2ae8d49f8e",
+                  "Id": "90b5ab36-ed94-4011-8f22-3dee74a700da",
                   "Next": {
-                    "Id": "6dc41b1f-0a45-497b-805a-9b2f3d91ef6f",
+                    "Id": "09f757a4-ba27-4694-83a3-3350fdc60d80",
                     "Next": {
-                      "Id": "25785adc-1d9d-4280-960e-51cd06e51af9",
+                      "Id": "10af0cb7-e1a6-40c1-809d-c35d65f63cba",
                       "Next": {
-                        "Id": "13d0986d-4879-44ab-81a6-bc256c31403c",
-                        "Next": {
-                          "Id": "c0f2fc33-c323-48da-8523-d5588deac498",
-                          "Next": null
-                        }
+                        "Id": "53f75d11-8ba0-425a-9524-b9d018846f31",
+                        "Next": null
                       }
                     }
                   }
                 }
               },
-              "25785adc-1d9d-4280-960e-51cd06e51af9": {
-                "id": "25785adc-1d9d-4280-960e-51cd06e51af9",
-                "Concept": "Sequence",
-                "Instance": "Sequence",
+              "09f757a4-ba27-4694-83a3-3350fdc60d80": {
+                "id": "09f757a4-ba27-4694-83a3-3350fdc60d80",
+                "Concept": "RepeatUntilSuccess",
+                "Instance": "Repeat Until Success",
                 "description": "",
-                "properties": {},
+                "properties": {
+                  "maxLoop": -1
+                },
                 "display": {
-                  "x": 60,
-                  "y": 108
+                  "x": 48,
+                  "y": 72
                 },
                 "firstChild": {
-                  "Id": "0de19648-0a0e-44df-9ab0-1d205b4fc3af",
+                  "Id": "3ab85db9-b84a-464d-84b5-dd00c85ff773",
                   "Next": null
                 }
               },
-              "0de19648-0a0e-44df-9ab0-1d205b4fc3af": {
-                "id": "0de19648-0a0e-44df-9ab0-1d205b4fc3af",
-                "Concept": "Succeeder",
-                "Instance": "Succeeder",
-                "description": "",
+              "53f75d11-8ba0-425a-9524-b9d018846f31": {
+                "id": "53f75d11-8ba0-425a-9524-b9d018846f31",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
                 "properties": {},
                 "display": {
-                  "x": 60,
-                  "y": 240
-                }
-              },
-              "13d0986d-4879-44ab-81a6-bc256c31403c": {
-                "id": "13d0986d-4879-44ab-81a6-bc256c31403c",
-                "Concept": "Sequence",
-                "Instance": "Sequence",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 276,
-                  "y": 108
-                },
-                "firstChild": {
-                  "Id": "5a31b72a-5e34-42aa-8434-7840c5c72942",
-                  "Next": null
-                }
-              },
-              "5a31b72a-5e34-42aa-8434-7840c5c72942": {
-                "id": "5a31b72a-5e34-42aa-8434-7840c5c72942",
-                "Concept": "Succeeder",
-                "Instance": "Succeeder",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 300,
-                  "y": 240
-                }
-              },
-              "c0f2fc33-c323-48da-8523-d5588deac498": {
-                "id": "c0f2fc33-c323-48da-8523-d5588deac498",
-                "Concept": "Sequence",
-                "Instance": "Sequence",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 444,
-                  "y": 96
-                },
-                "firstChild": {
-                  "Id": "3a655eb6-0abf-48ec-ac9a-789ffb94e107",
-                  "Next": null
-                }
-              },
-              "3a655eb6-0abf-48ec-ac9a-789ffb94e107": {
-                "id": "3a655eb6-0abf-48ec-ac9a-789ffb94e107",
-                "Concept": "Succeeder",
-                "Instance": "Succeeder",
-                "description": "",
-                "properties": {},
-                "display": {
-                  "x": 648,
-                  "y": 216
+                  "x": 288,
+                  "y": -228
                 }
               }
             },
             "display": {
-              "camera_x": 564.6000001430511,
-              "camera_y": 365,
+              "camera_x": 683,
+              "camera_y": 328.5,
               "camera_z": 1,
-              "x": -36,
-              "y": -144
+              "x": -12,
+              "y": -216
             }
-          }
-        ],
-        "custom_nodes": []
-      },
-      "path": "b3projects-e497911d-7e45-4283-91b2-3f77006b97bc",
-      "date": "2022-10-1 19:10:41",
-      "id": 1
-    },
-    {
-      "name": "sad",
-      "description": "",
-      "data": {
-        "version": "0.1.0",
-        "scope": "project",
-        "selectedTree": "988c3560-3754-432e-8a9f-6c23742108f7",
-        "trees": [
+          },
           {
             "version": "0.1.0",
             "scope": "tree",
-            "id": "988c3560-3754-432e-8a9f-6c23742108f7",
+            "id": "12e190de-8d74-48e1-b68b-ddeb01b087a8",
             "Instance": "Explanation Experience",
             "description": "",
-            "root": "d88f9a39-d00e-4547-8a65-563236c2a718",
+            "root": "96809f1b-d758-4220-8d2b-c99b10cd820d",
             "properties": {},
             "nodes": {
-              "d88f9a39-d00e-4547-8a65-563236c2a718": {
-                "id": "d88f9a39-d00e-4547-8a65-563236c2a718",
+              "96809f1b-d758-4220-8d2b-c99b10cd820d": {
+                "id": "96809f1b-d758-4220-8d2b-c99b10cd820d",
                 "Concept": "Sequence",
                 "Instance": "Sequence",
                 "description": "",
                 "properties": {},
                 "display": {
                   "x": -12,
-                  "y": 120
+                  "y": -72
                 },
                 "firstChild": {
-                  "Id": "2a0fbb0c-23a5-4eb4-8f57-0087b72d78a3",
-                  "Next": null
+                  "Id": "6b701359-a884-4ce7-8be0-b12d1726d4d6",
+                  "Next": {
+                    "Id": "d5143c57-c16a-4734-85d8-71a9cb39d7d9",
+                    "Next": {
+                      "Id": "5f9d6c3f-a2d2-48a9-a701-64a328c9727b",
+                      "Next": {
+                        "Id": "649e840d-1ee1-47b8-8df4-e2e0a5bfd7d6",
+                        "Next": {
+                          "Id": "636a4509-1295-46a8-8f2c-628b745d5dfe",
+                          "Next": {
+                            "Id": "5904702c-c400-40f5-8e19-d0bf4600bb52",
+                            "Next": null
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               },
-              "2a0fbb0c-23a5-4eb4-8f57-0087b72d78a3": {
-                "id": "2a0fbb0c-23a5-4eb4-8f57-0087b72d78a3",
+              "6b701359-a884-4ce7-8be0-b12d1726d4d6": {
+                "id": "6b701359-a884-4ce7-8be0-b12d1726d4d6",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3"
+                },
+                "display": {
+                  "x": -528,
+                  "y": 252
+                }
+              },
+              "d5143c57-c16a-4734-85d8-71a9cb39d7d9": {
+                "id": "d5143c57-c16a-4734-85d8-71a9cb39d7d9",
                 "Concept": "Explanation Method",
-                "Instance": "/Tabular/Anchors",
+                "Instance": "Explanation method 1",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": -312,
+                  "y": 252
+                }
+              },
+              "5f9d6c3f-a2d2-48a9-a701-64a328c9727b": {
+                "id": "5f9d6c3f-a2d2-48a9-a701-64a328c9727b",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 2",
+                "description": "Description Evaluation method 2",
+                "properties": {},
+                "display": {
+                  "x": -108,
+                  "y": 252
+                }
+              },
+              "a21e9733-7136-4893-ab23-0c1a2021aefe": {
+                "id": "a21e9733-7136-4893-ab23-0c1a2021aefe",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": -228,
+                  "y": 768
+                }
+              },
+              "636a4509-1295-46a8-8f2c-628b745d5dfe": {
+                "id": "636a4509-1295-46a8-8f2c-628b745d5dfe",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3"
+                },
+                "display": {
+                  "x": 312,
+                  "y": 252
+                }
+              },
+              "5904702c-c400-40f5-8e19-d0bf4600bb52": {
+                "id": "5904702c-c400-40f5-8e19-d0bf4600bb52",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 1",
+                "description": "Description Explanation method 1",
+                "properties": {},
+                "display": {
+                  "x": 516,
+                  "y": 252
+                }
+              },
+              "649e840d-1ee1-47b8-8df4-e2e0a5bfd7d6": {
+                "id": "649e840d-1ee1-47b8-8df4-e2e0a5bfd7d6",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
                 "description": "",
                 "properties": {},
                 "display": {
-                  "x": -84,
-                  "y": 216
+                  "x": 84,
+                  "y": 252
                 },
-                "params": {
-                  "threshold": "0.9"
+                "firstChild": {
+                  "Id": "a21e9733-7136-4893-ab23-0c1a2021aefe",
+                  "Next": {
+                    "Id": "dc1ed58a-bb46-454a-8ac2-946d6d4ffbee",
+                    "Next": null
+                  }
+                }
+              },
+              "dc1ed58a-bb46-454a-8ac2-946d6d4ffbee": {
+                "id": "dc1ed58a-bb46-454a-8ac2-946d6d4ffbee",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation Method",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 252,
+                  "y": 432
+                }
+              },
+              "c6ad6e56-375a-4892-8f1b-252cc1a439a7": {
+                "id": "c6ad6e56-375a-4892-8f1b-252cc1a439a7",
+                "Concept": "Succeeder",
+                "Instance": "Succeeder",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": -108,
+                  "y": 456
+                }
+              },
+              "528099be-9dad-48f0-a0c5-3e54d33f9b61": {
+                "id": "528099be-9dad-48f0-a0c5-3e54d33f9b61",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 12,
+                  "y": 432
                 }
               }
             },
             "display": {
-              "camera_x": 462,
-              "camera_y": 364,
+              "camera_x": 683,
+              "camera_y": 49.099999994039536,
+              "camera_z": 0.75,
+              "x": -12,
+              "y": -168
+            }
+          }
+        ],
+        "custom_nodes": []
+      },
+      "path": "b3projects-a0aafa76-2e36-4082-83f2-2447a6965e56",
+      "date": "2022-6-27 11:54:16",
+      "id": 1
+    },
+    {
+      "name": "Project 2",
+      "description": "",
+      "data": {
+        "version": "0.1.0",
+        "scope": "project",
+        "selectedTree": "126413db-e617-4516-a838-a36363af4346",
+        "trees": [
+          {
+            "version": "0.1.0",
+            "scope": "tree",
+            "id": "126413db-e617-4516-a838-a36363af4346",
+            "Instance": "Explanation Experience",
+            "description": "",
+            "root": "b208d127-7c25-465f-9b55-be197886a352",
+            "properties": {},
+            "nodes": {
+              "b208d127-7c25-465f-9b55-be197886a352": {
+                "id": "b208d127-7c25-465f-9b55-be197886a352",
+                "Concept": "Sequence",
+                "Instance": "Sequence",
+                "description": "",
+                "properties": {},
+                "display": {
+                  "x": 0,
+                  "y": 120
+                },
+                "firstChild": {
+                  "Id": "76d92d66-7fe1-4321-88a1-9e3c9e081b98",
+                  "Next": {
+                    "Id": "9ee42426-b09e-4a48-94d6-7e1451caa7c2",
+                    "Next": null
+                  }
+                }
+              },
+              "76d92d66-7fe1-4321-88a1-9e3c9e081b98": {
+                "id": "76d92d66-7fe1-4321-88a1-9e3c9e081b98",
+                "Concept": "Evaluation Method",
+                "Instance": "Evaluation method 1",
+                "description": "Description Evaluation method 1",
+                "properties": {
+                  "Key 1": "Value 1",
+                  "Key 2": "Value 2",
+                  "Key 3": "Value 3"
+                },
+                "display": {
+                  "x": -108,
+                  "y": 252
+                }
+              },
+              "9ee42426-b09e-4a48-94d6-7e1451caa7c2": {
+                "id": "9ee42426-b09e-4a48-94d6-7e1451caa7c2",
+                "Concept": "Explanation Method",
+                "Instance": "Explanation method 2",
+                "description": "Description Explanation method 2",
+                "properties": {},
+                "display": {
+                  "x": 96,
+                  "y": 252
+                }
+              }
+            },
+            "display": {
+              "camera_x": 641.8999999910593,
+              "camera_y": 208.09999999403954,
               "camera_z": 1,
               "x": 0,
               "y": 0
@@ -229,8 +474,8 @@
         ],
         "custom_nodes": []
       },
-      "path": "b3projects-ff62227f-1061-4106-9b6f-98d734e0b342",
-      "date": "2022-9-27 13:20:41",
+      "path": "b3projects-745bd002-371c-4e09-8772-77682f38f870",
+      "date": "2022-6-27 18:38:4",
       "id": 2
     }
   ],
@@ -259,6 +504,163 @@
       "description": "Description Evaluation method 2",
       "properties": [],
       "id": 2
+    }
+  ],
+  "Explanation": [
+    {
+      "value": "Explanation method 1",
+      "description": "Description Explanation method 1",
+      "properties": [],
+      "id": 1
+    },
+    {
+      "value": "Explanation method 2",
+      "description": "Description Explanation method 2",
+      "properties": [],
+      "id": 2
+    }
+  ],
+  "Explainers": [
+    {
+      "ExplainerName": "Tabular/DicePublic",
+      "DataType": "Tabular",
+      "TrainingData": "Yes",
+      "ModelBackend": [
+        "Sklearn",
+        "TensorFlow1.0",
+        "TensorFlow2.0",
+        "Torch"
+      ],
+      "AITask": [
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Tabular/DicePrivate",
+      "DataType": "Tabular",
+      "TrainingData": "No",
+      "ModelBackend": [
+        "TensorFlow1.0",
+        "TensorFlow2.0"
+      ],
+      "AITask": [
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Tabular/SHAP",
+      "DataType": "Tabular",
+      "TrainingData": "Yes",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Regression",
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Tabular/LIME",
+      "DataType": "Tabular",
+      "TrainingData": "Yes",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Regression",
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Tabular/ALE",
+      "DataType": "Tabular",
+      "TrainingData": "Yes",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Regression",
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Global"
+    },
+    {
+      "ExplainerName": "Tabular/Anchors",
+      "DataType": "Tabular",
+      "TrainingData": "Yes",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Tabular/Importance",
+      "DataType": "Tabular",
+      "TrainingData": "Yes",
+      "ModelBackend": [
+        "Sklearn",
+        "TensorFlow1.0",
+        "TensorFlow2.0",
+        "Torch"
+      ],
+      "AITask": [
+        "Regression",
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Global"
+    },
+    {
+      "ExplainerName": "Image/LIME",
+      "DataType": "Image",
+      "TrainingData": "No",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "Black&White": "No",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Image/Anchors",
+      "DataType": "Image",
+      "TrainingData": "No",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "Black&White": "Yes",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Image/Counterfactuals",
+      "DataType": "Image",
+      "TrainingData": "No",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "Black&White": "Yes",
+      "ExplanationScope": "Local"
+    },
+    {
+      "ExplainerName": "Text/LIME",
+      "DataType": "Text",
+      "TrainingData": "No",
+      "ModelBackend": "Any",
+      "AITask": [
+        "Classification"
+      ],
+      "ModelType": "Any",
+      "ExplanationScope": "Local"
     }
   ]
 }
