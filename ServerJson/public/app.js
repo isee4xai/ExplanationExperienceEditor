@@ -4,7 +4,7 @@ filterApp.controller('filterAppCtrl', ['$scope', '$http',
     function($scope, $http) {
         // Source for ng-repeat="entry in entries"
         // Read all data from json file and pase it to the scope
-        $http.get('http://localhost:3000/projects').then(function(data) {
+        $http.get('https://api-dev.isee4xai.com/api/trees/').then(function(data) {
             $scope.entries = data.data;
             $scope.NumberProjects = Object.keys(data.data).length;
         });

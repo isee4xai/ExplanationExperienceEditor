@@ -65,7 +65,7 @@
         //ADDRESS
         httpAddresModels: "https://modelhub-dev.isee4xai.com/",
         httpAddresExplanations: "https://explainers-dev.isee4xai.com/",
-        httpAddresEvaluationsAndProject: "http://localhost:3000/",
+        httpAddresEvaluationsAndProject: "https://api-dev.isee4xai.com/api/trees/",
 
         /*
         httpAddresEvaluation: httpAddresEvaluationsAndProject + "Evaluation",
