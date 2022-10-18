@@ -15,9 +15,6 @@ function EditorController($state, $location, projectModel, dialogService, system
     //get id from url
     var url = $location.url().slice(1);
     var Id = url.slice(3);
-    //regular expression to accept only numbers
-    var regex = /^id=[0-9]*$/;
-    var onlyNumbers = regex.test(Id);
 
     _activate();
 
@@ -59,7 +56,7 @@ function EditorController($state, $location, projectModel, dialogService, system
                     }
                 });*/
 
-        } else if (Id == "" || onlyNumbers) {
+        } else if (Id == "") {
             $state.go('id.error');
         } else {
             projectModel
