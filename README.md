@@ -80,3 +80,8 @@ Now if you go to
 More information
 [https://github.com/typicode/json-server](https://github.com/typicode/json-server) 
 
+
+This software is based on the behaviour3editor project https://github.com/behavior3/behavior3editor/, created by:
+Copyright (c) 2014 Renato de Pontes Pereira
+and publised under the MIT license
+
