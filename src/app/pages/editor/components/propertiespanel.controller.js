@@ -241,7 +241,7 @@
 
         function renameIntends(CurrentName) {
             dialogService
-                .prompt('Rename Intends', null, 'input', CurrentName)
+                .prompt('Rename Intents', null, 'input', CurrentName)
                 .then(function(name) {
                     // If no name provided, abort
                     if (!name) {
