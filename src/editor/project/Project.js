@@ -38,7 +38,7 @@
         this.nodes.add(b3.Inverter, true);
         this.nodes.add(b3.Limiter, true);
         this.nodes.add(b3.XM, true);
-        this.nodes.add(b3.EM, true);
+        //this.nodes.add(b3.EM, true);
         this.nodes.add(b3.Condition, true);
         this.nodes.add(b3.Failer, true);
         this.nodes.add(b3.Succeeder, true);

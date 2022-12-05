@@ -54,12 +54,12 @@
         vm.RandomGenerate10 = RandomGenerate10;
         vm.NotificationSuccess = NotificationSuccess;
         vm.addListPara = addListPara;
-        vm.NameNodes = ["Explanation Method", "Evaluation Method", "Failer", "Succeeder"];
+        vm.NameNodes = ["Explanation Method",  "Failer", "Succeeder"];
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 09/28/22";
+        vm.date = "version 06/12/22";
 
         vm.ListaPara = {};
 

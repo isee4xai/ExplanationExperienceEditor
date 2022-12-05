@@ -15,13 +15,14 @@ function EditorController($state, $location, projectModel, dialogService, system
     //get id from url
     var url = $location.url().slice(1);
     var Id = url.slice(3);
-
+    console.log(url);
+    console.log(Id);
     _activate();
 
 
     function _activate() {
         //if we pass an id to the editor we open the project
-        if (url == "editor" || url == "") {
+        if (url == "editor" || url=="view" || url == "") {
             /*
             projectModel
                 .getRecentProjects()

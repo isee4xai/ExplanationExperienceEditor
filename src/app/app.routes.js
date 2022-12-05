@@ -15,6 +15,11 @@ angular.module('app')
                 templateUrl: 'pages/editor/editor.html',
                 controller: 'EditorController',
                 controllerAs: 'editor',
+            }).state('view.id', {
+                url: "/view/:id",
+                templateUrl: 'pages/editor/editor-ro.html',
+                controller: 'EditorController',
+                controllerAs: 'editor',
             })
             .state('id.editnode', {
                 url: "/node/:name",
@@ -94,6 +99,12 @@ angular.module('app')
                 controllerAs: 'import',
             })
 
+        .state('view', {
+                url: "/view",
+                templateUrl: 'pages/editor/editor-ro.html',
+                controller: 'EditorController',
+                controllerAs: 'editor',
+            })
         .state("404", {
             url: "/:other",
             templateUrl: 'pages/error/error.html',
