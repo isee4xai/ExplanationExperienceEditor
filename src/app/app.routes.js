@@ -5,19 +5,29 @@ angular.module('app')
 
         $stateProvider
         //id
+            .state('vid', {
+                url: "/vid",
+                templateUrl: 'pages/editor/editor-ro.html',
+                controller: 'EditorController',
+                controllerAs: 'editor',
+            })
+            .state('vid.id', {
+                url: "/:vid",
+                templateUrl: 'pages/editor/editor-ro.html',
+                controller: 'EditorController',
+                controllerAs: 'editor',
+            })
+
+
             .state('id', {
                 url: "/id",
                 templateUrl: 'pages/editor/editor.html',
                 controller: 'EditorController',
                 controllerAs: 'editor',
-            }).state('id.id', {
-                url: "/:id",
+            })
+            .state('id.id', {
+                url: "/:vid",
                 templateUrl: 'pages/editor/editor.html',
-                controller: 'EditorController',
-                controllerAs: 'editor',
-            }).state('view.id', {
-                url: "/view/:id",
-                templateUrl: 'pages/editor/editor-ro.html',
                 controller: 'EditorController',
                 controllerAs: 'editor',
             })
@@ -105,6 +115,12 @@ angular.module('app')
                 controller: 'EditorController',
                 controllerAs: 'editor',
             })
+        /*.state('vid', {
+                url: "/:vid",
+                templateUrl: 'pages/editor/editor-ro.html',
+                controller: 'EditorController',
+                controllerAs: 'editor',
+            })*/
         .state("404", {
             url: "/:other",
             templateUrl: 'pages/error/error.html',

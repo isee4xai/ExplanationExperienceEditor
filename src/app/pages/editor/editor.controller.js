@@ -12,17 +12,28 @@ EditorController.$inject = [
 ];
 
 function EditorController($state, $location, projectModel, dialogService, systemService) {
+
+
     //get id from url
     var url = $location.url().slice(1);
-    var Id = url.slice(3);
+    urlSplit = url.split("/");
     console.log(url);
+    var cmd = urlSplit[0];
+    console.log(cmd);
+    var Id = ""
+    if(urlSplit.length>1)
+        Id = urlSplit[1];
     console.log(Id);
+
     _activate();
 
 
     function _activate() {
+        if (typeof url === 'undefined'){
+            $state.go('dash.projects');
+        }
         //if we pass an id to the editor we open the project
-        if (url == "editor" || url=="view" || url == "") {
+        if (cmd == "editor" || cmd=="view" || cmd == "") {
             /*
             projectModel
                 .getRecentProjects()
@@ -60,6 +71,7 @@ function EditorController($state, $location, projectModel, dialogService, system
         } else if (Id == "") {
             $state.go('id.error');
         } else {
+            console.log("opening project: "+ Id);
             projectModel
                 .openProjectId(Id)
                 .then(function(x) {

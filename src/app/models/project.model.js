@@ -198,8 +198,9 @@
         function getConditionsEvaluationMethod() {
             return $q(function(resolve, reject) {
                 try {
-                    var data = storageService.loadEvaluation();
-                    resolve(data);
+                    //var data = storageService.loadEvaluation();
+                    //resolve(data);
+                    return {};
                 } catch (e) {
 
                     reject(e);
