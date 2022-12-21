@@ -59,7 +59,9 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 06/12/22";
+        vm.date = "version 21/12/22";
+        vm.showHelp = showHelp;
+        vm.showVideo= showVideo;
 
         vm.ListaPara = {};
 
@@ -591,5 +593,32 @@
                 }
             }
         }
+
+
+        function showHelp() {
+            var modal = document.getElementById("helpModal");
+            console.log('showhelp');
+            modal.style.display = "block";
+            var span = document.getElementById("closehelpButton");
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            };
+        }
+
+        function showVideo() {
+            var modal = document.getElementById("videoModal");
+            console.log('showvideo');
+            modal.style.display = "block";
+            var span = document.getElementById("closeVideoButton");
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            };
+        }
+
+
     }
 })();

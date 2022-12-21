@@ -34,6 +34,7 @@
         vm.PopUpImgClose = PopUpImgClose;
         vm.GetInfoParam = GetInfoParam;
         vm.RunBt = RunBt;
+        //vm.helpClose = helpClose;
 
         vm.node = null;
         vm.explanation = null;
@@ -672,6 +673,16 @@
             vm.RunBtString.push("Running Inverter || Id : " + node.id + " Name : " + node.Instance);
             return !(await runNode(node.firstChild.Id));
         }
+
+        //function helpClose() {
+            //var modal = document.getElementById("helpModal");
+            //var span = document.getElementById("closehelpButton");
+
+            // When the user clicks on <span> (x), close the modal
+            //span.onclick = function() {
+            //    modal.style.display = "none";
+            //};
+        //}
 
     }
 })();

@@ -175,10 +175,10 @@
 
             <li><a>Help</a>
                 <ul>
-                    <li><a ng-click="menubar.documentation()">
-            Documentation
+                    <li><a ng-click="menubar.showHelp()">
+            Introductory guide
           </a></li>
-            <li><a ng-click="menubar.video()">
+            <li><a ng-click="menubar.showVideo()">
             Video tutorial
           </a></li>
                 </ul>
@@ -186,6 +186,8 @@
         </ul>
         <button id="version" type="button" class="btn btn-primary btn-xs">{{menubar.date}}</button>
     </div>
+
+
     <!-- 
   <div class="menubar-right">
     <ul>
