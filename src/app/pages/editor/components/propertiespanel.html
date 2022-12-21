@@ -141,11 +141,11 @@
             </div>
 
             <div id="videoModal" class="modal">
-                <div id="contenedor" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
-                     <div id="modal-content" style="width: 100%;padding: 10px;" class="modal-content">
-                    <h1 id="iseee3-user-help">Video Tutorial</h1>
+                <div id="contenedor-video" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
+                     <div id="video-modal-content" style="width: 100%;padding: 10px;" class="modal-content">
+                    <h1>Video Tutorial</h1>
 
-                    <video width="100%" controls autoplay>
+                    <video id="videoTutorial" width="100%" controls autoplay>
                     <source src="imgs/tutorial.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                     </video>
@@ -153,12 +153,13 @@
                     <span id="closeVideoButton" style="color: #000;" class="close">&times;</span>                
                     </div>
                 <div id="caption"></div>
+                </div>
             </div>
 
 
             <div id="helpModal" class="modal">
-                <div id="contenedor" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
-                    <div id="modal-content" style="width: 100%;padding: 10px;" class="modal-content">
+                <div id="contenedor-help" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
+                    <div id="modal-content-help" style="width: 100%;padding: 10px;" class="modal-content">
                     <h1 id="iseee3-user-help">iSeeE3 User Help</h1>
 <h2 id="creating-your-first-project">Creating your first project</h2>
 When opening the editor for the first time, there will be a default
@@ -350,13 +351,13 @@ necessary).</strong></li>
 method.</strong></li>
 </ol>
 
+                    <span id="closehelpButton" style="color: #000;" class="close">&times;</span>
 
                     </div>
-                    <span id="closehelpButton" style="color: #000;" class="close">&times;</span>
-                </div>
-
                 <div id="caption"></div>
             </div>
+        </div>
+
 
         </form>
     </div>

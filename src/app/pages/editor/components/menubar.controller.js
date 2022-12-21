@@ -596,26 +596,28 @@
 
 
         function showHelp() {
-            var modal = document.getElementById("helpModal");
+            var modalHelp = document.getElementById("helpModal");
             console.log('showhelp');
-            modal.style.display = "block";
-            var span = document.getElementById("closehelpButton");
+            modalHelp.style.display = "block";
+            var spanHelp = document.getElementById("closehelpButton");
 
             // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                modal.style.display = "none";
+            spanHelp.onclick = function() {
+                modalHelp.style.display = "none";
             };
         }
 
         function showVideo() {
-            var modal = document.getElementById("videoModal");
+            var modalVideo = document.getElementById("videoModal");
             console.log('showvideo');
-            modal.style.display = "block";
-            var span = document.getElementById("closeVideoButton");
+            modalVideo.style.display = "block";
+            var spanVideo = document.getElementById("closeVideoButton");
+            var videoTag = document.getElementById("videoTutorial");
 
             // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                modal.style.display = "none";
+            spanVideo.onclick = function() {
+                modalVideo.style.display = "none";
+                videoTag.pause();
             };
         }
 
