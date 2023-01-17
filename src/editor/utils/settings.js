@@ -24,7 +24,7 @@
         max_history: 100,
 
         // COLORS
-        background_color: '#171717',
+        background_color: '#f0f2f5',
         selection_color: '#FFFFFF',
         block_border_color: '#6D6D6D',
         block_symbol_color: '#333333',
