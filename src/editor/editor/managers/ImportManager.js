@@ -14,6 +14,7 @@ b3e.editor.ImportManager = function(editor) {
     };
 
     this.treeAsData = function(data) {
+
         var project = editor.project.get();
         if (!project) return;
 

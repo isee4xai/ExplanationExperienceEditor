@@ -17,13 +17,10 @@ function EditorController($state, $location, projectModel, dialogService, system
     //get id from url
     var url = $location.url().slice(1);
     urlSplit = url.split("/");
-    console.log(url);
     var cmd = urlSplit[0];
-    console.log(cmd);
     var Id = ""
     if(urlSplit.length>1)
         Id = urlSplit[1];
-    console.log(Id);
 
     _activate();
 

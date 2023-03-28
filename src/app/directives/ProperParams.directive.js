@@ -4,7 +4,8 @@
     angular
         .module('app')
         .directive('b3ProperParams', ProperParams)
-        .controller('ProperParamsController', ProperParamsController);
+        .controller('ProperParamsController', ProperParamsController)
+        .factory('ProperParams', ProperParams);
 
     ProperParams.$inject = ['$parse'];
 
@@ -21,10 +22,9 @@
         };
         return directive;
 
+       
+
         function link(scope, element, attrs) {
-
-
-
             // get the value of the `ng-model` attribute
             scope.ProperParams.heading = attrs.heading;
             scope.ProperParams._onChange = $parse(attrs.ngChange);
@@ -33,12 +33,15 @@
             scope.$watch(variable, function(model) {
                 //scope.ProperParams.model = model;
                 scope.ProperParams.reset(model);
-                //    scope.ProperParams.GetModels(model);
+                //scope.ProperParams.GetModels(model);
                 scope.ProperParams.Imprimir(model);
             });
-
-
-
+            element.on('change', function(event) {
+                if (event.target.files && event.target.files[0]) {
+                    scope.ProperParams.handleImageChange(event.target.files[0]);
+                }
+                
+            });
         }
 
     }
@@ -50,52 +53,62 @@
         var vm = this;
         vm._onChange = null;
         vm.model = $scope.ProperParams.model || $scope.model || null;
-        vm.rows = [];
         vm.TypeQuery = ["Tabular", "File"];
-        vm.TypeQuerySelect = "Type Data";
-        vm.QueryText = "";
+        vm.TypeQuerySelect ;
+        vm.QueryText ;
         vm.SelectTypeData = SelectTypeData;
         vm.Save = Save;
-        vm.SelectModel = SelectModel;
-        vm.GetModels = GetModels;
         vm.getQueryData = getQueryData;
-        vm.models = [];
         vm.modelsSelect = "Model";
         vm.keyModel = "";
         vm.IdQuery = "";
         vm.reset = reset;
         vm.Imprimir = Imprimir;
+        vm.changeQueryText=changeQueryText;
+        vm.handleImageChange = function(file) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var base64 = event.target.result;
+                vm.model.img = base64;
+                delete vm.model.query;
 
+                vm._onChange($scope);
+                $scope.$apply(); // actualizar el scope
+            };
+            reader.readAsDataURL(file);
+        }
+    
         _activate();
 
         // BODY //
         function _activate() {
-            //get all models
-            if (vm.models.length == 0) {
-                GetModels();
-            }
+            
+        }
+        
 
-
+        function changeQueryText() {
+            vm.model.query = vm.QueryText;
+            vm._onChange($scope);
         }
 
         function Imprimir(model) {
-            if (model) {
+            if (model && vm.TypeQuerySelect === undefined) {
                 if (model.hasOwnProperty('query') && model.query != undefined) {
                     vm.TypeQuerySelect = 'Tabular';
-                    vm.QueryText = model.query;
-                } else if (model.hasOwnProperty('img') && model.img != undefined) {
-                    vm.TypeQuerySelect = 'File';
-                    vm.QueryText = model.img;
+                    delete vm.model.img;
+                    vm.QueryText = model.query || "";
+                } else if (model.query_id ===  undefined && (model.query ===  undefined && model.img ===  undefined) ) {
+                    vm.TypeQuerySelect = "Type Data"; 
+                }else{
+                    vm.TypeQuerySelect = 'File'; 
+                    delete vm.model.query;
+                    vm.QueryText = model.img || "" ;       
                 }
-                _activate();
-            }
+            } 
         }
 
-
         function reset(model) {
-            vm.rows = [];
             vm.model = model;
-            _activate();
         }
 
         function SelectModel(data) {
@@ -113,6 +126,7 @@
                 case "Tabular":
                     delete vm.model.img;
                     vm.model.query = "";
+                    vm.QueryText="";
                     break;
                 case "File":
                     delete vm.model.query;
@@ -122,14 +136,12 @@
                     break;
             }
             vm.TypeQuerySelect = data;
-
-            /* if (vm._onChange) {
-                 vm._onChange($scope);
-             }*/
+            vm._onChange($scope);
+        
         }
-
+ 
         function Save() {
-            // vm.model.id = vm.keyModel;
+
             if (vm.TypeQuerySelect != "Type Data") {
                 var imagefile = "";
                 var NameImage = "";
@@ -197,19 +209,6 @@
                     );
                 });
 
-        }
-
-
-
-        function GetModels() {
-            projectModel.getModelsRoot()
-                .then(function(x) {
-                    vm.models = x;
-                    if (vm.model.hasOwnProperty('idModel') && vm.model.idModel != undefined) {
-
-                        vm.modelsSelect = vm.models[vm.model.idModel];
-                    }
-                });
         }
     }
 

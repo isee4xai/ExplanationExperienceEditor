@@ -61,8 +61,6 @@ b3e.tree.EditManager = function(editor, project, tree) {
         }
         project.history._endBatch();
         tree._selectedBlocks = [];
-
-        console.log(project._clipboard);
     };
 
     this.paste = function() {

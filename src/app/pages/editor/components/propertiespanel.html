@@ -5,7 +5,7 @@
     <div ng-hide="propertiespanel.block" class="properties">
         <p class="text-center">Select a <strong>single</strong> block to change its properties.</p>
         <p class="text-center"><em>NOTE: The root node represents a tree. Therefore, changes applied to this node will
-        persist on the tree object.</em></p>
+                persist on the tree object.</em></p>
     </div>
 
     <div ng-show="propertiespanel.block" class="properties">
@@ -25,27 +25,35 @@
 
                 <div id="header" ng-if="propertiespanel.TitleName">
                     <ul class="nav">
-                        <li ng-if="propertiespanel.original.category != 'root'"><a ng-model="propertiespanel.block.title">{{propertiespanel.block.title}}</a>
+                        <li ng-if="propertiespanel.original.category != 'root'"><a
+                                ng-model="propertiespanel.block.title">{{propertiespanel.block.title}}</a>
                             <ul>
-                                <li ng-if="propertiespanel.original.name == 'Evaluation Method'" ng-repeat="option in propertiespanel.TitleSelect" ng-click="propertiespanel.UpdateProperties(option)">
-                                    <a>{{option.value}}</a></li>
-                                <li ng-if="propertiespanel.original.name == 'Explanation Method'" ng-repeat="option in propertiespanel.Explainers" ng-click="propertiespanel.UpdateProperties(option)">
-                                    <a>{{option}}</a></li>
+                                <li ng-if="propertiespanel.original.name == 'Explanation Method'"
+                                    ng-repeat="option in propertiespanel.Explainers"
+                                    ng-click="propertiespanel.UpdateProperties(option)">
+                                    <a>{{option}}</a>
+                                </li>
                             </ul>
                         </li>
-                        <li ng-if="propertiespanel.original.category == 'root'" ng-click="propertiespanel.UpdateProperties(option)">
+                        <li ng-if="propertiespanel.original.category == 'root'"
+                            ng-click="propertiespanel.UpdateProperties(option)">
                             <!--borrar-->
-                            <a ng-model="propertiespanel.block.title" ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}</a>
+                            <a ng-model="propertiespanel.block.title"
+                                ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}</a>
                         </li>
                     </ul>
                 </div>
 
-                <input ng-if="!propertiespanel.TitleName" type="text" class="form-control" name="title" placeholder="Title" ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.title" ng-change="propertiespanel.update()">
+                <input ng-if="!propertiespanel.TitleName" type="text" class="form-control" name="title"
+                    placeholder="Title" ng-keydown="propertiespanel.keydown($event)"
+                    ng-model="propertiespanel.block.title" ng-change="propertiespanel.update()">
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.name != 'Condition'">
                 <label for="description">Description</label>
-                <textarea name="description" rows="4" class="form-control" placeholder="Description" ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.description" ng-change="propertiespanel.update()">
+                <textarea name="description" rows="4" class="form-control" placeholder="Description"
+                    ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.description"
+                    ng-change="propertiespanel.update()">
                 </textarea>
             </div>
 
@@ -55,7 +63,8 @@
                         <li>
                             <a ng-model="propertiespanel.DataType">{{propertiespanel.block.DataType}}</a>
                             <ul>
-                                <li ng-repeat="data in propertiespanel.TypeOfData" ng-click="propertiespanel.SelectTypeOfData(data)">
+                                <li ng-repeat="data in propertiespanel.TypeOfData"
+                                    ng-click="propertiespanel.SelectTypeOfData(data)">
                                     <a>{{data}}</a>
                                 </li>
                             </ul>
@@ -67,21 +76,47 @@
 
             <div class="form-group" ng-if="propertiespanel.original.name == 'Condition'">
                 <label for="title">Variable Name</label>
-                <input type="text" placeholder="Varible Name" class="form-control" name="title" ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.VariableName" ng-change="propertiespanel.update()">
+                <input type="text" placeholder="Varible Name" class="form-control" name="title"
+                    ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.VariableName"
+                    ng-change="propertiespanel.update()">
             </div>
 
             <div class="form-group">
-                <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()" class="no-border">
+                <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()"
+                    class="no-border">
                 </b3-key-table>
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <b3-key-table-Expl heading="Properties EXP" ng-model="propertiespanel.block.propertyExpl" class="no-border">
+                <b3-key-table-Expl heading="Properties EXP" ng-model="propertiespanel.block.propertyExpl"
+                    class="no-border">
                 </b3-key-table-Expl>
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
-                <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.block.ModelRoot" ng-change="propertiespanel.update()" class="no-border">
+                <div class="title">Model</div>
+
+                <div class="form-group">
+                    <div id="header">
+                        <ul class="nav">
+                            <li>
+                                <a ng-model="propertiespanel.Models"
+                                    ng-init="propertiespanel.loadModel()">{{propertiespanel.modelsSelect}}</a>
+                                <ul>
+                                    <li ng-repeat="Model in propertiespanel.models"
+                                        ng-click="propertiespanel.SelectModel(Model)">
+                                        <a>{{Model}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+
+                <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.block.ModelRoot"
+                    ng-change="propertiespanel.update()" class="no-border">
                 </b3-Proper-Params>
             </div>
 
@@ -100,17 +135,43 @@
                     <tbody>
                         <tr ng-repeat="item in propertiespanel.ArrayParams">
                             <td class="keyPropertiesTdParams">
-                                <input id="ParamsKey" type="text" class="form-control" value="{{item.key}}" ng-disabled="item.fixed" ng-model="item.key" readonly="readonly" data-tooltip="{{propertiespanel.datatooltipParam}}" ng-mouseover="propertiespanel.GetInfoParam(item.key)" />
+                                <input id="ParamsKey" type="text" class="form-control" value="{{item.key}}"
+                                    ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
+                                    data-tooltip="{{propertiespanel.datatooltipParam}}"
+                                    ng-mouseover="propertiespanel.GetInfoParam(item.key)" />
                             </td>
                             <td>
-                                <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value" ng-change="propertiespanel.change()" />
+                                <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value"
+                                    ng-change="propertiespanel.change()" />
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+            <div class="form-group" ng-if="propertiespanel.original.name == 'User Question'">
+                <table class="table table-condensed keytable" ng-repeat="item in propertiespanel.ArrayParams">
+
+                    <tr ng-repeat="item in propertiespanel.ArrayParams" class="keyPropertiesTdParams">
+                        <td>
+                            <input id="ParamsKey" type="text" class="form-control" value="{{item.key}}"
+                                ng-disabled="item.fixed" ng-model="item.key" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr ng-repeat="item in propertiespanel.ArrayParams" style="margin-top: 50px;">
+                        <td>
+                            <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value"
+                                ng-change="propertiespanel.change()" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!--<div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <button id="ButtonRun" type="button" ng-click="propertiespanel.Run()">Run</button>
+            </div>-->
+
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <button id="ButtonRun" type="button" ng-click="propertiespanel.RunNew()">Run</button>
             </div>
 
             <div id="loader" style="display: none;" ng-if="propertiespanel.original.name == 'Explanation Method'">
@@ -119,14 +180,19 @@
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <div class="form-group" ng-if="propertiespanel.block.Json != undefined">
-                    <textarea name="json" rows="4" class="form-control" ng-model="propertiespanel.block.Json" disabled>
-                </textarea>
-                </div>
 
-                <div id="DivImg" class="form-group" ng-if="propertiespanel.block.Image != undefined">
-                    <!--<img src="{{propertiespanel.block.Image}}" alt="Imagen" ng-click="propertiespanel.PopUpImg(propertiespanel.block.Image)">
-                    -->
+                <div class="form-group" ng-if="propertiespanel.block.Json != undefined">
+                    <!--      <textarea name="json" rows="4" class="form-control" ng-model="propertiespanel.block.Json" disabled>
+                    </textarea> -->
+                </div>
+                <div id="DivImg" class="form-group" ng-if="propertiespanel.original.Image != undefined"
+                    ng-init="propertiespanel.LoadImagen()">
+                    <img id="ImgExpl" src="" ng-click="propertiespanel.PopUpImg(propertiespanel.original.Image)">
+                </div>
+                <div id="mi-div" class="form-group" style="overflow-x:auto; overflow-y:auto;"
+                    ng-init="propertiespanel.LoadHtmlCode()"
+                    ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
+
                 </div>
             </div>
 
@@ -134,25 +200,38 @@
             <div id="myModal" class="modal">
                 <div id="contenedor" class="p-8 bg-light border">
                     <img id="modal-img" class="modal-content">
-                    <span id="closeImg" class="close" ng-click="propertiespanel.PopUpImgClose()">&times;</span>
+                    <span id="closeImg" class="close" style="color: red;"
+                        ng-click="propertiespanel.PopUpImgClose()">&times;</span>
                 </div>
 
                 <div id="caption"></div>
             </div>
 
+            <div id="myModal1" class="modal" style="margin-top: 40%; ">
+                <div id="contenedor-html" class="p-8 bg-light border" style="overflow-x:auto; overflow-y:auto;">
+                </div>
+                <div>
+                    <span id="closeImg1" class="close" style="color: red;"
+                        ng-click="propertiespanel.PopUpImgClose()">&times;</span>
+                </div>
+
+                <div id="caption"></div>
+            </div>
+
+
             <div id="videoModal" class="modal">
                 <div id="contenedor-video" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
-                     <div id="video-modal-content" style="width: 100%;padding: 10px;" class="modal-content">
-                    <h1>Video Tutorial</h1>
+                    <div id="video-modal-content" style="width: 100%;padding: 10px;" class="modal-content">
+                        <h1>Video Tutorial</h1>
 
-                    <video id="videoTutorial" width="100%" controls autoplay>
-                    <source src="imgs/tutorial.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                    </video>
-                    
-                    <span id="closeVideoButton" style="color: #000;" class="close">&times;</span>                
+                        <video id="videoTutorial" width="100%" controls>
+                            <source src="imgs/tutorial.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+
+                        <span id="closeVideoButton" style="color: #000;" class="close">&times;</span>
                     </div>
-                <div id="caption"></div>
+                    <div id="caption"></div>
                 </div>
             </div>
 
@@ -160,203 +239,222 @@
             <div id="helpModal" class="modal">
                 <div id="contenedor-help" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
                     <div id="modal-content-help" style="width: 100%;padding: 10px;" class="modal-content">
-                    <h1 id="iseee3-user-help">iSeeE3 User Help</h1>
-<h2 id="creating-your-first-project">Creating your first project</h2>
-When opening the editor for the first time, there will be a default
-project title “Project 1” that you can access straight away. You can
-rename the project or simply create a new one by clicking on the “New
-Explanation Experience” button. Then click on the “Editor” button to
-start building your own explanation experiences.
-<p align="center">
-<img width="100%" alt="image" src="https://user-images.githubusercontent.com/71895708/207810403-43b26356-25b4-44de-b6c4-518f3201e58e.png">
-</p>
-<h2 id="first-look-at-the-interface">First Look at the Interface</h2>
-iSeeE3 is a tool based on behavior trees that allows you to build and
-customize your own explanation experiences. For an empty explanation
-experience, the interface will look like this:
-<p align="center">
-<img width="100%" alt="image" src="https://user-images.githubusercontent.com/71895708/207819838-2a3e9c65-d439-4577-8efe-dcdbf722a44d.png">
-</p>
-<p>At first glance, the interface might be overwhelming, so we cover
-each of its components next:</p>
-<h3 id="main-panel">Main Panel</h3>
-<p>The main panel is where we can visualize our tree and interact with
-it by clicking on its components and dragging and dropping new nodes.
-For a newly created project, the main panel will only contain the root
-node of the default tree that is created. We will see how to interact
-with the panel in the next sections.</p>
-<h3 id="menu-bar">Menu Bar</h3>
-<p align="center">
-<img width="100%" alt="image" src="https://user-images.githubusercontent.com/71895708/207816324-3c59dbba-a747-41bd-8155-89b2d2a2398e.png">
-</p>
-<p>The menu bar allows you to quickly save the project and access the
-tool settings, undo and redo changes, and the following submenus:</p>
-<ul>
-<li><strong>Project:</strong> to save the project, import, and export a
-project, tree, or node as JSON, access the editor settings and create
-new explanation experiences and custom nodes.</li>
-<li><strong>Edit:</strong> provides access to basic edition
-functionalities, such as undo and redo actions, copy, cut, paste, and
-remove selected nodes.<br />
-</li>
-<li><strong>View:</strong> For zooming in and zooming out, as well as
-organizing the nodes of a tree for a cleaner presentation.</li>
-<li><strong>Selection</strong>: to select or deselect a node, select a
-subtree or invert the current selection.</li>
-<li><strong>Random Generator:</strong> to randomly generate explanation
-experiences by specifying certain parameters, such as the minimum number
-of nodes and the depth of the trees to be created.</li>
-<li><strong>Help:</strong> provides access to this guide and a video
-tutorial.</li>
-</ul>
-<h3 id="trees-and-nodes-panel">Trees and Nodes Panel</h3>
-<p align="center">
-<img width="349" alt="image" src="https://user-images.githubusercontent.com/71895708/207820894-e5be21fe-e740-4013-8523-d3efd338c1db.png">
-</p>
-<p>On the left side of the interface, we have the trees and nodes panel.
-The <strong>“Trees”</strong> section displays all the trees contained in
-the current project, highlighting the currently selected tree in blue.
-We can create new trees by hovering over the panel title and clicking on
-the “New” button. To remove any of the trees, simply hover over its name
-and click on “Remove”.</p>
-<p>The <strong>“Nodes”</strong> section contains all the nodes that can
-be appended to the current tree. You can use different types of
-nodes:</p>
-<ul>
-<li><strong>Explanation Method:</strong> A generic explanation method
-node. The explanation method that will be used is specified from the
-<em>Properties</em> panel, as well as the execution parameters that may
-be needed.
-<p align="center">
-<img width="290" alt="image" src="https://user-images.githubusercontent.com/71895708/207826990-f26ea539-9e01-49de-8aa7-33d77c3bfa07.png">
-</p></li>
-<li><strong>Failer and Succeeder:</strong> return failure or success
-accordingly.
-<p align="center">
-<img width="545" alt="image" src="https://user-images.githubusercontent.com/71895708/207826544-323b8977-f1ca-4613-8180-e4a81e30c6ba.png">
-</p></li>
-<li><strong>Condition:</strong> This node can be used to check for
-external variables to meet a particular condition (equals, not equals,
-less than, greater than)
-<p align="center">
-<img width="268" alt="image" src="https://user-images.githubusercontent.com/71895708/207827039-0bf5c5fb-cd6b-448c-85d9-3b2287cc2184.png">
-</p></li>
-<li><strong>Sequence and Priority:</strong> These are considered
-composite nodes. They act as connectors and indicate the execution flow
-of many nodes. A sequence node will return immediately upon one of its
-children failing. A priority node will return immediately upon one of
-its children succeeding.
-<p align="center">
-<img width="217" alt="image" src="https://user-images.githubusercontent.com/71895708/207827132-b3950731-ce3f-493e-8c1f-53ece28ea42f.png">
-</p></li>
-<li><strong>Decorator Nodes:</strong> these are additional nodes that
-aim to define the execution flow at a higher level. It is possible to
-use the “Repeat” nodes to represent loops in our behavior trees. The
-“Inverter” node simply inverts the returned value of another node
-(failure/success)</li>
-</ul>
-<p align="center">
-<img width="100%" alt="image" src="https://user-images.githubusercontent.com/71895708/207829559-b802d64f-400d-4df6-8610-af19f95af080.png">
-</p>
-<h3 id="properties-panel">Properties Panel</h3>
-<p>The <em>Properties</em> panel allows defining and modifying the
-individual properties of a node. The view of this panel may change
-depending on the node that is selected. The root node is a special case,
-as it represents the whole tree, and its properties will persist on the
-entire tree object.</p>
-<p>The <em>Properties</em> panel of the <strong>root node</strong> looks
-like this:</p>
-<p align="center">
-<img width="293" alt="image" src="https://user-images.githubusercontent.com/71895708/207836434-11a66c43-a497-4765-8b77-014a0f62dfb3.png">
-</p>
-<ul>
-<li><strong>Run BT button:</strong> executes the entire behavior
-tree.</li>
-<li><strong>Intent:</strong> it allows renaming the current explanation
-experience.</li>
-<li><strong>Description and Properties:</strong> a description for this
-tree can be added in the provided text field. Additional properties can
-be added as key-value pairs by clicking on the “+” button.</li>
-<li><strong>Model:</strong> a dropdown menu with the names of the models
-that were uploaded to the iSee database. You can select the model you
-want to explain or see how to <em>include your own</em>. To execute a
-behavior tree, a model must be selected.</li>
-<li><strong>Query:</strong> If you wish to include local explanation
-methods, a query (data instance) must be given. This query can be
-provided as plain text selecting the tabular data type, or as a file,
-which is exclusive for image queries. Please keep in mind the input
-format expected by the model when providing an image file as a query. If
-the model you selected requires preprocessing of the image (i.e requires
-a different encoding from RGB for the input), then provide the query as
-plain text containing the matrix with the pixel values.</li>
-<li><strong>Save:</strong> Saves the specified query (if any). If a new
-query is provided afterward, then it will overwrite the previous
-one.</li>
-</ul>
-<p>Most nodes have properties like title, description, and user-defined
-properties:</p>
-<p align="center">
-<img width="289" alt="image" src="https://user-images.githubusercontent.com/71895708/207841650-5e4b068c-cbd8-4f42-88cd-5cdb6bbc7ea7.png">
-</p>
-<p>However, explanation method nodes are initially generic, waiting for
-a specific method to be selected. Hovering over the title of this node
-will display a drop-down menu that allows you the select the explanation
-method that you want. After selecting the desired method, the
-<em>Properties</em> panel will be updated, changing the name of the node
-and including the execution parameters (Params section) that are unique
-to that explanation method:</p>
-<p align="center">
-<img width="292" alt="image" src="https://user-images.githubusercontent.com/71895708/207842600-c108605d-bb77-4fba-b436-0121cece8347.png">
-</p>
-<p>Hovering over the names of the parameters, you can get information
-about what is the expected input format and their effect on the
-generated explanation. If parameters are left blank, default values will
-be given so execution is not affected. However, there are methods that
-may exceptionally require a parameter to be specified by the user, so it
-is encouraged to check the documentation for each specific
-parameter.</p>
-<p>Finally, the <em>Properties</em> panel for explanation method nodes
-includes a “Run” button, that will execute this explanation method,
-given that you have specified a model and query if required, and that
-the node is attached to the behavior tree.</p>
-<h2 id="building-and-executing-explanation-experiences">Building and
-Executing Explanation Experiences:</h2>
-<p>The process for building and executing explanation experiences can be
-summarized in the following steps:</p>
-<ol type="1">
-<li><strong>Open an existing project or create your own.</strong></li>
-<li><strong>Select an existing explanation experience from the
-<em>Trees</em> section or create a new one.</strong></li>
-<li><strong>Select the root node and define its
-properties.</strong></li>
-<li><strong>Select the model that will be used for explanations and
-provide a query if needed. Remember to save the query.</strong></li>
-</ol>
-<p align="center">
-<img width="557" alt="image" src="https://user-images.githubusercontent.com/71895708/207846884-0d6da57e-890f-47cc-81a3-a13402093058.png">
-</p>
-<ol start="5" type="1">
-<li><strong>Drag and drop the desired nodes from the <em>Nodes</em>
-section to build your explanation experience. In this example, we build
-a simple tree that ensures that at least one global and one local
-explanation is provided to the user:</strong></li>
-</ol>
-<p align="center">
-<img width="100%" alt="image" src="https://user-images.githubusercontent.com/71895708/207848462-66f4c4d8-fc5f-4760-b75f-19d98e2af927.png">
-</p>
-<ol start="6" type="1">
-<li><strong>Specify execution parameters for the explanation methods (if
-necessary).</strong></li>
-<li><strong>Execute the behavior tree or each individual
-method.</strong></li>
-</ol>
+                        <h1 id="iseee3-user-help">iSeeE3 User Help</h1>
+                        <h2 id="creating-your-first-project">Creating your first project</h2>
+                        When opening the editor for the first time, there will be a default
+                        project title “Project 1” that you can access straight away. You can
+                        rename the project or simply create a new one by clicking on the “New
+                        Explanation Experience” button. Then click on the “Editor” button to
+                        start building your own explanation experiences.
+                        <p align="center">
+                            <img width="100%" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207810403-43b26356-25b4-44de-b6c4-518f3201e58e.png">
+                        </p>
+                        <h2 id="first-look-at-the-interface">First Look at the Interface</h2>
+                        iSeeE3 is a tool based on behavior trees that allows you to build and
+                        customize your own explanation experiences. For an empty explanation
+                        experience, the interface will look like this:
+                        <p align="center">
+                            <img width="100%" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207819838-2a3e9c65-d439-4577-8efe-dcdbf722a44d.png">
+                        </p>
+                        <p>At first glance, the interface might be overwhelming, so we cover
+                            each of its components next:</p>
+                        <h3 id="main-panel">Main Panel</h3>
+                        <p>The main panel is where we can visualize our tree and interact with
+                            it by clicking on its components and dragging and dropping new nodes.
+                            For a newly created project, the main panel will only contain the root
+                            node of the default tree that is created. We will see how to interact
+                            with the panel in the next sections.</p>
+                        <h3 id="menu-bar">Menu Bar</h3>
+                        <p align="center">
+                            <img width="100%" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207816324-3c59dbba-a747-41bd-8155-89b2d2a2398e.png">
+                        </p>
+                        <p>The menu bar allows you to quickly save the project and access the
+                            tool settings, undo and redo changes, and the following submenus:</p>
+                        <ul>
+                            <li><strong>Project:</strong> to save the project, import, and export a
+                                project, tree, or node as JSON, access the editor settings and create
+                                new explanation experiences and custom nodes.</li>
+                            <li><strong>Edit:</strong> provides access to basic edition
+                                functionalities, such as undo and redo actions, copy, cut, paste, and
+                                remove selected nodes.<br />
+                            </li>
+                            <li><strong>View:</strong> For zooming in and zooming out, as well as
+                                organizing the nodes of a tree for a cleaner presentation.</li>
+                            <li><strong>Selection</strong>: to select or deselect a node, select a
+                                subtree or invert the current selection.</li>
+                            <li><strong>Random Generator:</strong> to randomly generate explanation
+                                experiences by specifying certain parameters, such as the minimum number
+                                of nodes and the depth of the trees to be created.</li>
+                            <li><strong>Help:</strong> provides access to this guide and a video
+                                tutorial.</li>
+                        </ul>
+                        <h3 id="trees-and-nodes-panel">Trees and Nodes Panel</h3>
+                        <p align="center">
+                            <img width="349" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207820894-e5be21fe-e740-4013-8523-d3efd338c1db.png">
+                        </p>
+                        <p>On the left side of the interface, we have the trees and nodes panel.
+                            The <strong>“Trees”</strong> section displays all the trees contained in
+                            the current project, highlighting the currently selected tree in blue.
+                            We can create new trees by hovering over the panel title and clicking on
+                            the “New” button. To remove any of the trees, simply hover over its name
+                            and click on “Remove”.</p>
+                        <p>The <strong>“Nodes”</strong> section contains all the nodes that can
+                            be appended to the current tree. You can use different types of
+                            nodes:</p>
+                        <ul>
+                            <li><strong>Explanation Method:</strong> A generic explanation method
+                                node. The explanation method that will be used is specified from the
+                                <em>Properties</em> panel, as well as the execution parameters that may
+                                be needed.
+                                <p align="center">
+                                    <img width="290" alt="image"
+                                        src="https://user-images.githubusercontent.com/71895708/207826990-f26ea539-9e01-49de-8aa7-33d77c3bfa07.png">
+                                </p>
+                            </li>
+                            <li><strong>Failer and Succeeder:</strong> return failure or success
+                                accordingly.
+                                <p align="center">
+                                    <img width="545" alt="image"
+                                        src="https://user-images.githubusercontent.com/71895708/207826544-323b8977-f1ca-4613-8180-e4a81e30c6ba.png">
+                                </p>
+                            </li>
+                            <li><strong>Condition:</strong> This node can be used to check for
+                                external variables to meet a particular condition (equals, not equals,
+                                less than, greater than)
+                                <p align="center">
+                                    <img width="268" alt="image"
+                                        src="https://user-images.githubusercontent.com/71895708/207827039-0bf5c5fb-cd6b-448c-85d9-3b2287cc2184.png">
+                                </p>
+                            </li>
+                            <li><strong>Sequence and Priority:</strong> These are considered
+                                composite nodes. They act as connectors and indicate the execution flow
+                                of many nodes. A sequence node will return immediately upon one of its
+                                children failing. A priority node will return immediately upon one of
+                                its children succeeding.
+                                <p align="center">
+                                    <img width="217" alt="image"
+                                        src="https://user-images.githubusercontent.com/71895708/207827132-b3950731-ce3f-493e-8c1f-53ece28ea42f.png">
+                                </p>
+                            </li>
+                            <li><strong>Decorator Nodes:</strong> these are additional nodes that
+                                aim to define the execution flow at a higher level. It is possible to
+                                use the “Repeat” nodes to represent loops in our behavior trees. The
+                                “Inverter” node simply inverts the returned value of another node
+                                (failure/success)</li>
+                        </ul>
+                        <p align="center">
+                            <img width="100%" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207829559-b802d64f-400d-4df6-8610-af19f95af080.png">
+                        </p>
+                        <h3 id="properties-panel">Properties Panel</h3>
+                        <p>The <em>Properties</em> panel allows defining and modifying the
+                            individual properties of a node. The view of this panel may change
+                            depending on the node that is selected. The root node is a special case,
+                            as it represents the whole tree, and its properties will persist on the
+                            entire tree object.</p>
+                        <p>The <em>Properties</em> panel of the <strong>root node</strong> looks
+                            like this:</p>
+                        <p align="center">
+                            <img width="293" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207836434-11a66c43-a497-4765-8b77-014a0f62dfb3.png">
+                        </p>
+                        <ul>
+                            <li><strong>Run BT button:</strong> executes the entire behavior
+                                tree.</li>
+                            <li><strong>Intent:</strong> it allows renaming the current explanation
+                                experience.</li>
+                            <li><strong>Description and Properties:</strong> a description for this
+                                tree can be added in the provided text field. Additional properties can
+                                be added as key-value pairs by clicking on the “+” button.</li>
+                            <li><strong>Model:</strong> a dropdown menu with the names of the models
+                                that were uploaded to the iSee database. You can select the model you
+                                want to explain or see how to <em>include your own</em>. To execute a
+                                behavior tree, a model must be selected.</li>
+                            <li><strong>Query:</strong> If you wish to include local explanation
+                                methods, a query (data instance) must be given. This query can be
+                                provided as plain text selecting the tabular data type, or as a file,
+                                which is exclusive for image queries. Please keep in mind the input
+                                format expected by the model when providing an image file as a query. If
+                                the model you selected requires preprocessing of the image (i.e requires
+                                a different encoding from RGB for the input), then provide the query as
+                                plain text containing the matrix with the pixel values.</li>
+                            <li><strong>Save:</strong> Saves the specified query (if any). If a new
+                                query is provided afterward, then it will overwrite the previous
+                                one.</li>
+                        </ul>
+                        <p>Most nodes have properties like title, description, and user-defined
+                            properties:</p>
+                        <p align="center">
+                            <img width="289" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207841650-5e4b068c-cbd8-4f42-88cd-5cdb6bbc7ea7.png">
+                        </p>
+                        <p>However, explanation method nodes are initially generic, waiting for
+                            a specific method to be selected. Hovering over the title of this node
+                            will display a drop-down menu that allows you the select the explanation
+                            method that you want. After selecting the desired method, the
+                            <em>Properties</em> panel will be updated, changing the name of the node
+                            and including the execution parameters (Params section) that are unique
+                            to that explanation method:
+                        </p>
+                        <p align="center">
+                            <img width="292" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207842600-c108605d-bb77-4fba-b436-0121cece8347.png">
+                        </p>
+                        <p>Hovering over the names of the parameters, you can get information
+                            about what is the expected input format and their effect on the
+                            generated explanation. If parameters are left blank, default values will
+                            be given so execution is not affected. However, there are methods that
+                            may exceptionally require a parameter to be specified by the user, so it
+                            is encouraged to check the documentation for each specific
+                            parameter.</p>
+                        <p>Finally, the <em>Properties</em> panel for explanation method nodes
+                            includes a “Run” button, that will execute this explanation method,
+                            given that you have specified a model and query if required, and that
+                            the node is attached to the behavior tree.</p>
+                        <h2 id="building-and-executing-explanation-experiences">Building and
+                            Executing Explanation Experiences:</h2>
+                        <p>The process for building and executing explanation experiences can be
+                            summarized in the following steps:</p>
+                        <ol type="1">
+                            <li><strong>Open an existing project or create your own.</strong></li>
+                            <li><strong>Select an existing explanation experience from the
+                                    <em>Trees</em> section or create a new one.</strong></li>
+                            <li><strong>Select the root node and define its
+                                    properties.</strong></li>
+                            <li><strong>Select the model that will be used for explanations and
+                                    provide a query if needed. Remember to save the query.</strong></li>
+                        </ol>
+                        <p align="center">
+                            <img width="557" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207846884-0d6da57e-890f-47cc-81a3-a13402093058.png">
+                        </p>
+                        <ol start="5" type="1">
+                            <li><strong>Drag and drop the desired nodes from the <em>Nodes</em>
+                                    section to build your explanation experience. In this example, we build
+                                    a simple tree that ensures that at least one global and one local
+                                    explanation is provided to the user:</strong></li>
+                        </ol>
+                        <p align="center">
+                            <img width="100%" alt="image"
+                                src="https://user-images.githubusercontent.com/71895708/207848462-66f4c4d8-fc5f-4760-b75f-19d98e2af927.png">
+                        </p>
+                        <ol start="6" type="1">
+                            <li><strong>Specify execution parameters for the explanation methods (if
+                                    necessary).</strong></li>
+                            <li><strong>Execute the behavior tree or each individual
+                                    method.</strong></li>
+                        </ol>
 
-                    <span id="closehelpButton" style="color: #000;" class="close">&times;</span>
+                        <span id="closehelpButton" style="color: #000;" class="close">&times;</span>
 
                     </div>
-                <div id="caption"></div>
+                    <div id="caption"></div>
+                </div>
             </div>
-        </div>
 
 
         </form>

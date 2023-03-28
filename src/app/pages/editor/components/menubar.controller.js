@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 21/12/22";
+        vm.date = "version 27/03/23";
         vm.showHelp = showHelp;
         vm.showVideo= showVideo;
 
@@ -364,10 +364,11 @@
         }
 
         function GetModels() {
+            /*
             projectModel.getModelsRoot()
                 .then(function(x) {
                     vm.models = x;
-                });
+                });*/
         }
 
         function GetIdModels() {
@@ -410,7 +411,7 @@
                             if (NumeroAle == 1 || x == NumeroAle - 1) {
                                 var p = 0;
                             } else {
-                                var NumeroAle1 = getRndInteger(1, 3);
+                                var NumeroAle1 = getRndInteger(0, 2);
                                 var p = NumeroAle1;
                             }
 
@@ -491,11 +492,6 @@
                     }
 
                     return BlockCondition;
-                case "Evaluation Method":
-
-                    var indexEvaluation = getRndInteger(0, vm.evaluation.length - 1);
-                    BlockCondition = PropertiesCreate(vm.evaluation[indexEvaluation], "Evaluation Method");
-                    return BlockCondition;
                 case "Succeeder":
                     BlockCondition = PropertiesCreate(vm.NameNodes[IndexNameNodeNodes], "Evaluation Method");
                     return BlockCondition;
@@ -504,7 +500,6 @@
                     return BlockCondition;
             }
         }
-
 
         function PropertiesCreate(DataJson, NameNode) {
             //define properties a method of evaluation or explanation
@@ -609,7 +604,6 @@
 
         function showVideo() {
             var modalVideo = document.getElementById("videoModal");
-            console.log('showvideo');
             modalVideo.style.display = "block";
             var spanVideo = document.getElementById("closeVideoButton");
             var videoTag = document.getElementById("videoTutorial");

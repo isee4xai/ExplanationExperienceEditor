@@ -1,15 +1,16 @@
-b3e.editor.ExportManager = function(editor) {
+
+b3e.editor.ExportManager = function (editor) {
     "use strict";
 
     function getBlockChildrenIds(block) {
         var conns = block._outConnections.slice(0);
         if (editor._settings.get('layout') === 'horizontal') {
-            conns.sort(function(a, b) {
+            conns.sort(function (a, b) {
                 return a._outBlock.y -
                     b._outBlock.y;
             });
         } else {
-            conns.sort(function(a, b) {
+            conns.sort(function (a, b) {
                 return a._outBlock.x -
                     b._outBlock.x;
             });
@@ -23,7 +24,7 @@ b3e.editor.ExportManager = function(editor) {
         return nodes;
     }
 
-    this.projectToData = function() {
+    this.projectToData = function () {
         var project = editor.project.get();
 
         if (!project) return;
@@ -37,7 +38,7 @@ b3e.editor.ExportManager = function(editor) {
             trees: [],
             custom_nodes: this.nodesToData()
         };
-        project.trees.each(function(tree) {
+        project.trees.each(function (tree) {
 
             var d = this.treeToData(tree, true);
             d.id = tree._id;
@@ -46,7 +47,7 @@ b3e.editor.ExportManager = function(editor) {
         return data;
     };
 
-    this.treeToData = function(tree, ignoreNodes) {
+    this.treeToData = function (tree, ignoreNodes) {
         var project = editor.project.get();
         if (!project) return;
 
@@ -70,27 +71,46 @@ b3e.editor.ExportManager = function(editor) {
             root: first[0] || null,
             properties: root.properties,
         };
-
+        console.log(root);
         if (root.hasOwnProperty("ModelRoot")) {
             if (root.ModelRoot.hasOwnProperty("query")) {
                 data.query = root.ModelRoot.query;
             }
             if (root.ModelRoot.hasOwnProperty("img")) {
-                var reader = new FileReader();
+              /*  var reader = new FileReader();
                 reader.readAsDataURL(root.ModelRoot.img);
-                reader.onload = function() {
+                reader.onload = function () {
                     data.img = reader.result;
                 };
-                reader.onerror = function(error) {
+                reader.onerror = function (error) {
                     console.log('Error: ', error);
                 };
-
+                */
+                data.img = root.ModelRoot.img;
             }
             if (root.ModelRoot.hasOwnProperty("idModel")) {
                 data.idModel = root.ModelRoot.idModel;
             }
-            if (root.ModelRoot.hasOwnProperty("query_id")) {
-                data.query_id = root.ModelRoot.query_id;
+        } else {
+            if (root.hasOwnProperty("idModel") && root.hasOwnProperty("query") && root.hasOwnProperty("img") &&
+                root.idModel != undefined && root.query != undefined || root.img != undefined) {
+                if (root.hasOwnProperty("query") && root.query != undefined) {
+                    data.query = root.query;
+                }
+                if (root.hasOwnProperty("img") && root.img != undefined) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(root.img);
+                    reader.onload = function () {
+                        data.img = reader.result;
+                    };
+                    reader.onerror = function (error) {
+                        console.log('Error: ', error);
+                    };
+
+                }
+                if (root.hasOwnProperty("idModel")) {
+                    data.idModel = root.idModel;
+                }
             }
         }
 
@@ -108,7 +128,7 @@ b3e.editor.ExportManager = function(editor) {
         };
 
 
-        tree.blocks.each(function(block) {
+        tree.blocks.each(function (block) {
             if (block.category !== 'root') {
                 var d = {
                     id: block.id,
@@ -118,8 +138,8 @@ b3e.editor.ExportManager = function(editor) {
                     properties: block.properties,
                     display: { x: block.x, y: block.y }
                 };
-                if (block.name === 'Explanation Method') {
 
+                if (block.name === 'Explanation Method' || block.name === 'User Question') {
                     if (block.hasOwnProperty("params")) {
                         if (Object.keys(block.params).length != 0) {
                             d.params = block.params;
@@ -176,19 +196,19 @@ b3e.editor.ExportManager = function(editor) {
                         }
                     });
                 }
-
                 data.nodes[block.id] = d;
+                console.log(data);
             }
         });
         return data;
     };
 
-    this.nodesToData = function() {
+    this.nodesToData = function () {
         var project = editor.project.get();
         if (!project) return;
 
         var data = [];
-        project.nodes.each(function(node) {
+        project.nodes.each(function (node) {
             if (!node.isDefault) {
                 data.push({
                     version: b3e.VERSION,
@@ -205,7 +225,7 @@ b3e.editor.ExportManager = function(editor) {
         return data;
     };
 
-    this.nodesToJavascript = function() {};
+    this.nodesToJavascript = function () { };
 
-    this._applySettings = function(settings) {};
+    this._applySettings = function (settings) { };
 };

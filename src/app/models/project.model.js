@@ -11,7 +11,7 @@
         '$window',
         'storageService',
         'systemService',
-        'localStorageService',
+        'localStorageService', 
         'editorService'
     ];
 
@@ -44,7 +44,8 @@
             getExplainers: getExplainers,
             getQueryImgTab: getQueryImgTab,
             PostExplainerLibraries: PostExplainerLibraries,
-            runBT: runBT
+            runBT: runBT,
+            RunNew: RunNew
         };
         return service;
 
@@ -53,8 +54,19 @@
             storageService.save(recentPath, recentCache);
         }
 
-        function _updateRecentProjects(project) {
+        function RunNew(Json,ExplainerSelect) {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.PostExplainerNew(Json, ExplainerSelect);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
 
+        }
+
+        function _updateRecentProjects(project) {
             if (project) {
                 for (var i = recentCache.length - 1; i >= 0; i--) {
                     if (recentCache[i].path === project.path) {
@@ -69,7 +81,6 @@
                     path: project.path,
                     isOpen: true,
                 };
-
                 recentCache.splice(0, 0, data);
             } else {
                 for (var j = 0; j < recentCache.length; j++) {
@@ -83,6 +94,7 @@
             // Set current open project to the localStorage, so the app can open it
             //   during intialization
             currentProject = project;
+
             _updateRecentProjects(project);
             $rootScope.$broadcast('dash-projectchanged');
         }
@@ -96,7 +108,7 @@
                         data = storageService.load(recentPath);
                     } catch (e) {}
 
-                    if (!data) {
+                    if (!data) { 
                         data = [];
                     }
 
@@ -138,6 +150,7 @@
                 //save 
                 storageService.saveJson(project.path, project);
                 storageService.save(project.path, project);
+                _setProject(project);
                 _updateRecentProjects(project);
                 resolve();
             });
@@ -208,7 +221,7 @@
             });
         }
 
-        function getConditionsEvaluationEXP(x) {
+        async function getConditionsEvaluationEXP(x) {
 
             return $q(function(resolve, reject) {
                 try {
@@ -233,11 +246,19 @@
         }
 
         function getModelsRoot() {
-            return $q(function(resolve, reject) {
+             return $q(function(resolve, reject) {
                 try {
-                    var data = storageService.loadModels();
-                    resolve(data);
-                } catch (e) {
+                    const promise = Promise.resolve(storageService.loadModels());
+
+                    promise
+                      .then((value) => {
+                       resolve(value);
+                      })
+                      .catch((err) => {
+                        console.log(err); 
+                      });
+                
+              } catch (e) {
                     reject(e);
                 }
             });
@@ -269,6 +290,7 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.PostExplainers(Model, Params, Instance);
+                    console.log(data);
                     resolve(data);
                 } catch (e) {
                     reject(e);

@@ -28,23 +28,24 @@
         this.nodes.add(b3e.Root, true);
         this.nodes.add(b3.Sequence, true);
         this.nodes.add(b3.Priority, true);
+        this.nodes.add(b3.Supplement, true);
+        this.nodes.add(b3.Replacement,true);
+        this.nodes.add(b3.Variant,true);
+        this.nodes.add(b3.Complement,true);
 
-        //his.nodes.add(b3.MemSequence, true);
-        //this.nodes.add(b3.MemPriority, true);
         this.nodes.add(b3.Repeater, true);
         this.nodes.add(b3.RepeatUntilFailure, true);
         this.nodes.add(b3.RepeatUntilSuccess, true);
-        //this.nodes.add(b3.MaxTime, true);
+
         this.nodes.add(b3.Inverter, true);
         this.nodes.add(b3.Limiter, true);
         this.nodes.add(b3.XM, true);
-        //this.nodes.add(b3.EM, true);
+
         this.nodes.add(b3.Condition, true);
         this.nodes.add(b3.Failer, true);
         this.nodes.add(b3.Succeeder, true);
-        //this.nodes.add(b3.Runner, true);
-        //this.nodes.add(b3.Error, true);
-        //this.nodes.add(b3.Wait, true);
+        this.nodes.add(b3.UserQuestion,true);
+
 
         this._applySettings(this._editor._settings);
         this.history.clear();

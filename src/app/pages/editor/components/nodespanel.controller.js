@@ -44,7 +44,6 @@
 
 
             p.nodes.each(function(node) {
-
                 if (node.category === 'tree') return;
 
                 var list = vm.nodes[node.category];

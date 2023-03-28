@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -11,6 +11,7 @@
         'dialogService',
         'notificationService',
         'projectModel',
+        'ProperParams',
         '$state'
     ];
 
@@ -19,6 +20,7 @@
         dialogService,
         notificationService,
         projectModel,
+        ProperParams,
         $state) {
         var vm = this;
         vm.original = null;
@@ -31,10 +33,16 @@
         vm.change = change;
         vm.Run = Run;
         vm.PopUpImg = PopUpImg;
+        vm.PopUpHtml = PopUpHtml;
         vm.PopUpImgClose = PopUpImgClose;
         vm.GetInfoParam = GetInfoParam;
         vm.RunBt = RunBt;
+        vm.LoadImagen = LoadImagen;
+        vm.LoadHtmlCode = LoadHtmlCode;
+        vm.loadModel = loadModel;
         //vm.helpClose = helpClose;
+        //call Json
+        vm.RunNew = RunNew;
 
         vm.node = null;
         vm.explanation = null;
@@ -58,19 +66,29 @@
 
 
         vm.datatooltipParam = "";
-        vm.Imagen = "";
         vm.Json = {};
 
         vm.lastItem = 0;
         vm.Primero;
         vm.RunBtString = [];
 
-        var root;
-        var modelid;
-        var exp_instance;
+        vm.SelectModel = SelectModel;
+        vm.GetModels = GetModels;
+        vm.models = [];
+        vm.keyModel = "";
+        vm.IdQuery = "";
 
-        _create();
-        _activate();
+
+        if (vm.models.length === 0) {
+            GetModels();
+            vm.modelsSelect = "Model";
+            _create();
+            _activate();
+
+        } else {
+            _create();
+            _activate();
+        }
 
         $scope.$on('$destroy', _destroy);
 
@@ -89,10 +107,8 @@
 
                 if (vm.original.hasOwnProperty("ModelRoot")) {
                     ModelGet = {
-                        idModel: vm.original.ModelRoot.idModel,
-                        query_id: vm.original.ModelRoot.query_id
+                        idModel: vm.original.ModelRoot.idModel
                     };
-
                     if (vm.original.ModelRoot.img != undefined) {
                         ModelGet.img = vm.original.ModelRoot.img;
                     } else {
@@ -100,17 +116,16 @@
                     }
                 } else {
                     ModelGet = {
-                        idModel: vm.original.idModel,
-                        query_id: vm.original.query_id
+                        idModel: vm.original.idModel
                     };
                     if (vm.original.img != undefined) {
-                        var file = new File([(vm.original.img)], "ImgModel.png", { type: "image/png" });
-                        ModelGet.img = file;
+                        /* var file = new File([(vm.original.img)], "ImgModel.png", { type: "image/png" });
+                         ModelGet.img = file;*/
+                        ModelGet.img = vm.original.img;
                     } else {
                         ModelGet.query = vm.original.query;
                     }
                 }
-
 
                 vm.block = {
                     title: vm.original.title,
@@ -125,16 +140,11 @@
                     Json: vm.original.Json
                 };
 
-                if (vm.evaluation == null) {
-                    _getJsonProperties();
-                }
-
                 //  check if the property that is selected to define its values ​​in the properties component
                 //  is the explain method and the evaluate method or intends
                 switch (vm.original.name) {
                     case "Explanation Method":
                         vm.TitleName = vm.original.name;
-                        // vm.TitleSelect = vm.explanation;
                         if (vm.original.title != "Explanation Method" && Object.keys(vm.JsonParams).length == 0) {
                             paramsExpValue(vm.original.title);
                         }
@@ -148,11 +158,27 @@
                             _getArrayExplainers();
                         }
 
-                        AddListAllProperties();
-                        break;
-                    case "Evaluation Method":
-                        vm.TitleName = vm.original.name;
-                        vm.TitleSelect = vm.evaluation;
+                        if (vm.original.Json != undefined) {
+                            const miDiv = document.getElementById('mi-div');
+                            if (miDiv !== null) {
+                                miDiv.innerHTML = vm.original.Json;
+                            }
+                        } else if (vm.original.Image != undefined) {
+                            if (document.getElementById("ImgExpl") !== null) {
+                                document.getElementById("ImgExpl").src = vm.original.Image;
+                                const miDiv = document.getElementById('mi-div');
+                                miDiv.innerHTML = null;
+                            }
+
+                        } else {
+                            const miDiv = document.getElementById('mi-div');
+                            if (miDiv !== null) {
+                                miDiv.innerHTML = '';
+                            }
+                        }
+
+                        t.blocks.update(vm.original, vm.block);
+
                         AddListAllProperties();
                         break;
                     case "Condition":
@@ -166,9 +192,19 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
                         vm.IdModel = vm.block.ModelRoot;
-                        if (vm.original.ModelRoot == undefined) {
-                            update();
+                        break;
+                    case "User Question":
+                        vm.TitleName = vm.original.name;
+                        vm.TitleSelect = null;
+
+                        if (!vm.block.params.hasOwnProperty("Question")) {
+                            vm.ArrayParams.push({ "key": "Question", "value": "", fixed: false });
+                        } else {
+                            for (var property in vm.block.params) {
+                                vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
+                            }
                         }
+
                         break;
                     default:
                         vm.TitleName = null;
@@ -180,17 +216,104 @@
             }
         }
 
+        function loadModel() {
+            setTimeout(() => {
+                if (vm.original.ModelRoot == undefined) {
+                    vm.modelsSelect = vm.models[vm.original.idModel];
+
+                } else {
+                    vm.modelsSelect = vm.models[vm.original.ModelRoot.idModel];
+                }
+                if (vm.modelsSelect == undefined) {
+                    vm.modelsSelect = "Model";
+                }
+            }, 500);
+
+
+        }
+
+        function LoadImagen() {
+            if (vm.original.Image != undefined) {
+                document.getElementById("ImgExpl").src = vm.original.Image;
+            }
+        }
+
+        function LoadHtmlCode() {
+            if (vm.original.Json != undefined) {
+
+                const miDiv = document.getElementById('mi-div');
+                miDiv.innerHTML = vm.original.Json;
+            }
+        }
+
+        function GetModels() {
+            projectModel.getModelsRoot()
+                .then(function (x) {
+                    if (vm.models.length == 0) {
+                        vm.models = x;
+                        var deleteModels = Object.keys(x).filter(key => x[key].includes('63'));
+                        for (let index = 0; index < deleteModels.length; index++) {
+                            delete vm.models[deleteModels[index]];
+                        }
+                    }
+                });
+        }
+
         function _getArrayExplainers() {
             //Get name Explainers
             projectModel.getExplainers()
-                .then(function(x) {
+                .then(function (x) {
                     vm.Explainers = x;
                 });
 
         }
 
-        function Run() {
+        function SelectModel(data) {
+            vm.modelsSelect = data;
+            vm.block.ModelRoot.idModel = Object.keys(vm.models).find(key => vm.models[key] === data);
+            update();
+        }
 
+
+        function RunNew() {
+            var jsonParam = {};
+            for (var i = 0; i < vm.ArrayParams.length; i++) {
+                if (vm.ArrayParams[i].value != "") {
+                    jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
+                }
+            }
+
+            var jsonObjectInstance = [];
+            if (vm.IdModel.query) {
+                jsonObjectInstance = JSON.parse(vm.IdModel.query);
+            } else {
+                jsonObjectInstance.img = vm.IdModel.img;
+            }
+
+            jsonObjectInstance.id = vm.IdModel.idModel
+            jsonObjectInstance.params = jsonParam;
+
+            projectModel.RunNew(jsonObjectInstance, vm.original.title)
+                .then(function (x) {
+                    if (x.type == "image") {
+                        var img = new Image();
+                        var base64 = x.explanation;
+                        vm.block.Image = "data:image/png;base64," + base64;
+                        delete vm.block.Json;
+                    } else if (x.type == "html") {
+                        const miDiv = document.getElementById('mi-div');
+                        miDiv.innerHTML = x.explanation;
+                        vm.block.Json = x.explanation;
+                        delete vm.block.Image;
+                        LoadHtmlCode();
+                    }
+                    update();
+                });
+
+
+        }
+
+        function Run() {
             var button = document.querySelector("#ButtonRun");
             button.disabled = true;
 
@@ -206,7 +329,7 @@
             document.getElementById("loader").style.display = "block";
 
             projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
-                .then(function(x) {
+                .then(function (x) {
                     document.getElementById("loader").style.display = "none";
                     if (x.hasOwnProperty('plot_png')) {
                         vm.block.Image = x.plot_png;
@@ -222,7 +345,7 @@
                     );
                     button.disabled = false;
                     update();
-                }, function() {
+                }, function () {
                     document.getElementById("loader").style.display = "none";
                     notificationService.error(
                         'Run not completed '
@@ -235,7 +358,7 @@
             //Get the properties of the evaluate method
 
             projectModel.getConditionsEvaluationMethod()
-                .then(function(x) {
+                .then(function (x) {
                     vm.evaluation = x;
                 });
         }
@@ -243,7 +366,7 @@
         function renameIntends(CurrentName) {
             dialogService
                 .prompt('Rename Intents', null, 'input', CurrentName)
-                .then(function(name) {
+                .then(function (name) {
                     // If no name provided, abort
                     if (!name) {
                         notificationService.error(
@@ -259,7 +382,7 @@
 
 
         function _event(e) {
-            setTimeout(function() { $scope.$apply(function() { _activate(); }); }, 0);
+            setTimeout(function () { $scope.$apply(function () { _activate(); }); }, 0);
         }
 
         function _create() {
@@ -386,6 +509,7 @@
 
 
         function change() {
+
             for (var keyParam in vm.block.params) {
                 if (vm.block.params.hasOwnProperty(keyParam)) {
                     delete vm.block.params[keyParam];
@@ -413,20 +537,43 @@
             modalImg.src = ImagenSrc;
         }
 
+        function PopUpHtml(HtmlCode) {
+            /*
+            // Seleccionar el elemento padre
+            var padre = document.querySelector('.editor-page');
+
+            // Crear un nuevo elemento div
+            var nuevoDiv = document.createElement('div');
+
+            // Agregar contenido al nuevo elemento div
+            nuevoDiv.innerHTML = 'Este es un nuevo div';
+
+            // Añadir el nuevo elemento al DOM
+            padre.appendChild(nuevoDiv);
+            */
+
+
+        }
+
         function PopUpImgClose() {
             var modal = document.getElementById("myModal");
+            var modal1 = document.getElementById("myModal1");
             var span = document.getElementsByClassName("close")[0];
+            var span1 = document.getElementsByClassName("close")[1];
 
             // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
+            span.onclick = function () {
                 modal.style.display = "none";
+            };
+            span1.onclick = function () {
+                modal1.style.display = "none";
             };
         }
 
 
         function paramsExp(option) {
             projectModel.getConditionsEvaluationEXP(option)
-                .then(function(x) {
+                .then(function (x) {
                     vm.JsonParams = {};
                     vm.ArrayParams = [];
                     vm.JsonParams = x.params;
@@ -440,7 +587,7 @@
         function paramsExpValue(option) {
             vm.JsonParams = {};
             projectModel.getConditionsEvaluationEXP(option)
-                .then(function(x) {
+                .then(function (x) {
                     vm.JsonParams = x.params;
                 });
         }
@@ -481,15 +628,11 @@
 
         function RunBt() {
             vm.jsonData = projectModel.runBT();
-            root = vm.jsonData.root;
-            modelid = vm.jsonData.idModel;
-            exp_instance = vm.jsonData.query;
 
-            vm.lastItem = 0;
-            vm.Primero = "";
-
-            runNode(root);
-
+            for (const identificador in vm.jsonData.nodes) {
+                console.log();
+                runNode(vm.jsonData.nodes[identificador].id);
+            }
         }
 
         async function runNode(id) {
@@ -505,8 +648,6 @@
                     return await succeeder(vm.jsonData.nodes[id]);
                 case "Explanation Method":
                     return await explanationMethod(vm.jsonData.nodes[id]);
-                case "Evaluation Method":
-                    return await evaluationMethod(vm.jsonData.nodes[id]);
                 case "Repeater":
                     return await repeater(vm.jsonData.nodes[id]);
                 case "RepeatUntilFailure":
@@ -596,55 +737,57 @@
 
         async function explanationMethod(node) {
             vm.RunBtString.push("Running Explanation Method || Id : " + node.id + " Name : " + node.Instance);
-            // await post_request(node);
-            var Model = {
-                idModel: modelid,
-                query: exp_instance
-            }
 
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
             var ExpBlock = t.blocks.get(node.id);
 
-            return projectModel.PostExplainerLibraries(Model, JSON.stringify(node.params), node.Instance)
-                .then(function(response) {
+            var jsonParam = {};
+            for (var i = 0; i < vm.ArrayParams.length; i++) {
+                if (vm.ArrayParams[i].value != "") {
+                    jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
+                }
+            }
 
-                    if (response.hasOwnProperty('plot_png')) {
-                        var ExpBlockEdit = {
-                            Image: response.plot_png
+            var jsonObjectInstance = [];
+            if (vm.IdModel.query) {
+                jsonObjectInstance = JSON.parse(vm.IdModel.query);
+            } else {
+                jsonObjectInstance.img = vm.IdModel.img;
+            }
+            jsonObjectInstance.id = vm.IdModel.idModel
+            jsonObjectInstance.params = jsonParam;
+
+            var ExpBlockEdit = [];
+
+            projectModel.RunNew(jsonObjectInstance, node.Instance)
+                .then(function (x) {
+                    if (x.type == "image") {
+                        var img = new Image();
+                        var base64 = x.explanation;
+
+                        ExpBlockEdit = {
+                            Image: "data:image/png;base64," + base64
                         };
 
                         delete ExpBlock.Json;
                         delete ExpBlockEdit.Json;
-                    } else {
-                        var ExpBlockEdit = {
-                            Json: JSON.stringify(response)
+
+                    } else if (x.type == "html") {
+
+                        ExpBlockEdit = {
+                            Json: x.explanation
                         };
                         delete ExpBlock.Image;
                         delete ExpBlockEdit.Image;
                     }
-
                     t.blocks.update(ExpBlock, ExpBlockEdit);
+                    //update();
                     return true;
-                })
-                .catch(function(error) {
+                }).catch(function (error) {
                     return false;
                 });
-        }
-
-        async function evaluationMethod(node) {
-            vm.RunBtString.push("Running Evaluation Method || Id : " + node.id + " Name : " + node.Instance);
-            //Lanzar ventada de desea continuar o no, si dice que no devuelve False, en caso contrario true
-            //The return value should depend on the return value of the evaluation method
-            return dialogService
-                .continueBt('Continue execution of the editor?', null)
-                .then(function(name) {
-                    if (name !== false) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+            return false;
         }
 
         async function repeater(node) {
@@ -675,14 +818,17 @@
         }
 
         //function helpClose() {
-            //var modal = document.getElementById("helpModal");
-            //var span = document.getElementById("closehelpButton");
+        //var modal = document.getElementById("helpModal");
+        //var span = document.getElementById("closehelpButton");
 
-            // When the user clicks on <span> (x), close the modal
-            //span.onclick = function() {
-            //    modal.style.display = "none";
-            //};
+        // When the user clicks on <span> (x), close the modal
+        //span.onclick = function() {
+        //    modal.style.display = "none";
+        //};
         //}
 
     }
 })();
+
+
+

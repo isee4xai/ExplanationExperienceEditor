@@ -15,7 +15,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     var service = {
         save: save,
         saveJson: saveJson,
-        saveAsync: saveAsync,
+        saveAsync: saveAsync, 
         load: load,
         loadProjectId: loadProjectId,
         loadAsync: loadAsync,
@@ -28,6 +28,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         loadExplainers: loadExplainers,
         GetQuery: GetQuery,
         PostExplainers: PostExplainers,
+        PostExplainerNew:PostExplainerNew
     };
     return service;
 
@@ -36,7 +37,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     function saveJson(path, data) {
-
         if (localStorage.getItem(path) != null) {
             //get date now
             var today = new Date();
@@ -56,7 +56,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                                 'Content-type': 'application/json; charset=UTF-8',
                             },
                         })
-                        .then((response) => response.json());
+                        .then((response) => response.json() );
                 } else {
                     fetch(SettingsAddres.httpAddresProjects, {
                             method: 'POST',
@@ -65,7 +65,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                                 'Content-type': 'application/json; charset=UTF-8',
                             },
                         })
-                        .then((response) => response.json());
+                        .then((response) =>  response.json() );
                 }
             });
         }
@@ -154,31 +154,12 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                 reject(e);
             }
         });
-        /*
-        return $q(function(resolve, reject) {
-            try {
-                axios.get(server_url + method_url).then(function(response) {
-                    resolve(response.data.Params);
-                });
-            } catch (e) {
-                reject(e);
-            }
-        });
-        return $q(function(resolve, reject) {
-            try {
-                axios.get(server_url + method_url).then(function(response) {
-                    resolve(response.data.params);
-                });
-            } catch (e) {
-                reject(e);
-            }
-        });
-        */
     }
 
-    function loadModels() {
+    async function loadModels() {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.AddresModels;
+
         return $q(function(resolve, reject) {
             try {
                 axios.get(server_url).then(function(response) {
@@ -188,6 +169,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                 reject(e);
             }
         });
+
     }
 
     function PostModelIdLoadModel(ModelId, Quey, Image) {
@@ -212,7 +194,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             },
             data: data
         };
-
+  
         return $q(function(resolve, reject) {
             try {
                 axios(config)
@@ -228,6 +210,36 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             }
         });
     }
+
+    function PostExplainerNew(Json,ExplainerSelect) {
+        //We set the server URL, make sure it's the one in your machine.
+        var server_url = SettingsAddres.httpAddresExplanations + ExplainerSelect;
+       
+        var config = {
+            method: 'post',
+            url: server_url,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: Json
+        };
+  
+        return $q(function(resolve, reject) {
+            try {
+                axios(config)
+                    .then(function(response) {
+                        if (response.status == 200) {
+                            resolve(response.data);
+                        } else {
+                            reject(e);
+                        }
+                    });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
 
     function GetQuery(Id, QueyId, imagefile) {
         //We set the server URL, make sure it's the one in your machine.
@@ -274,7 +286,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             data.append('image', Model.img);
         }
         data.append('url', "");
-
+        
         var config = {
             method: 'post',
             url: server_url,
@@ -283,7 +295,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             },
             data: data
         };
-
+        
         return $q(function(resolve, reject) {
             try {
                 axios(config)
@@ -327,3 +339,4 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
 }
+

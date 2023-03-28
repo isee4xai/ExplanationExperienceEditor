@@ -1,23 +1,5 @@
 <div class="ProperParams" ng-controller="ProperParamsController as ProperParams">
 
-    <div class="title">Model</div>
-
-    <div class="form-group">
-        <div id="header">
-            <ul class="nav">
-                <li>
-                    <a ng-model="ProperParams.Models">{{ProperParams.modelsSelect}}</a>
-                    <ul>
-                        <li ng-repeat="Model in ProperParams.models" ng-click="ProperParams.SelectModel(Model)">
-                            <a>{{Model}}</a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-
     <div class="title">Query</div>
 
     <div class="form-group">
@@ -29,7 +11,7 @@
                         <li ng-repeat="type in ProperParams.TypeQuery" ng-click="ProperParams.SelectTypeData(type)">
                             <a>{{type}}</a>
                         </li>
-                    </ul>
+                    </ul> 
                 </li>
 
             </ul>
@@ -38,16 +20,16 @@
 
 
     <div class="form-group" ng-if="ProperParams.model.query != undefined">
-        <textarea name="Query" rows="4" class="form-control" ng-model="ProperParams.QueryText">
+        <textarea name="Query" rows="4" class="form-control" ng-model="ProperParams.QueryText" ng-blur="ProperParams.changeQueryText()">
         </textarea>
     </div>
 
     <div id="ddd" class="form-group" ng-if="ProperParams.model.img != undefined">
         <label for="btnSelecionar" id="labelSelecionar">Load File</label>
-        <input id="btnSelecionar" class="inputfile" type="file" accept="image/*">
+        <input id="btnSelecionar" class="inputfile" type="file" ng-model="ProperParams.imageFile" accept="image/*" />
     </div>
-
+    <!--<input id="btnSelecionar" class="inputfile" type="file" accept="image/*"  >
     <div class="form-group">
         <button id="ButtonSave" type="button" ng-click="ProperParams.Save()">SAVE</button>
-    </div>
+    </div>-->
 </div>
