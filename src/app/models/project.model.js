@@ -42,6 +42,7 @@
             getModelsRoot: getModelsRoot,
             PostModelId: PostModelId,
             getExplainers: getExplainers,
+            getExplainersSubstitute : getExplainersSubstitute ,
             getQueryImgTab: getQueryImgTab,
             PostExplainerLibraries: PostExplainerLibraries,
             runBT: runBT,
@@ -58,6 +59,7 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.PostExplainerNew(Json, ExplainerSelect);
+                    console.log(data);
                     resolve(data);
                 } catch (e) {
                     reject(e);
@@ -243,7 +245,18 @@
                     reject(e);
                 }
             });
-        }
+        } 
+
+        function getExplainersSubstitute() {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.loadExplainersSubstitute();
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        } 
 
         function getModelsRoot() {
              return $q(function(resolve, reject) {

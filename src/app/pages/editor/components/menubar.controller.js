@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -54,14 +54,15 @@
         vm.RandomGenerate10 = RandomGenerate10;
         vm.NotificationSuccess = NotificationSuccess;
         vm.addListPara = addListPara;
-        vm.NameNodes = ["Explanation Method",  "Failer", "Succeeder"];
+        vm.NameNodes = ["Explanation Method", "Failer", "Succeeder"];
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 27/03/23";
+        vm.date = "version 31/03/23";
         vm.showHelp = showHelp;
-        vm.showVideo= showVideo;
+        vm.showVideo = showVideo;
+        vm.TreesExample=TreesExample;
 
         vm.ListaPara = {};
 
@@ -95,7 +96,7 @@
                 vm.explanation.forEach(element => {
                     try {
                         getParams(element)
-                            .then(function(x) {
+                            .then(function (x) {
                                 var jsonParmsDefin = {};
                                 Object.keys(x).forEach(resultJson => {
                                     jsonParmsDefin[resultJson] = "";
@@ -112,7 +113,7 @@
 
         function _shortcut_projectclose(f) {
             if (!$scope.$$phase) {
-                $scope.$apply(function() { onCloseProject(); });
+                $scope.$apply(function () { onCloseProject(); });
             } else {
                 onCloseProject();
             }
@@ -121,7 +122,7 @@
 
         function _shortcut_projectsave(f) {
             if (!$scope.$$phase) {
-                $scope.$apply(function() { onSaveProject(); });
+                $scope.$apply(function () { onSaveProject(); });
             } else {
                 onSaveProject();
             }
@@ -247,12 +248,12 @@
         function onSaveProject() {
             projectModel
                 .saveProject()
-                .then(function() {
+                .then(function () {
                     notificationService.success(
                         'Project saved',
                         'The project has been saved'
                     );
-                }, function() {
+                }, function () {
                     notificationService.error(
                         'Error',
                         'Project couldn\'t be saved'
@@ -424,7 +425,6 @@
                             BlockConditions = PropertieSelect(p);
 
                             var s = tree.blocks.getSelected();
-
                             tree.blocks.update(s[0], BlockConditions);
                         }
 
@@ -440,7 +440,6 @@
                             }
                             blockComposites = SubBlockComposites;
                         }
-
                     });
                     //clean ArrayComposites and add the new composites created
                     vm.ArrayComposites = [];
@@ -535,10 +534,10 @@
 
         function getParams(Explanation) {
 
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     projectModel.getConditionsEvaluationEXP(Explanation)
-                        .then(function(x) {
+                        .then(function (x) {
                             resolve(x.params);
                         });
                 } catch (e) {
@@ -557,11 +556,11 @@
         function _getJsonProperties() {
             //Get the properties of the explain method and the evaluate method
             projectModel.getExplainers()
-                .then(function(x) {
+                .then(function (x) {
                     vm.explanation = x;
                 });
             projectModel.getConditionsEvaluationMethod()
-                .then(function(x) {
+                .then(function (x) {
                     vm.evaluation = x;
                 });
         }
@@ -597,7 +596,7 @@
             var spanHelp = document.getElementById("closehelpButton");
 
             // When the user clicks on <span> (x), close the modal
-            spanHelp.onclick = function() {
+            spanHelp.onclick = function () {
                 modalHelp.style.display = "none";
             };
         }
@@ -609,12 +608,14 @@
             var videoTag = document.getElementById("videoTutorial");
 
             // When the user clicks on <span> (x), close the modal
-            spanVideo.onclick = function() {
+            spanVideo.onclick = function () {
                 modalVideo.style.display = "none";
                 videoTag.pause();
             };
         }
 
-
+        function TreesExample() {
+           
+        }
     }
 })();

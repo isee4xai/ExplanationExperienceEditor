@@ -43,11 +43,15 @@
         //vm.helpClose = helpClose;
         //call Json
         vm.RunNew = RunNew;
+        vm.isBase64Image = isBase64Image;
+        vm.esJSONValido = esJSONValido;
 
         vm.node = null;
         vm.explanation = null;
         vm.evaluation = null;
         vm.Explainers = null;
+        vm.ExplainersSubstituteAll = null;
+        vm.ExplainersSubstitute = [];
 
         vm.TitleSelect = null;
         vm.TitleName = null;
@@ -156,8 +160,11 @@
                         }
                         if (vm.Explainers == null) {
                             _getArrayExplainers();
+                            _getArrayExplainersSubstitute();
                         }
 
+                        _SearchSubstituteExplainers();
+                        
                         if (vm.original.Json != undefined) {
                             const miDiv = document.getElementById('mi-div');
                             if (miDiv !== null) {
@@ -265,7 +272,30 @@
                 .then(function (x) {
                     vm.Explainers = x;
                 });
+        }
 
+        function _getArrayExplainersSubstitute() {
+            //Get Explainers Substitute
+            projectModel.getExplainersSubstitute()
+                .then(function (x) {
+                    vm.ExplainersSubstituteAll = x;
+                });
+        }
+
+        function _SearchSubstituteExplainers() {
+            var filtered = [];
+            vm.ExplainersSubstitute = [];
+            if (vm.ExplainersSubstituteAll && vm.block.title != "Explanation Method") {
+                vm.ExplainersSubstitute = Object.values(vm.ExplainersSubstituteAll)
+                    .filter(obj => obj.explainer === vm.block.title)
+                    .map(({ explainer, ...rest }) => rest)
+                    .map(obj => Object.fromEntries(
+                        Object.entries(obj)
+                            .filter(([_, value]) => value !== "0.0" && value !== "1.0")
+                            .sort((a, b) => b[1] - a[1])
+                    ))[0];
+            }
+            console.log("aaa");
         }
 
         function SelectModel(data) {
@@ -283,18 +313,26 @@
                 }
             }
 
-            var jsonObjectInstance = [];
-            if (vm.IdModel.query) {
-                jsonObjectInstance = JSON.parse(vm.IdModel.query);
-            } else {
-                jsonObjectInstance.img = vm.IdModel.img;
-            }
+            var jsonObjectInstance = {
+                id: vm.IdModel.idModel,
+                params: jsonParam
+            };
 
-            jsonObjectInstance.id = vm.IdModel.idModel
-            jsonObjectInstance.params = jsonParam;
+            if (isBase64Image(vm.IdModel.query)) {
+                jsonObjectInstance.instance = vm.IdModel.query;
+                jsonObjectInstance.type = "image"
+            } else {
+                if (esJSONValido(vm.IdModel.query)) {
+                    jsonObjectInstance.instance = JSON.parse(vm.IdModel.query);
+                } else {
+                    jsonObjectInstance.instance = vm.IdModel.query;
+                }
+                jsonObjectInstance.type = "dict"
+            }
 
             projectModel.RunNew(jsonObjectInstance, vm.original.title)
                 .then(function (x) {
+                    console.log(x);
                     if (x.type == "image") {
                         var img = new Image();
                         var base64 = x.explanation;
@@ -311,6 +349,26 @@
                 });
 
 
+        }
+
+        function isBase64Image(str) {
+            if (str === '' || str.trim() === '') {
+                return false;
+            }
+            try {
+                return btoa(atob(str)) == str;
+            } catch (err) {
+                return false;
+            }
+        }
+
+        function esJSONValido(cadena) {
+            try {
+                JSON.parse(cadena);
+                return true;
+            } catch (error) {
+                return false;
+            }
         }
 
         function Run() {
@@ -481,9 +539,20 @@
         function UpdateProperties(option) {
             if (vm.original.name == "Explanation Method") {
                 paramsExp(option);
-
             }
 
+            if (vm.original.Json != undefined) {
+                vm.original.Json = undefined;
+                const miDiv = document.getElementById('mi-div');
+                if (miDiv !== null) {
+                    miDiv.innerHTML = "";
+                }
+            } else if (vm.original.Image != undefined) {
+                vm.original.Image = undefined;
+                if (document.getElementById("ImgExpl") !== null) {
+                    document.getElementById("ImgExpl").src = "";
+                }
+            }
 
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
             var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
@@ -503,6 +572,8 @@
                     description: vm.original.description
                 };
             }
+            
+            _SearchSubstituteExplainers();
 
             update();
         }
@@ -749,14 +820,23 @@
                 }
             }
 
-            var jsonObjectInstance = [];
-            if (vm.IdModel.query) {
-                jsonObjectInstance = JSON.parse(vm.IdModel.query);
+
+            var jsonObjectInstance = {
+                id: vm.IdModel.idModel,
+                params: jsonParam
+            };
+
+            if (isBase64Image(vm.IdModel.query)) {
+                jsonObjectInstance.instance = vm.IdModel.query;
+                jsonObjectInstance.type = "image"
             } else {
-                jsonObjectInstance.img = vm.IdModel.img;
+                if (esJSONValido(vm.IdModel.query)) {
+                    jsonObjectInstance.instance = JSON.parse(vm.IdModel.query);
+                } else {
+                    jsonObjectInstance.instance = vm.IdModel.query;
+                }
+                jsonObjectInstance.type = "dict"
             }
-            jsonObjectInstance.id = vm.IdModel.idModel
-            jsonObjectInstance.params = jsonParam;
 
             var ExpBlockEdit = [];
 

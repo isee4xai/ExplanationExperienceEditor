@@ -192,7 +192,24 @@
                 <div id="mi-div" class="form-group" style="overflow-x:auto; overflow-y:auto;"
                     ng-init="propertiespanel.LoadHtmlCode()"
                     ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
+                </div>
+            </div>
 
+            <div ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <div id="header" ng-if="propertiespanel.TitleName">
+                    <ul class="nav">
+                        <li ng-if="propertiespanel.original.category != 'root'"><a
+                                ng-model="propertiespanel.block.title">Search substitute explainers</a>
+                            <ul>
+                                <li ng-if="propertiespanel.original.name == 'Explanation Method'"
+                                    ng-repeat="(key, value) in propertiespanel.ExplainersSubstitute"
+                                    ng-click="propertiespanel.UpdateProperties(key)">
+                                    <a><b>{{key}}</b><br>
+                                    <b>sim = </b> {{value}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -215,7 +232,7 @@
                         ng-click="propertiespanel.PopUpImgClose()">&times;</span>
                 </div>
 
-                <div id="caption"></div>
+                <div id="caption"></div> 
             </div>
 
 
@@ -224,7 +241,7 @@
                     <div id="video-modal-content" style="width: 100%;padding: 10px;" class="modal-content">
                         <h1>Video Tutorial</h1>
 
-                        <video id="videoTutorial" width="100%" controls>
+                        <video id="videoTutorial" width="100%" controls volume="1">
                             <source src="imgs/tutorial.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
