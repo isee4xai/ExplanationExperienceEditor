@@ -7,7 +7,7 @@ dialogService.$inject = ['$window', '$q', '$document', 'nodejsService'];
 function dialogService($window, $q, $document, nodejsService) {
     var service = {
         alert: alert,
-        confirm: confirm,
+        confirm: confirm, 
         continueBt: continueBt,
         prompt: prompt,
         saveAs: saveAs,

@@ -9,10 +9,11 @@
         '$scope',
         '$window',
         'dialogService',
-        'notificationService',
+        'notificationService', 
         'projectModel',
         'ProperParams',
-        '$state'
+        '$state',
+        '$timeout'
     ];
 
     function PropertiespanelController($scope,
@@ -21,7 +22,8 @@
         notificationService,
         projectModel,
         ProperParams,
-        $state) {
+        $state,
+        $timeout) {
         var vm = this;
         vm.original = null;
         vm.block = null;
@@ -53,6 +55,8 @@
         vm.ExplainersSubstituteAll = null;
         vm.ExplainersSubstitute = [];
 
+        vm.GetInfoParamSubstitute = GetInfoParamSubstitute;
+
         vm.TitleSelect = null;
         vm.TitleName = null;
 
@@ -81,6 +85,13 @@
         vm.models = [];
         vm.keyModel = "";
         vm.IdQuery = "";
+
+        var timeoutPromise = null;
+        vm.startTimeout = startTimeout;
+        vm.cancelTimeout = cancelTimeout;
+        vm.dataSubstitute = "";
+
+        vm.mostrarTexto = mostrarTexto;
 
 
         if (vm.models.length === 0) {
@@ -161,10 +172,12 @@
                         if (vm.Explainers == null) {
                             _getArrayExplainers();
                             _getArrayExplainersSubstitute();
+
                         }
 
                         _SearchSubstituteExplainers();
-                        
+
+
                         if (vm.original.Json != undefined) {
                             const miDiv = document.getElementById('mi-div');
                             if (miDiv !== null) {
@@ -222,6 +235,7 @@
                 vm.block = false;
             }
         }
+
 
         function loadModel() {
             setTimeout(() => {
@@ -283,19 +297,41 @@
         }
 
         function _SearchSubstituteExplainers() {
-            var filtered = [];
-            vm.ExplainersSubstitute = [];
-            if (vm.ExplainersSubstituteAll && vm.block.title != "Explanation Method") {
-                vm.ExplainersSubstitute = Object.values(vm.ExplainersSubstituteAll)
-                    .filter(obj => obj.explainer === vm.block.title)
-                    .map(({ explainer, ...rest }) => rest)
-                    .map(obj => Object.fromEntries(
-                        Object.entries(obj)
-                            .filter(([_, value]) => value !== "0.0" && value !== "1.0")
-                            .sort((a, b) => b[1] - a[1])
-                    ))[0];
+            if (vm.ExplainersSubstituteAll == null) {
+                projectModel.getExplainersSubstitute()
+                    .then(function (x) {
+                        var filtered = [];
+                        vm.ExplainersSubstitute = [];
+                        if (vm.block.title != "Explanation Method") {
+                            vm.ExplainersSubstitute = Object.values(x)
+                                .filter(obj => obj.explainer === vm.block.title)
+                                .map(({ explainer, ...rest }) => rest)
+                                .map(obj => Object.fromEntries(
+                                    Object.entries(obj)
+                                        .filter(([_, value]) => value !== "0.0" && value !== "1.0")
+                                        .map(([key, value]) => [key, parseFloat(value).toFixed(2)])
+                                        .sort((a, b) => b[1] - a[1])
+                                ))[0];
+                        }
+                    });
+            } else {
+                var filtered = [];
+                vm.ExplainersSubstitute = [];
+                if (vm.ExplainersSubstituteAll && vm.block.title != "Explanation Method") {
+                    vm.ExplainersSubstitute = Object.values(vm.ExplainersSubstituteAll)
+                        .filter(obj => obj.explainer === vm.block.title)
+                        .map(({ explainer, ...rest }) => rest)
+                        .map(obj => Object.fromEntries(
+                            Object.entries(obj)
+                                .filter(([_, value]) => value !== "0.0" && value !== "1.0")
+                                .map(([key, value]) => [key, parseFloat(value).toFixed(2)])
+                                .sort((a, b) => b[1] - a[1])
+                        ))[0];
+                }
+                console.log("aaa");
             }
-            console.log("aaa");
+
+
         }
 
         function SelectModel(data) {
@@ -329,22 +365,30 @@
                 }
                 jsonObjectInstance.type = "dict"
             }
-
             projectModel.RunNew(jsonObjectInstance, vm.original.title)
                 .then(function (x) {
-                    console.log(x);
-                    if (x.type == "image") {
-                        var img = new Image();
-                        var base64 = x.explanation;
-                        vm.block.Image = "data:image/png;base64," + base64;
-                        delete vm.block.Json;
-                    } else if (x.type == "html") {
-                        const miDiv = document.getElementById('mi-div');
-                        miDiv.innerHTML = x.explanation;
-                        vm.block.Json = x.explanation;
-                        delete vm.block.Image;
-                        LoadHtmlCode();
+                    if ( x.hasOwnProperty("type")) {
+                        if (x.type == "image") {
+                            var img = new Image();
+                            var base64 = x.explanation;
+                            vm.block.Image = "data:image/png;base64," + base64;
+                            delete vm.block.Json;
+                        } else if (x.type == "html") {
+                            const miDiv = document.getElementById('mi-div');
+                            miDiv.innerHTML = x.explanation;
+                            vm.block.Json = x.explanation;
+                            delete vm.block.Image;
+                            LoadHtmlCode();
+                        }
+                        notificationService.success(
+                            "The explainer ran successfully"
+                        );
+                    }else{
+                        notificationService.error(
+                            x
+                        );
                     }
+
                     update();
                 });
 
@@ -537,6 +581,7 @@
         }
 
         function UpdateProperties(option) {
+        
             if (vm.original.name == "Explanation Method") {
                 paramsExp(option);
             }
@@ -553,6 +598,7 @@
                     document.getElementById("ImgExpl").src = "";
                 }
             }
+
 
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
             var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
@@ -572,9 +618,9 @@
                     description: vm.original.description
                 };
             }
-            
-            _SearchSubstituteExplainers();
 
+            _SearchSubstituteExplainers();
+            cancelTimeout();
             update();
         }
 
@@ -598,6 +644,36 @@
             }
             vm.block.params = jsonParam;
             update();
+            /*
+            for (var keyParam in vm.block.params) {
+                if (vm.block.params.hasOwnProperty(keyParam)) {
+                    if (keyParam =="key" || keyParam=="value") {
+                        delete vm.block.params[keyParam]; 
+                    }
+                   
+                }
+            }
+            var jsonParam = {};
+            for (var i = 0; i < vm.ArrayParams.length; i++) {
+                var r = vm.ArrayParams[i];
+                console.log(r);
+                if (!r.key) continue;
+
+                if (r.range[0] > r.value  || r.range[1] <  r.value ) {
+                    console.log(r.default);
+                    r.value =  r.default;
+                }else{
+                    console.log("ssss");
+                }
+               // var key = r.key;
+                jsonParam[vm.ArrayParams[i].key] = r.value;
+
+            }
+            console.log(jsonParam);
+            vm.block.params = jsonParam;
+            console.log(vm.block.params);
+            update();
+            */
         }
 
         function PopUpImg(ImagenSrc) {
@@ -609,22 +685,82 @@
         }
 
         function PopUpHtml(HtmlCode) {
-            /*
-            // Seleccionar el elemento padre
             var padre = document.querySelector('.editor-page');
 
-            // Crear un nuevo elemento div
             var nuevoDiv = document.createElement('div');
+            nuevoDiv.innerHTML = HtmlCode;
+            nuevoDiv.style.position = 'fixed';
+            nuevoDiv.style.bottom = '0';
+            nuevoDiv.style.left = '0';
+            nuevoDiv.style.right = '0';
+            nuevoDiv.style.color = 'black';
+            nuevoDiv.style.backgroundColor = '#F1F1EC';
+            nuevoDiv.style.padding = '10px';
+            nuevoDiv.style.zIndex = '10';
+            nuevoDiv.style.marginRight = "250px";
+            nuevoDiv.style.marginLeft = "250px";
+            nuevoDiv.style.paddingTop = "40px"
+            nuevoDiv.style.overflowX = "auto"
+            nuevoDiv.style.overflowY = "auto"
+            nuevoDiv.className = "mi-htmlCode";
 
-            // Agregar contenido al nuevo elemento div
-            nuevoDiv.innerHTML = 'Este es un nuevo div';
-
-            // Añadir el nuevo elemento al DOM
             padre.appendChild(nuevoDiv);
-            */
 
+            var divElement = document.createElement('div');
+            divElement.style.position = 'fixed';
+            divElement.style.bottom = '0';
+            divElement.style.left = '0';
+            divElement.style.right = '0';
+            divElement.style.width = '30px';
+            divElement.style.height = '30px';
+            divElement.style.backgroundColor = 'red';
+            divElement.style.borderRadius = '50%';
+            divElement.style.cursor = 'pointer';
+            divElement.style.marginRight = "250px";
+            divElement.style.marginLeft = "255px";
+            divElement.style.zIndex = '90';
+            divElement.style.bottom = (nuevoDiv.offsetHeight - 35) + 'px';
+            divElement.className = "mi.close";
+            divElement.style.border = '2px solid black';
 
+            divElement.innerHTML = '<span style="display:block; text-align:center; color:white; font-size:24px; line-height:25px;">X</span>';
+
+            padre.appendChild(divElement);
+            divElement.addEventListener('click', function () {
+                divElement.remove();
+                nuevoDiv.remove();
+            });
         }
+
+        function mostrarTexto(explainerTitle) {
+
+            projectModel.GetDesciptionExplainer(explainerTitle)
+                .then(function (x) {
+                    var padre = document.querySelector('.editor-page');
+                    var divElement = document.createElement('div');
+
+                    var nuevoDiv = document.createElement('div');
+                    nuevoDiv.innerHTML = x;
+                    nuevoDiv.style.position = 'absolute';
+                    nuevoDiv.style.top = '0';
+                    nuevoDiv.style.left = '0';
+                    nuevoDiv.style.right = '0';
+                    nuevoDiv.style.color = 'while';
+                    nuevoDiv.style.backgroundColor = 'black';
+                    nuevoDiv.style.padding = '10px';
+                    nuevoDiv.style.zIndex = '90';
+                    nuevoDiv.style.borderRadius = "10px ";
+                    nuevoDiv.style.border = "1px solid black";
+                    nuevoDiv.style.marginRight = "30px";
+                    nuevoDiv.style.marginLeft = "60%";
+                    nuevoDiv.style.marginTop = "40px";
+                    nuevoDiv.style.opacity = "0.9";
+                    nuevoDiv.className = "DesciptionExplainer";
+
+                    padre.appendChild(nuevoDiv);
+                });
+        }
+
 
         function PopUpImgClose() {
             var modal = document.getElementById("myModal");
@@ -653,6 +789,40 @@
                     }
                     change();
                 });
+            /*
+            projectModel.getConditionsEvaluationEXP(option)
+                .then(function (x) {
+                    console.log("paramsExpparamsExpparamsExpparamsExpparamsExp");
+                    console.log(x.params);
+                    vm.JsonParams = {};
+                    vm.ArrayParams = [];
+                    vm.JsonParams = x.params;
+                    for (var property in x.params) {
+                        var Type = "";
+                        switch (x.params[property].type) {
+                            case "float":
+                                Type = "number"
+                                break;
+                            case "":
+
+                                break;
+
+                            default:
+                                break;
+                        }
+                        vm.ArrayParams.push({
+                            "key": property,
+                            "value": x.params[property].default,
+                            "default": x.params[property].default,
+                            "range": x.params[property].range,
+                            "required": x.params[property].required,
+                            "type": Type,
+                            "description": x.params[property].description,
+                            fixed: false
+                        });
+                    }
+                    change();
+                });*/
         }
 
         function paramsExpValue(option) {
@@ -665,9 +835,73 @@
 
 
         function GetInfoParam(Param) {
+            //   vm.datatooltipParam = vm.JsonParams[Param].description;
             vm.datatooltipParam = vm.JsonParams[Param];
         }
 
+        function GetInfoParamSubstitute(NameExpl) {
+
+            var SubNameChange = [vm.block.title, NameExpl];
+
+            projectModel.GetSimNL(SubNameChange)
+                .then(function (x) {
+                    var padre = document.querySelector('.editor-page');
+                    var divElement = document.createElement('div');
+
+                    var nuevoDiv = document.createElement('div');
+                    nuevoDiv.innerHTML = x;
+                    nuevoDiv.style.position = 'fixed';
+                    nuevoDiv.style.bottom = '0';
+                    nuevoDiv.style.left = '0';
+                    nuevoDiv.style.right = '0';
+                    nuevoDiv.style.color = 'while';
+                    nuevoDiv.style.backgroundColor = 'black';
+                    nuevoDiv.style.padding = '10px';
+                    nuevoDiv.style.zIndex = '60';
+                    nuevoDiv.style.borderRadius = "10px 0 0 10px";
+                    nuevoDiv.style.border = "1px solid black";
+                    nuevoDiv.style.marginRight = "250px";
+                    nuevoDiv.style.marginLeft = "260px";
+                    nuevoDiv.style.marginBottom = "20px";
+                    nuevoDiv.className = "mi-tooltip";
+                    nuevoDiv.style.opacity = "0.9";
+
+                    // Añadir el nuevo elemento al DOM
+                    padre.appendChild(nuevoDiv);
+                });
+        }
+
+        function startTimeout(key) {
+            if (key == vm.block.title) {
+
+                vm.timeoutPromise = $timeout(function () {
+                    mostrarTexto(key);
+                }, 500);
+            } else {
+                vm.timeoutPromise = $timeout(function () {
+                    GetInfoParamSubstitute(key);
+                }, 1000);
+            }
+
+        }
+
+        function cancelTimeout(key) {
+
+            if (vm.timeoutPromise) {
+                $timeout.cancel(vm.timeoutPromise);
+                vm.timeoutPromise = null;
+            }
+
+            if (key == vm.block.title) {
+                var DivRemove = document.querySelector('.DesciptionExplainer');
+            } else {
+                var DivRemove = document.querySelector('.mi-tooltip');
+            }
+
+            if (DivRemove) {
+                DivRemove.remove();
+            }
+        }
 
         function SelectTypeOfData(TypeData) {
             vm.block = {
@@ -701,7 +935,6 @@
             vm.jsonData = projectModel.runBT();
 
             for (const identificador in vm.jsonData.nodes) {
-                console.log();
                 runNode(vm.jsonData.nodes[identificador].id);
             }
         }

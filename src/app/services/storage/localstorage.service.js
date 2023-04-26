@@ -9,8 +9,9 @@ function localStorageService($window) {
         ok: !!$window.localStorage,
         save: save,
         load: load,
-        remove: remove
-    };
+        remove: remove,
+        update:update
+    }; 
     return service;
 
     function save(path, data) {
@@ -26,5 +27,10 @@ function localStorageService($window) {
 
     function remove(path) {
         delete $window.localStorage[path];
+    }
+
+    function update(path, data){
+        try { data = JSON.stringify(data); } catch (e) {}
+        $window.localStorage[path] = data;
     }
 }

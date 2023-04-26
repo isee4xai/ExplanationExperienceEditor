@@ -46,7 +46,10 @@
             getQueryImgTab: getQueryImgTab,
             PostExplainerLibraries: PostExplainerLibraries,
             runBT: runBT,
-            RunNew: RunNew
+            RunNew: RunNew,
+            GetSimNL:GetSimNL,
+            GetDesciptionExplainer:GetDesciptionExplainer,
+            UpdateJsonQuey:UpdateJsonQuey
         };
         return service;
 
@@ -59,7 +62,6 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.PostExplainerNew(Json, ExplainerSelect);
-                    console.log(data);
                     resolve(data);
                 } catch (e) {
                     reject(e);
@@ -150,13 +152,28 @@
             return $q(function(resolve, reject) {
                 $window.editor.clearDirty();
                 //save 
-                storageService.saveJson(project.path, project);
+                var data =storageService.saveJson(project.path, project);
                 storageService.save(project.path, project);
                 _setProject(project);
                 _updateRecentProjects(project);
-                resolve();
+                resolve(data);
             });
         }
+      
+        async function UpdateJsonQuey(QueryText,Img64) {
+            return $q(function(resolve, reject) {
+                try {
+                    $window.editor.clearDirty();
+                    var respuesta = storageService.UpdateJsonQueyStorage(currentProject.path,QueryText,Img64);
+                    _setProject(currentProject);
+                    _updateRecentProjects(currentProject);
+                    resolve(respuesta);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+    
 
         function openProject(path) {
             return $q(function(resolve, reject) {
@@ -222,13 +239,12 @@
                 }
             });
         }
-
+ 
         async function getConditionsEvaluationEXP(x) {
 
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.loadExplanationExp(x);
-
                     resolve(data);
                 } catch (e) {
                     reject(e);
@@ -247,7 +263,18 @@
             });
         } 
 
-        function getExplainersSubstitute() {
+        async function GetDesciptionExplainer(explainerTitle) {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.GetDesciptionExplainerStorage(explainerTitle);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+        async function getExplainersSubstitute() {
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.loadExplainersSubstitute();
@@ -257,6 +284,19 @@
                 }
             });
         } 
+
+        async function GetSimNL(SubNameChange) {
+
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.GetSimNLStorage(SubNameChange);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
 
         function getModelsRoot() {
              return $q(function(resolve, reject) {
@@ -303,7 +343,6 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.PostExplainers(Model, Params, Instance);
-                    console.log(data);
                     resolve(data);
                 } catch (e) {
                     reject(e);

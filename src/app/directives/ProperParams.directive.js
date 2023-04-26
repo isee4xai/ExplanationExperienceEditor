@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -22,7 +22,7 @@
         };
         return directive;
 
-       
+
 
         function link(scope, element, attrs) {
             // get the value of the `ng-model` attribute
@@ -30,17 +30,17 @@
             scope.ProperParams._onChange = $parse(attrs.ngChange);
 
             var variable = attrs.ngModel;
-            scope.$watch(variable, function(model) {
+            scope.$watch(variable, function (model) {
                 //scope.ProperParams.model = model;
                 scope.ProperParams.reset(model);
                 //scope.ProperParams.GetModels(model);
                 scope.ProperParams.Imprimir(model);
             });
-            element.on('change', function(event) {
+            element.on('change', function (event) {
                 if (event.target.files && event.target.files[0]) {
                     scope.ProperParams.handleImageChange(event.target.files[0]);
                 }
-                
+
             });
         }
 
@@ -48,14 +48,14 @@
 
     ProperParamsController.$inject = ['$scope', 'projectModel', 'notificationService'];
 
-    function ProperParamsController($scope, projectModel, notificationService) {
+    function ProperParamsController($scope, projectModel, notificationService,) {
         // HEAD //
         var vm = this;
         vm._onChange = null;
         vm.model = $scope.ProperParams.model || $scope.model || null;
         vm.TypeQuery = ["Tabular", "File"];
-        vm.TypeQuerySelect ;
-        vm.QueryText ;
+        vm.TypeQuerySelect;
+        vm.QueryText;
         vm.SelectTypeData = SelectTypeData;
         vm.Save = Save;
         vm.getQueryData = getQueryData;
@@ -64,10 +64,10 @@
         vm.IdQuery = "";
         vm.reset = reset;
         vm.Imprimir = Imprimir;
-        vm.changeQueryText=changeQueryText;
-        vm.handleImageChange = function(file) {
+        vm.changeQueryText = changeQueryText;
+        vm.handleImageChange = function (file) {
             var reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 var base64 = event.target.result;
                 vm.model.img = base64;
                 delete vm.model.query;
@@ -77,14 +77,14 @@
             };
             reader.readAsDataURL(file);
         }
-    
+
         _activate();
 
         // BODY //
         function _activate() {
-            
+
         }
-        
+
 
         function changeQueryText() {
             vm.model.query = vm.QueryText;
@@ -97,14 +97,14 @@
                     vm.TypeQuerySelect = 'Tabular';
                     delete vm.model.img;
                     vm.QueryText = model.query || "";
-                } else if (model.query_id ===  undefined && (model.query ===  undefined && model.img ===  undefined) ) {
-                    vm.TypeQuerySelect = "Type Data"; 
-                }else{
-                    vm.TypeQuerySelect = 'File'; 
+                } else if (model.query_id === undefined && (model.query === undefined && model.img === undefined)) {
+                    vm.TypeQuerySelect = "Type Data";
+                } else {
+                    vm.TypeQuerySelect = 'File';
                     delete vm.model.query;
-                    vm.QueryText = model.img || "" ;       
+                    vm.QueryText = model.img || "";
                 }
-            } 
+            }
         }
 
         function reset(model) {
@@ -126,7 +126,7 @@
                 case "Tabular":
                     delete vm.model.img;
                     vm.model.query = "";
-                    vm.QueryText="";
+                    vm.QueryText = "";
                     break;
                 case "File":
                     delete vm.model.query;
@@ -137,11 +137,24 @@
             }
             vm.TypeQuerySelect = data;
             vm._onChange($scope);
-        
-        }
- 
-        function Save() {
 
+        }
+
+        function Save() {
+            projectModel.UpdateJsonQuey(vm.model.query, vm.model.img)
+                .then(function (x) {
+                    if (x == "Save Tabular" || x == "Save File") {
+                        notificationService.success(
+                            x
+                        );
+                    } else {
+                        notificationService.error(
+                            x
+                        );
+                    }
+
+                });
+            /*
             if (vm.TypeQuerySelect != "Type Data") {
                 var imagefile = "";
                 var NameImage = "";
@@ -180,7 +193,7 @@
                             'Error'
                         );
                     });
-            }
+            }*/
         }
 
 
@@ -188,7 +201,7 @@
         function getQueryData(QueryId, ModelId, imagefile) {
 
             projectModel.getQueryImgTab(ModelId, QueryId, imagefile)
-                .then(function(x) {
+                .then(function (x) {
                     if (x.hasOwnProperty('query')) {
                         delete vm.model.img;
                         vm.model.query = x.query;
@@ -203,7 +216,7 @@
                     if (vm._onChange) {
                         vm._onChange($scope);
                     }
-                }, function() {
+                }, function () {
                     notificationService.error(
                         'Error'
                     );

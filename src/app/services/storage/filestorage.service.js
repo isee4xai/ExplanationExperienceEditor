@@ -13,7 +13,7 @@ function fileStorageService(nodejsService) {
         save: save,
         load: load,
         remove: remove
-    };
+    }; 
     return service;
 
     function save(path, data) {
