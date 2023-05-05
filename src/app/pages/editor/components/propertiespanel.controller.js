@@ -9,7 +9,7 @@
         '$scope',
         '$window',
         'dialogService',
-        'notificationService', 
+        'notificationService',
         'projectModel',
         'ProperParams',
         '$state',
@@ -92,6 +92,7 @@
         vm.dataSubstitute = "";
 
         vm.mostrarTexto = mostrarTexto;
+        vm.LookDescriptionExplanation = LookDescriptionExplanation;
 
 
         if (vm.models.length === 0) {
@@ -165,14 +166,18 @@
                         }
 
                         if (vm.block.params) {
+                            /*
                             for (var property in vm.block.params) {
-                                vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
+                                var copyParams = Object.assign({}, vm.block.params[property]);
+                                vm.ArrayParams.push(copyParams);
                             }
+                            */
+                            CreateParams(vm.block.params);
                         }
+
                         if (vm.Explainers == null) {
                             _getArrayExplainers();
                             _getArrayExplainersSubstitute();
-
                         }
 
                         _SearchSubstituteExplainers();
@@ -260,11 +265,14 @@
         }
 
         function LoadHtmlCode() {
+
+
             if (vm.original.Json != undefined) {
 
                 const miDiv = document.getElementById('mi-div');
                 miDiv.innerHTML = vm.original.Json;
             }
+
         }
 
         function GetModels() {
@@ -367,11 +375,16 @@
             }
             projectModel.RunNew(jsonObjectInstance, vm.original.title)
                 .then(function (x) {
-                    if ( x.hasOwnProperty("type")) {
+                    if (x.hasOwnProperty("type")) {
                         if (x.type == "image") {
                             var img = new Image();
                             var base64 = x.explanation;
                             vm.block.Image = "data:image/png;base64," + base64;
+                            //Actualizar la imagen o cargar imagen
+                            var imagen = document.querySelector('#ImgExpl');
+                            if (imagen) {
+                                imagen.src = vm.block.Image;
+                            }
                             delete vm.block.Json;
                         } else if (x.type == "html") {
                             const miDiv = document.getElementById('mi-div');
@@ -383,7 +396,7 @@
                         notificationService.success(
                             "The explainer ran successfully"
                         );
-                    }else{
+                    } else {
                         notificationService.error(
                             x
                         );
@@ -581,7 +594,7 @@
         }
 
         function UpdateProperties(option) {
-        
+
             if (vm.original.name == "Explanation Method") {
                 paramsExp(option);
             }
@@ -629,51 +642,67 @@
 
             for (var keyParam in vm.block.params) {
                 if (vm.block.params.hasOwnProperty(keyParam)) {
-                    delete vm.block.params[keyParam];
-                }
-            }
-            var jsonParam = {};
-            for (var i = 0; i < vm.ArrayParams.length; i++) {
-                var r = vm.ArrayParams[i];
-                if (!r.key) continue;
-
-                var key = r.key;
-
-                jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
-
-            }
-            vm.block.params = jsonParam;
-            update();
-            /*
-            for (var keyParam in vm.block.params) {
-                if (vm.block.params.hasOwnProperty(keyParam)) {
-                    if (keyParam =="key" || keyParam=="value") {
-                        delete vm.block.params[keyParam]; 
+                    if (keyParam == "key" || keyParam == "value") {
+                        delete vm.block.params[keyParam];
                     }
-                   
                 }
             }
-            var jsonParam = {};
+            var params = [];
             for (var i = 0; i < vm.ArrayParams.length; i++) {
                 var r = vm.ArrayParams[i];
-                console.log(r);
+
                 if (!r.key) continue;
 
-                if (r.range[0] > r.value  || r.range[1] <  r.value ) {
-                    console.log(r.default);
-                    r.value =  r.default;
-                }else{
-                    console.log("ssss");
-                }
-               // var key = r.key;
-                jsonParam[vm.ArrayParams[i].key] = r.value;
+                switch (r.type) {
+                    case "number":
+                        if (((r.range[0] > r.value || r.range[1] < r.value) && (r.range[0] != null || r.range[1] != null)) || (r.value == null && r.required == "true")) {
+                            notificationService.error(
+                                'Invalid parametro',
+                                (r.required == "true" && r.value == null) ? 'empty field.' :
+                                    (r.range[0] > r.value || r.range[1] < r.value) ? 'the field is not in the range minimum ' + r.range[0] + ' maximum ' + r.range[1] + '.' : ""
 
+                            );
+                            r.value = r.default;
+                        }
+                        break;
+                    case "text":
+                        if (r.value == null && r.required == "true") {
+                            notificationService.error(
+                                'Invalid parametro',
+                                'empty field.'
+                            );
+                        }
+                        if (r.default == "[ ]") {
+                            const myRegex = /^\[.*\]$/;
+                            const result = myRegex.test(r.value);
+                            if (!result) {
+                                r.value = r.default;
+                                notificationService.error(
+                                    'Invalid parametro',
+                                    'The parameter needs to be enclosed in square brackets [ ].'
+                                );
+                            }
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+                var jsonParam = {
+                    key: r.key,
+                    value: r.value,
+                    default: r.default,
+                    range: r.range,
+                    required: r.required,
+                    description: r.description,
+                    type: r.type,
+                }
+                if (!vm.block.params) {
+                    vm.block.params = {}; // si vm.block.params no está definido, se crea como un objeto vacío
+                }
+                vm.block.params[r.key] = jsonParam;
             }
-            console.log(jsonParam);
-            vm.block.params = jsonParam;
-            console.log(vm.block.params);
             update();
-            */
         }
 
         function PopUpImg(ImagenSrc) {
@@ -732,36 +761,6 @@
             });
         }
 
-        function mostrarTexto(explainerTitle) {
-
-            projectModel.GetDesciptionExplainer(explainerTitle)
-                .then(function (x) {
-                    var padre = document.querySelector('.editor-page');
-                    var divElement = document.createElement('div');
-
-                    var nuevoDiv = document.createElement('div');
-                    nuevoDiv.innerHTML = x;
-                    nuevoDiv.style.position = 'absolute';
-                    nuevoDiv.style.top = '0';
-                    nuevoDiv.style.left = '0';
-                    nuevoDiv.style.right = '0';
-                    nuevoDiv.style.color = 'while';
-                    nuevoDiv.style.backgroundColor = 'black';
-                    nuevoDiv.style.padding = '10px';
-                    nuevoDiv.style.zIndex = '90';
-                    nuevoDiv.style.borderRadius = "10px ";
-                    nuevoDiv.style.border = "1px solid black";
-                    nuevoDiv.style.marginRight = "30px";
-                    nuevoDiv.style.marginLeft = "60%";
-                    nuevoDiv.style.marginTop = "40px";
-                    nuevoDiv.style.opacity = "0.9";
-                    nuevoDiv.className = "DesciptionExplainer";
-
-                    padre.appendChild(nuevoDiv);
-                });
-        }
-
-
         function PopUpImgClose() {
             var modal = document.getElementById("myModal");
             var modal1 = document.getElementById("myModal1");
@@ -779,50 +778,61 @@
 
 
         function paramsExp(option) {
+
             projectModel.getConditionsEvaluationEXP(option)
                 .then(function (x) {
-                    vm.JsonParams = {};
-                    vm.ArrayParams = [];
-                    vm.JsonParams = x.params;
-                    for (var property in x.params) {
-                        vm.ArrayParams.push({ "key": property, "value": "", fixed: false });
-                    }
-                    change();
+                    CreateParams(x.params);
                 });
-            /*
-            projectModel.getConditionsEvaluationEXP(option)
-                .then(function (x) {
-                    console.log("paramsExpparamsExpparamsExpparamsExpparamsExp");
-                    console.log(x.params);
-                    vm.JsonParams = {};
-                    vm.ArrayParams = [];
-                    vm.JsonParams = x.params;
-                    for (var property in x.params) {
-                        var Type = "";
-                        switch (x.params[property].type) {
-                            case "float":
-                                Type = "number"
-                                break;
-                            case "":
+        }
 
-                                break;
+        function CreateParams(params) {
+            vm.JsonParams = {};
+            vm.ArrayParams = [];
+            vm.JsonParams = params;
 
-                            default:
-                                break;
+            for (var property in params) {
+                var Type = "";
+                switch (params[property].type) {
+
+                    case "float":
+                    case "number":
+                    case "int":
+                        Type = "number"
+                        break;
+                    case "string":
+                        if (params[property].range != null) {
+                            Type = "select"
+                        } else {
+                            Type = "text"
                         }
-                        vm.ArrayParams.push({
-                            "key": property,
-                            "value": x.params[property].default,
-                            "default": x.params[property].default,
-                            "range": x.params[property].range,
-                            "required": x.params[property].required,
-                            "type": Type,
-                            "description": x.params[property].description,
-                            fixed: false
-                        });
-                    }
-                    change();
-                });*/
+                        break;
+                    case "select":
+                        Type = "select"
+                        break;
+                    case "array":
+                        Type = "text"
+                        if (params[property].default == null) {
+                            params[property].default = "[ ]";
+                        }
+                        break;
+                    default:
+                        Type = "text"
+                        break;
+                }
+
+                vm.ArrayParams.push({
+                    "key": property,
+                    "value": params[property].value || params[property].default || null,
+                    "default": params[property].default || null,
+                    "range": params[property].range || [null, null],
+                    "required": params[property].required || "false",
+                    "type": Type,
+                    "description": params[property].description || "",
+                    fixed: false
+                });
+
+            }
+            change();
         }
 
         function paramsExpValue(option) {
@@ -835,58 +845,107 @@
 
 
         function GetInfoParam(Param) {
-            //   vm.datatooltipParam = vm.JsonParams[Param].description;
-            vm.datatooltipParam = vm.JsonParams[Param];
-        }
-
-        function GetInfoParamSubstitute(NameExpl) {
-
-            var SubNameChange = [vm.block.title, NameExpl];
-
-            projectModel.GetSimNL(SubNameChange)
-                .then(function (x) {
-                    var padre = document.querySelector('.editor-page');
-                    var divElement = document.createElement('div');
-
-                    var nuevoDiv = document.createElement('div');
-                    nuevoDiv.innerHTML = x;
-                    nuevoDiv.style.position = 'fixed';
-                    nuevoDiv.style.bottom = '0';
-                    nuevoDiv.style.left = '0';
-                    nuevoDiv.style.right = '0';
-                    nuevoDiv.style.color = 'while';
-                    nuevoDiv.style.backgroundColor = 'black';
-                    nuevoDiv.style.padding = '10px';
-                    nuevoDiv.style.zIndex = '60';
-                    nuevoDiv.style.borderRadius = "10px 0 0 10px";
-                    nuevoDiv.style.border = "1px solid black";
-                    nuevoDiv.style.marginRight = "250px";
-                    nuevoDiv.style.marginLeft = "260px";
-                    nuevoDiv.style.marginBottom = "20px";
-                    nuevoDiv.className = "mi-tooltip";
-                    nuevoDiv.style.opacity = "0.9";
-
-                    // Añadir el nuevo elemento al DOM
-                    padre.appendChild(nuevoDiv);
-                });
-        }
-
-        function startTimeout(key) {
-            if (key == vm.block.title) {
-
-                vm.timeoutPromise = $timeout(function () {
-                    mostrarTexto(key);
-                }, 500);
+            if (vm.block.params && vm.block.params.hasOwnProperty(Param)) {
+                vm.datatooltipParam = vm.block.params[Param].description;
             } else {
-                vm.timeoutPromise = $timeout(function () {
-                    GetInfoParamSubstitute(key);
-                }, 1000);
+                vm.datatooltipParam = ""
             }
 
         }
 
-        function cancelTimeout(key) {
+        function mostrarTexto(explainerTitle, option) {
 
+            projectModel.GetDesciptionExplainer(explainerTitle)
+                .then(function (x) {
+                    CreateTooltip(x, option);
+                });
+        }
+
+        function GetInfoParamSubstitute(NameExpl, option) {
+            var SubNameChange = [vm.block.title, NameExpl];
+
+            projectModel.GetSimNL(SubNameChange)
+                .then(function (x) {
+                    CreateTooltip(x, option);
+                });
+        }
+
+        function LookDescriptionExplanation(explainerTitle, option) {
+
+            projectModel.GetDesciptionExplainer(explainerTitle)
+                .then(function (x) {
+                    CreateTooltip(x, option);
+                });
+        }
+
+        function CreateTooltip(value, type) {
+            var padre = document.querySelector('.editor-page');
+            var nuevoDiv = document.createElement('div');
+
+            nuevoDiv.innerHTML = value;
+            nuevoDiv.style.left = '0';
+            nuevoDiv.style.right = '0';
+            nuevoDiv.style.color = 'while';
+            nuevoDiv.style.backgroundColor = 'black';
+            nuevoDiv.style.padding = '10px';
+            nuevoDiv.style.zIndex = '90';
+            nuevoDiv.style.borderRadius = "10px 0 0 10px";
+            nuevoDiv.style.border = "1px solid black";
+            nuevoDiv.style.opacity = "0.9";
+            nuevoDiv.style.marginRight = "250px";
+            nuevoDiv.style.marginLeft = "260px";
+            nuevoDiv.style.marginBottom = "20px";
+
+            switch (type) {
+                case 'Explanation':
+                    nuevoDiv.style.position = 'absolute';
+                    nuevoDiv.style.top = '50px';
+                    nuevoDiv.className = "mi-tooltip";
+                    break;
+                case 'substitute':
+                    nuevoDiv.style.bottom = '0';
+                    nuevoDiv.style.position = 'fixed';
+                    nuevoDiv.className = "mi-tooltip";
+                    break;
+                case 'title':
+                    nuevoDiv.style.borderRadius = "10px ";
+                    nuevoDiv.style.top = '0';
+                    nuevoDiv.style.position = 'absolute';
+                    nuevoDiv.style.marginRight = "30px";
+                    nuevoDiv.style.marginLeft = "60%";
+                    nuevoDiv.style.marginTop = "40px";
+                    nuevoDiv.className = "DesciptionExplainer";
+                    break;
+                default:
+                    break;
+            }
+            padre.appendChild(nuevoDiv);
+
+        }
+
+        function startTimeout(key, option) {
+            switch (option) {
+                case 'Explanation':
+                    vm.timeoutPromise = $timeout(function () {
+                        LookDescriptionExplanation(key, option);
+                    }, 1000);
+                    break;
+                case 'substitute':
+                    vm.timeoutPromise = $timeout(function () {
+                        GetInfoParamSubstitute(key, option);
+                    }, 1000);
+                    break;
+                case 'title':
+                    vm.timeoutPromise = $timeout(function () {
+                        mostrarTexto(key, option);
+                    }, 500);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function cancelTimeout(key) {
             if (vm.timeoutPromise) {
                 $timeout.cancel(vm.timeoutPromise);
                 vm.timeoutPromise = null;

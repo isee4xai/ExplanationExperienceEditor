@@ -55,6 +55,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                     $http.get(SettingsAddres.httpAddresProjectsPath + path).success(function (dataJson) {
                         //update data on the server json if it already exists otherwise it is saved as a new json with a new id
                         if (dataJson.length != 0) {
+                            console.log(SettingsAddres.httpAddresProjects + '/' + dataJson[0].id);
                             fetch(SettingsAddres.httpAddresProjects + '/' + dataJson[0].id, {
                                 method: 'PATCH',
                                 body: JSON.stringify(data),
@@ -94,7 +95,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     function UpdateJsonQueyStorage(path, dataQuey, Img64) {
-
 
         return $q(function (resolve, reject) {
             try {
@@ -208,7 +208,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     async function loadExplainersSubstitute() {
-        //We set the server URL, make sure it's the one in your machine.
         var UrlCSV = "  https://raw.githubusercontent.com/isee4xai/iSeeUtilities/main/ExplainerSimilarities/detail_with_weight.csv";
         var datos = [];
 

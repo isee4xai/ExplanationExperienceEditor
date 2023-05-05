@@ -59,10 +59,10 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 26/04/23";
+        vm.date = "version 05/05/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
-        vm.TreesExample=TreesExample;
+        vm.TreesExample = TreesExample;
 
         vm.ListaPara = {};
 
@@ -248,16 +248,16 @@
         function onSaveProject() {
             projectModel
                 .saveProject()
-                .then(function () {
-                    notificationService.success(
-                        'Project saved',
-                        'The project has been saved'
-                    );
-                }, function () {
-                    notificationService.error(
-                        'Error',
-                        'Project couldn\'t be saved'
-                    );
+                .then(function (x) {
+                    if (x != "Error \n Project couldn't be saved") {
+                        notificationService.success(
+                            x
+                        );
+                    } else {
+                        notificationService.error(
+                            x
+                        );
+                    }
                 });
             return false;
         }
@@ -615,7 +615,7 @@
         }
 
         function TreesExample() {
-           
+            window.open('http://localhost:8000/#/id/643fc364a3402ba28c44b14a', '_blank');
         }
     }
 })();

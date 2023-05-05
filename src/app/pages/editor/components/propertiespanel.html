@@ -23,8 +23,9 @@
                     <label for="title">Title</label>
                     <a ng-if="propertiespanel.block.title != 'Explanation Method'">
                         <i class="fa fa-info-circle" ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
-                        ng-mouseenter="propertiespanel.startTimeout(propertiespanel.block.title)"
-                        ng-mouseleave="propertiespanel.cancelTimeout(propertiespanel.block.title)"></i>
+                            ng-mouseenter="propertiespanel.startTimeout(propertiespanel.block.title,'title')"
+                            ng-mouseleave="propertiespanel.cancelTimeout(propertiespanel.block.title,'title')">
+                        </i>
                     </a>
 
                 </div>
@@ -36,16 +37,18 @@
                             <ul>
                                 <li ng-if="propertiespanel.original.name == 'Explanation Method'"
                                     ng-repeat="option in propertiespanel.Explainers"
-                                    ng-click="propertiespanel.UpdateProperties(option)">
+                                    ng-click="propertiespanel.UpdateProperties(option)" ng-disabled="item.fixed"
+                                    ng-mouseenter="propertiespanel.startTimeout(option,'Explanation')"
+                                    ng-mouseleave="propertiespanel.cancelTimeout(option,'Explanation')">
                                     <a>{{option}}</a>
                                 </li>
                             </ul>
                         </li>
                         <li ng-if="propertiespanel.original.category == 'root'"
                             ng-click="propertiespanel.UpdateProperties(option)">
-                            <!--borrar-->
                             <a ng-model="propertiespanel.block.title"
-                                ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}</a>
+                                ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -135,7 +138,7 @@
                     </tr>
                 </thead>
             </div>
-            <!--
+
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <table class="table table-condensed keytable">
                     <tbody>
@@ -147,15 +150,24 @@
                                     ng-mouseover="propertiespanel.GetInfoParam(item.key)" />
                             </td>
                             <td>
-                                <input type="{{item.type}}" class="form-control" value="{{item.value}}" ng-model="item.value" 
-                                    data-tooltip="{{'Min :'+item.range[0]+' Max : '+item.range[1] }}" 
+                                <!--Input number-->
+                                <input ng-if="item.type == 'number'" type="{{item.type}}" class="form-control"
+                                    value="{{item.value}}" ng-model="item.value"
+                                    data-tooltip="{{'Min '+item.range[0]+' Max '+item.range[1] }}"
                                     ng-change="propertiespanel.change()" />
+                                <!--Input text-->
+                                <input ng-if="item.type == 'text'" type="{{item.type}}" class="form-control"
+                                    value="{{item.value}}" ng-model="item.value" ng-change="propertiespanel.change()" />
+                                <!--Input select-->
+                                <select ng-if="item.type == 'select'" class="form-control" style="padding: 0;"
+                                     name="transporte" ng-model="item.value" ng-options="option for option in item.range"  ng-change="propertiespanel.change()" >
+                                </select>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>  
-            -->
+            </div>
+            <!-- 
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <table class="table table-condensed keytable">
                     <tbody>
@@ -172,9 +184,9 @@
                             </td>
                         </tr>
                     </tbody>
-                </table> 
+                </table>
             </div>
-
+ -->
             <div class="form-group" ng-if="propertiespanel.original.name == 'User Question'">
                 <table class="table table-condensed keytable" ng-repeat="item in propertiespanel.ArrayParams">
 
@@ -232,8 +244,8 @@
 
                                 <li ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
                                     ng-click="propertiespanel.UpdateProperties(key)"
-                                    ng-mouseenter="propertiespanel.startTimeout(key)"
-                                    ng-mouseleave="propertiespanel.cancelTimeout(key)">
+                                    ng-mouseenter="propertiespanel.startTimeout(key,'substitute')"
+                                    ng-mouseleave="propertiespanel.cancelTimeout(key,'substitute')">
                                     <a><b>{{key}}</b><br><b>sim = </b> {{value}}</a>
                                 </li>
 

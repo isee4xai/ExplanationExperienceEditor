@@ -62,6 +62,7 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.PostExplainerNew(Json, ExplainerSelect);
+                    console.log(data);
                     resolve(data);
                 } catch (e) {
                     reject(e);
@@ -286,7 +287,7 @@
         } 
 
         async function GetSimNL(SubNameChange) {
-
+ 
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.GetSimNLStorage(SubNameChange);
