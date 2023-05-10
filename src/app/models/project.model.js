@@ -49,7 +49,8 @@
             RunNew: RunNew,
             GetSimNL:GetSimNL,
             GetDesciptionExplainer:GetDesciptionExplainer,
-            UpdateJsonQuey:UpdateJsonQuey
+            UpdateJsonQuey:UpdateJsonQuey,
+            GetInstanceModelSelect
         };
         return service;
 
@@ -328,6 +329,18 @@
                 }
             });
         }
+
+         function GetInstanceModelSelect(ModelId) {
+            return $q(function(resolve, reject) {
+                try {
+                    var data = storageService.GetInstanceModelSelectStorage(ModelId);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
 
         function getQueryImgTab(IdModel, Quey_id, imagefile) {
             return $q(function(resolve, reject) {

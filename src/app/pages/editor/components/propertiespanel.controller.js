@@ -13,7 +13,8 @@
         'projectModel',
         'ProperParams',
         '$state',
-        '$timeout'
+        '$timeout',
+        '$compile'
     ];
 
     function PropertiespanelController($scope,
@@ -23,7 +24,8 @@
         projectModel,
         ProperParams,
         $state,
-        $timeout) {
+        $timeout,
+        $compile) {
         var vm = this;
         vm.original = null;
         vm.block = null;
@@ -166,12 +168,6 @@
                         }
 
                         if (vm.block.params) {
-                            /*
-                            for (var property in vm.block.params) {
-                                var copyParams = Object.assign({}, vm.block.params[property]);
-                                vm.ArrayParams.push(copyParams);
-                            }
-                            */
                             CreateParams(vm.block.params);
                         }
 
@@ -184,15 +180,18 @@
 
 
                         if (vm.original.Json != undefined) {
-                            const miDiv = document.getElementById('mi-div');
-                            if (miDiv !== null) {
-                                miDiv.innerHTML = vm.original.Json;
-                            }
+                            LoadHtmlCode();
+
                         } else if (vm.original.Image != undefined) {
                             if (document.getElementById("ImgExpl") !== null) {
                                 document.getElementById("ImgExpl").src = vm.original.Image;
-                                const miDiv = document.getElementById('mi-div');
-                                miDiv.innerHTML = null;
+                                const miDiv = document.getElementById('ButtonPlotly');
+                                const miDivJson = document.getElementById('TextAreaEpl');
+                                if (miDiv) {
+                                    miDiv.remove();
+                                }
+                                
+                                miDivJson.innerHTML = null;
                             }
 
                         } else {
@@ -255,7 +254,6 @@
                 }
             }, 500);
 
-
         }
 
         function LoadImagen() {
@@ -266,13 +264,59 @@
 
         function LoadHtmlCode() {
 
-
             if (vm.original.Json != undefined) {
 
-                const miDiv = document.getElementById('mi-div');
-                miDiv.innerHTML = vm.original.Json;
-            }
+                if (vm.original.Json.includes("Plotly.newPlot")) {
+                    var existsButton = document.getElementById('ButtonPlotly');
+                    if (!existsButton) {
+                        var miDiv = document.getElementById('mi-div');
+                        var boton = document.createElement("button");
+                        boton.style.backgroundColor = '#0F4501';
+                        boton.innerHTML = "Visualize data";
+                        boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
+                        boton.setAttribute("id", "ButtonPlotly");
 
+                        // Adjuntar el botón al documento
+                        if (miDiv) {
+                            miDiv.appendChild(boton);
+                        }
+                        
+                    }
+                    var Delete = document.getElementById('TextArea');
+                    if (Delete) {
+                        Delete.remove()
+                    }
+                } else {
+
+                    try {
+                        var obj = JSON.parse(vm.original.Json);
+
+                        var ElementTextArea = document.getElementById('TextArea');
+                        if (!ElementTextArea) {
+                            var TextAreaExp = document.getElementById('TextAreaEpl');
+                            var textarea = document.createElement("textarea");
+                            textarea.innerHTML = vm.original.Json;
+                            textarea.setAttribute("class", "form-control");
+                            textarea.setAttribute("id", "TextArea");
+
+                            TextAreaExp.appendChild(textarea);
+                        } else {
+                            ElementTextArea.innerHTML = vm.original.Json;
+                        }
+
+                        var Delete = document.getElementById('ButtonPlotly');
+                        if (Delete) {
+                            Delete.remove()
+                        }
+                    } catch (e) {
+                        const miDiv = document.getElementById('mi-div');
+                        if (miDiv != null) {
+                            miDiv.innerHTML = vm.original.Json;
+                        }
+
+                    }
+                }
+            }
         }
 
         function GetModels() {
@@ -280,7 +324,7 @@
                 .then(function (x) {
                     if (vm.models.length == 0) {
                         vm.models = x;
-                        var deleteModels = Object.keys(x).filter(key => x[key].includes('63'));
+                        var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
                         for (let index = 0; index < deleteModels.length; index++) {
                             delete vm.models[deleteModels[index]];
                         }
@@ -343,16 +387,28 @@
         }
 
         function SelectModel(data) {
+
             vm.modelsSelect = data;
             vm.block.ModelRoot.idModel = Object.keys(vm.models).find(key => vm.models[key] === data);
+
+            projectModel.GetInstanceModelSelect(vm.block.ModelRoot.idModel)
+                .then(function (x) {
+                    //Tabular data
+                    //  const cadena = JSON.stringify(x.instance, null, 4); // 4 espacios de espacio
+                    var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
+                    miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
+                });
             update();
         }
 
 
         function RunNew() {
             var jsonParam = {};
+
             for (var i = 0; i < vm.ArrayParams.length; i++) {
-                if (vm.ArrayParams[i].value != "") {
+                // if ((vm.ArrayParams[i].value != "" && vm.ArrayParams[i].value !== null) && vm.ArrayParams[i].value !== "[ ]") {
+                if (vm.ArrayParams[i].value !== null && vm.ArrayParams[i].value !== "[ ]") {
+                    console.log("entrooo");
                     jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
                 }
             }
@@ -373,25 +429,67 @@
                 }
                 jsonObjectInstance.type = "dict"
             }
+            console.log(jsonObjectInstance);
             projectModel.RunNew(jsonObjectInstance, vm.original.title)
                 .then(function (x) {
+                    console.log(x);
                     if (x.hasOwnProperty("type")) {
-                        if (x.type == "image") {
-                            var img = new Image();
-                            var base64 = x.explanation;
-                            vm.block.Image = "data:image/png;base64," + base64;
-                            //Actualizar la imagen o cargar imagen
-                            var imagen = document.querySelector('#ImgExpl');
-                            if (imagen) {
-                                imagen.src = vm.block.Image;
-                            }
-                            delete vm.block.Json;
-                        } else if (x.type == "html") {
-                            const miDiv = document.getElementById('mi-div');
-                            miDiv.innerHTML = x.explanation;
-                            vm.block.Json = x.explanation;
-                            delete vm.block.Image;
-                            LoadHtmlCode();
+                        switch (x.type) {
+                            case "image":
+                                var img = new Image();
+                                var base64 = x.explanation;
+                                vm.block.Image = "data:image/png;base64," + base64;
+                                //Actualizar la imagen o cargar imagen
+                                var imagen = document.querySelector('#ImgExpl');
+                                if (imagen) {
+                                    imagen.src = vm.block.Image;
+                                }
+                                delete vm.block.Json;
+                                break;
+                            case "html":
+                                if (x.explanation.includes("Plotly.newPlot")) {
+                                    var existsButton = document.getElementById('ButtonPlotly');
+                                    if (!existsButton) {
+                                        var miDiv = document.getElementById('mi-div');
+                                        var boton = document.createElement("button");
+                                        boton.style.backgroundColor = '#0F4501';
+                                        boton.innerHTML = "Visualize data";
+                                        boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
+                                        boton.setAttribute("id", "ButtonPlotly");
+
+                                        miDiv.appendChild(boton);
+                                    }
+
+                                } else {
+                                    const miDiv = document.getElementById('mi-div');
+                                    miDiv.innerHTML = x.explanation;
+                                }
+
+                                vm.block.Json = x.explanation;
+                                delete vm.block.Image;
+                                LoadHtmlCode();
+                                break;
+                            case "dict":
+                                vm.block.Json = JSON.stringify(x.explanation, null, 4);
+                                var ElementTextArea = document.getElementById('TextArea');
+                                if (!ElementTextArea) {
+                                    var TextAreaExp = document.getElementById('TextAreaEpl');
+                                    var textarea = document.createElement("textarea");
+                                    textarea.innerHTML = vm.block.Json;
+                                    textarea.setAttribute("class", "form-control");
+                                    textarea.setAttribute("id", "TextArea");
+
+                                    TextAreaExp.appendChild(textarea);
+                                } else {
+                                    ElementTextArea.innerHTML = vm.block.Json;
+                                }
+                                delete vm.block.Image;
+                                break;
+                            case "text":
+
+                                break;
+                            default:
+                                break;
                         }
                         notificationService.success(
                             "The explainer ran successfully"
@@ -404,7 +502,29 @@
 
                     update();
                 });
+        }
 
+        function ejecutarScripts(Datos, IdDiv) {
+
+            var miDiv = IdDiv;
+            var temporal = document.createElement('div');
+
+            // Insertamos el HTML en el elemento temporal
+            temporal.innerHTML = Datos;
+
+            // Compilamos el HTML utilizando el servicio $compile de AngularJS
+            var contenidoCompilado = $compile(temporal)($scope);
+            // Insertamos el contenido compilado en el DOM
+
+            miDiv.appendChild(contenidoCompilado[0]);
+
+            // Eejcutar Script de plov
+            var scripts = miDiv.getElementsByTagName('script');
+            var scriptArray = Array.from(scripts);
+
+            scriptArray.forEach(function (script) {
+                eval(script.innerHTML);
+            });
 
         }
 
@@ -714,10 +834,11 @@
         }
 
         function PopUpHtml(HtmlCode) {
+
             var padre = document.querySelector('.editor-page');
 
             var nuevoDiv = document.createElement('div');
-            nuevoDiv.innerHTML = HtmlCode;
+            //  nuevoDiv.innerHTML = "";
             nuevoDiv.style.position = 'fixed';
             nuevoDiv.style.bottom = '0';
             nuevoDiv.style.left = '0';
@@ -732,8 +853,9 @@
             nuevoDiv.style.overflowX = "auto"
             nuevoDiv.style.overflowY = "auto"
             nuevoDiv.className = "mi-htmlCode";
-
             padre.appendChild(nuevoDiv);
+
+            ejecutarScripts(HtmlCode, nuevoDiv);
 
             var divElement = document.createElement('div');
             divElement.style.position = 'fixed';

@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 05/05/23";
+        vm.date = "version 11/05/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -96,7 +96,7 @@
                 vm.explanation.forEach(element => {
                     try {
                         getParams(element)
-                            .then(function (x) {
+                            .then(function (x) {   
                                 var jsonParmsDefin = {};
                                 Object.keys(x).forEach(resultJson => {
                                     jsonParmsDefin[resultJson] = "";

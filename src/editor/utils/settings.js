@@ -92,6 +92,7 @@
     //ADDRESS - Models
     DEFAULT_SETTINGS.AddresModels = DEFAULT_SETTINGS.httpAddresModels + "model_list";
     DEFAULT_SETTINGS.AddresQuery = DEFAULT_SETTINGS.httpAddresModels + "query";
+    DEFAULT_SETTINGS.AddresInstanceModels = DEFAULT_SETTINGS.httpAddresModels + "instance/";
 
     b3e.DEFAULT_SETTINGS = DEFAULT_SETTINGS;
 })();

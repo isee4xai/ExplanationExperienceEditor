@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "form-data": "^4.0.0",
+        "plotly.js": "^2.22.0",
         "vue-axios": "^3.4.1"
     }
 }

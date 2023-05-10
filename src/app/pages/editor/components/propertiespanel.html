@@ -124,7 +124,7 @@
                 </div>
 
 
-                <b3-Proper-Params heading="Params EXP" ng-model="propertiespanel.block.ModelRoot"
+                <b3-Proper-Params id="b3-Proper-Params" heading="Params EXP" ng-model="propertiespanel.block.ModelRoot"
                     ng-change="propertiespanel.update()" class="no-border">
                 </b3-Proper-Params>
             </div>
@@ -167,26 +167,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- 
-            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <table class="table table-condensed keytable">
-                    <tbody>
-                        <tr ng-repeat="item in propertiespanel.ArrayParams">
-                            <td class="keyPropertiesTdParams">
-                                <input id="ParamsKey" type="text" class="form-control" value="{{item.key}}"
-                                    ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
-                                    data-tooltip="{{propertiespanel.datatooltipParam}}"
-                                    ng-mouseover="propertiespanel.GetInfoParam(item.key)" />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value"
-                                    ng-change="propertiespanel.change()" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
- -->
+ 
             <div class="form-group" ng-if="propertiespanel.original.name == 'User Question'">
                 <table class="table table-condensed keytable" ng-repeat="item in propertiespanel.ArrayParams">
 
@@ -205,10 +186,6 @@
                 </table>
             </div>
 
-            <!--<div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <button id="ButtonRun" type="button" ng-click="propertiespanel.Run()">Run</button>
-            </div>-->
-
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <button id="ButtonRun" type="button" ng-click="propertiespanel.RunNew()">Run</button>
             </div>
@@ -219,10 +196,8 @@
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
-
-                <div class="form-group" ng-if="propertiespanel.block.Json != undefined">
-                    <!--      <textarea name="json" rows="4" class="form-control" ng-model="propertiespanel.block.Json" disabled>
-                    </textarea> -->
+                <div id="TextAreaEpl" class="form-group" >
+                    
                 </div>
                 <div id="DivImg" class="form-group" ng-if="propertiespanel.original.Image != undefined"
                     ng-init="propertiespanel.LoadImagen()">
@@ -232,6 +207,7 @@
                     ng-init="propertiespanel.LoadHtmlCode()"
                     ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
                 </div>
+               
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">

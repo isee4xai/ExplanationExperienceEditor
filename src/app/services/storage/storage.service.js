@@ -32,7 +32,8 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         PostExplainerNew: PostExplainerNew,
         GetSimNLStorage: GetSimNLStorage,
         GetDesciptionExplainerStorage: GetDesciptionExplainerStorage,
-        UpdateJsonQueyStorage: UpdateJsonQueyStorage
+        UpdateJsonQueyStorage: UpdateJsonQueyStorage,
+        GetInstanceModelSelectStorage: GetInstanceModelSelectStorage
     };
     return service;
 
@@ -290,7 +291,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     async function loadModels() {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.AddresModels;
-
         return $q(function (resolve, reject) {
             try {
                 axios.get(server_url).then(function (response) {
@@ -342,6 +342,24 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         });
     }
 
+    async function GetInstanceModelSelectStorage(ModelId) {
+
+        var server_url = SettingsAddres.AddresInstanceModels + ModelId + '/0';
+        return $q(function (resolve, reject) {
+            try {
+                axios.get(server_url)
+                    .then(function (response) {
+                        resolve(response.data);
+                    }).catch(function (error) {
+                        resolve(error);
+                    });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+
     function PostExplainerNew(Json, ExplainerSelect) {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.httpAddresExplanations + ExplainerSelect;
@@ -366,7 +384,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                         resolve("Error execute Explanation Method ");
                     });
             } catch (e) {
-                console.log(e);
                 reject(e);
             }
         });

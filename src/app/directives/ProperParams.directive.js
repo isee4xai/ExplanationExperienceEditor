@@ -31,9 +31,9 @@
 
             var variable = attrs.ngModel;
             scope.$watch(variable, function (model) {
-                //scope.ProperParams.model = model;
+
                 scope.ProperParams.reset(model);
-                //scope.ProperParams.GetModels(model);
+
                 scope.ProperParams.Imprimir(model);
             });
             element.on('change', function (event) {
@@ -65,13 +65,15 @@
         vm.reset = reset;
         vm.Imprimir = Imprimir;
         vm.changeQueryText = changeQueryText;
+        vm.InstanceModeldefault = InstanceModeldefault;
+        vm.toggleImageDisplay = toggleImageDisplay;
         vm.handleImageChange = function (file) {
             var reader = new FileReader();
             reader.onload = function (event) {
                 var base64 = event.target.result;
                 vm.model.img = base64;
-                delete vm.model.query;
-
+                delete vm.model.query; 
+                toggleImageDisplay(base64);
                 vm._onChange($scope);
                 $scope.$apply(); // actualizar el scope
             };
@@ -85,6 +87,59 @@
 
         }
 
+        function InstanceModeldefault(Instance, type) {
+            console.log(Instance);
+            if (Instance) {
+                switch (type) {
+                    case "dict":
+                        const cadena = JSON.stringify(Instance, null, 4);
+                        vm.TypeQuerySelect = 'Tabular';
+                        vm.QueryText = cadena;
+                        delete vm.model.img;
+                        vm.model.query = cadena;
+                        toggleImageDisplay("");
+                        break;
+                    case "image":
+                        vm.QueryText = "";
+                        vm.TypeQuerySelect = 'File';
+                        delete vm.model.query;
+                        vm.model.img = Instance;
+                        toggleImageDisplay(Instance);
+
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                vm.TypeQuerySelect = "Type Data";
+                vm.QueryText = "";
+                delete vm.model.query;
+                delete vm.model.img;
+                toggleImageDisplay("");
+            }
+            vm._onChange($scope);
+        }
+
+        function toggleImageDisplay(imaegn64) {
+            if (imaegn64) {
+                var imagenDiv = document.getElementById("ImageInstance");
+                var imagen = new Image();
+
+                if (imaegn64.startsWith("data:image")) {
+                    imagen.src = imaegn64;
+                } else {
+                    imagen.src = "data:image/png;base64," + imaegn64;
+                }
+                
+                imagenDiv.innerHTML = "";
+                imagen.style.maxWidth = "100%";
+                imagen.style.maxHeight = "100%";
+                imagenDiv.appendChild(imagen);
+            } else {
+                var imagenDiv = document.getElementById("ImageInstance");
+                imagenDiv.innerHTML = "";
+            }
+        }
 
         function changeQueryText() {
             vm.model.query = vm.QueryText;
@@ -92,6 +147,7 @@
         }
 
         function Imprimir(model) {
+
             if (model && vm.TypeQuerySelect === undefined) {
                 if (model.hasOwnProperty('query') && model.query != undefined) {
                     vm.TypeQuerySelect = 'Tabular';
@@ -103,6 +159,7 @@
                     vm.TypeQuerySelect = 'File';
                     delete vm.model.query;
                     vm.QueryText = model.img || "";
+                    toggleImageDisplay(model.img);
                 }
             }
         }
@@ -137,7 +194,6 @@
             }
             vm.TypeQuerySelect = data;
             vm._onChange($scope);
-
         }
 
         function Save() {
@@ -154,49 +210,7 @@
                     }
 
                 });
-            /*
-            if (vm.TypeQuerySelect != "Type Data") {
-                var imagefile = "";
-                var NameImage = "";
-                var imagefileHtml = "";
-
-                if (vm.TypeQuerySelect == 'File') {
-                    imagefileHtml = document.querySelector('#btnSelecionar');
-                    if (imagefileHtml != "") {
-                        imagefile = imagefileHtml.files[0];
-                        NameImage = imagefileHtml.files[0].name;
-                    } else {
-                        imagefile = vm.model.img;
-                        NameImage = vm.model.img.name;
-                    }
-
-                }
-                projectModel.PostModelId(vm.model.idModel, vm.QueryText, imagefile)
-                    .then(function(x) {
-                        if (x == "The query and image field are missing") {
-                            notificationService.error(
-                                'Error',
-                                x
-                            );
-                        } else {
-                            vm.IdQuery = x.substring(21, 31);
-                            vm.model.query_id = vm.IdQuery;
-                            notificationService.success(
-                                "Get Id Query ",
-                                vm.IdQuery
-                            );
-                            getQueryData(vm.IdQuery, vm.model.idModel, NameImage);
-                        }
-
-                    }, function() {
-                        notificationService.error(
-                            'Error'
-                        );
-                    });
-            }*/
         }
-
-
 
         function getQueryData(QueryId, ModelId, imagefile) {
 
