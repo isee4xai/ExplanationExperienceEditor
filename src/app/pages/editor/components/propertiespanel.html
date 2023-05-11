@@ -196,8 +196,9 @@
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <div id="TextAreaEpl" class="form-group" >
-                    
+                <div id="TextAreaEpl" class="form-group" ng-if="propertiespanel.original.Json.type == 'dict'|| propertiespanel.original.Json.type == 'text'" >
+                    <textarea id="TextArea" name="description" rows="4" class="form-control" ng-model="propertiespanel.block.Json.explanation" readonly>
+                    </textarea>
                 </div>
                 <div id="DivImg" class="form-group" ng-if="propertiespanel.original.Image != undefined"
                     ng-init="propertiespanel.LoadImagen()">
@@ -206,6 +207,10 @@
                 <div id="mi-div" class="form-group" style="overflow-x:auto; overflow-y:auto;"
                     ng-init="propertiespanel.LoadHtmlCode()"
                     ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
+
+                   <!-- <button id="ButtonPlotly" class="btn btn-success btn-xs pull-right ng-scope"
+                     style="background-color:#0F4501;" ng-if="propertiespanel.original.Json.type == 'html'">
+                     Visualize data</button>-->
                 </div>
                
             </div>
