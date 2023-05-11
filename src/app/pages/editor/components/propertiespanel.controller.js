@@ -186,7 +186,7 @@
                             if (document.getElementById("ImgExpl") !== null) {
                                 document.getElementById("ImgExpl").src = vm.original.Image;
                                 const miDiv = document.getElementById('ButtonPlotly');
-                                const miDivJson = document.getElementById('TextAreaEpl');
+                                const miDivJson = document.getElementById('mi-div');
                                 if (miDiv) {
                                     miDiv.remove();
                                 }
