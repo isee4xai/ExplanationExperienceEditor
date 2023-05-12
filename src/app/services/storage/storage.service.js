@@ -39,7 +39,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function save(path, data) {
         storage.save(path, data);
-    }
+    } 
 
     function saveJson(path, data) {
         return $q(function (resolve, reject) {
@@ -56,7 +56,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                     $http.get(SettingsAddres.httpAddresProjectsPath + path).success(function (dataJson) {
                         //update data on the server json if it already exists otherwise it is saved as a new json with a new id
                         if (dataJson.length != 0) {
-                            console.log(SettingsAddres.httpAddresProjects + '/' + dataJson[0].id);
                             fetch(SettingsAddres.httpAddresProjects + '/' + dataJson[0].id, {
                                 method: 'PATCH',
                                 body: JSON.stringify(data),
@@ -209,7 +208,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     async function loadExplainersSubstitute() {
-        var UrlCSV = "  https://raw.githubusercontent.com/isee4xai/iSeeUtilities/main/ExplainerSimilarities/detail_with_weight.csv";
+        var UrlCSV = "https://raw.githubusercontent.com/isee4xai/iSeeUtilities/main/ExplainerSimilarities/detail_with_weight.csv";
         var datos = [];
 
         return $q(function (resolve, reject) {
@@ -271,11 +270,15 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
 
 
-    async function loadExplanationExp(method) {
+    async function loadExplanationExp(method,IdModel) {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.httpAddresExplanations;
         //We set the method from which we want to take the params
-        var method_url = method;
+        if (IdModel =="") {
+            var method_url = method ; 
+        }else{
+            var method_url = method+"/"+IdModel;
+        }
 
         return $q(function (resolve, reject) {
             try {
@@ -411,7 +414,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                             resolve(file);
                         });
                 }
-
             } catch (e) {
                 reject(e);
             }

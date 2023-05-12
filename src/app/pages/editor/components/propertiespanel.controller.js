@@ -96,6 +96,7 @@
         vm.mostrarTexto = mostrarTexto;
         vm.LookDescriptionExplanation = LookDescriptionExplanation;
 
+        vm.filterSubitemClick=filterSubitemClick;
 
         if (vm.models.length === 0) {
             GetModels();
@@ -288,11 +289,11 @@
                                 boton.innerHTML = "Visualize data";
                                 boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
                                 boton.setAttribute("id", "ButtonPlotly");
-                                miDiv.innerHTML="";
+                                miDiv.innerHTML = "";
                                 miDiv.appendChild(boton);
                             }
                         } else {
-                            if ( existsButton) {
+                            if (existsButton) {
                                 existsButton.remove();
                             }
                             const miDiv = document.getElementById('mi-div');
@@ -446,12 +447,12 @@
                                         boton.innerHTML = "Visualize data";
                                         boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
                                         boton.setAttribute("id", "ButtonPlotly");
-                                        miDiv.innerHTML="";
+                                        miDiv.innerHTML = "";
                                         miDiv.appendChild(boton);
                                     }
 
                                 } else {
-                                    if ( existsButton) {
+                                    if (existsButton) {
                                         existsButton.remove();
                                     }
                                     const miDiv = document.getElementById('mi-div');
@@ -465,7 +466,7 @@
 
                                 vm.block.Json = x;
                                 delete vm.block.Image;
-                                 
+
                                 break;
                             case "dict":
                             case "text":
@@ -483,7 +484,7 @@
 
                             default:
                                 break;
-                            LoadHtmlCode();
+                                LoadHtmlCode();
                         }
                         notificationService.success(
                             "The explainer ran successfully"
@@ -504,7 +505,6 @@
 
             // Insertamos el HTML en el elemento temporal
             temporal.innerHTML = Datos.explanation;
-
             // Compilamos el HTML utilizando el servicio $compile de AngularJS
             var contenidoCompilado = $compile(temporal)($scope);
             // Insertamos el contenido compilado en el DOM
@@ -825,32 +825,52 @@
         }
 
         function PopUpHtml(HtmlCode) {
-
+            var elementos = document.getElementsByClassName('mi.close');
+            if (elementos.length != 0) {
+                elementos[0].remove();
+            }
             var padre = document.querySelector('.editor-page');
 
-            var nuevoDiv = document.createElement('div');
-            //  nuevoDiv.innerHTML = "";
-            nuevoDiv.style.position = 'fixed';
-            nuevoDiv.style.bottom = '0';
-            nuevoDiv.style.left = '0';
-            nuevoDiv.style.right = '0';
-            nuevoDiv.style.color = 'black';
-            nuevoDiv.style.backgroundColor = '#F1F1EC';
-            nuevoDiv.style.padding = '10px';
-            nuevoDiv.style.zIndex = '10';
-            nuevoDiv.style.marginRight = "250px";
-            nuevoDiv.style.marginLeft = "250px";
-            nuevoDiv.style.paddingTop = "40px"
-            nuevoDiv.style.overflowX = "auto"
-            nuevoDiv.style.overflowY = "auto"
-            nuevoDiv.className = "mi-htmlCode";
-            padre.appendChild(nuevoDiv);
-
-            if (HtmlCode.type = "html") {
-                ejecutarScripts(HtmlCode, nuevoDiv);
+            var elementos = document.getElementsByClassName('mi-htmlCode');
+            if (elementos.length == 0) {
+                var nuevoDiv = document.createElement('div');
+                nuevoDiv.style.position = 'fixed';
+                nuevoDiv.style.bottom = '0';
+                nuevoDiv.style.left = '0';
+                nuevoDiv.style.right = '0';
+                nuevoDiv.style.color = 'black';
+                nuevoDiv.style.backgroundColor = '#F1F1EC';
+                nuevoDiv.style.padding = '10px';
+                nuevoDiv.style.zIndex = '10';
+                nuevoDiv.style.marginRight = "250px";
+                nuevoDiv.style.marginLeft = "250px";
+                nuevoDiv.style.paddingTop = "40px"
+                nuevoDiv.style.overflowX = "auto"
+                nuevoDiv.style.overflowY = "auto"
+                nuevoDiv.className = "mi-htmlCode";
+                padre.appendChild(nuevoDiv);
+                if (HtmlCode.type = "html") {
+                    ejecutarScripts(HtmlCode, nuevoDiv);
+                } else {
+                    nuevoDiv.innerHTML = HtmlCode.explanation;
+                }
+                CreateButtonExit(nuevoDiv, padre, false);
             } else {
-                nuevoDiv.innerHTML = HtmlCode.explanation;
+
+                if (HtmlCode.type = "html") {
+                    elementos[0].innerHTML = "";
+                    ejecutarScripts(HtmlCode, elementos[0]);
+                    CreateButtonExit(elementos[0], padre, true);
+                } else {
+                    nuevoDiv.innerHTML = HtmlCode.explanation;
+                    CreateButtonExit(nuevoDiv, padre, true);
+                }
             }
+
+
+        }
+
+        function CreateButtonExit(nuevoDiv, padre, DeleteButton) {
 
 
             var divElement = document.createElement('div');
@@ -896,8 +916,19 @@
 
 
         function paramsExp(option) {
+            var IdModel = "";
+  
+            for (var i = 0; i < vm.original.parent.children.length; i++) {
+                if (vm.original.parent.children[i].category === "root") {
+                    if (!vm.original.parent.children[i].hasOwnProperty("ModelRoot")) {
+                        IdModel = vm.original.parent.children[i].idModel
+                    } else {
+                        IdModel = vm.original.parent.children[i].ModelRoot.idModel;
+                    }
+                }
+            }
 
-            projectModel.getConditionsEvaluationEXP(option)
+            projectModel.getConditionsEvaluationEXP(option, IdModel)
                 .then(function (x) {
                     CreateParams(x.params);
                 });
@@ -919,7 +950,7 @@
                         break;
                     case "string":
                         if (params[property].range != null) {
-                            Type = "select"
+                            Type = "select"                         
                         } else {
                             Type = "text"
                         }
@@ -927,10 +958,17 @@
                     case "select":
                         Type = "select"
                         break;
+                    case "checkbox":
+                        Type = "checkbox"
+                        break;
                     case "array":
                         Type = "text"
                         if (params[property].default == null) {
                             params[property].default = "[ ]";
+                        }else{
+                            if (Array.isArray(params[property].default)){
+                                Type = "checkbox"
+                            }
                         }
                         break;
                     default:
@@ -948,7 +986,6 @@
                     "description": params[property].description || "",
                     fixed: false
                 });
-
             }
             change();
         }
@@ -961,6 +998,17 @@
                 });
         }
 
+        function filterSubitemClick(data,title,$event) { 
+            if ($event.target.checked) {
+                 vm.block.params[title].value.push(data);
+            }else{
+                var indice = vm.block.params[title].value.indexOf(data);
+                if (indice !== -1) {
+                    vm.block.params[title].value.splice(indice, 1);
+                }
+            }
+           
+        }
 
         function GetInfoParam(Param) {
             if (vm.block.params && vm.block.params.hasOwnProperty(Param)) {

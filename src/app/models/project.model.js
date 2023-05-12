@@ -63,7 +63,6 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.PostExplainerNew(Json, ExplainerSelect);
-                    console.log(data);
                     resolve(data);
                 } catch (e) {
                     reject(e);
@@ -242,11 +241,11 @@
             });
         }
  
-        async function getConditionsEvaluationEXP(x) {
-
+        async function getConditionsEvaluationEXP(x,IdModel) {
+            
             return $q(function(resolve, reject) {
                 try {
-                    var data = storageService.loadExplanationExp(x);
+                    var data = storageService.loadExplanationExp(x,IdModel);
                     resolve(data);
                 } catch (e) {
                     reject(e);
@@ -280,7 +279,7 @@
             return $q(function(resolve, reject) {
                 try {
                     var data = storageService.loadExplainersSubstitute();
-                    resolve(data);
+                    resolve(data); 
                 } catch (e) {
                     reject(e);
                 }

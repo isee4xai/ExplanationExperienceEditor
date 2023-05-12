@@ -143,13 +143,13 @@
                 <table class="table table-condensed keytable">
                     <tbody>
                         <tr ng-repeat="item in propertiespanel.ArrayParams">
-                            <td class="keyPropertiesTdParams">
+                            <td class="keyPropertiesTdParams" ng-if="item.type != 'checkbox'">
                                 <input id="ParamsKey" type="text" class="form-control" value="{{item.key}}"
                                     ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
                                     data-tooltip="{{propertiespanel.datatooltipParam}}"
                                     ng-mouseover="propertiespanel.GetInfoParam(item.key)" />
                             </td>
-                            <td>
+                            <td ng-if="item.type != 'checkbox'">
                                 <!--Input number-->
                                 <input ng-if="item.type == 'number'" type="{{item.type}}" class="form-control"
                                     value="{{item.value}}" ng-model="item.value"
@@ -160,14 +160,36 @@
                                     value="{{item.value}}" ng-model="item.value" ng-change="propertiespanel.change()" />
                                 <!--Input select-->
                                 <select ng-if="item.type == 'select'" class="form-control" style="padding: 0;"
-                                     name="transporte" ng-model="item.value" ng-options="option for option in item.range"  ng-change="propertiespanel.change()" >
+                                    name="transporte" ng-model="item.value" ng-options="option for option in item.range"
+                                    ng-change="propertiespanel.change()">
                                 </select>
+                            </td>
+                            <!--Input Checkbox -->
+                            <td class="keyPropertiesTdParams" ng-if="item.type =='checkbox'">
+                                <accordion id="accordion">
+                                    <accordion-group>
+                                        <accordion-heading>
+                                            <p class="Textaccordion-heading"
+                                                data-tooltip="{{propertiespanel.datatooltipParam}}"
+                                                ng-mouseover="propertiespanel.GetInfoParam(item.key)">
+                                                ▼ {{item.key}}
+                                            </p>
+
+                                        </accordion-heading>
+                                        <div ng-repeat="data in item.range">
+                                            <input type="checkbox" class="pull-left glyphicon"
+                                                ng-click="propertiespanel.filterSubitemClick(data, item.key, $event)"
+                                                ng-checked="item.default.indexOf(data) !== -1"
+                                                value="{{data}}" />{{data}}
+                                        </div>
+                                    </accordion-group>
+                                </accordion>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
- 
+
             <div class="form-group" ng-if="propertiespanel.original.name == 'User Question'">
                 <table class="table table-condensed keytable" ng-repeat="item in propertiespanel.ArrayParams">
 
@@ -196,8 +218,10 @@
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <div id="TextAreaEpl" class="form-group" ng-if="propertiespanel.original.Json.type == 'dict'|| propertiespanel.original.Json.type == 'text'" >
-                    <textarea id="TextArea" name="description" rows="4" class="form-control" ng-model="propertiespanel.block.Json.explanation" readonly>
+                <div id="TextAreaEpl" class="form-group"
+                    ng-if="propertiespanel.original.Json.type == 'dict'|| propertiespanel.original.Json.type == 'text'">
+                    <textarea id="TextArea" name="description" rows="4" class="form-control"
+                        ng-model="propertiespanel.block.Json.explanation" readonly>
                     </textarea>
                 </div>
                 <div id="DivImg" class="form-group" ng-if="propertiespanel.original.Image != undefined"
@@ -208,11 +232,11 @@
                     ng-init="propertiespanel.LoadHtmlCode()"
                     ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
 
-                   <!-- <button id="ButtonPlotly" class="btn btn-success btn-xs pull-right ng-scope"
+                    <!-- <button id="ButtonPlotly" class="btn btn-success btn-xs pull-right ng-scope"
                      style="background-color:#0F4501;" ng-if="propertiespanel.original.Json.type == 'html'">
                      Visualize data</button>-->
                 </div>
-               
+
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
