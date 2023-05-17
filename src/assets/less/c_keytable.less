@@ -17,15 +17,13 @@
     border: 0px !important;
     padding: 2px 2px !important;
 
-
-
     input:not([type=button]) {
       padding: 0px @padding-small;
       margin: 0px;
       background-color: #ffffff;
     }
     
-    div  input:first-child {
+    div input:first-child {
         margin-top: 2px;
       }
   }
@@ -38,12 +36,58 @@
     }
   }
 
-  .keyPropertiesTdParams{
+  td.keyPropertiesTdParams{
     input:not([type=button]) {
       background-color: #5bc0de;
       font-weight: bold;
       color: black;
     }
+  }
+
+  td.TdCheckBox{
+    width: 250px;
+    input:not([type=button]) {
+      background-color: #5bc0de;
+      font-weight: bold;
+      color: black;
+    }
+    .panel-heading {
+    padding: 0%;
+    background-color: @color-blue ;
+  }
+
+  .panel-group {
+    padding: 0%;
+  }
+
+  div.panel.panel-default.panel-open {
+    background-color: @color-blue;
+  }
+
+  div.panel.panel-default {
+    background-color: @color-blue;
+  }
+  .panel-body{
+    padding: 5px 5px 1px 10px;
+    background-color: @color-light1; 
+  }
+
+  .Textaccordion-heading {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-left: 5px;
+  }
+  .panel-collapse .ng-binding.ng-scope {
+    font-size: 12.5px;
+    font-weight: bold;
+    color: black;
+    input[type="checkbox"] {
+      margin-right: 3px;
+    }
+  }
   }
 
   .form-control {
