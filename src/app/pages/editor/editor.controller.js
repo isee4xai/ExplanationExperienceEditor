@@ -4,33 +4,31 @@ angular
 
 EditorController.$inject = [
     '$state',
+    '$window',
     '$location',
     'projectModel',
     'dialogService',
     'systemService'
-
 ];
 
-function EditorController($state, $location, projectModel, dialogService, systemService) {
-
+function EditorController($state, $window, $location, projectModel, dialogService, systemService) {
 
     //get id from url
     var url = $location.url().slice(1);
     urlSplit = url.split("/");
     var cmd = urlSplit[0];
     var Id = ""
-    if(urlSplit.length>1)
+    if (urlSplit.length > 1)
         Id = urlSplit[1];
-
     _activate();
 
 
     function _activate() {
-        if (typeof url === 'undefined'){
+        if (typeof url === 'undefined') {
             $state.go('dash.projects');
         }
         //if we pass an id to the editor we open the project
-        if (cmd == "editor" || cmd=="view" || cmd == "") {
+        if (cmd == "editor" || cmd == "view" || cmd == "") {
             /*
             projectModel
                 .getRecentProjects()
@@ -68,31 +66,33 @@ function EditorController($state, $location, projectModel, dialogService, system
         } else if (Id == "") {
             $state.go('id.error');
         } else {
-            console.log("opening project: "+ Id);
             projectModel
                 .openProjectId(Id)
-                .then(function(x) {
+                .then(function (x) {
                     // send you to the error page if the call to the service does not return data
                     if (x == null) {
                         $state.go('id.error');
+                    } else {
+                        var project = $window.editor.project.get();
+                        var tree = project.trees.getSelected();
+                        tree.organize.organize();
                     }
-
                 });
+
             projectModel
                 .getRecentProjects()
-                .then(function(recents) {
+                .then(function (recents) {
                     if (recents.length == 0) {
                         location.reload();
                     }
                 });
         }
-
     }
 
     function _newProject(path, name) {
         projectModel
             .newProject(path, name)
-            .then(function() {
+            .then(function () {
                 $state.go('editor');
             });
     }
