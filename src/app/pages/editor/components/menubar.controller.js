@@ -86,8 +86,6 @@
             }
 
             vm.isEditor = vm.url.includes("id");
-            onAutoOrganize();
-
         }
 
 
