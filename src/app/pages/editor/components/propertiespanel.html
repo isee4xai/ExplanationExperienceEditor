@@ -208,7 +208,7 @@
                     </tr>
                     <tr ng-repeat="item in propertiespanel.ArrayParams" style="margin-top: 50px;">
                         <td>
-                            <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value"
+                            <input type="text" class="form-control" value="{{item.value.value}}" ng-model="item.value.value"
                                 ng-change="propertiespanel.change()" />
                         </td>
                     </tr>
