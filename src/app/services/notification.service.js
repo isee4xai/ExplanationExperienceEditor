@@ -13,6 +13,7 @@ function notificationService($window, $timeout, $compile, $rootScope, $sce) {
     error   : error,
     info    : info,
     warning : warning,
+    load    : load
   };
   return service;
 
@@ -103,5 +104,8 @@ function notificationService($window, $timeout, $compile, $rootScope, $sce) {
   }
   function warning(title, message) {
     _note({title:title, message:message, icon:'fa-warning', type:'warning'});
+  }
+  function load(title, message) {
+    _note({title:title, message:message, icon:'fa-spinner', type:'load'});
   }
 }

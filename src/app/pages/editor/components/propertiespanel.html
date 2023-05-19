@@ -57,7 +57,7 @@
                     placeholder="Title" ng-keydown="propertiespanel.keydown($event)"
                     ng-model="propertiespanel.block.title" ng-change="propertiespanel.update()">
             </div>
-
+            <!--
             <div class="form-group" ng-if="propertiespanel.original.name != 'Condition'">
                 <label for="description">Description</label>
                 <textarea name="description" rows="2" class="form-control" placeholder="Description"
@@ -65,7 +65,7 @@
                     ng-change="propertiespanel.update()">
                 </textarea>
             </div>
-
+            -->
             <div class="form-group" ng-if="propertiespanel.original.name == 'Condition'">
                 <div id="header">
                     <ul class="nav">
@@ -208,7 +208,7 @@
                     </tr>
                     <tr ng-repeat="item in propertiespanel.ArrayParams" style="margin-top: 50px;">
                         <td>
-                            <input type="text" class="form-control" value="{{item.value.value}}" ng-model="item.value.value"
+                            <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value"
                                 ng-change="propertiespanel.change()" />
                         </td>
                     </tr>
@@ -216,7 +216,8 @@
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <button id="ButtonRun" type="button" ng-click="propertiespanel.RunNew()">Run</button>
+                <button id="ButtonRun" type="button"
+                    ng-click="propertiespanel.RunNew(propertiespanel.original.id,propertiespanel.block)">Run</button>
             </div>
 
             <div id="loader" style="display: none;" ng-if="propertiespanel.original.name == 'Explanation Method'">
@@ -258,7 +259,14 @@
                                     ng-click="propertiespanel.UpdateProperties(key)"
                                     ng-mouseenter="propertiespanel.startTimeout(key,'substitute')"
                                     ng-mouseleave="propertiespanel.cancelTimeout(key,'substitute')">
-                                    <a><b>{{key}}</b><br><b>sim = </b> {{value}}</a>
+                                    <div class="progress">
+                                        <div class="progress-bar" ng-style="{ 'width': (value * 100) + '%' }">
+                                        </div>
+                                        <div>
+                                            <p class="progress-bar-text">{{(value * 100).toFixed(0)}}% {{key}}</p>
+                                        </div>
+                                    </div>
+
                                 </li>
 
                             </ul>

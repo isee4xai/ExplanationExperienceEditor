@@ -51,7 +51,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                     var dateTime = date + ' ' + time;
                     data.date = dateTime;
-
                     //save project in json server 
                     $http.get(SettingsAddres.httpAddresProjectsPath + path).success(function (dataJson) {
                         //update data on the server json if it already exists otherwise it is saved as a new json with a new id
@@ -383,7 +382,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                         resolve(response.data)
                     })
                     .catch((error) => {
-                        console.log(error);
                         resolve("Error execute Explanation Method ");
                     });
             } catch (e) {

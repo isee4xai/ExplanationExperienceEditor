@@ -35,7 +35,7 @@
         vm.UpdateProperties = UpdateProperties;
         vm.renameIntends = renameIntends;
         vm.change = change;
-        vm.Run = Run;
+        // vm.Run = Run;
         vm.PopUpImg = PopUpImg;
         vm.PopUpHtml = PopUpHtml;
         vm.PopUpImgClose = PopUpImgClose;
@@ -44,7 +44,7 @@
         vm.LoadImagen = LoadImagen;
         vm.LoadHtmlCode = LoadHtmlCode;
         vm.loadModel = loadModel;
-        //vm.helpClose = helpClose;
+
         //call Json
         vm.RunNew = RunNew;
         vm.isBase64Image = isBase64Image;
@@ -96,7 +96,7 @@
         vm.mostrarTexto = mostrarTexto;
         vm.LookDescriptionExplanation = LookDescriptionExplanation;
 
-        vm.filterSubitemClick=filterSubitemClick;
+        vm.filterSubitemClick = filterSubitemClick;
 
         if (vm.models.length === 0) {
             GetModels();
@@ -395,7 +395,7 @@
         }
 
 
-        function RunNew() {
+        function RunNew(NodeId, block) {
             var jsonParam = {};
 
             for (var i = 0; i < vm.ArrayParams.length; i++) {
@@ -429,13 +429,13 @@
                             case "image":
                                 var img = new Image();
                                 var base64 = x.explanation;
-                                vm.block.Image = "data:image/png;base64," + base64;
+                                block.Image = "data:image/png;base64," + base64;
                                 //Actualizar la imagen o cargar imagen
                                 var imagen = document.querySelector('#ImgExpl');
                                 if (imagen) {
-                                    imagen.src = vm.block.Image;
+                                    imagen.src = block.Image;
                                 }
-                                delete vm.block.Json;
+                                delete block.Json;
                                 break;
                             case "html":
                                 var existsButton = document.getElementById('ButtonPlotly');
@@ -464,22 +464,22 @@
                                     ImageElement.remove();
                                 }
 
-                                vm.block.Json = x;
-                                delete vm.block.Image;
+                                block.Json = x;
+                                delete block.Image;
 
                                 break;
                             case "dict":
                             case "text":
-                                vm.block.Json = {
+                                block.Json = {
                                     explanation: JSON.stringify(x.explanation, null, 4),
                                     type: x.type
                                 }
                                 var ElementTextArea = document.getElementById('TextArea');
                                 if (ElementTextArea) {
-                                    ElementTextArea.innerHTML = vm.block.Json.explanation;
+                                    ElementTextArea.innerHTML = block.Json.explanation;
                                 }
 
-                                delete vm.block.Image;
+                                delete block.Image;
                                 break;
 
                             default:
@@ -489,13 +489,16 @@
                         notificationService.success(
                             "The explainer ran successfully"
                         );
+                        //update Explanation
+                        var p = $window.editor.project.get();
+                        var t = p.trees.getSelected();
+                        var ExpBlock = t.blocks.get(NodeId);
+                        t.blocks.update(ExpBlock, block);
                     } else {
                         notificationService.error(
                             x
                         );
                     }
-
-                    update();
                 });
         }
 
@@ -538,48 +541,48 @@
                 return false;
             }
         }
-
-        function Run() {
-            var button = document.querySelector("#ButtonRun");
-            button.disabled = true;
-
-            var jsonParam = {};
-            for (var i = 0; i < vm.ArrayParams.length; i++) {
-                if (vm.ArrayParams[i].value != "") {
-                    jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
-                }
-            }
-
-            var params = JSON.stringify(jsonParam);
-
-            document.getElementById("loader").style.display = "block";
-
-            projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
-                .then(function (x) {
-                    document.getElementById("loader").style.display = "none";
-                    if (x.hasOwnProperty('plot_png')) {
-                        vm.block.Image = x.plot_png;
-                        delete vm.block.Json;
-                        delete vm.original.Json;
-                    } else {
-                        vm.block.Json = JSON.stringify(x);
-                        delete vm.block.Image;
-                        delete vm.original.Image;
+        /*
+                function Run() {
+                    var button = document.querySelector("#ButtonRun");
+                    button.disabled = true;
+        
+                    var jsonParam = {};
+                    for (var i = 0; i < vm.ArrayParams.length; i++) {
+                        if (vm.ArrayParams[i].value != "") {
+                            jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
+                        }
                     }
-                    notificationService.success(
-                        "Run completed"
-                    );
-                    button.disabled = false;
-                    update();
-                }, function () {
-                    document.getElementById("loader").style.display = "none";
-                    notificationService.error(
-                        'Run not completed '
-                    );
-                });
-
-        }
-
+        
+                    var params = JSON.stringify(jsonParam);
+        
+                    document.getElementById("loader").style.display = "block";
+        
+                    projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
+                        .then(function (x) {
+                            document.getElementById("loader").style.display = "none";
+                            if (x.hasOwnProperty('plot_png')) {
+                                vm.block.Image = x.plot_png;
+                                delete vm.block.Json;
+                                delete vm.original.Json;
+                            } else {
+                                vm.block.Json = JSON.stringify(x);
+                                delete vm.block.Image;
+                                delete vm.original.Image;
+                            }
+                            notificationService.success(
+                                "Run completed"
+                            );
+                            button.disabled = false;
+                            update();
+                        }, function () {
+                            document.getElementById("loader").style.display = "none";
+                            notificationService.error(
+                                'Run not completed '
+                            );
+                        });
+        
+                }
+        */
         function _getJsonProperties() {
             //Get the properties of the evaluate method
 
@@ -750,69 +753,84 @@
 
 
         function change() {
-
-            for (var keyParam in vm.block.params) {
-                if (vm.block.params.hasOwnProperty(keyParam)) {
-                    if (keyParam == "key" || keyParam == "value") {
-                        delete vm.block.params[keyParam];
-                    }
-                }
-            }
-            var params = [];
-            for (var i = 0; i < vm.ArrayParams.length; i++) {
-                var r = vm.ArrayParams[i];
-
-                if (!r.key) continue;
-
-                switch (r.type) {
-                    case "number":
-                        if (((r.range[0] > r.value || r.range[1] < r.value) && (r.range[0] != null || r.range[1] != null)) || (r.value == null && r.required == "true")) {
-                            notificationService.error(
-                                'Invalid parametro',
-                                (r.required == "true" && r.value == null) ? 'empty field.' :
-                                    (r.range[0] > r.value || r.range[1] < r.value) ? 'the field is not in the range minimum ' + r.range[0] + ' maximum ' + r.range[1] + '.' : ""
-
-                            );
-                            r.value = r.default;
-                        }
-                        break;
-                    case "text":
-                        if (r.value == null && r.required == "true") {
-                            notificationService.error(
-                                'Invalid parametro',
-                                'empty field.'
-                            );
-                        }
-                        if (r.default == "[ ]") {
-                            const myRegex = /^\[.*\]$/;
-                            const result = myRegex.test(r.value);
-                            if (!result) {
-                                r.value = r.default;
-                                notificationService.error(
-                                    'Invalid parametro',
-                                    'The parameter needs to be enclosed in square brackets [ ].'
-                                );
+            switch (vm.block.title) {
+                case "Explanation Method":
+                    for (var keyParam in vm.block.params) {
+                        if (vm.block.params.hasOwnProperty(keyParam)) {
+                            if (keyParam == "key" || keyParam == "value") {
+                                delete vm.block.params[keyParam];
                             }
                         }
+                    }
+                    var params = [];
+                    for (var i = 0; i < vm.ArrayParams.length; i++) {
+                        var r = vm.ArrayParams[i];
 
-                        break;
-                    default:
-                        break;
-                }
-                var jsonParam = {
-                    key: r.key,
-                    value: r.value,
-                    default: r.default,
-                    range: r.range,
-                    required: r.required,
-                    description: r.description,
-                    type: r.type,
-                }
-                if (!vm.block.params) {
-                    vm.block.params = {}; // si vm.block.params no está definido, se crea como un objeto vacío
-                }
-                vm.block.params[r.key] = jsonParam;
+                        if (!r.key) continue;
+
+                        switch (r.type) {
+                            case "number":
+                                if (((r.range[0] > r.value || r.range[1] < r.value) && (r.range[0] != null || r.range[1] != null)) || (r.value == null && r.required == "true")) {
+                                    notificationService.error(
+                                        'Invalid parametro',
+                                        (r.required == "true" && r.value == null) ? 'empty field.' :
+                                            (r.range[0] > r.value || r.range[1] < r.value) ? 'the field is not in the range minimum ' + r.range[0] + ' maximum ' + r.range[1] + '.' : ""
+
+                                    );
+                                    r.value = r.default;
+                                }
+                                break;
+                            case "text":
+                                if (r.value == null && r.required == "true") {
+                                    notificationService.error(
+                                        'Invalid parametro',
+                                        'empty field.'
+                                    );
+                                }
+                                if (r.default == "[ ]") {
+                                    const myRegex = /^\[.*\]$/;
+                                    const result = myRegex.test(r.value);
+                                    if (!result) {
+                                        r.value = r.default;
+                                        notificationService.error(
+                                            'Invalid parametro',
+                                            'The parameter needs to be enclosed in square brackets [ ].'
+                                        );
+                                    }
+                                }
+
+                                break;
+                            default:
+                                break;
+                        }
+                        var jsonParam = {
+                            key: r.key,
+                            value: r.value,
+                            default: r.default,
+                            range: r.range,
+                            required: r.required,
+                            description: r.description,
+                            type: r.type,
+                        }
+                        if (!vm.block.params) {
+                            vm.block.params = {}; // si vm.block.params no está definido, se crea como un objeto vacío
+                        }
+                        vm.block.params[r.key] = jsonParam;
+                    }
+                    break;
+                case "User Question":
+
+                    var jsonParam = {
+                        Question: vm.ArrayParams[0].value
+                    };
+
+                    vm.block.params = jsonParam;
+                    break;
+
+                default:
+                    break;
             }
+
             update();
         }
 
@@ -917,7 +935,7 @@
 
         function paramsExp(option) {
             var IdModel = "";
-  
+
             for (var i = 0; i < vm.original.parent.children.length; i++) {
                 if (vm.original.parent.children[i].category === "root") {
                     if (!vm.original.parent.children[i].hasOwnProperty("ModelRoot")) {
@@ -950,7 +968,7 @@
                         break;
                     case "string":
                         if (params[property].range != null) {
-                            Type = "select"                         
+                            Type = "select"
                         } else {
                             Type = "text"
                         }
@@ -965,8 +983,8 @@
                         Type = "text"
                         if (params[property].default == null) {
                             params[property].default = "[ ]";
-                        }else{
-                            if (Array.isArray(params[property].default)){
+                        } else {
+                            if (Array.isArray(params[property].default)) {
                                 Type = "checkbox"
                             }
                         }
@@ -998,16 +1016,16 @@
                 });
         }
 
-        function filterSubitemClick(data,title,$event) { 
+        function filterSubitemClick(data, title, $event) {
             if ($event.target.checked) {
-                 vm.block.params[title].value.push(data);
-            }else{
+                vm.block.params[title].value.push(data);
+            } else {
                 var indice = vm.block.params[title].value.indexOf(data);
                 if (indice !== -1) {
                     vm.block.params[title].value.splice(indice, 1);
                 }
             }
-           
+
         }
 
         function GetInfoParam(Param) {
@@ -1300,24 +1318,42 @@
 
             projectModel.RunNew(jsonObjectInstance, node.Instance)
                 .then(function (x) {
-                    if (x.type == "image") {
-                        var img = new Image();
-                        var base64 = x.explanation;
+                    switch (x.type) {
+                        case "image":
+                            var img = new Image();
+                            var base64 = x.explanation;
+                            ExpBlockEdit = {
+                                Image: "data:image/png;base64," + base64
+                            };
 
-                        ExpBlockEdit = {
-                            Image: "data:image/png;base64," + base64
-                        };
+                            delete ExpBlock.Json;
+                            delete ExpBlockEdit.Json;
+                            break;
+                        case "html":
+                            var existsButton = document.getElementById('ButtonPlotly');
 
-                        delete ExpBlock.Json;
-                        delete ExpBlockEdit.Json;
+                            ExpBlockEdit.Json = {
+                                explanation: x.explanation,
+                                type: x.type
+                            };
+                            delete ExpBlock.Image;
+                            delete ExpBlockEdit.Image;
 
-                    } else if (x.type == "html") {
+                            break;
+                        case "dict":
+                        case "text":
+                            ExpBlockEdit.Json = {
+                                explanation: JSON.stringify(x.explanation, null, 4),
+                                type: x.type
+                            }
 
-                        ExpBlockEdit = {
-                            Json: x.explanation
-                        };
-                        delete ExpBlock.Image;
-                        delete ExpBlockEdit.Image;
+                            delete ExpBlock.Image;
+                            delete ExpBlockEdit.Image;
+                            break;
+
+                        default:
+                            break;
+                            LoadHtmlCode();
                     }
                     t.blocks.update(ExpBlock, ExpBlockEdit);
                     //update();
@@ -1354,17 +1390,6 @@
             vm.RunBtString.push("Running Inverter || Id : " + node.id + " Name : " + node.Instance);
             return !(await runNode(node.firstChild.Id));
         }
-
-        //function helpClose() {
-        //var modal = document.getElementById("helpModal");
-        //var span = document.getElementById("closehelpButton");
-
-        // When the user clicks on <span> (x), close the modal
-        //span.onclick = function() {
-        //    modal.style.display = "none";
-        //};
-        //}
-
     }
 })();
 

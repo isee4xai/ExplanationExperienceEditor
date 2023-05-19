@@ -23,7 +23,7 @@
 
 
   ul,
-  ol {
+  ol { 
     list-style: none;
   }
 
@@ -59,7 +59,6 @@
   }
 
   .nav li ul li {
-    margin-left: 2px;
     position: relative;
     color: #fff;
     background-color: @color-light4;
@@ -374,6 +373,43 @@
 
   #btnSelecionar {
     background-color: #2c3e50;
+  }
+
+  //progress-bar
+  .progress {
+    position: relative;
+    height: 30px;
+    width: 228px;
+    margin-bottom: 3px;
+    padding-bottom: 0px;
+    background-color: @color-light4;
+  }
+
+  .progress-bar {
+    position: absolute;
+    height: 100%;
+    background:  @color-blue-dark ;
+    display: flex;
+    align-items: center;
+    transition: width 0.25s;
+    margin-right: 20px;
+  }
+
+  .progress-bar-text {
+    position: absolute;
+    margin-top: 7px;
+    font-size: 12px;
+    margin-left:  8px;
+    color: @color-light1 ;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .progress:hover {
+    background-color: @color-blue;
+    .progress-bar{
+      background-color: @color-blue;
+    }
   }
   
 }

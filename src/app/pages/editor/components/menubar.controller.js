@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 17/05/23";
+        vm.date = "version 31/03/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -75,6 +75,7 @@
         _create();
         _activate();
         $scope.$on('$destroy', _destroy);
+        
 
         function _activate() {
             if (vm.models != []) {
@@ -94,7 +95,51 @@
                 vm.explanation.forEach(element => {
                     try {
                         getParams(element)
-                            .then(function (x) {   
+                            .then(function (x) {
+
+                                vm.ListaPara = [];
+                                for (var property in params) {
+                                    var Type = "";
+                                    switch (params[property].type) {
+
+                                        case "float":
+                                        case "number":
+                                        case "int":
+                                            Type = "number"
+                                            break;
+                                        case "string":
+                                            if (params[property].range != null) {
+                                                Type = "select"
+                                            } else {
+                                                Type = "text"
+                                            }
+                                            break;
+                                        case "select":
+                                            Type = "select"
+                                            break;
+                                        case "array":
+                                            Type = "text"
+                                            if (params[property].default == null) {
+                                                params[property].default = "";
+                                            }
+                                            break;
+                                        default:
+                                            Type = "text"
+                                            break;
+                                    }
+
+                                    vm.ListaPara.push({
+                                        "key": property,
+                                        "value": params[property].value || params[property].default || null,
+                                        "default": params[property].default || null,
+                                        "range": params[property].range || [null, null],
+                                        "required": params[property].required || "false",
+                                        "type": Type,
+                                        "description": params[property].description || "",
+                                        fixed: false
+                                    });
+                                }
+
                                 var jsonParmsDefin = {};
                                 Object.keys(x).forEach(resultJson => {
                                     jsonParmsDefin[resultJson] = "";
@@ -315,7 +360,7 @@
         }
 
         function onRemoveInConns() {
-            var tree = _getTree();
+            var tree = _getTree(); 
             tree.edit.removeInConnections();
             return false;
         }
@@ -589,7 +634,6 @@
 
         function showHelp() {
             var modalHelp = document.getElementById("helpModal");
-            console.log('showhelp');
             modalHelp.style.display = "block";
             var spanHelp = document.getElementById("closehelpButton");
 
