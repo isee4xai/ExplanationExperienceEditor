@@ -753,7 +753,7 @@
 
 
         function change() {
-            switch (vm.block.title) {
+            switch (vm.original.name) {
                 case "Explanation Method":
                     for (var keyParam in vm.block.params) {
                         if (vm.block.params.hasOwnProperty(keyParam)) {
