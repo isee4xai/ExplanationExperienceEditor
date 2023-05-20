@@ -145,7 +145,6 @@
                         ModelGet.query = vm.original.query;
                     }
                 }
-
                 vm.block = {
                     title: vm.original.title,
                     description: vm.original.description,
@@ -158,7 +157,6 @@
                     Image: vm.original.Image,
                     Json: vm.original.Json
                 };
-
                 //  check if the property that is selected to define its values ​​in the properties component
                 //  is the explain method and the evaluate method or intends
                 switch (vm.original.name) {
@@ -191,7 +189,6 @@
                                 if (miDiv) {
                                     miDiv.remove();
                                 }
-
                                 miDivJson.innerHTML = null;
                             }
 
@@ -221,7 +218,6 @@
                     case "User Question":
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = null;
-
                         if (!vm.block.params.hasOwnProperty("Question")) {
                             vm.ArrayParams.push({ "key": "Question", "value": "", fixed: false });
                         } else {
@@ -229,7 +225,6 @@
                                 vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
                             }
                         }
-
                         break;
                     default:
                         vm.TitleName = null;
@@ -419,13 +414,6 @@
                 }
                 jsonObjectInstance.type = "dict"
             }
-
-            var padre = document.querySelector('.editor-page');
-
-
-            nuevoDiv.appendChild(nuevoSpan);
-            padre.appendChild(nuevoDiv);
-
 
             projectModel.RunNew(jsonObjectInstance, vm.original.title)
                 .then(function (x) {
@@ -898,22 +886,19 @@
 
             var divElement = document.createElement('div');
             divElement.style.position = 'fixed';
-            divElement.style.bottom = '0';
             divElement.style.left = '0';
             divElement.style.right = '0';
             divElement.style.width = '30px';
             divElement.style.height = '30px';
-            divElement.style.backgroundColor = 'red';
             divElement.style.borderRadius = '50%';
             divElement.style.cursor = 'pointer';
             divElement.style.marginRight = "250px";
             divElement.style.marginLeft = "255px";
             divElement.style.zIndex = '90';
-            divElement.style.bottom = (nuevoDiv.offsetHeight - 35) + 'px';
+            divElement.style.bottom = (nuevoDiv.offsetHeight - 5) + 'px';
             divElement.className = "mi.close";
-            divElement.style.border = '2px solid black';
-
-            divElement.innerHTML = '<span style="display:block; text-align:center; color:white; font-size:24px; line-height:25px;">X</span>';
+            //Insert icon 
+            divElement.innerHTML = '<i class="fa fa-times" aria-hidden="true" style="color: red; font-size: 30px;"></i>';
 
             padre.appendChild(divElement);
             divElement.addEventListener('click', function () {
