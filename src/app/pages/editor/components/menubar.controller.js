@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 31/03/23";
+        vm.date = "version 20/05/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -75,7 +75,7 @@
         _create();
         _activate();
         $scope.$on('$destroy', _destroy);
-        
+
 
         function _activate() {
             if (vm.models != []) {
@@ -96,11 +96,12 @@
                     try {
                         getParams(element)
                             .then(function (x) {
+                                var ArrayParams = [];
+                                for (var property in x) {
 
-                                vm.ListaPara = [];
-                                for (var property in params) {
+                                    var jsonParmsDefin = {};
                                     var Type = "";
-                                    switch (params[property].type) {
+                                    switch (x[property].type) {
 
                                         case "float":
                                         case "number":
@@ -108,7 +109,7 @@
                                             Type = "number"
                                             break;
                                         case "string":
-                                            if (params[property].range != null) {
+                                            if (x[property].range != null) {
                                                 Type = "select"
                                             } else {
                                                 Type = "text"
@@ -119,8 +120,8 @@
                                             break;
                                         case "array":
                                             Type = "text"
-                                            if (params[property].default == null) {
-                                                params[property].default = "";
+                                            if (x[property].default == null) {
+                                                x[property].default = "";
                                             }
                                             break;
                                         default:
@@ -128,23 +129,19 @@
                                             break;
                                     }
 
-                                    vm.ListaPara.push({
+                                    jsonParmsDefin = {
                                         "key": property,
-                                        "value": params[property].value || params[property].default || null,
-                                        "default": params[property].default || null,
-                                        "range": params[property].range || [null, null],
-                                        "required": params[property].required || "false",
+                                        "value": x[property].value || x[property].default || null,
+                                        "default": x[property].default || null,
+                                        "range": x[property].range || [null, null],
+                                        "required": x[property].required || "false",
                                         "type": Type,
-                                        "description": params[property].description || "",
+                                        "description": x[property].description || "",
                                         fixed: false
-                                    });
+                                    };
+                                    ArrayParams.push(jsonParmsDefin);
                                 }
-
-                                var jsonParmsDefin = {};
-                                Object.keys(x).forEach(resultJson => {
-                                    jsonParmsDefin[resultJson] = "";
-                                });
-                                vm.ListaPara[element] = jsonParmsDefin;
+                                vm.ListaPara[element] = ArrayParams;
                             });
                     } catch (error) {
                         console.log(error);
@@ -360,7 +357,7 @@
         }
 
         function onRemoveInConns() {
-            var tree = _getTree(); 
+            var tree = _getTree();
             tree.edit.removeInConnections();
             return false;
         }
@@ -546,32 +543,26 @@
         function PropertiesCreate(DataJson, NameNode) {
             //define properties a method of evaluation or explanation
             var json = null;
-            if (DataJson.properties != null) {
+            if (vm.ListaPara[DataJson] != null) {  
                 json = {};
-                DataJson.properties.forEach(element => {
-                    json[element.key] = element.value;
+                vm.ListaPara[DataJson].forEach(element => {
+                    json[element.key] =  tine.merge({}, element);
                 });
             }
 
-
             if (NameNode == "Explanation Method") {
-
                 var BlockConditions = {
                     title: DataJson.value || DataJson,
-                    properties: tine.merge({}, json),
+                    params:  json,
                     description: DataJson.description,
-                    params: vm.ListaPara[DataJson] || {}
                 };
             } else {
                 var BlockConditions = {
                     title: DataJson.value || DataJson,
-                    properties: tine.merge({}, json),
+                    params: json,
                     description: DataJson.description
                 };
             }
-
-
-
             return BlockConditions;
         }
 

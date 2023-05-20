@@ -225,7 +225,7 @@
                         if (!vm.block.params.hasOwnProperty("Question")) {
                             vm.ArrayParams.push({ "key": "Question", "value": "", fixed: false });
                         } else {
-                            for (var property in vm.block.params) {
+                            for (var property in vm.block.params) { 
                                 vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
                             }
                         }
@@ -235,7 +235,7 @@
                         vm.TitleName = null;
                         vm.TitleSelect = null;
                 }
-            } else {
+            } else { 
                 vm.original = false;
                 vm.block = false;
             }
@@ -373,7 +373,6 @@
                                 .sort((a, b) => b[1] - a[1])
                         ))[0];
                 }
-                console.log("aaa");
             }
 
 
@@ -387,7 +386,6 @@
             projectModel.GetInstanceModelSelect(vm.block.ModelRoot.idModel)
                 .then(function (x) {
                     //Tabular data
-                    //  const cadena = JSON.stringify(x.instance, null, 4); // 4 espacios de espacio
                     var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
                     miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
                 });
@@ -421,6 +419,13 @@
                 }
                 jsonObjectInstance.type = "dict"
             }
+
+            var padre = document.querySelector('.editor-page');
+
+
+            nuevoDiv.appendChild(nuevoSpan);
+            padre.appendChild(nuevoDiv);
+
 
             projectModel.RunNew(jsonObjectInstance, vm.original.title)
                 .then(function (x) {
