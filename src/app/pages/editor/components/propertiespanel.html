@@ -17,11 +17,10 @@
             </div>
 
             <div class="form-group">
-
                 <label for="title" ng-if="propertiespanel.original.category == 'root'">Intent</label>
                 <div class="property-title-container" ng-if="propertiespanel.original.category != 'root'">
                     <label for="title">Title</label>
-                    <a ng-if="propertiespanel.block.title != 'Explanation Method'">
+                    <a ng-if="propertiespanel.block.title != 'Explanation Method' && propertiespanel.original.name == 'Explanation Method'">
                         <i class="fa fa-info-circle" ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
                             ng-mouseenter="propertiespanel.startTimeout(propertiespanel.block.title,'title')"
                             ng-mouseleave="propertiespanel.cancelTimeout(propertiespanel.block.title,'title')">
