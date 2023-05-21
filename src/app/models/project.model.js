@@ -85,6 +85,7 @@
                     description: project.description,
                     path: project.path,
                     isOpen: true,
+                    id : project.id
                 };
                 recentCache.splice(0, 0, data);
             } else {
@@ -108,7 +109,6 @@
             return $q(function(resolve, reject) {
                 if (!recentCache) {
                     var data;
-
                     try {
                         data = storageService.load(recentPath);
                     } catch (e) {}
@@ -129,7 +129,8 @@
                     name: name,
                     description: '',
                     data: [],
-                    path: path
+                    path: path,
+                    id : ''
                 };
 
                 editorService.newProject();
@@ -197,7 +198,7 @@
                         .then(function(json) {
                             editorService.openProject(json.data);
                             _setProject(json);
-                            resolve(json.data);
+                            resolve(json);
                         });
                 } catch (e) {
                     reject(e);
@@ -369,8 +370,5 @@
 
             return project.data.trees[0];;
         }
-
-
-
     }
 })();

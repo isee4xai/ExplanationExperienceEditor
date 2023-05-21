@@ -15,7 +15,7 @@
             restrict: 'EA',
             replace: true,
             bindToController: true,
-            controller: 'KeyTableController',
+            controller: 'KeyTableController', 
             controllerAs: 'ProperParams',
             templateUrl: 'directives/ProperParams.html',
             link: link
@@ -72,7 +72,7 @@
             reader.onload = function (event) {
                 var base64 = event.target.result;
                 vm.model.img = base64;
-                delete vm.model.query; 
+                delete vm.model.query;
                 toggleImageDisplay(base64);
                 vm._onChange($scope);
                 $scope.$apply(); // actualizar el scope
@@ -88,7 +88,6 @@
         }
 
         function InstanceModeldefault(Instance, type) {
-            console.log(Instance);
             if (Instance) {
                 switch (type) {
                     case "dict":

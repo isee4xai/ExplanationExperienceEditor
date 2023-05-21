@@ -35,7 +35,6 @@
         vm.UpdateProperties = UpdateProperties;
         vm.renameIntends = renameIntends;
         vm.change = change;
-        // vm.Run = Run;
         vm.PopUpImg = PopUpImg;
         vm.PopUpHtml = PopUpHtml;
         vm.PopUpImgClose = PopUpImgClose;
@@ -44,7 +43,7 @@
         vm.LoadImagen = LoadImagen;
         vm.LoadHtmlCode = LoadHtmlCode;
         vm.loadModel = loadModel;
-
+        //vm.helpClose = helpClose;
         //call Json
         vm.RunNew = RunNew;
         vm.isBase64Image = isBase64Image;
@@ -138,8 +137,6 @@
                         idModel: vm.original.idModel
                     };
                     if (vm.original.img != undefined) {
-                        /* var file = new File([(vm.original.img)], "ImgModel.png", { type: "image/png" });
-                         ModelGet.img = file;*/
                         ModelGet.img = vm.original.img;
                     } else {
                         ModelGet.query = vm.original.query;
@@ -221,7 +218,7 @@
                         if (!vm.block.params.hasOwnProperty("Question")) {
                             vm.ArrayParams.push({ "key": "Question", "value": "", fixed: false });
                         } else {
-                            for (var property in vm.block.params) { 
+                            for (var property in vm.block.params) {
                                 vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
                             }
                         }
@@ -230,7 +227,7 @@
                         vm.TitleName = null;
                         vm.TitleSelect = null;
                 }
-            } else { 
+            } else {
                 vm.original = false;
                 vm.block = false;
             }
@@ -279,13 +276,15 @@
                         if (vm.original.Json.explanation.includes("Plotly.newPlot")) {
                             if (!existsButton) {
                                 var miDiv = document.getElementById('mi-div');
-                                var boton = document.createElement("button");
-                                boton.style.backgroundColor = '#0F4501';
-                                boton.innerHTML = "Visualize data";
-                                boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
-                                boton.setAttribute("id", "ButtonPlotly");
-                                miDiv.innerHTML = "";
-                                miDiv.appendChild(boton);
+                                if (miDiv) {
+                                    var boton = document.createElement("button");
+                                    boton.style.backgroundColor = '#0F4501';
+                                    boton.innerHTML = "Visualize data";
+                                    boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
+                                    boton.setAttribute("id", "ButtonPlotly");
+                                    miDiv.innerHTML = "";
+                                    miDiv.appendChild(boton);
+                                }
                             }
                         } else {
                             if (existsButton) {
@@ -534,48 +533,7 @@
                 return false;
             }
         }
-        /*
-                function Run() {
-                    var button = document.querySelector("#ButtonRun");
-                    button.disabled = true;
-        
-                    var jsonParam = {};
-                    for (var i = 0; i < vm.ArrayParams.length; i++) {
-                        if (vm.ArrayParams[i].value != "") {
-                            jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
-                        }
-                    }
-        
-                    var params = JSON.stringify(jsonParam);
-        
-                    document.getElementById("loader").style.display = "block";
-        
-                    projectModel.PostExplainerLibraries(vm.IdModel, params, vm.original.title)
-                        .then(function (x) {
-                            document.getElementById("loader").style.display = "none";
-                            if (x.hasOwnProperty('plot_png')) {
-                                vm.block.Image = x.plot_png;
-                                delete vm.block.Json;
-                                delete vm.original.Json;
-                            } else {
-                                vm.block.Json = JSON.stringify(x);
-                                delete vm.block.Image;
-                                delete vm.original.Image;
-                            }
-                            notificationService.success(
-                                "Run completed"
-                            );
-                            button.disabled = false;
-                            update();
-                        }, function () {
-                            document.getElementById("loader").style.display = "none";
-                            notificationService.error(
-                                'Run not completed '
-                            );
-                        });
-        
-                }
-        */
+       
         function _getJsonProperties() {
             //Get the properties of the evaluate method
 
@@ -886,6 +844,7 @@
 
             var divElement = document.createElement('div');
             divElement.style.position = 'fixed';
+
             divElement.style.left = '0';
             divElement.style.right = '0';
             divElement.style.width = '30px';

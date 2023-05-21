@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 20/05/23";
+        vm.date = "version 21/05/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -140,6 +140,7 @@
                                         fixed: false
                                     };
                                     ArrayParams.push(jsonParmsDefin);
+
                                 }
                                 vm.ListaPara[element] = ArrayParams;
                             });
@@ -543,12 +544,14 @@
         function PropertiesCreate(DataJson, NameNode) {
             //define properties a method of evaluation or explanation
             var json = null;
+
             if (vm.ListaPara[DataJson] != null) {  
                 json = {};
                 vm.ListaPara[DataJson].forEach(element => {
                     json[element.key] =  tine.merge({}, element);
                 });
             }
+          
 
             if (NameNode == "Explanation Method") {
                 var BlockConditions = {
@@ -563,6 +566,7 @@
                     description: DataJson.description
                 };
             }
+
             return BlockConditions;
         }
 

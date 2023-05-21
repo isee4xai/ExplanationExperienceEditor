@@ -13,7 +13,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     var SettingsAddres = load(settingsPath);
 
     var service = {
-        save: save,
+        save: save, 
         saveJson: saveJson,
         saveAsync: saveAsync,
         load: load,
