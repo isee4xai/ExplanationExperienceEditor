@@ -214,12 +214,16 @@
                         break;
                     case "User Question":
                         vm.TitleName = vm.original.name;
-                        vm.TitleSelect = null;
+                        vm.TitleSelect = null;            
                         if (!vm.block.params.hasOwnProperty("Question")) {
                             vm.ArrayParams.push({ "key": "Question", "value": "", fixed: false });
                         } else {
-                            for (var property in vm.block.params) {
-                                vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
+                            if (vm.block.params.Question.hasOwnProperty("key")) {
+                                vm.ArrayParams.push({ "key": "Question", "value": vm.block.params.Question.value, fixed: false });
+                            } else {
+                                for (var property in vm.block.params) {
+                                    vm.ArrayParams.push({ "key": property, "value": vm.block.params[property], fixed: false });
+                                }
                             }
                         }
                         break;
@@ -533,7 +537,7 @@
                 return false;
             }
         }
-       
+
         function _getJsonProperties() {
             //Get the properties of the evaluate method
 
