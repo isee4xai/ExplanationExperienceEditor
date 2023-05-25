@@ -214,7 +214,7 @@
                         break;
                     case "User Question":
                         vm.TitleName = vm.original.name;
-                        vm.TitleSelect = null;            
+                        vm.TitleSelect = null;
                         if (!vm.block.params.hasOwnProperty("Question")) {
                             vm.ArrayParams.push({ "key": "Question", "value": "", fixed: false });
                         } else {
@@ -394,6 +394,9 @@
         function RunNew(NodeId, block) {
             var jsonParam = {};
 
+            var loaderDiv = document.querySelector('#loader');
+            loaderDiv.style.display = 'block';
+
             for (var i = 0; i < vm.ArrayParams.length; i++) {
                 // if ((vm.ArrayParams[i].value != "" && vm.ArrayParams[i].value !== null) && vm.ArrayParams[i].value !== "[ ]") {
                 if (vm.ArrayParams[i].value !== null && vm.ArrayParams[i].value !== "[ ]") {
@@ -485,12 +488,14 @@
                         notificationService.success(
                             "The explainer ran successfully"
                         );
+                        loaderDiv.style.display = "none";
                         //update Explanation
                         var p = $window.editor.project.get();
                         var t = p.trees.getSelected();
                         var ExpBlock = t.blocks.get(NodeId);
                         t.blocks.update(ExpBlock, block);
                     } else {
+                        loaderDiv.style.display = "none";
                         notificationService.error(
                             x
                         );

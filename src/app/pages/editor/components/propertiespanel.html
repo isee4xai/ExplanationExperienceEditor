@@ -220,8 +220,12 @@
             </div>
 
             <div id="loader" style="display: none;" ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <div class="spinner"></div>
-                <div class="txt">loading 1 Explainer</div>
+                <div class="load" >
+                    <hr />
+                    <hr />
+                    <hr />
+                    <hr />
+                </div>
             </div>
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
@@ -239,9 +243,6 @@
                     ng-init="propertiespanel.LoadHtmlCode()"
                     ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
 
-                    <!-- <button id="ButtonPlotly" class="btn btn-success btn-xs pull-right ng-scope"
-                     style="background-color:#0F4501;" ng-if="propertiespanel.original.Json.type == 'html'">
-                     Visualize data</button>-->
                 </div>
 
             </div>
