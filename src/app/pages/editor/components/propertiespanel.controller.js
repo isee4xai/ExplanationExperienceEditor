@@ -1248,12 +1248,14 @@
             var ExpBlock = t.blocks.get(node.id);
 
             var jsonParam = {};
+            
+            CreateParams(ExpBlock.params);
+
             for (var i = 0; i < vm.ArrayParams.length; i++) {
-                if (vm.ArrayParams[i].value != "") {
+                if (vm.ArrayParams[i].value !== null && vm.ArrayParams[i].value !== "[ ]") {
                     jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
                 }
             }
-
 
             var jsonObjectInstance = {
                 id: vm.IdModel.idModel,
