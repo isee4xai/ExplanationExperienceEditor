@@ -56,13 +56,20 @@
   .nav li:hover>ul {
     display: block;
     background-color: @color-light4;
+    .first-model {
+      background-color: #34798D; /* Cambia el color como desees */
+    }
+    
+    .first-model:hover  {
+      background-color: @color-blue-light;
+    }
   }
 
   .nav li ul li {
     position: relative;
     color: #fff;
     background-color: @color-light4;
-
+    
   }
 
   .nav>li {
@@ -98,6 +105,17 @@
     border-radius: 2px;
     border: none;
     height: 100%;
+  }
+
+  #ButtonSubMore {
+    background-color: @color-light1 ;
+    color: @color-dark1 ;
+    width: 100%;
+    text-align: center;
+    border-radius: 2px;
+    border: none;
+    height: 100%;
+    margin-bottom: 5px;
   }
 
   #DivImg {
@@ -252,6 +270,7 @@
   .keyPropertiesTdParams {
     position: relative;
   }
+
   /*
   #loader {
     width: 100%;
@@ -310,6 +329,37 @@
   }
 
   //model 
+  .DivModel {
+    margin-bottom: 12px;
+    background-color: #555555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .DivModel label {
+    color: #222222;
+    font-weight: bold;
+    order: 1;
+    padding-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .DivModel button {
+    background-color: @color-green-light;
+    color: @color-light1;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    order: 2;
+    font-size: 11px;
+    margin-right: 4px;
+  }
+  .DivModel button:hover {
+    background-color: @color-green;
+  }
+
   #ButtonLoadFile {
     background-color: #2c3e50;
     color: #fff;
@@ -476,5 +526,89 @@
     75% {
       transform: translate(0, 160%)
     }
+  }
+
+  // form sub
+
+  .asterisk {
+    padding-top: 5px;
+    margin-right: 2px;
+    color: red;
+  }
+
+  .placeholder-text {
+    color: #999;
+  }
+
+  .checkbox-tree {}
+
+  .checkbox-tree label {
+    display: block;
+  }
+
+  .checkbox-tree i {
+    margin-right: 5px;
+  }
+
+  .checkbox-tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+
+  .checkbox-tree ul li {
+    margin-top: 5px;
+  }
+
+  .DivCheckboxFormSub {
+    display: flex;
+    vertical-align: middle;
+  }
+
+  .DivCheckboxFormSub i {
+    margin-right: 5px;
+    padding-top: 3px;
+  }
+
+  .titleSubForm {
+    margin-top: 12px;
+    margin-left: 10px;
+    color: @color-dark1;
+
+  }
+
+  .ulSelect {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .LiSelect {
+    margin-bottom: 5px;
+  }
+
+  .expandable {
+    cursor: pointer;
+  }
+
+
+
+  ul.collapsed>.LiSelect>.ulSelect {
+    display: none;
+  }
+
+  ul.expanded>.LiSelect>.ulSelect {
+    display: block;
+  }
+
+  .ulSelect .LiSelect {
+    margin-left: 0;
+  }
+
+  .ulSelect .LiSelect ul.ulSelect .LiSelect {
+    margin-left: 20px;
+  }
+
+  // boton subit
+  .button-container-right {
+    text-align: center;
   }
 }

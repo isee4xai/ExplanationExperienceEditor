@@ -20,7 +20,6 @@ b3e.editor.ProjectManager = function(editor) {
      */
     this.open = function(data) {
         this.close();
-
         var project = new b3e.project.Project(editor);
         editor.addChild(project);
         editor._project = project;
@@ -54,4 +53,5 @@ b3e.editor.ProjectManager = function(editor) {
             editor._project._applySettings(settings);
         }
     };
+
 };

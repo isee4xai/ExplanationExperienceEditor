@@ -13,7 +13,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     var SettingsAddres = load(settingsPath);
 
     var service = {
-        save: save, 
+        save: save,
         saveJson: saveJson,
         saveAsync: saveAsync,
         load: load,
@@ -23,7 +23,8 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         removeAsync: removeAsync,
         loadEvaluation: loadEvaluation,
         loadExplanationExp: loadExplanationExp,
-        loadModels: loadModels,
+        loadModelsPublic: loadModelsPublic,
+        loadModelsPrivate: loadModelsPrivate,
         PostModelIdLoadModel: PostModelIdLoadModel,
         loadExplainers: loadExplainers,
         loadExplainersSubstitute: loadExplainersSubstitute,
@@ -39,7 +40,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     function save(path, data) {
         storage.save(path, data);
-    } 
+    }
 
     function saveJson(path, data) {
         return $q(function (resolve, reject) {
@@ -54,6 +55,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                     //save project in json server 
                     $http.get(SettingsAddres.httpAddresProjectsPath + path).success(function (dataJson) {
                         //update data on the server json if it already exists otherwise it is saved as a new json with a new id
+
                         if (dataJson.length != 0) {
                             fetch(SettingsAddres.httpAddresProjects + '/' + dataJson[0].id, {
                                 method: 'PATCH',
@@ -269,16 +271,15 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
 
 
-    async function loadExplanationExp(method,IdModel) {
+    async function loadExplanationExp(method, IdModel) {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.httpAddresExplanations;
         //We set the method from which we want to take the params
-        if (IdModel =="") {
-            var method_url = method ; 
-        }else{
-            var method_url = method+"/"+IdModel;
+        if (IdModel == "") {
+            var method_url = method;
+        } else {
+            var method_url = method + "/" + IdModel;
         }
-
         return $q(function (resolve, reject) {
             try {
                 axios.get(server_url + method_url).then(function (response) {
@@ -290,19 +291,38 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         });
     }
 
-    async function loadModels() {
+    async function loadModelsPrivate(idModelUrl) {
+        //cambiar cuando me pasen la url
+        var server_url = SettingsAddres.httpAddresModels +"/alias/"+ idModelUrl;
+
+        return $q(function (resolve, reject) {
+            try {
+                axios.get(server_url).then(function (response) {
+                    resolve(response.data);
+                }, function (err) {
+                    resolve("Error in computer network communications");
+                });
+            } catch (e) {
+                reject(e);
+            }
+
+        });
+    }
+
+    async function loadModelsPublic() {
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.AddresModels;
         return $q(function (resolve, reject) {
             try {
                 axios.get(server_url).then(function (response) {
                     resolve(response.data);
+                }, function (err) {
+                    resolve("Error in computer network communications");
                 });
             } catch (e) {
                 reject(e);
             }
         });
-
     }
 
     function PostModelIdLoadModel(ModelId, Quey, Image) {

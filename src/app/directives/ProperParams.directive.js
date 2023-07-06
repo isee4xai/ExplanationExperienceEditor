@@ -211,6 +211,7 @@
                 });
         }
 
+
         function getQueryData(QueryId, ModelId, imagefile) {
 
             projectModel.getQueryImgTab(ModelId, QueryId, imagefile)

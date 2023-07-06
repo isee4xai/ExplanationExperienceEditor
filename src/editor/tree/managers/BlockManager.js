@@ -1,7 +1,9 @@
-b3e.tree.BlockManager = function(editor, project, tree) {
+b3e.tree.BlockManager = function (editor, project, tree) {
     "use strict";
 
-    this._move = function(block, x, y) {
+    var BlocksDelet = [];
+
+    this._move = function (block, x, y) {
         block.x = x;
         block.y = y;
         block._redraw();
@@ -15,10 +17,113 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         }
     };
 
+    this.addSub = function (block) {
+        var _old = [this, this.remove, [block]];
+        var _new = [this, this.add, block];
+        project.history._add(new b3e.Command(_old, _new));
+    }
+
+    /**
+     * Add multiple block.
+     * nodeSubRoot : node that you wanted to replace, contains a block
+     */
+    this.AddTreeBlockSub = function (sSub, nodelSubSelect, nodeSubRoot) {
+        sSub.forEach(element => {
+            switch (element.category) {
+                case "composite":
+                case "decorator":
+                    if (element.id == nodeSubRoot.id) {
+                    /*    var block = new b3e.Block(element);
+                        block._applySettings(editor._settings);
+                        block.x = element.x || 0;
+                        block.y = element.y || 0;
+                        block._snap();
+                        tree._blocks.addChild(block);
+
+                        editor.trigger('blockadded', block);
+
+                        var _old = [this, this.remove, [block]];
+                        var _new = [this, this.add, [block, block.x, block.y]];
+                        project.history._add(new b3e.Command(_old, _new));
+
+                        tree.connections.add(nodelSubSelect, block);
+*/
+                        var outBlock = this.get(element._outConnections);
+                        if (outBlock.length) {
+                            outBlock.forEach(elementConection => {
+                                this.ConectionBlockSub(elementConection._outBlock, nodelSubSelect);
+                            });
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    this.ConectionBlockSub = function (element, block) {
+        switch (element.category) {
+            case "composite":
+            case "decorator":
+                this.addCompositeOrDecorators(element, block);
+                break;
+            case "action":
+            case "condition":
+                this.addActionsOrConditions(element, block);
+                break;
+            default:
+                break;
+        }
+    }
+
+    this.addCompositeOrDecorators = function (element, blockFather) {
+        var block = new b3e.Block(element);
+        block._applySettings(editor._settings);
+        block.x = element.x || 0;
+        block.y = element.y || 0;
+        block._snap();
+        tree._blocks.addChild(block);
+
+        editor.trigger('blockadded', block);
+
+        var _old = [this, this.remove, [block]];
+        var _new = [this, this.add, [block, block.x, block.y]];
+        project.history._add(new b3e.Command(_old, _new));
+
+        tree.connections.add(blockFather, block);
+
+        var outBlock = this.get(element._outConnections);
+        if (outBlock.length) {
+            outBlock.forEach(elementConection => {
+                this.ConectionBlockSub(elementConection._outBlock, block);
+            });
+        }
+
+    }
+
+    this.addActionsOrConditions = function (element, blockFather) {
+        var block = new b3e.Block(element);
+        block._applySettings(editor._settings);
+        block.x = element.x || 0;
+        block.y = element.y || 0;
+        block._snap();
+        tree._blocks.addChild(block);
+
+        editor.trigger('blockadded', block);
+
+        var _old = [this, this.remove, [block]];
+        var _new = [this, this.add, [block, block.x, block.y]];
+        project.history._add(new b3e.Command(_old, _new));
+
+        tree.connections.add(blockFather, block);
+    }
+
+
     /**
      * Add a block.
      */
-    this.add = function(name, x, y) {
+    this.add = function (name, x, y) {
         // If name is a block
         var block;
         if (name instanceof b3e.Block) {
@@ -27,7 +132,6 @@ b3e.tree.BlockManager = function(editor, project, tree) {
             tree._blocks.addChild(block);
             editor.trigger('blockadded', block);
         }
-
         // Otherwise
         else {
             x = x || 0;
@@ -50,7 +154,6 @@ b3e.tree.BlockManager = function(editor, project, tree) {
 
             editor.trigger('blockadded', block);
         }
-
         var _old = [this, this.remove, [block]];
         var _new = [this, this.add, [block, block.x, block.y]];
         project.history._add(new b3e.Command(_old, _new));
@@ -58,7 +161,7 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         return block;
     };
 
-    this.get = function(block) {
+    this.get = function (block) {
         if (typeof block === 'string') {
             var blocks = tree._blocks.children;
             for (var i = 0; i < blocks.length; i++) {
@@ -71,7 +174,7 @@ b3e.tree.BlockManager = function(editor, project, tree) {
 
         return block;
     };
-    this.getUnderPoint = function(x, y) {
+    this.getUnderPoint = function (x, y) {
         if (!x || !y) {
             var point = tree.view.getLocalPoint();
             x = point.x;
@@ -87,7 +190,7 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         }
     };
 
-    this.getIntends = function(x) {
+    this.getIntends = function (x) {
         var blocks = this.getAll();
         for (var i = 0; i <= blocks.length - 1; i++) {
             var block = blocks[i];
@@ -98,16 +201,16 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         }
     };
 
-    this.getSelected = function() {
+    this.getSelected = function () {
         return tree._selectedBlocks.slice();
     };
-    this.getAll = function() {
+    this.getAll = function () {
         return tree._blocks.children;
     };
-    this.getRoot = function() {
+    this.getRoot = function () {
         return tree._root;
     };
-    this.update = function(block, template, merge) {
+    this.update = function (block, template, merge) {
         var mustSave = !!template;
         var _oldValues = {
             name: block.name,
@@ -229,7 +332,52 @@ b3e.tree.BlockManager = function(editor, project, tree) {
 
         editor.trigger('blockchanged', block);
     };
-    this.remove = function(block) {
+
+    this.removeMutilple = function (BlockDelete,firstNode) {
+        if (firstNode == true && BlocksDelet != []) {
+            BlocksDelet = [];
+        }
+
+        for (let index = 0; index < BlockDelete.length; index++) {
+            BlocksDelet.push(this.removeCategorty( BlockDelete[index]._outBlock));
+        }
+
+        if (firstNode == true && BlocksDelet != []) {
+            BlocksDelet.forEach(element => {
+                
+                if (element._inConnection) {
+                    tree.connections.remove(element._inConnection);
+                }
+        
+                if (element._outConnections.length > 0) {
+                    for (var i = element._outConnections.length - 1; i >= 0; i--) {
+                        tree.connections.remove(element._outConnections[i]);
+                    }
+                }
+                this.remove(element);
+            });
+        }
+    }
+
+    this.removeCategorty = function (block) {
+        switch (block.category) {
+            case "action":
+            case "condition":
+                return block;
+                break;
+            case "composite":
+            case "decorator":
+                this.removeMutilple(block._outConnections,false);
+                return block;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
+    this.remove = function (block) {
         project.history._beginBatch();
         tree._blocks.removeChild(block);
 
@@ -254,7 +402,7 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         project.history._endBatch();
         editor.trigger('blockremoved', block);
     };
-    this.cut = function(block) {
+    this.cut = function (block) {
         project.history._beginBatch();
         tree._blocks.removeChild(block);
 
@@ -283,12 +431,12 @@ b3e.tree.BlockManager = function(editor, project, tree) {
         editor.trigger('blockremoved', block);
         project.history._endBatch();
     };
-    this.each = function(callback, thisarg) {
+    this.each = function (callback, thisarg) {
         tree._blocks.children.forEach(callback, thisarg);
     };
 
-    this._applySettings = function(settings) {
-        this.each(function(block) {
+    this._applySettings = function (settings) {
+        this.each(function (block) {
             block._applySettings(settings);
         });
     };

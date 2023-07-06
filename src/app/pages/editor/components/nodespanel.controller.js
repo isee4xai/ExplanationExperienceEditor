@@ -113,7 +113,6 @@
         }
 
         function ViewProperties() {
-
             var project = editor.project.get();
             var tree = project.trees.getSelected();
 

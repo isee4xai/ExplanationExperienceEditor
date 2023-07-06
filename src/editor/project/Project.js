@@ -21,6 +21,7 @@
     var p = createjs.extend(Project, createjs.Container);
 
     p._initialize = function() {
+
         this.trees = new b3e.project.TreeManager(this._editor, this);
         this.nodes = new b3e.project.NodeManager(this._editor, this);
         this.history = new b3e.project.HistoryManager(this._editor, this);

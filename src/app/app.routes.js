@@ -2,22 +2,9 @@ angular.module('app')
 
     .config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
-
+            
             $stateProvider
                 //id
-                /*
-                .state('vid', {
-                    url: "/vid",
-                    templateUrl: 'pages/editor/editor-ro.html',
-                    controller: 'EditorController',
-                    controllerAs: 'editor',
-                })
-                .state('vid.id', {
-                    url: "/:vid",
-                    templateUrl: 'pages/editor/editor-ro.html',
-                    controller: 'EditorController',
-                    controllerAs: 'editor',
-                })*/
                 .state('vid', {
                     url: "/vid/{vid}",
                     templateUrl: 'pages/editor/editor-ro.html',
@@ -30,20 +17,6 @@ angular.module('app')
                     controller: 'EditorController',
                     controllerAs: 'editor'
                 })
-                /*
-                .state('id', {
-                    url: "/id",
-                    templateUrl: 'pages/editor/editor.html',
-                    controller: 'EditorController',
-                    controllerAs: 'editor',
-                })
-                .state('id.id', {
-                    url: "/:vid",
-                    templateUrl: 'pages/editor/editor.html',
-                    controller: 'EditorController',
-                    controllerAs: 'editor',
-                })
-                */
                 .state('id.editnode', {
                     url: "/node/:name",
                     templateUrl: 'pages/id/modals/editnode.html',
@@ -61,13 +34,13 @@ angular.module('app')
                     templateUrl: 'pages/editor/modals/import.html',
                     controller: 'ImportController',
                     controllerAs: 'import',
-                })
+                })/*
                 .state('id.error', {
                     url: "/error",
                     templateUrl: 'pages/error/error.html',
                     controller: 'ErrorController',
                     controllerAs: 'error',
-                })
+                })*/
 
                 // Dash
                 .state('dash', {
@@ -121,6 +94,32 @@ angular.module('app')
                     controller: 'ImportController',
                     controllerAs: 'import',
                 })
+                //Id Model
+                .state('idModel', {
+                    url: "/id/{vid}/modelid/{mid}",
+                    templateUrl: 'pages/editor/editor.html',
+                    controller: 'EditorController',
+                    controllerAs: 'editor'
+                })
+                .state('idModel.editnode', {
+                    url: "/node/:name",
+                    templateUrl: 'pages/id/modals/editnode.html',
+                    controller: 'EditNodeController',
+                    controllerAs: 'editnode',
+                })
+                .state('idModel.export', {
+                    url: "/export/:type/:format",
+                    templateUrl: 'pages/editor/modals/export.html',
+                    controller: 'ExportController',
+                    controllerAs: 'export',
+                })
+                .state('idModel.import', {
+                    url: "/import/:type/:format",
+                    templateUrl: 'pages/editor/modals/import.html',
+                    controller: 'ImportController',
+                    controllerAs: 'import',
+                })
+
 
                 .state('view', {
                     url: "/view",

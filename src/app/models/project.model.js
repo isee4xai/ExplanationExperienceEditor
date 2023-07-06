@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -11,7 +11,7 @@
         '$window',
         'storageService',
         'systemService',
-        'localStorageService', 
+        'localStorageService',
         'editorService'
     ];
 
@@ -39,17 +39,18 @@
             removeProject: removeProject,
             getConditionsEvaluationMethod: getConditionsEvaluationMethod,
             getConditionsEvaluationEXP: getConditionsEvaluationEXP,
-            getModelsRoot: getModelsRoot,
+            getModelsRootPublic: getModelsRootPublic,
+            getModelsRootPrivate: getModelsRootPrivate,
             PostModelId: PostModelId,
             getExplainers: getExplainers,
-            getExplainersSubstitute : getExplainersSubstitute ,
+            getExplainersSubstitute: getExplainersSubstitute,
             getQueryImgTab: getQueryImgTab,
             PostExplainerLibraries: PostExplainerLibraries,
             runBT: runBT,
             RunNew: RunNew,
-            GetSimNL:GetSimNL,
-            GetDesciptionExplainer:GetDesciptionExplainer,
-            UpdateJsonQuey:UpdateJsonQuey,
+            GetSimNL: GetSimNL,
+            GetDesciptionExplainer: GetDesciptionExplainer,
+            UpdateJsonQuey: UpdateJsonQuey,
             GetInstanceModelSelect
         };
         return service;
@@ -59,8 +60,8 @@
             storageService.save(recentPath, recentCache);
         }
 
-        function RunNew(Json,ExplainerSelect) {
-            return $q(function(resolve, reject) {
+        function RunNew(Json, ExplainerSelect) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.PostExplainerNew(Json, ExplainerSelect);
                     resolve(data);
@@ -85,7 +86,7 @@
                     description: project.description,
                     path: project.path,
                     isOpen: true,
-                    id : project.id
+                    id: project.id
                 };
                 recentCache.splice(0, 0, data);
             } else {
@@ -106,14 +107,14 @@
         }
 
         function getRecentProjects() {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 if (!recentCache) {
                     var data;
                     try {
                         data = storageService.load(recentPath);
-                    } catch (e) {}
+                    } catch (e) { }
 
-                    if (!data) { 
+                    if (!data) {
                         data = [];
                     }
 
@@ -124,19 +125,19 @@
         }
 
         function newProject(path, name) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 var project = {
                     name: name,
                     description: '',
                     data: [],
                     path: path,
-                    id : ''
+                    id: ''
                 };
 
                 editorService.newProject();
                 project.data = editorService.exportProject();
                 saveProject(project)
-                    .then(function() {
+                    .then(function () {
                         _setProject(project);
                         resolve();
                     });
@@ -151,22 +152,22 @@
             project = project || currentProject;
             project.data = editorService.exportProject();
             // view project
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 $window.editor.clearDirty();
                 //save 
-                var data =storageService.saveJson(project.path, project);
+                var data = storageService.saveJson(project.path, project);
                 storageService.save(project.path, project);
                 _setProject(project);
                 _updateRecentProjects(project);
                 resolve(data);
             });
         }
-      
-        async function UpdateJsonQuey(QueryText,Img64) {
-            return $q(function(resolve, reject) {
+
+        async function UpdateJsonQuey(QueryText, Img64) {
+            return $q(function (resolve, reject) {
                 try {
                     $window.editor.clearDirty();
-                    var respuesta = storageService.UpdateJsonQueyStorage(currentProject.path,QueryText,Img64);
+                    var respuesta = storageService.UpdateJsonQueyStorage(currentProject.path, QueryText, Img64);
                     _setProject(currentProject);
                     _updateRecentProjects(currentProject);
                     resolve(respuesta);
@@ -175,10 +176,10 @@
                 }
             });
         }
-    
+
 
         function openProject(path) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     var project = storageService.load(path);
                     editorService.openProject(project.data);
@@ -191,11 +192,11 @@
         }
 
         function openProjectId(id) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     storageService
                         .loadProjectId(id)
-                        .then(function(json) {
+                        .then(function (json) {
                             editorService.openProject(json.data);
                             _setProject(json);
                             resolve(json);
@@ -207,7 +208,7 @@
         }
 
         function closeProject() {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 $window.editor.clearDirty();
                 editorService.closeProject();
                 _setProject(null);
@@ -216,7 +217,7 @@
         }
 
         function removeProject(path) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 for (var i = 0; i < recentCache.length; i++) {
                     if (recentCache[i].path === path) {
                         recentCache.splice(i, 1);
@@ -230,7 +231,7 @@
         }
 
         function getConditionsEvaluationMethod() {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     //var data = storageService.loadEvaluation();
                     //resolve(data);
@@ -241,12 +242,11 @@
                 }
             });
         }
- 
-        async function getConditionsEvaluationEXP(x,IdModel) {
-            
-            return $q(function(resolve, reject) {
+
+        async function getConditionsEvaluationEXP(x, IdModel) {
+            return $q(function (resolve, reject) {
                 try {
-                    var data = storageService.loadExplanationExp(x,IdModel);
+                    var data = storageService.loadExplanationExp(x, IdModel);
                     resolve(data);
                 } catch (e) {
                     reject(e);
@@ -255,7 +255,7 @@
         }
 
         function getExplainers() {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.loadExplainers();
                     resolve(data);
@@ -263,10 +263,10 @@
                     reject(e);
                 }
             });
-        } 
+        }
 
         async function GetDesciptionExplainer(explainerTitle) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.GetDesciptionExplainerStorage(explainerTitle);
                     resolve(data);
@@ -277,19 +277,19 @@
         }
 
         async function getExplainersSubstitute() {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.loadExplainersSubstitute();
-                    resolve(data); 
+                    resolve(data);
                 } catch (e) {
                     reject(e);
                 }
             });
-        } 
+        }
 
         async function GetSimNL(SubNameChange) {
- 
-            return $q(function(resolve, reject) {
+
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.GetSimNLStorage(SubNameChange);
                     resolve(data);
@@ -299,28 +299,44 @@
             });
         }
 
-
-        function getModelsRoot() {
-             return $q(function(resolve, reject) {
+        function getModelsRootPrivate(idModelUrl) {
+            return $q(function (resolve, reject) {
                 try {
-                    const promise = Promise.resolve(storageService.loadModels());
-
+                    const promise = Promise.resolve(storageService.loadModelsPrivate(idModelUrl));
                     promise
-                      .then((value) => {
-                       resolve(value);
-                      })
-                      .catch((err) => {
-                        console.log(err); 
-                      });
-                
-              } catch (e) {
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+        function getModelsRootPublic() {
+            return $q(function (resolve, reject) {
+                try {
+                    const promise = Promise.resolve(storageService.loadModelsPublic());
+                    promise
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                } catch (e) {
                     reject(e);
                 }
             });
         }
 
         function PostModelId(ModelId, Quey, Image) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.PostModelIdLoadModel(ModelId, Quey, Image);
                     resolve(data);
@@ -330,8 +346,8 @@
             });
         }
 
-         function GetInstanceModelSelect(ModelId) {
-            return $q(function(resolve, reject) {
+        function GetInstanceModelSelect(ModelId) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.GetInstanceModelSelectStorage(ModelId);
                     resolve(data);
@@ -343,7 +359,7 @@
 
 
         function getQueryImgTab(IdModel, Quey_id, imagefile) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.GetQuery(IdModel, Quey_id, imagefile);
                     resolve(data);
@@ -354,7 +370,7 @@
         }
 
         function PostExplainerLibraries(Model, Params, Instance) {
-            return $q(function(resolve, reject) {
+            return $q(function (resolve, reject) {
                 try {
                     var data = storageService.PostExplainers(Model, Params, Instance);
                     resolve(data);
@@ -370,5 +386,8 @@
 
             return project.data.trees[0];;
         }
+
+
+
     }
 })();

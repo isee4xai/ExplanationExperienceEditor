@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -28,6 +28,7 @@
         vm.open = open;
         vm.loadFromFile = loadFromFile;
         vm.data = '';
+        vm.loadArchive = loadArchive;
 
         _active();
 
@@ -39,19 +40,42 @@
         function loadFromFile() {
             dialogService
                 .openFile(false, ['.b3', '.json'])
-                .then(function(path) {
+                .then(function (path) {
                     storageService
                         .loadAsync(path)
-                        .then(function(data) {
-                            vm.data = JSON3.stringify(data, null, 2);
+                        .then(function (data) {
+                            vm.data = JSON.stringify(data, null, 2);
                         });
                 });
         }
 
+        function loadArchive() {
+            var inputElement = document.createElement('input');
+            inputElement.type = 'file';
+            inputElement.accept = '.b3,.json';
+
+            inputElement.addEventListener('change', function (event) {
+                var file = event.target.files[0];
+
+                if (file) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var content = e.target.result;  
+                        vm.data = content;
+                    };
+
+                    reader.readAsText(file);
+                }
+            });
+
+            inputElement.click();
+        }
+
         function open() {
             var i = $window.editor.import;
-
-            var data = JSON3.parse(vm.data);
+            console.log(vm.data);
+            var data = JSON.parse(vm.data);
 
             try {
                 if (vm.type === 'project' && vm.format === 'json') {

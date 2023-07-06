@@ -24,7 +24,7 @@
         max_history: 100,
 
         // COLORS
-        background_color: '#f0f2f5',
+        background_color: '#171717',
         selection_color: '#FFFFFF',
         block_border_color: '#6D6D6D',
         block_symbol_color: '#333333',
@@ -67,18 +67,6 @@
         httpAddresExplanations: "https://explainers-dev.isee4xai.com/",
         httpAddresEvaluationsAndProject: "https://api-dev.isee4xai.com/api/trees/",
 
-        /*
-        httpAddresEvaluation: httpAddresEvaluationsAndProject + "Evaluation",
-        httpAddresProjects: httpAddresEvaluationsAndProject + "Projects",
-        httpAddresProjectsPath: httpAddresEvaluationsAndProject + "Projects?path=",
-
-        //ADDRESS - Explanation
-        AddresExplainers: httpAddresExplanations + "Explainers",
-
-        //ADDRESS - Models
-        AddresModels: httpAddresModels + "model_list",
-        AddresQuery: httpAddresModels + "query"
-        */
     };
 
     //ADDRESS - Evaluations And Project

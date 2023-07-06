@@ -20,15 +20,14 @@
                 <label for="title" ng-if="propertiespanel.original.category == 'root'">Intent</label>
                 <div class="property-title-container" ng-if="propertiespanel.original.category != 'root'">
                     <label for="title">Title</label>
-                    <a ng-if="propertiespanel.block.title != 'Explanation Method' && propertiespanel.original.name == 'Explanation Method'">
+                    <a
+                        ng-if="propertiespanel.block.title != 'Explanation Method' && propertiespanel.original.name == 'Explanation Method'">
                         <i class="fa fa-info-circle" ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
                             ng-mouseenter="propertiespanel.startTimeout(propertiespanel.block.title,'title')"
                             ng-mouseleave="propertiespanel.cancelTimeout(propertiespanel.block.title,'title')">
                         </i>
                     </a>
-
                 </div>
-
                 <div id="header" ng-if="propertiespanel.TitleName">
                     <ul class="nav">
                         <li ng-if="propertiespanel.original.category != 'root'"><a
@@ -101,8 +100,18 @@
                 </b3-key-table-Expl>
             </div>
 
+            <div class="form-group" ng-show="propertiespanel.original.category == 'composite'">
+                <button id="ButtonSubMore" type="button" ng-click="propertiespanel.FormSubstitute()"> More like this
+                    but...?</button>
+                <button id="ButtonSubMore" type="button"
+                    ng-click="propertiespanel.SubstituteNodes(propertiespanel.original)">More like this?</button>
+            </div>
+
             <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
-                <div class="title">Model</div>
+                <div class="DivModel">
+                    <label>Model</label>
+                    <button ng-click="propertiespanel.GetModelsPublic()">Load Public Models</button>
+                </div>
 
                 <div class="form-group">
                     <div id="header">
@@ -113,7 +122,8 @@
                                 <ul>
                                     <li ng-repeat="Model in propertiespanel.models"
                                         ng-click="propertiespanel.SelectModel(Model)">
-                                        <a>{{Model}}</a>
+                                        <a
+                                            ng-class="{'first-model': Model ===  propertiespanel.models[propertiespanel.idModelUrl] }">{{Model}}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -121,7 +131,6 @@
                         </ul>
                     </div>
                 </div>
-
 
                 <b3-Proper-Params id="b3-Proper-Params" heading="Params EXP" ng-model="propertiespanel.block.ModelRoot"
                     ng-change="propertiespanel.update()" class="no-border">
@@ -220,13 +229,14 @@
             </div>
 
             <div id="loader" style="display: none;" ng-if="propertiespanel.original.name == 'Explanation Method'">
-                <div class="load" >
+                <div class="load">
                     <hr />
                     <hr />
                     <hr />
                     <hr />
                 </div>
             </div>
+
 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <div id="TextAreaEpl" class="form-group"
@@ -274,7 +284,10 @@
                     </ul>
                 </div>
             </div>
-
+            <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
+                <button id="ButtonSubMore" type="button" ng-click="propertiespanel.FormSubstitute()">More like
+                    this?</button>
+            </div>
 
 
             <div id="myModal" class="modal">
@@ -298,23 +311,470 @@
                 <div id="caption"></div>
             </div>
 
+            <div id="SubstituteNodesview" class="modal">
+                <div id="contenedor-help" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
 
-            <div id="videoModal" class="modal">
-                <div id="contenedor-video" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
-                    <div id="video-modal-content" style="width: 100%;padding: 10px;" class="modal-content">
-                        <h1>Video Tutorial</h1>
+                    <canvas id="myCanvas" width="1500" height="1500" tabindex="0"
+                        style="background-color: rgb(23, 23, 23); outline: none;" b3-drop-node="true">
 
-                        <video id="videoTutorial" width="100%" controls volume="1">
-                            <source src="imgs/tutorial.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
+                    </canvas>
+                    <div id="modal-content-help" style="width: 100%;padding: 10px;" class="modal-content">
 
-                        <span id="closeVideoButton" style="color: #000;" class="close">&times;</span>
+                        <img id="ImagenCanvas" src="" alt="">
+
+                    </div>
+                    <span id="closeFormButton" style="color: #000;" class="close">&times;</span>
+                </div>
+            </div>
+
+            <!-- form  Explainer requirements-->
+            <div id="formSubstitute" class="modal">
+                <div id="contenedor-help" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
+                    <div id="modal-content-help" style="width: 100%;padding: 10px;" class="modal-content">
+                        <h1 id="iseee3-user-help">Explainer requirements</h1>
+
+                        <table class="keytable">
+                            <tbody>
+                                <tr ng-repeat="item in propertiespanel.ArrayParams">
+
+                                    <form action="">
+                                        <div ng-show="propertiespanel.original.category == 'composite'">
+                                            <h4 class="titleSubForm"> <span class="asterisk">*</span>
+                                                Explainer</h4>
+
+                                            <accordion>
+                                                <accordion-group is-open="propertiespanel.explainerAccordionOpen">
+                                                    <accordion-heading>
+                                                        <span class="placeholder-text"
+                                                            ng-show="propertiespanel.ExplainersSubSelect.length == 0"
+                                                            class="placeholder-text">
+                                                            Select Explainer
+                                                        </span>
+                                                        <span ng-show="propertiespanel.ExplainersSubSelect.length != 0"
+                                                            class="selected-formats">
+                                                            {{propertiespanel.ExplainersSubSelect}}
+                                                        </span>
+                                                    </accordion-heading>
+                                                    <div>
+                                                        <ul class="ulSelect">
+                                                            <li class="LiSelect"
+                                                                ng-repeat="option in propertiespanel.ExplainersSub">
+                                                                <a
+                                                                    ng-click="propertiespanel.toggleSelect('Explainer',option)">
+                                                                    {{ option }}
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </accordion-group>
+                                            </accordion>
+                                        </div>
+
+
+
+
+                                        <h4 class="titleSubForm"> <span class="asterisk">*</span> Explainability
+                                            Technique</h4>
+                                        <accordion>
+                                            <accordion-group>
+                                                <accordion-heading>
+                                                    <span class="placeholder-text"
+                                                        ng-show="propertiespanel.ExplainabilityTechniqueSubSelect.length == 0"
+                                                        class="placeholder-text">
+                                                        Pick or Search Explainability
+                                                    </span>
+                                                    <span
+                                                        ng-show="propertiespanel.ExplainabilityTechniqueSubSelect.length != 0"
+                                                        class="selected-formats">
+                                                        {{propertiespanel.ExplainabilityTechniqueSubSelect.label}}
+                                                    </span>
+                                                </accordion-heading>
+                                                <div>
+                                                    <ul class="ulSelect">
+                                                        <li class="LiSelect"
+                                                            ng-repeat="option in propertiespanel.ExplainabilityTechniqueSub"
+                                                            ng-init="option.collapsed = true">
+                                                            <i ng-click="propertiespanel.toggle(option)"
+                                                                ng-if="option.children.length > 0" class="fas"
+                                                                ng-class="{'fa-caret-down': !option.collapsed, 'fa-caret-right': option.collapsed}"></i>
+                                                            <a ng-click="propertiespanel.toggleSelect('Explainability Technique',option)"
+                                                                ng-class="{'expandable': option.children.length > 0, 'collapsed': option.collapsed}">
+                                                                {{ option.label }}
+                                                            </a>
+                                                            <ul class="ulSelect" ng-show="!option.collapsed">
+                                                                <li class="LiSelect"
+                                                                    ng-repeat="child in option.children"
+                                                                    ng-init="child.collapsed = true">
+
+                                                                    <i ng-click="propertiespanel.toggle(child)"
+                                                                        ng-if="child.children.length > 0" class="fas"
+                                                                        ng-class="{'fa-caret-down': !child.collapsed, 'fa-caret-right': child.collapsed}"></i>
+                                                                    <a ng-click="propertiespanel.toggleSelect('Explainability Technique',child)"
+                                                                        ng-class="{'expandable': child.children.length > 0, 'collapsed': child.collapsed}">
+                                                                        {{ child.label }}
+                                                                    </a>
+                                                                    <ul class="ulSelect" ng-show="!child.collapsed">
+                                                                        <li class="LiSelect"
+                                                                            ng-repeat="grandchild in child.children">
+
+                                                                            <a ng-click="propertiespanel.toggleSelect('Explainability Technique',grandchild)"
+                                                                                ng-class="{'expandable': child.children.length > 0, 'collapsed': child.collapsed}">
+                                                                                {{ grandchild.label }}
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
+                                        <h4 class="titleSubForm"> <span class="asterisk">*</span>
+                                            Explanation Type</h4>
+
+                                        <accordion>
+                                            <accordion-group>
+                                                <accordion-heading>
+                                                    <span class="placeholder-text"
+                                                        ng-show="propertiespanel.ExplanationTypeSubSelect.length == 0"
+                                                        class="placeholder-text">
+                                                        Pick or Search Explainability Type
+                                                    </span>
+                                                    <span ng-show="propertiespanel.ExplanationTypeSubSelect.length != 0"
+                                                        class="selected-formats">
+                                                        {{propertiespanel.ExplanationTypeSubSelect.label}}
+                                                    </span>
+                                                </accordion-heading>
+                                                <div>
+                                                    <ul class="ulSelect">
+                                                        <li class="LiSelect"
+                                                            ng-repeat="option in propertiespanel.ExplanationTypeSub"
+                                                            ng-init="option.collapsed = true">
+                                                            <i ng-click="propertiespanel.toggle(option)"
+                                                                ng-if="option.children.length > 0" class="fas"
+                                                                ng-class="{'fa-caret-down': !option.collapsed, 'fa-caret-right': option.collapsed}"></i>
+                                                            <a ng-click="propertiespanel.toggleSelect('Explanation Type',option)"
+                                                                ng-class="{'expandable': option.children.length > 0, 'collapsed': option.collapsed}">
+                                                                {{ option.label }}
+                                                            </a>
+                                                            <ul class="ulSelect" ng-show="!option.collapsed">
+                                                                <li class="LiSelect"
+                                                                    ng-repeat="child in option.children"
+                                                                    ng-init="child.collapsed = true">
+
+                                                                    <i ng-click="propertiespanel.toggle(child)"
+                                                                        ng-if="child.children.length > 0" class="fas"
+                                                                        ng-class="{'fa-caret-down': !child.collapsed, 'fa-caret-right': child.collapsed}"></i>
+                                                                    <a ng-click="propertiespanel.toggleSelect('Explanation Type',child)"
+                                                                        ng-class="{'expandable': child.children.length > 0, 'collapsed': child.collapsed}">
+                                                                        {{ child.label }}
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
+
+                                        <h4 class="titleSubForm"> <span class="asterisk">*</span>
+                                            Explainer Concurrentness</h4>
+                                        <accordion>
+                                            <accordion-group
+                                                is-open="propertiespanel.ExplainerConcurrentnessAccordionOpen">
+                                                <accordion-heading>
+                                                    <span class="placeholder-text"
+                                                        ng-show="propertiespanel.ExplainerConcurrentnessSubSelect.length == 0"
+                                                        class="placeholder-text">
+                                                        Explainer Concurrentness
+                                                    </span>
+                                                    <span
+                                                        ng-show="propertiespanel.ExplainerConcurrentnessSubSelect.length != 0"
+                                                        class="selected-formats">
+                                                        {{propertiespanel.ExplainerConcurrentnessSubSelect.label}}
+                                                    </span>
+                                                </accordion-heading>
+                                                <div>
+                                                    <ul class="ulSelect">
+                                                        <li class="LiSelect"
+                                                            ng-repeat="option in propertiespanel.ExplainerConcurrentnessSub">
+                                                            <a
+                                                                ng-click="propertiespanel.toggleSelect('Explainer Concurrentness',option)">
+                                                                {{ option.label }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
+                                        <h4 class="titleSubForm"> <span class="asterisk">*</span>Explanation Scope</h4>
+                                        <accordion>
+                                            <accordion-group is-open="propertiespanel.ExplainerScopeAccordionOpen">
+                                                <accordion-heading>
+                                                    <span class="placeholder-text"
+                                                        ng-show="propertiespanel.ExplanationScopeSubSelect.length == 0"
+                                                        class="placeholder-text">
+                                                        Implementation Framework
+                                                    </span>
+                                                    <span
+                                                        ng-show="propertiespanel.ExplanationScopeSubSelect.length != 0"
+                                                        class="selected-formats">
+                                                        {{propertiespanel.ExplanationScopeSubSelect.label}}
+                                                    </span>
+                                                </accordion-heading>
+                                                <div>
+                                                    <ul class="ulSelect">
+                                                        <li class="LiSelect"
+                                                            ng-repeat="option in propertiespanel.ExplanationScopeSub">
+                                                            <a
+                                                                ng-click="propertiespanel.toggleSelect('Explanation Scope',option)">
+                                                                {{ option.label }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
+
+                                        <h4 class="titleSubForm"> <span class="asterisk">*</span>
+                                            Presentation format</h4>
+                                        <accordion>
+                                            <accordion-group>
+                                                <accordion-heading>
+                                                    <span class="placeholder-text"
+                                                        ng-show="propertiespanel.checkedList.length == 0"
+                                                        class="placeholder-text">
+                                                        Pick or Search Presentation Formats
+                                                    </span>
+                                                    <span ng-show="propertiespanel.checkedList.length != 0"
+                                                        class="selected-formats">
+                                                        <span ng-repeat="item in propertiespanel.checkedList">
+                                                            {{
+                                                            item.label }}{{$last ? '' : ', '}} </span>
+                                                    </span>
+
+
+                                                </accordion-heading>
+                                                <div class="checkbox-tree">
+                                                    <ul>
+                                                        <li ng-repeat="item in propertiespanel.PresentationformatSub">
+                                                            <div class="DivCheckboxFormSub">
+                                                                <i class="fas fa"
+                                                                    ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
+                                                                    ng-click="propertiespanel.toggleItem(item, $event)"></i>
+
+                                                                <label>
+                                                                    <input type="checkbox" ng-model="item.checked"
+                                                                        ng-change="propertiespanel.toggleItemSelection(item)"
+                                                                        ng-click="$event.stopPropagation()">
+                                                                    {{item.label}}
+                                                                </label>
+                                                            </div>
+
+                                                            <ul
+                                                                ng-show="item.expanded && propertiespanel.hasChildren(item)">
+                                                                <li ng-repeat="childItem in item.children">
+                                                                    <div class="DivCheckboxFormSub">
+                                                                        <i class="fas fa"
+                                                                            ng-class="{'fa-caret-down': childItem.expanded && propertiespanel.hasChildren(childItem) && childItem.checked, 'fa-caret-right': !childItem.expanded || !propertiespanel.hasChildren(childItem) || !childItem.checked}"
+                                                                            ng-click="propertiespanel.toggleItem(childItem, $event)"></i>
+
+                                                                        <label>
+                                                                            <input type="checkbox"
+                                                                                ng-model="childItem.checked"
+                                                                                ng-change="propertiespanel.toggleItemSelection(childItem)">
+                                                                            {{childItem.label}}
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <ul
+                                                                        ng-show="childItem.expanded && propertiespanel.hasChildren(childItem)">
+                                                                        <li
+                                                                            ng-repeat="grandchildItem in childItem.children">
+                                                                            <div class="DivCheckboxFormSub">
+                                                                                <i class="fas fa"
+                                                                                    ng-class="{'fa-caret-down': grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
+                                                                                    ng-click="propertiespanel.toggleItem(grandchildItem, $event)"></i>
+
+                                                                                <label>
+                                                                                    <input type="checkbox"
+                                                                                        ng-model="grandchildItem.checked"
+                                                                                        ng-change="propertiespanel.toggleItemSelection(grandchildItem)">
+                                                                                    {{grandchildItem.label}}
+                                                                                </label>
+                                                                            </div>
+
+                                                                            <ul
+                                                                                ng-show="grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem)">
+                                                                                <li
+                                                                                    ng-repeat="greatGrandchildItem in grandchildItem.children">
+                                                                                    <div class="DivCheckboxFormSub">
+                                                                                        <i class="fas fa"
+                                                                                            ng-class="{'fa-caret-down': greatGrandchildItem.expanded && propertiespanel.hasChildren(greatGrandchildItem) && greatGrandchildItem.checked, 'fa-caret-right': !greatGrandchildItem.expanded || !propertiespanel.hasChildren(greatGrandchildItem) || !greatGrandchildItem.checked}"
+                                                                                            ng-click="propertiespanel.toggleItem(greatGrandchildItem, $event)"></i>
+
+                                                                                        <label>
+                                                                                            <input type="checkbox"
+                                                                                                ng-model="greatGrandchildItem.checked"
+                                                                                                ng-change="propertiespanel.toggleItemSelection(greatGrandchildItem)">
+                                                                                            {{greatGrandchildItem.label}}
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                    <ul
+                                                                                        ng-show="greatGrandchildItem.expanded && propertiespanel.hasChildren(greatGrandchildItem)">
+                                                                                        <li
+                                                                                            ng-repeat="greatGrandchildItem2 in greatGrandchildItem.children">
+                                                                                            <div
+                                                                                                class="DivCheckboxFormSub">
+                                                                                                <i class="fas fa"
+                                                                                                    ng-class="{'fa-caret-down': greatGrandchildItem2.expanded && propertiespanel.hasChildren(greatGrandchildItem2) && greatGrandchildItem2.checked, 'fa-caret-right': !greatGrandchildItem2.expanded || !propertiespanel.hasChildren(greatGrandchildItem2) || !greatGrandchildItem2.checked}"
+                                                                                                    ng-click="propertiespanel.toggleItem(greatGrandchildItem2, $event)"></i>
+
+                                                                                                <label>
+                                                                                                    <input
+                                                                                                        type="checkbox"
+                                                                                                        ng-model="greatGrandchildItem2.checked"
+                                                                                                        ng-change="propertiespanel.toggleItemSelection(greatGrandchildItem2)">
+                                                                                                    {{greatGrandchildItem2.label}}
+                                                                                                </label>
+                                                                                            </div>
+                                                                                            <ul
+                                                                                                ng-show="greatGrandchildItem2.expanded && propertiespanel.hasChildren(greatGrandchildItem2)">
+                                                                                                <li
+                                                                                                    ng-repeat="greatGrandchildItem3 in greatGrandchildItem2.children">
+                                                                                                    <div
+                                                                                                        class="DivCheckboxFormSub">
+                                                                                                        <i class="fas fa"
+                                                                                                            ng-class="{'fa-caret-down': greatGrandchildItem3.expanded && propertiespanel.hasChildren(greatGrandchildItem3) && greatGrandchildItem3.checked, 'fa-caret-right': !greatGrandchildItem3.expanded || !propertiespanel.hasChildren(greatGrandchildItem3) || !greatGrandchildItem3.checked}"
+                                                                                                            ng-click="propertiespanel.toggleItem(greatGrandchildItem3, $event)"></i>
+
+                                                                                                        <label>
+                                                                                                            <input
+                                                                                                                type="checkbox"
+                                                                                                                ng-model="greatGrandchildItem3.checked"
+                                                                                                                ng-change="propertiespanel.toggleItemSelection(greatGrandchildItem3)">
+                                                                                                            {{greatGrandchildItem3.label}}
+                                                                                                        </label>
+                                                                                                    </div>
+
+
+                                                                                                </li>
+                                                                                            </ul>
+
+                                                                                        </li>
+                                                                                    </ul>
+
+                                                                                </li>
+                                                                            </ul>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
+
+                                        <h4 class="titleSubForm"> <span class="asterisk">*</span>
+                                            Computational Complexity</h4>
+
+                                        <accordion>
+                                            <accordion-group
+                                                is-open="propertiespanel.ComputationalComplexityAccordionOpen">
+                                                <accordion-heading>
+                                                    <span class="placeholder-text"
+                                                        ng-show="propertiespanel.ComputationalComplexitySubSelect.length == 0"
+                                                        class="placeholder-text">
+                                                        Computational Complexity
+                                                    </span>
+                                                    <span
+                                                        ng-show="propertiespanel.ComputationalComplexitySubSelect.length != 0"
+                                                        class="selected-formats">
+                                                        {{propertiespanel.ComputationalComplexitySubSelect.label}}
+                                                    </span>
+                                                </accordion-heading>
+                                                <div>
+                                                    <ul class="ulSelect">
+                                                        <li class="LiSelect"
+                                                            ng-repeat="option in propertiespanel.ComputationalComplexitySub">
+                                                            <a
+                                                                ng-click="propertiespanel.toggleSelect('Computational Complexity',option)">
+                                                                {{ option.label }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
+                                        <h4 class="titleSubForm"> <span class="asterisk">*</span>
+                                            Implementation Framework</h4>
+
+                                        <accordion>
+                                            <accordion-group
+                                                is-open="propertiespanel.ImplementationFrameworksAccordionOpen">
+                                                <accordion-heading>
+                                                    <span class="placeholder-text"
+                                                        ng-show="propertiespanel.ImplementationFrameworkSubSelect.length == 0"
+                                                        class="placeholder-text">
+                                                        Implementation Framework
+                                                    </span>
+                                                    <span
+                                                        ng-show="propertiespanel.ImplementationFrameworkSubSelect.length != 0"
+                                                        class="selected-formats">
+                                                        {{propertiespanel.ImplementationFrameworkSubSelect.label}}
+                                                    </span>
+                                                </accordion-heading>
+                                                <div>
+                                                    <ul class="ulSelect">
+                                                        <li class="LiSelect"
+                                                            ng-repeat="option in propertiespanel.ImplementationFrameworkSub">
+                                                            <a
+                                                                ng-click="propertiespanel.toggleSelect('Implementation Framework',option)">
+                                                                {{ option.label }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
+                                        <div class="button-container-right">
+                                            <button type="button"
+                                                ng-click="propertiespanel.submitFormSub()">Accept</button>
+                                        </div>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <span id="closeFormButton" style="color: #000;" class="close" ng-click ="propertiespanel.closeForm();">&times;</span>
                     </div>
                     <div id="caption"></div>
                 </div>
             </div>
 
+            <div id="videoModal" class="modal">
+                <div id="contenedor-video" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
+                    <div id="video-modal-content" style="width: 100%;padding: 10px;" class="modal-content">
+                        <h1>Video Tutorial</h1>
+                        <video id="videoTutorial" width="100%" controls volume="1">
+                            <source src="imgs/tutorial.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <span id="closeVideoButton" style="color: #000;" class="close">&times;</span>
+                    </div>
+                    <div id="caption"></div>
+                </div>
+            </div>
 
             <div id="helpModal" class="modal">
                 <div id="contenedor-help" style="margin-left: 10%;text-align: left;" class="p-8 bg-light border">
@@ -326,7 +786,7 @@
                         rename the project or simply create a new one by clicking on the “New
                         Explanation Experience” button. Then click on the “Editor” button to
                         start building your own explanation experiences.
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="100%" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207810403-43b26356-25b4-44de-b6c4-518f3201e58e.png">
                         </p>
@@ -334,7 +794,7 @@
                         iSeeE3 is a tool based on behavior trees that allows you to build and
                         customize your own explanation experiences. For an empty explanation
                         experience, the interface will look like this:
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="100%" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207819838-2a3e9c65-d439-4577-8efe-dcdbf722a44d.png">
                         </p>
@@ -347,7 +807,7 @@
                             node of the default tree that is created. We will see how to interact
                             with the panel in the next sections.</p>
                         <h3 id="menu-bar">Menu Bar</h3>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="100%" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207816324-3c59dbba-a747-41bd-8155-89b2d2a2398e.png">
                         </p>
@@ -372,7 +832,7 @@
                                 tutorial.</li>
                         </ul>
                         <h3 id="trees-and-nodes-panel">Trees and Nodes Panel</h3>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="349" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207820894-e5be21fe-e740-4013-8523-d3efd338c1db.png">
                         </p>
@@ -390,14 +850,14 @@
                                 node. The explanation method that will be used is specified from the
                                 <em>Properties</em> panel, as well as the execution parameters that may
                                 be needed.
-                                <p align="center">
+                                <p style="text-align: center;">
                                     <img width="290" alt="image"
                                         src="https://user-images.githubusercontent.com/71895708/207826990-f26ea539-9e01-49de-8aa7-33d77c3bfa07.png">
                                 </p>
                             </li>
                             <li><strong>Failer and Succeeder:</strong> return failure or success
                                 accordingly.
-                                <p align="center">
+                                <p style="text-align: center;">
                                     <img width="545" alt="image"
                                         src="https://user-images.githubusercontent.com/71895708/207826544-323b8977-f1ca-4613-8180-e4a81e30c6ba.png">
                                 </p>
@@ -405,7 +865,7 @@
                             <li><strong>Condition:</strong> This node can be used to check for
                                 external variables to meet a particular condition (equals, not equals,
                                 less than, greater than)
-                                <p align="center">
+                                <p style="text-align: center;">
                                     <img width="268" alt="image"
                                         src="https://user-images.githubusercontent.com/71895708/207827039-0bf5c5fb-cd6b-448c-85d9-3b2287cc2184.png">
                                 </p>
@@ -415,7 +875,7 @@
                                 of many nodes. A sequence node will return immediately upon one of its
                                 children failing. A priority node will return immediately upon one of
                                 its children succeeding.
-                                <p align="center">
+                                <p style="text-align: center;">
                                     <img width="217" alt="image"
                                         src="https://user-images.githubusercontent.com/71895708/207827132-b3950731-ce3f-493e-8c1f-53ece28ea42f.png">
                                 </p>
@@ -426,7 +886,7 @@
                                 “Inverter” node simply inverts the returned value of another node
                                 (failure/success)</li>
                         </ul>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="100%" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207829559-b802d64f-400d-4df6-8610-af19f95af080.png">
                         </p>
@@ -438,7 +898,7 @@
                             entire tree object.</p>
                         <p>The <em>Properties</em> panel of the <strong>root node</strong> looks
                             like this:</p>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="293" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207836434-11a66c43-a497-4765-8b77-014a0f62dfb3.png">
                         </p>
@@ -468,7 +928,7 @@
                         </ul>
                         <p>Most nodes have properties like title, description, and user-defined
                             properties:</p>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="289" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207841650-5e4b068c-cbd8-4f42-88cd-5cdb6bbc7ea7.png">
                         </p>
@@ -480,7 +940,7 @@
                             and including the execution parameters (Params section) that are unique
                             to that explanation method:
                         </p>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="292" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207842600-c108605d-bb77-4fba-b436-0121cece8347.png">
                         </p>
@@ -508,7 +968,7 @@
                             <li><strong>Select the model that will be used for explanations and
                                     provide a query if needed. Remember to save the query.</strong></li>
                         </ol>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="557" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207846884-0d6da57e-890f-47cc-81a3-a13402093058.png">
                         </p>
@@ -518,7 +978,7 @@
                                     a simple tree that ensures that at least one global and one local
                                     explanation is provided to the user:</strong></li>
                         </ol>
-                        <p align="center">
+                        <p style="text-align: center;">
                             <img width="100%" alt="image"
                                 src="https://user-images.githubusercontent.com/71895708/207848462-66f4c4d8-fc5f-4760-b75f-19d98e2af927.png">
                         </p>
@@ -535,8 +995,6 @@
                     <div id="caption"></div>
                 </div>
             </div>
-
-
         </form>
     </div>
 

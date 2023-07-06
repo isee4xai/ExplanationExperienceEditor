@@ -126,6 +126,6 @@
                 vm._onChange($scope);
             }
         }
-    }
+    } 
 
 })();

@@ -1,7 +1,7 @@
-b3e.editor.ImportManager = function(editor) {
+b3e.editor.ImportManager = function (editor) {
     "use strict";
 
-    this.projectAsData = function(data) {
+    this.projectAsData = function (data) {
         var project = editor.project.get();
         if (!project) return;
 
@@ -13,8 +13,154 @@ b3e.editor.ImportManager = function(editor) {
         editor.trigger('projectimported');
     };
 
-    this.treeAsData = function(data) {
+    this.treeAsDataSubti = function (data, p) {
+        if (!p) return;
 
+        var cont = 0;
+        for (var nodesOp in data.OptionsSub) {
+            var tree;
+            if (cont == 0) {
+                tree = p.trees.add("b79d53a4-7145-4ee8-9bfc-b07a32f4c4ad");
+            } else {
+                tree = p.trees.add("a850c76b-395c-471b-85f8-62997123e4c1");
+            }
+            cont++;
+            var spec, display;
+
+            var Pricipal;
+            for (var id in data.OptionsSub[nodesOp]) {
+                spec = data.OptionsSub[nodesOp][id];
+                var block = null;
+                display = spec.display || {};
+
+                block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
+                block.id = spec.id;
+                block.title = spec.Instance || spec.title;
+                block.description = spec.description;
+                block.properties = tine.merge({}, block.properties, spec.properties);
+                block.params = tine.merge({}, block.params, spec.params);
+                block.idModel = spec.idModel;
+                block.query = spec.query;
+                block.query_id = spec.query_id;
+                block.img = spec.img;
+                block.Image = spec.Image;
+                block.Json = spec.Json;
+
+                //
+                var propertiesExpl = {};
+                var ArrayNameProperties = Object.keys(spec);
+
+                for (var index = 0; index < ArrayNameProperties.length; index++) {
+                    switch (ArrayNameProperties[index]) {
+                        case "value":
+                            break;
+                        case "properties":
+                            break;
+                        case "description":
+                            break;
+                        case "id":
+                            break;
+                        case "$$hashKey":
+                            break;
+                        case "Concept":
+                            break;
+                        case "Instance":
+                            break;
+                        case "display":
+                            break;
+                        case "params":
+                            break;
+                        case "Image":
+                            break;
+                        default:
+                            if (Array.isArray(spec[ArrayNameProperties[index]])) {
+
+                                propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                            } else {
+                                propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                            }
+
+                            break;
+                    }
+                }
+                block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
+                block.DataType = spec.DataType;
+                block.VariableName = spec.VariableName;
+ 
+                if (spec.id == "b79d53a4-7145-4ee8-9bfc-b07a32f4c4ad") {
+                    Pricipal = block;
+                }
+                block._redraw();
+            }
+
+            for (var id in data.OptionsSub[nodesOp]) {
+                spec = data.OptionsSub[nodesOp][id];
+
+                var inBlock = tree.blocks.get(id);
+                var children = null;
+                var outBlock;
+
+                if (inBlock.category === 'composite' && spec.firstChild) {
+                    children = spec.firstChild;
+                } else if (spec.firstChild && (inBlock.category == 'decorator' ||
+                    inBlock.category == 'root')) {
+                    children = spec.firstChild;
+                }
+
+                if (children) {
+                    var propertieNext = ["Next"];
+                    var IdProper = ["Id"];
+                    var RouteOfObject = children["Next"];
+                    var RouteOfObjectId = children["Id"];
+
+                    while (RouteOfObject != null) {
+                        outBlock = tree.blocks.get(RouteOfObjectId);
+                        tree.connections.add(inBlock, outBlock);
+
+                        RouteOfObjectId = RouteOfObject[IdProper];
+                        RouteOfObject = RouteOfObject[propertieNext];
+
+                    }
+                    outBlock = tree.blocks.get(RouteOfObjectId);
+                    tree.connections.add(inBlock, outBlock);
+                }
+
+            }
+
+            var a = tree.blocks.getRoot();
+            if (Pricipal) {
+                tree.connections.add(a, Pricipal);
+                tree.organize.organize(a);
+            }
+            tree.blocks.remove(a);
+
+            p.history.clear();
+
+        }
+
+        var selected = p.trees.getSelected();
+
+        var rootPrincipal;
+
+        tree.selection.deselectAll();
+        p.history.clear();
+        editor.trigger('treeimported');
+
+
+        var TressOptions= [];
+        var selected = p.trees.getSelected();
+        p.trees.each(function(tree) {
+            var root = tree.blocks.getRoot(); 
+               TressOptions.push({
+                'id': tree._id,
+                'name': root.title || 'A behavior tree',
+                'active': tree === selected,
+            });
+        });
+        return TressOptions;
+    }
+
+    this.treeAsData = function (data) {
         var project = editor.project.get();
         if (!project) return;
 
@@ -116,6 +262,7 @@ b3e.editor.ImportManager = function(editor) {
             block._redraw();
 
             if (spec.id === data.root) {
+
                 first = block;
             }
         }
@@ -131,19 +278,17 @@ b3e.editor.ImportManager = function(editor) {
             if (inBlock.category === 'composite' && spec.firstChild) {
                 children = spec.firstChild;
             } else if (spec.firstChild && (inBlock.category == 'decorator' ||
-                    inBlock.category == 'root')) {
+                inBlock.category == 'root')) {
                 children = spec.firstChild;
             }
 
 
             if (children) {
-
                 var propertieNext = ["Next"];
                 var IdProper = ["Id"];
 
                 var RouteOfObject = children["Next"];
                 var RouteOfObjectId = children["Id"];
-
 
                 while (RouteOfObject != null) {
 
@@ -162,7 +307,7 @@ b3e.editor.ImportManager = function(editor) {
             if (inBlock.category === 'composite' && spec.children) {
                 children = spec.children;
             } else if (spec.child && (inBlock.category == 'decorator' ||
-                    inBlock.category == 'root')) {
+                inBlock.category == 'root')) {
                 children = [spec.child];
             }
 
@@ -191,13 +336,13 @@ b3e.editor.ImportManager = function(editor) {
         editor.trigger('treeimported');
     };
 
-    this.treesAsData = function(data) {
+    this.treesAsData = function (data) {
         for (var i = 0; i < data.length; i++) {
             this.treeAsData(data[i]);
         }
     };
 
-    this.nodesAsData = function(data) {
+    this.nodesAsData = function (data) {
         var project = editor.project.get();
         if (!project) return;
 
@@ -207,5 +352,5 @@ b3e.editor.ImportManager = function(editor) {
         }
         editor.trigger('nodeimported');
     };
-    this._applySettings = function(settings) {};
+    this._applySettings = function (settings) { };
 };

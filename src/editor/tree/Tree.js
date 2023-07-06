@@ -1,7 +1,7 @@
-(function() {
+(function () {
     "use strict";
 
-    var Tree = function(editor, project) {
+    var Tree = function (editor, project) {
         this.Container_constructor();
 
         // Variables
@@ -30,7 +30,7 @@
     };
     var p = createjs.extend(Tree, createjs.Container);
 
-    p._initialize = function() {
+    p._initialize = function () {
         this.blocks = new b3e.tree.BlockManager(this._editor, this._project, this);
         this.connections = new b3e.tree.ConnectionManager(this._editor, this._project, this);
         this.edit = new b3e.tree.EditManager(this._editor, this._project, this);
@@ -51,7 +51,7 @@
         this.view.center();
     };
 
-    p._applySettings = function(settings) {
+    p._applySettings = function (settings) {
         this._selectionBox._applySettings(settings);
 
         this.blocks._applySettings(settings);

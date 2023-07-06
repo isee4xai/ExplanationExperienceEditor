@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 23/05/23";
+        vm.date = "version 21/05/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -70,7 +70,7 @@
         vm.explanation = null;
         vm.evaluation = null;
         vm.url = window.location.href;
-        vm.isEditor = false;
+        vm.isEditor;
 
         _create();
         _activate();
@@ -86,7 +86,13 @@
                 _getJsonProperties();
             }
 
-            vm.isEditor = vm.url.includes("id");
+            if (vm.url.includes("modelid")) {
+                vm.isEditor = "modelid";
+            } else if(vm.url.includes("id")) {
+                vm.isEditor = "id";
+            } else {
+                vm.isEditor = "editor";
+            }
         }
 
 
@@ -212,56 +218,104 @@
         }
 
         function onExportProjectJson() {
-            if (vm.isEditor) {
-                $state.go('id.export', { type: 'project', format: 'json' });
-            } else {
-                $state.go('editor.export', { type: 'project', format: 'json' });
+            switch (vm.isEditor) {
+                case "modelid":
+                    $state.go('idModel.export', { type: 'project', format: 'json' });
+                    break;
+                case "id":
+                    $state.go('id.export', { type: 'project', format: 'json' });
+                    break;
+                case "editor":
+                    $state.go('editor.export', { type: 'project', format: 'json' });
+                    break;
+                default:
+                    break;
             }
             return false;
         }
 
         function onExportTreeJson() {
-            if (vm.isEditor) {
-                $state.go('id.export', { type: 'tree', format: 'json' });
-            } else {
-                $state.go('editor.export', { type: 'tree', format: 'json' });
+            switch (vm.isEditor) {
+                case "modelid":
+                    $state.go('idModel.export', { type: 'tree', format: 'json' });
+                    break;
+                case "id":
+                    $state.go('id.export', { type: 'tree', format: 'json' });
+                    break;
+                case "editor":
+                    $state.go('editor.export', { type: 'tree', format: 'json' });
+                    break;
+                default:
+                    break;
             }
             return false;
         }
 
         function onExportNodesJson() {
-            if (vm.isEditor) {
-                $state.go('id.export', { type: 'nodes', format: 'json' });
-            } else {
-                $state.go('editor.export', { type: 'nodes', format: 'json' });
+            switch (vm.isEditor) {
+                case "modelid":
+                    $state.go('idModel.export', { type: 'nodes', format: 'json' });
+                    break;
+                case "id":
+                    $state.go('id.export', { type: 'nodes', format: 'json' });
+                    break;
+                case "editor":
+                    $state.go('editor.export', { type: 'nodes', format: 'json' });
+                    break;
+                default:
+                    break;
             }
             return false;
         }
 
         function onImportProjectJson() {
-
-            if (vm.isEditor) {
-                $state.go('id.import', { type: 'project', format: 'json' });
-            } else {
-                $state.go('editor.import', { type: 'project', format: 'json' });
+            switch (vm.isEditor) {
+                case "modelid":
+                    $state.go('idModel.import', { type: 'project', format: 'json' });
+                    break;
+                case "id":
+                    $state.go('id.import', { type: 'project', format: 'json' });
+                    break;
+                case "editor":
+                    $state.go('editor.import', { type: 'project', format: 'json' });
+                    break;
+                default:
+                    break;
             }
             return false;
+
         }
 
         function onImportTreeJson() {
-            if (vm.isEditor) {
-                $state.go('id.import', { type: 'tree', format: 'json' });
-            } else {
-                $state.go('editor.import', { type: 'tree', format: 'json' });
+            switch (vm.isEditor) {
+                case "modelid":
+                    $state.go('idModel.import', { type: 'tree', format: 'json' });
+                    break;
+                case "id":
+                    $state.go('id.import', { type: 'tree', format: 'json' });
+                    break;
+                case "editor":
+                    $state.go('editor.import', { type: 'tree', format: 'json' });
+                    break;
+                default:
+                    break;
             }
             return false;
         }
 
         function onImportNodesJson() {
-            if (vm.isEditor) {
-                $state.go('id.import', { type: 'nodes', format: 'json' });
-            } else {
-                $state.go('editor.import', { type: 'nodes', format: 'json' });
+            switch (vm.isEditor) {
+                case "modelid":
+                    $state.go('idModel.import', { type: 'nodes', format: 'json' });
+                    break;
+                case "id":
+                    $state.go('id.import', { type: 'nodes', format: 'json' });
+                    break;
+                case "editor":
+                    $state.go('editor.import', { type: 'nodes', format: 'json' });
+                    break;
+                default:
+                    break;
             }
             return false;
         }
@@ -545,18 +599,18 @@
             //define properties a method of evaluation or explanation
             var json = null;
 
-            if (vm.ListaPara[DataJson] != null) {  
+            if (vm.ListaPara[DataJson] != null) {
                 json = {};
                 vm.ListaPara[DataJson].forEach(element => {
-                    json[element.key] =  tine.merge({}, element);
+                    json[element.key] = tine.merge({}, element);
                 });
             }
-          
+
 
             if (NameNode == "Explanation Method") {
                 var BlockConditions = {
                     title: DataJson.value || DataJson,
-                    params:  json,
+                    params: json,
                     description: DataJson.description,
                 };
             } else {

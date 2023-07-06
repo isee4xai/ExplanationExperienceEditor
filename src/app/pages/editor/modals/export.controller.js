@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -12,7 +12,8 @@
         '$stateParams',
         'dialogService',
         'notificationService',
-        'storageService'
+        'storageService',
+        '$window'
     ];
 
     function ExportController($scope,
@@ -21,7 +22,8 @@
         $stateParams,
         dialogService,
         notificationService,
-        storageService) {
+        storageService,
+        window) {
         var vm = this;
         vm.type = null;
         vm.format = null;
@@ -34,6 +36,7 @@
         vm.showPretty = showPretty;
         vm.select = select;
         vm.save = save;
+        vm.saveJson = saveJson;
 
         _active();
 
@@ -54,8 +57,8 @@
 
         function _createJson(data) {
             vm.data = data;
-            vm.compact = JSON3.stringify(data);
-            vm.pretty = JSON3.stringify(data, null, 2);
+            vm.compact = JSON.stringify(data);
+            vm.pretty = JSON.stringify(data, null, 2);
             vm.result = vm.pretty;
         }
 
@@ -70,16 +73,28 @@
         function save() {
             dialogService
                 .saveAs(null, ['.b3', '.json'])
-                .then(function(path) {
+                .then(function (path) {
                     storageService
                         .saveAsync(path, vm.pretty)
-                        .then(function() {
+                        .then(function () {
                             notificationService.success(
                                 'File saved',
                                 'The file has been saved successfully.'
                             );
                         });
                 });
+        }
+
+        function saveJson() {
+            var blob = new Blob([vm.result], { type: 'application/json' });
+            var downloadLink = $window.document.createElement('a');
+            downloadLink.href = $window.URL.createObjectURL(blob);
+            downloadLink.download = 'archivo.json';
+
+            $window.document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            $window.document.body.removeChild(downloadLink);
         }
 
         function showCompact() {

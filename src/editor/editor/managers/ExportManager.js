@@ -71,7 +71,7 @@ b3e.editor.ExportManager = function (editor) {
             root: first[0] || null,
             properties: root.properties,
         };
-        console.log(root);
+
         if (root.hasOwnProperty("ModelRoot")) {
             if (root.ModelRoot.hasOwnProperty("query")) {
                 data.query = root.ModelRoot.query;
@@ -197,7 +197,6 @@ b3e.editor.ExportManager = function (editor) {
                     });
                 }
                 data.nodes[block.id] = d;
-                console.log(data);
             }
         });
         return data;
