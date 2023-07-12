@@ -22,6 +22,10 @@ function EditorController($state, $window, $location, projectModel, dialogServic
     if (urlSplit.length > 1) {
         Id = urlSplit[1];
         Type = urlSplit[0];
+
+        if (Id.includes("?")) {
+            Id = Id.split("?")[0];  
+        }
     }
 
     _activate();
@@ -31,8 +35,9 @@ function EditorController($state, $window, $location, projectModel, dialogServic
         if (typeof url === 'undefined') {
             $state.go('dash.projects');
         }
-
+        
         switch (Type) {
+            
             case "editor":
             case "view":
             case "":
@@ -61,7 +66,7 @@ function EditorController($state, $window, $location, projectModel, dialogServic
                                                 var tree = project.trees.getSelected();
                                                 tree.organize.organize();
                                             }else{
-                                                location.reload();
+                                             //   location.reload();
                                             }
                                         }
                                     });

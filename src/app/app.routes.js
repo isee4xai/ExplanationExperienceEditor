@@ -95,8 +95,9 @@ angular.module('app')
                     controllerAs: 'import',
                 })
                 //Id Model
+                /*
                 .state('idModel', {
-                    url: "/id/{vid}/modelid/{mid}",
+                    url: "/id/{vid}?usecaseId={mid}",
                     templateUrl: 'pages/editor/editor.html',
                     controller: 'EditorController',
                     controllerAs: 'editor'
@@ -119,7 +120,7 @@ angular.module('app')
                     controller: 'ImportController',
                     controllerAs: 'import',
                 })
-
+                */
 
                 .state('view', {
                     url: "/view",

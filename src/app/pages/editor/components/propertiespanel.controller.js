@@ -5376,7 +5376,7 @@
             }
         };
 
-        vm.closeForm=function () {
+        vm.closeForm = function () {
             var modalFormSub = document.getElementById("formSubstitute");
             modalFormSub.style.display = "none";
         }
@@ -5618,37 +5618,42 @@
             //Id model
             var url = $location.url().slice(1);
             var urlSplit = url.split("/");
-            vm.idModelUrl = urlSplit[3];
 
-            projectModel.getModelsRootPrivate(vm.idModelUrl)
-                .then(function (x) {
+            if (url.includes("usecaseId=")) {
+                vm.idModelUrl = url.split("usecaseId=")[1];
 
-                    switch (true) {
-                        case Object.keys(x).length === 0:
-                            notificationService.error(
-                                'Error Adding Models Private',
-                                'No Data Returned'
-                            );
-                            break;
-                        case typeof x === 'string':
-                            notificationService.error(
-                                'Error Adding Models Private',
-                                'Error in computer network communications'
-                            );
-                            break;
-                        case Object.keys(x).length != 0 && typeof x != 'string':
-                            vm.models = x;
-                            // delete models test
-                            var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
-                            for (let index = 0; index < deleteModels.length; index++) {
-                                delete vm.models[deleteModels[index]];
-                            }
-                            notificationService.success(
-                                "Added Private Models"
-                            );
-                            break;
-                    }
-                });
+                projectModel.getModelsRootPrivate(vm.idModelUrl)
+                    .then(function (x) {
+                        
+                        switch (true) {
+                            case Object.keys(x).length === 0:
+                                notificationService.error(
+                                    'Error Adding Models Private',
+                                    'No Data Returned'
+                                );
+                                break;
+                            case typeof x === 'string':
+                                notificationService.error(
+                                    'Error Adding Models Private',
+                                    'Error in computer network communications'
+                                );
+                                break;
+                            case Object.keys(x).length != 0 && typeof x != 'string':
+                                vm.models = x;
+                                // delete models test
+                                var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
+                                for (let index = 0; index < deleteModels.length; index++) {
+                                    delete vm.models[deleteModels[index]];
+                                }
+                                notificationService.success(
+                                    "Added Private Models"
+                                );
+                                break;
+                        }
+                    });
+            }
+
+
         }
 
         function GetModelsPublic() {
@@ -5745,7 +5750,7 @@
         }
 
         function SubstituteNodes(NodeSelect) {
-          
+
             var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
             if (existDiv.length > 0) {
                 existDiv[0].remove();
@@ -6103,7 +6108,7 @@
                     },
                 }
             }
-            
+
 
             var editor1 = new b3e.editor.Editor();
             editor1.project.create();
@@ -6154,7 +6159,7 @@
         }
         function updateNodeSub(TreeSub, nodeSelect, editor1, aaa, divGeneral) {
             if (aaa == undefined) {
-                aaa =  CambiarOptionTree(TreeSub,editor1)
+                aaa = CambiarOptionTree(TreeSub, editor1)
             }
             var pSub = editor1.project.get();
             var tSub = pSub.trees.getSelected();
