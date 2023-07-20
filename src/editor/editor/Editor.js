@@ -110,56 +110,12 @@
   };
 
   p.applySettingsFormat = function (div){
+    div.style.position = 'relative';
+    div.style.width = "100%";
+    div.style.height = "100%";
+    div.style.border = "3px solid black";
 
-    var canvas = this._game.canvas;
-    var context = canvas.getContext("2d");
-
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    canvas.style.border = "3px solid black";
-/*    canvas.style.marginLeft = "390px";
-    canvas.style.marginRight = "390px";
-    canvas.style.marginTop = "150px";
-
-    const scaleX = 1.3;  // Scale factor for the x-axis
-    const scaleY = 1.5; 
-
-    canvas.style.transform = `scale(${scaleX}, ${scaleY})`;*/
-  //  canvas.style.fillRect = (0, 0, 20, 20);
-
-  
   };
-/*
-  p.previewSubtit = function (data, cavansSub) {
-
-    var canvas = cavansSub;
-    var p = this.project.get();
-
-    var stage = new createjs.Stage(cavansSub);
-    for (var nodeId in data.nodes) {
-
-      var node1 = data.nodes[nodeId];
-      var concept = node1.Concept;
-      var node = p.nodes.get(concept);
-
-      var tree = p.trees.getSelected();
-      if (!node) return;
-      var block = new b3e.Block(node);
-      block._applySettings(this._settings);
-
-      block.title = node1.Instance;
-      block.name = node1.Instance;
-      block.x = block._width;
-      block.y = block._height;
-
-      stage.scaleX = 0.5;
-      stage.scaleY = 0.5;
-      stage.addChild(block);
-    }
-    stage.update();
-
-    return canvas;
-  }*/
 
   p.preview = function (name) {
     var canvas = document.createElement('canvas');

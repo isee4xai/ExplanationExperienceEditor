@@ -17,7 +17,7 @@
         this._blocks = new createjs.Container();
         this._connections = new createjs.Container();
         this._overlay = new createjs.Container();
-
+ 
         // Managers
         this.blocks = null;
         this.connections = null;

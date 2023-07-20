@@ -103,7 +103,8 @@ b3e.tree.BlockManager = function (editor, project, tree) {
     }
 
     this.addActionsOrConditions = function (element, blockFather) {
-        var block = new b3e.Block(element);
+        var blockNew = new b3e.Block(element);
+        var block = blockNew.node;
         block._applySettings(editor._settings);
         block.x = element.x || 0;
         block.y = element.y || 0;
@@ -230,7 +231,14 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         };
 
         template = template || {};
+
         var node = block.node;
+        if (node.hasOwnProperty("node")) {
+            console.log(block.node);
+            node= node.node
+        }
+
+       
         if (typeof template.name !== 'undefined') {
             block.name = template.name;
         } else {
@@ -266,6 +274,13 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         } else {
             block.VariableName = node.VariableName || block.VariableName;
         }
+        console.log("*********************************");
+        console.log(template.params);
+        console.log(block.params);
+        console.log(node.params);
+        console.log( block.node.node);
+        console.log("*********************************--------------------------------****************************");
+        
         if (typeof template.params !== 'undefined') {
             block.params = tine.merge({}, node.params, template.params);
         } else {
