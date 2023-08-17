@@ -275,7 +275,8 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.httpAddresExplanations;
         //We set the method from which we want to take the params
-        if (IdModel == "") {
+
+        if (IdModel == "" || IdModel == undefined) {
             var method_url = method;
         } else {
             var method_url = method + "/" + IdModel;

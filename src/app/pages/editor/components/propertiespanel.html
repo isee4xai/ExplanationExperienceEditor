@@ -35,7 +35,7 @@
                             <ul>
                                 <li ng-if="propertiespanel.original.name == 'Explanation Method'"
                                     ng-repeat="option in propertiespanel.Explainers"
-                                    ng-click="propertiespanel.UpdateProperties(option)" ng-disabled="item.fixed"
+                                    ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id)" ng-disabled="item.fixed"
                                     ng-mouseenter="propertiespanel.startTimeout(option,'Explanation')"
                                     ng-mouseleave="propertiespanel.cancelTimeout(option,'Explanation')">
                                     <a>{{option}}</a>
@@ -43,7 +43,7 @@
                             </ul>
                         </li>
                         <li ng-if="propertiespanel.original.category == 'root'"
-                            ng-click="propertiespanel.UpdateProperties(option)">
+                            ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id)">
                             <a ng-model="propertiespanel.block.title"
                                 ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}
                             </a>
@@ -266,7 +266,7 @@
                                 ng-repeat="(key, value) in propertiespanel.ExplainersSubstitute">
 
                                 <li ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
-                                    ng-click="propertiespanel.UpdateProperties(key)"
+                                    ng-click="propertiespanel.UpdateProperties(key,propertiespanel.block,propertiespanel.original.id)"
                                     ng-mouseenter="propertiespanel.startTimeout(key,'substitute')"
                                     ng-mouseleave="propertiespanel.cancelTimeout(key,'substitute')">
                                     <div class="progress">
@@ -339,22 +339,21 @@
 
                                     <form action="">
                                         <div ng-show="propertiespanel.original.category == 'composite'">
-                                            <!-- ok -->
                                             <h4 class="titleSubForm"> <span class="asterisk">*</span>
                                                 Explainer</h4>
                                             <accordion>
                                                 <accordion-group is-pen="propertiespanel.explainerAccordionOpen">
                                                     <accordion-heading>
                                                         <span class="placeholder-text"
-                                                            ng-show="propertiespanel.ExplainersSubSelect.length == 0"
+                                                            ng-show="propertiespanel.ExplainersSubSelect == 0"
                                                             class="placeholder-text">
                                                             Select Explainer
                                                         </span>
-                                                        <span ng-show="propertiespanel.ExplainersSubSelect.length != 0"
+                                                        <span  ng-show="propertiespanel.ExplainersSubSelect != 0"
                                                             class="selected-formats">
                                                             <span
                                                                 ng-repeat="item in propertiespanel.ExplainersSubSelect">
-                                                                {{item}}{{$last ? '' : ', '}} </span>
+                                                                {{item.name}}{{$last ? '' : ', '}} </span>
                                                         </span>
 
                                                     </accordion-heading>
@@ -393,11 +392,11 @@
 
                                                 </accordion-heading>
                                                 <div class="checkbox-tree"
-                                                    ng-show="propertiespanel.ExplainersSubSelect.length != 0">
+                                                    ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                     <span>Unselect explainer</span>
                                                 </div>
                                                 <div class="checkbox-tree"
-                                                    ng-show="propertiespanel.ExplainersSubSelect.length == 0">
+                                                    ng-show="propertiespanel.original.title != 'Explanation Method'">
                                                     <ul class="ulSelect">
                                                         <li class="LiSelect"
                                                             ng-repeat="item in propertiespanel.ExplanationScopeSub">
@@ -435,11 +434,11 @@
 
                                                 </accordion-heading>
                                                 <div class="checkbox-tree"
-                                                    ng-show="propertiespanel.ExplainersSubSelect.length != 0">
+                                                      ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                     <span>Unselect explainer</span>
                                                 </div>
                                                 <div class="checkbox-tree"
-                                                    ng-show="propertiespanel.ExplainersSubSelect.length == 0">
+                                                    ng-show="propertiespanel.original.title != 'Explanation Method'">
                                                     <ul>
                                                         <li ng-repeat="item in propertiespanel.ExplanationTypeSub">
                                                             <div class="DivCheckboxFormSub">
@@ -505,11 +504,11 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length != 0">
+                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length == 0">
+                                                        ng-show="propertiespanel.original.title != 'Explanation Method'">
                                                         <ul>
                                                             <li
                                                                 ng-repeat="item in propertiespanel.ExplainabilityTechniqueSub">
@@ -592,11 +591,11 @@
     
                                                         </accordion-heading>
                                                         <div class="checkbox-tree"
-                                                            ng-show="propertiespanel.ExplainersSubSelect.length != 0">
+                                                              ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                             <span>Unselect explainer</span>
                                                         </div>
                                                         <div class="checkbox-tree"
-                                                            ng-show="propertiespanel.ExplainersSubSelect.length == 0">
+                                                            ng-show="propertiespanel.original.title != 'Explanation Method'">
                                                             <ul class="ulSelect">
                                                                 <li class="LiSelect"
                                                                     ng-repeat="item in propertiespanel.PresentationformatSub">
@@ -634,11 +633,11 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length != 0">
+                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length == 0">
+                                                        ng-show="propertiespanel.original.title != 'Explanation Method'">
                                                         <ul class="ulSelect">
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ComputationalComplexitySub">
@@ -674,11 +673,11 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length != 0">
+                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length == 0">
+                                                        ng-show="propertiespanel.original.title != 'Explanation Method'">
                                                         <ul class="ulSelect">
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ImplementationFrameworkSub">
@@ -715,11 +714,11 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length != 0">
+                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
-                                                        ng-show="propertiespanel.ExplainersSubSelect.length == 0">
+                                                        ng-show="propertiespanel.original.title != 'Explanation Method'">
                                                         <ul class="ulSelect">
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ExplainerConcurrentnessSub">

@@ -716,7 +716,6 @@
         ]
 
         vm.convertToObjects = function () {
-
             if (vm.ExplainersSub[0].hasOwnProperty("checked")) {
                 return vm.ExplainersSub;
             } else {
@@ -731,8 +730,6 @@
                 }
                 return objects;
             }
-
-
         };
 
         vm.hasChildren = function (item) {
@@ -744,39 +741,54 @@
             if ($event) {
                 $event.stopPropagation();
             }
-
         };
 
 
         vm.toggleItemSelection = function (listSub, item) {
             switch (listSub) {
                 case 'Explanation Type':
-                    vm.checkDescendants(item);
-
+                    if (item.children.length != []) {
+                        //selecionamos todos los hijos del item selecionado 
+                        vm.checkDescendants(item);
+                    }
+                    //comprobamos si tiene padre el item selecionado
                     var elementoEncontrado = vm.buscarPorKey(vm.ExplanationTypeSub, item.parent);
 
+                    //primero comprobamos si el elemento selecionado es hijo del primer padre 
                     if (item.parent == "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation") {
+                        //buscamos si existe el elemento selecionado para saber si borrarlo o añadirlo
                         var index = vm.ExplanationTypeSubSelect.findIndex(function (element) {
                             return element.key === item.key && element.label === item.label;
                         });
 
-                        if (index == -1) {
+                        if (index == -1 && item.checked === true) {
+                            //para elimiar dulicados
+                            vm.ExplanationTypeSubSelect = vm.ExplanationTypeSubSelect.filter(function (element) {
+                                return element.parent !== item.key;
+                            });
+                            // insertamos el elemento selecionado 
                             vm.ExplanationTypeSubSelect.push(item);
                         } else {
                             vm.ExplanationTypeSubSelect.splice(index, 1);
                         }
                     } else if (elementoEncontrado !== null) {
-
+                        //comprobamos si el padre del elemento selecionado tiene todos sus hijos en true o false
                         var hasCheckedTrue = elementoEncontrado.children.some(function (obj) {
                             return obj.checked === false || !obj.hasOwnProperty('checked');
                         });
-
+                        //true si algun hijo no esta checked(false)
                         if (hasCheckedTrue == true) {
                             var index3 = vm.ExplanationTypeSubSelect.findIndex(function (element) {
                                 return element.key === elementoEncontrado.key;
                             });
-
                             if (index3 != -1) {
+                                var foundItem = vm.ExplanationTypeSub.find(function (item) {
+                                    return item.key === elementoEncontrado.key;
+                                });
+                                if (foundItem) {
+                                    foundItem.checked = false;
+                                }
+
                                 vm.ExplanationTypeSubSelect.splice(index3, 1);
 
                                 elementoEncontrado.children.forEach(element => {
@@ -803,13 +815,14 @@
                             array.push(elementoEncontrado);
                             elementoEncontrado.checked = true;
                             vm.ExplanationTypeSubSelect = array;
-
                         }
-
                     }
                     break;
                 case 'Explainability Technique':
-                    vm.checkDescendants(item);
+
+                    if (item.children.length != []) {
+                        vm.checkDescendants(item);
+                    }
 
                     var elementoEncontrado = vm.buscarPorKey(vm.ExplainabilityTechniqueSub, item.parent);
 
@@ -818,7 +831,11 @@
                             return element.key === item.key && element.label === item.label;
                         });
 
-                        if (index == -1) {
+                        if (index == -1 && item.checked === true) {
+                            vm.ExplainabilityTechniqueSubSelect = vm.ExplainabilityTechniqueSubSelect.filter(function (element) {
+                                return element.parent !== item.key;
+                            });
+
                             vm.ExplainabilityTechniqueSubSelect.push(item);
                         } else {
                             vm.ExplainabilityTechniqueSubSelect.splice(index, 1);
@@ -835,6 +852,12 @@
                             });
 
                             if (index3 != -1) {
+                                var foundItem = vm.ExplanationTypeSub.find(function (item) {
+                                    return item.key === elementoEncontrado.key;
+                                });
+                                if (foundItem) {
+                                    foundItem.checked = false;
+                                }
                                 vm.ExplainabilityTechniqueSubSelect.splice(index3, 1);
 
                                 elementoEncontrado.children.forEach(element => {
@@ -853,7 +876,6 @@
                                     vm.ExplainabilityTechniqueSubSelect.splice(index2, 1);
                                 }
                             }
-
                         } else {
                             var array = vm.ExplainabilityTechniqueSubSelect.filter(function (obj) {
                                 return obj.parent !== elementoEncontrado.key;
@@ -861,9 +883,7 @@
                             array.push(elementoEncontrado);
                             elementoEncontrado.checked = true;
                             vm.ExplainabilityTechniqueSubSelect = array;
-
                         }
-
                     }
                     break;
                 case 'Explainer Concurrentnes':
@@ -912,24 +932,16 @@
 
                     break;
                 case 'Explainer':
-                    if (!vm.ExplainersSubSelect.includes(item.name)) {
-                        vm.ExplainersSubSelect.push(item.name);
+                    var index = vm.ExplainersSubSelect.findIndex(function (element) {
+                        return element === item;
+                    });
+
+                    if (index == -1) {
+                        vm.ExplainersSubSelect.push(item);
                     } else {
-                        var index = vm.ExplainersSubSelect.indexOf(item.name);
-                        if (index !== -1) {
-                            vm.ExplainersSubSelect.splice(index, 1);
-                        }
+                        vm.ExplainersSubSelect.splice(index, 1);
                     }
 
-                    if (vm.ExplainersSubSelect != 0) {
-                        vm.ExplanationTypeSubSelect = []
-                        vm.ExplainabilityTechniqueSubSelect = [];
-                        vm.ExplainerConcurrentnessSubSelect = [];
-                        vm.ComputationalComplexitySubSelect = [];
-                        vm.ImplementationFrameworkSubSelect = [];
-                        vm.checkedList = [];
-                        vm.ExplanationScopeSubSelect = [];
-                    }
                     break;
                 case 'Presentation format':
                     var index = vm.checkedList.findIndex(function (element) {
@@ -941,7 +953,6 @@
                     } else {
                         vm.checkedList.splice(index, 1);
                     }
-
                     break;
             }
         };
@@ -995,6 +1006,68 @@
         vm.closeForm = function () {
             var modalFormSub = document.getElementById("formSubstitute");
             modalFormSub.style.display = "none";
+            //clean select items
+            this.resetFormSub();
+        }
+
+        vm.resetFormSub = function () {
+
+            var nonEmptySelections = [];
+            if (vm.ExplanationTypeSubSelect.length > 0) {
+                nonEmptySelections.push('ExplanationTypeSub');
+            }
+            if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
+                nonEmptySelections.push('ExplainabilityTechniqueSub');
+            }
+            if (vm.ExplainerConcurrentnessSubSelect.length > 0) {
+                nonEmptySelections.push('ExplainerConcurrentnessSub');
+            }
+            if (vm.ComputationalComplexitySubSelect.length > 0) {
+                nonEmptySelections.push('ComputationalComplexitySub');
+            }
+            if (vm.ImplementationFrameworkSubSelect.length > 0) {
+                nonEmptySelections.push('ImplementationFrameworkSub');
+            }
+            if (vm.checkedList.length > 0) {
+                nonEmptySelections.push('PresentationformatSub');
+            }
+            if (vm.ExplanationScopeSubSelect.length > 0) {
+                nonEmptySelections.push('ExplanationScopeSub');
+            }
+            if (vm.ExplainersSubSelect.length > 0) {
+                nonEmptySelections.push('ExplainersSub');
+            }
+
+            if (nonEmptySelections.length > 0) {
+                nonEmptySelections.forEach(function (variable) {
+                    var self = this;
+                    vm[variable].forEach(function (item) {
+                        self.uncheckItemAndChildren(item);
+                    }, this);
+                }, this);
+            } else {
+                return null;
+            }
+
+            vm.ExplanationTypeSubSelect = []
+            vm.ExplainabilityTechniqueSubSelect = [];
+            vm.ExplainerConcurrentnessSubSelect = [];
+            vm.ComputationalComplexitySubSelect = [];
+            vm.ImplementationFrameworkSubSelect = [];
+            vm.checkedList = [];
+            vm.ExplanationScopeSubSelect = [];
+            vm.ExplainersSubSelect = [];
+        }
+
+        vm.uncheckItemAndChildren = function (item) {
+            item.checked = false;
+
+            if (item.children && item.children.length > 0) {
+                var self = this;
+                item.children.forEach(function (child) {
+                    self.uncheckItemAndChildren(child);
+                });
+            }
         }
 
         vm.expandAdvancedPropertis = function () {
@@ -1072,31 +1145,16 @@
                     Json: vm.original.Json
                 };
 
-                console.log("************************************");
-                console.log("************************************");
-                console.log("************************************");
-                console.log("************************************");
-                console.log("************************************");
-                console.log(vm.block );
                 //  check if the property that is selected to define its values ​​in the properties component
                 //  is the explain method and the evaluate method or intends
                 switch (vm.original.name) {
                     case "Explanation Method":
-                        vm.ExplanationTypeSubSelect = []
-                        vm.ExplainabilityTechniqueSubSelect = [];
-                        vm.ExplainerConcurrentnessSubSelect = [];
-                        vm.ComputationalComplexitySubSelect = [];
-                        vm.ImplementationFrameworkSubSelect = [];
-                        vm.checkedList = [];
-                        vm.ExplanationScopeSubSelect = [];
-
-                       
-                        vm.TitleName = vm.original.name;
+                        /*
+                        console.log(vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0));
                         if (vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0)) {
                             paramsExpValue(vm.original.title);
-                        }
-                        console.log(vm.original);
-                        console.log(vm.block);
+                        }*/
+
                         if (vm.block.params) {
                             CreateParams(vm.block.params);
                         }
@@ -1105,10 +1163,7 @@
                             _getArrayExplainers();
                             _getArrayExplainersSubstitute();
                         }
-
                         _SearchSubstituteExplainers();
-
-
                         if (vm.original.Json != undefined) {
                             LoadHtmlCode();
 
@@ -1131,7 +1186,6 @@
                         }
 
                         t.blocks.update(vm.original, vm.block);
-
                         AddListAllProperties();
                         break;
                     case "Condition":
@@ -1165,17 +1219,17 @@
                         vm.TitleName = null;
                         vm.TitleSelect = null;
                 }
-                if (vm.original.category == 'composite') {
+
+                if (vm.original.category == "composite" || vm.original.name == "Explanation Method") {
                     vm.ExplanationTypeSubSelect = []
                     vm.ExplainabilityTechniqueSubSelect = [];
                     vm.ExplainerConcurrentnessSubSelect = [];
                     vm.ComputationalComplexitySubSelect = [];
                     vm.ImplementationFrameworkSubSelect = [];
-                    vm.ExplanationScopeSubSelect = [];
                     vm.checkedList = [];
+                    vm.ExplanationScopeSubSelect = [];
                     vm.ExplainersSubSelect = [];
                 }
-
             } else {
                 vm.original = false;
                 vm.block = false;
@@ -1252,7 +1306,6 @@
                     default:
                         break;
                 }
-
             }
         }
 
@@ -1294,8 +1347,6 @@
                         }
                     });
             }
-
-
         }
 
         function GetModelsPublic() {
@@ -1390,6 +1441,94 @@
         }
 
         function submitFormSub(item) {
+
+            var jsonData = {
+                "ExplainabilityTechnique": [],
+                "ExplainerConcurrentness": [],
+                "ComputationalComplexity": [],
+                "ImplementationFramework": [],
+                "ExplanationType": [],
+                "ExplanationScope": [],
+                "checkedList": [],
+                "Explainers": vm.ExplainersSubSelect,
+            };
+
+            if (vm.ExplanationTypeSubSelect.length > 0) {
+                jsonData.ExplanationType = vm.ExplanationTypeSubSelect.map(function (item) {
+                    return {
+                        "key": item.key,
+                        "label": item.label,
+                        "parent": item.parent,
+                        "children": item.children
+                    };
+                });
+            }
+            if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
+                jsonData.ExplainabilityTechnique = vm.ExplainabilityTechniqueSubSelect.map(function (item) {
+                    return {
+                        "key": item.key,
+                        "label": item.label,
+                        "parent": item.parent,
+                        "children": item.children
+                    };
+                });
+            }
+            if (vm.ExplainerConcurrentnessSubSelect.length > 0) {
+                jsonData.ExplainerConcurrentness = vm.ExplainerConcurrentnessSubSelect.map(function (item) {
+                    return {
+                        "key": item.key,
+                        "label": item.label
+                    };
+                });
+            }
+            if (vm.ComputationalComplexitySubSelect.length > 0) {
+                jsonData.ComputationalComplexity = vm.ComputationalComplexitySubSelect.map(function (item) {
+                    return {
+                        "key": item.key,
+                        "label": item.label
+                    };
+                });
+            }
+            if (vm.ImplementationFrameworkSubSelect.length > 0) {
+                jsonData.ImplementationFramework = vm.ImplementationFrameworkSubSelect.map(function (item) {
+                    return {
+                        "key": item.key,
+                        "label": item.label
+                    };
+                });
+            }
+            if (vm.checkedList.length > 0) {
+                jsonData.checkedList = vm.checkedList.map(function (item) {
+                    return {
+                        "key": item.key,
+                        "label": item.label
+                    };
+                });
+            }
+            if (vm.ExplanationScopeSubSelect.length > 0) {
+                jsonData.ExplanationScope = vm.ExplanationScopeSubSelect.map(function (item) {
+                    return {
+                        "key": item.key,
+                        "label": item.label
+                    };
+                });
+            }
+
+            switch (vm.original.category) {
+                case "composite":
+
+                    break;
+                case "Explanation Method":
+                    delete jsonData.Explainers;
+
+                    break;
+                default:
+                    break;
+            }
+            this.closeForm();
+        }
+
+        function GetJsonDataSub(jsonData,) {
 
         }
 
@@ -2183,10 +2322,14 @@
             return propertiesExpl;
         }
 
-        function UpdateProperties(option) {
-            console.log(option);
+        function UpdateProperties(option, block, nodeId) {
+
+
             if (vm.original.name == "Explanation Method") {
-                paramsExp(option);
+                //block canvas
+                var p1 = $window.editor._game.canvas;
+                p1.style.pointerEvents = 'none';
+                paramsExp(option, block, nodeId);
             }
 
             if (vm.original.Json != undefined) {
@@ -2228,7 +2371,8 @@
         }
 
 
-        function change() {
+        function change(block, nodeId) {
+
             switch (vm.original.name) {
                 case "Explanation Method":
                     for (var keyParam in vm.block.params) {
@@ -2407,7 +2551,7 @@
         }
 
 
-        function paramsExp(option) {
+        function paramsExp(option, block, nodeId) {
             var IdModel = "";
 
             for (var i = 0; i < vm.original.parent.children.length; i++) {
@@ -2423,17 +2567,22 @@
             projectModel.getConditionsEvaluationEXP(option, IdModel)
                 .then(function (x) {
                     if (x.params) {
-                        CreateParams(x.params);
-                    }else{
-                        vm.block.params=null;
+                        CreateParams(x.params, block, nodeId);
+                    } else {
+                        vm.block.params = null;
                         vm.ArrayParams = [];
+                        //des block canvas
+                        var p1 = $window.editor._game.canvas;
+                        p1.style.pointerEvents = 'auto';
+
                         update();
                     }
-                    
+
                 });
+
         }
 
-        function CreateParams(params) {
+        function CreateParams(params, block, nodeId) {
             vm.JsonParams = {};
             vm.ArrayParams = [];
             vm.JsonParams = params;
@@ -2486,7 +2635,10 @@
                     fixed: false
                 });
             }
-            change();
+            //des block canvas
+            var p1 = $window.editor._game.canvas;
+            p1.style.pointerEvents = 'auto';
+            change(block, nodeId);
         }
 
         function paramsExpValue(option) {
@@ -2643,10 +2795,6 @@
             //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
-            console.log("-------------");
-            console.log(vm.original);
-            console.log(vm.block);
-            console.log("++++++++++");
             t.blocks.update(vm.original, vm.block);
 
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
