@@ -1,122 +1,167 @@
-b3e.project.TreeManager = function(editor, project) {
+b3e.project.NodeManager = function(editor, project) {
   "use strict";
 
   /**
-   * Adds a new tree to the project.
+   * Register a node to the node list. You can provide:
+   * 
+   * - a `b3.BaseNode` instance.
+   * - a `b3e.Node` instance.
+   * - a generic object containing the node prototype.
    */
-  this.add = function(_id) {
-    var tree;
+  this.add = function(node, isDefault) {
+      if (node.prototype) node = node.prototype;
 
-    if (_id instanceof b3e.tree.Tree) {
-      tree = _id;
-      project.addChild(tree);
-      editor.trigger('treeadded', tree);
-      this.select(tree);
-      
-    } else {
-      project.history._beginBatch();
-      tree = new b3e.tree.Tree(editor, project);
-      var root = tree.blocks.getRoot();
-      project.addChild(tree);
-      editor.trigger('treeadded', tree);
-
-      if (_id) tree._id = _id;
-
-      var node = {
-        name     : tree._id,
-        title    : root.title,
-        category : 'tree', 
-      };
-      project.nodes.add(node, true);
-
-      // select if this is the only tree
-      this.select(tree);
-
-
-      var _old = [this, this.remove, [tree]];
-      var _new = [this, this.add, [tree]];
-      project.history._add(new b3e.Command(_old, _new));
-      project.history._endBatch();
-    }
-
-    return tree;
-  };
-
-  /**
-   * Gets a tree by id.
-   */
-  this.get = function(tree) {
-    if (typeof tree === 'string') {
-      for (var i=0; i<project.children.length; i++) {
-        if (project.children[i]._id === tree) {
-          return project.children[i];
-        }
+      if (project._nodes[node.name]) {
+          return false;
       }
 
-      return undefined;
-    }
+      if (!(node instanceof b3e.Node)) {
+          var n = new b3e.Node(isDefault);
+          n.name = node.name || node.Concept;
+          n.category = node.category;
+          n.title = node.title;
+          n.description = node.description;
+          n.properties = tine.merge({}, node.properties || node.parameters);
+          n.propertyExpl = node.propertyExpl;
+          n.DataType = node.DataType;
+          n.VariableName = node.VariableName;
+          node = n;
 
-    return tree;
-  };
+      }
 
-  this.getSelected = function() {
-    return project._selectedTree;
+      project._nodes[node.name] = node;
+      if (isDefault !== true) editor.trigger('nodeadded', node);
+
+      var _old = [this, this.remove, [node]];
+      var _new = [this, this.add, [node]];
+      project.history._add(new b3e.Command(_old, _new));
+
+      return node;
   };
 
   /**
-   * Select a tree.
+   * 
    */
-  this.select = function(tree) {
-    tree = this.get(tree);
-
-    if (!tree || project.getChildIndex(tree)<0) return;
-    if (project._selectedTree === tree) return;
-    if (project._selectedTree) {
-      project._selectedTree.visible = false;
-      editor.trigger('treedeselected', project._selectedTree);
-    }
-    
-    tree.visible = true;
-    project._selectedTree = tree;
-    editor.trigger('treeselected', tree);
+  this.get = function(node) {
+      if (typeof node !== 'string') return node;
+      return project._nodes[node];
   };
 
   /**
-   * Removes a tree from the project.
+   * 
    */
-  this.remove = function(tree) {
-    project.history._beginBatch();
+  this.update = function(node, template) {
+      node = this.get(node);
+      var oldName = node.name;
 
-    tree = this.get(tree);
+      delete project._nodes[node.name];
 
-    var idx = project.children.indexOf(tree);
-    project.removeChild(tree);
-    project.nodes.remove(tree._id);
-    editor.trigger('treeremoved', tree);
+      if (node.name !== template.name && this.get(template.name)) return false;
 
-    if (project.children.length === 0) {
-      this.add();
-    } else if (tree === project._selectedTree) {
-      this.select(idx===0?project.children[idx]:project.children[idx-1]);
-    }
 
-    var _old = [this, this.add, [tree]];
-    var _new = [this, this.remove, [tree]];
-    project.history._add(new b3e.Command(_old, _new));
-    project.history._endBatch();
+      var _oldValues = {
+          name: node.name,
+          title: node.title,
+          description: node.description,
+          category: node.category,
+          properties: node.properties,
+          propertyExpl: node.propertyExpl,
+          DataType: node.DataType,
+          VariableName: node.VariableName,
+      };
+
+      if (typeof template.name !== 'undefined') {
+          node.name = template.name;
+      }
+      if (typeof template.title !== 'undefined') {
+          node.title = template.title;
+      }
+      if (typeof template.category !== 'undefined') {
+          node.category = template.category;
+      }
+      if (typeof template.description !== 'undefined') {
+          node.description = template.description;
+      }
+      if (typeof template.properties !== 'undefined') {
+          node.properties = tine.merge({}, template.properties);
+      }
+      if (typeof template.propertyExpl !== 'undefined') {
+          node.propertyExpl = tine.merge({}, template.propertyExpl);
+      }
+      if (typeof template.DataType !== 'undefined') {
+          node.DataType = tine.merge({}, template.DataType);
+      }
+      if (typeof template.VariableName !== 'undefined') {
+          node.VariableName = tine.merge({}, template.VariableName);
+      }
+
+      var _newValues = {
+          name: node.name,
+          title: node.title,
+          description: node.description,
+          category: node.category,
+          properties: node.properties,
+          propertyExpl: node.propertyExpl,
+          DataType: node.DataType,
+          VariableName: node.VariableName,
+      };
+
+      project.history._beginBatch();
+
+      project.trees.each(function(tree) {
+          var blocks = tree.blocks.getAll();
+          for (var i = blocks.length - 1; i >= 0; i--) {
+              if (blocks[i].name === oldName) {
+                  tree.blocks.update(blocks[i]);
+              }
+          }
+      });
+
+      project._nodes[node.name] = node;
+
+      var _old = [this, this.update, [node, _oldValues]];
+      var _new = [this, this.update, [node, _newValues]];
+      project.history._add(new b3e.Command(_old, _new));
+      project.history._endBatch();
+
+      editor.trigger('nodechanged', node);
   };
 
   /**
-   * Iterates over tree list.
+   * 
+   */
+  this.remove = function(node) {
+      project.history._beginBatch();
+
+      var name = node.name || node;
+      delete project._nodes[name];
+
+      project.trees.each(function(tree) {
+          var blocks = tree.blocks.getAll();
+          for (var i = blocks.length - 1; i >= 0; i--) {
+              if (blocks[i].name === name) {
+                  tree.blocks.remove(blocks[i]);
+              }
+          }
+      });
+
+      var _old = [this, this.add, [node]];
+      var _new = [this, this.remove, [node]];
+      project.history._add(new b3e.Command(_old, _new));
+
+      project.history._endBatch();
+
+      editor.trigger('noderemoved', node);
+  };
+
+  /**
+   * Iterates over node list.
    */
   this.each = function(callback, thisarg) {
-    project.children.forEach(callback, thisarg);
+      Object.keys(project._nodes).forEach(function(key) {
+          callback.call(thisarg, project._nodes[key]);
+      });
   };
 
-
-  this._applySettings = function(settings) {
-    this.each(function(tree) {
-      tree._applySettings(settings);
-    });
-  };
+  this._applySettings = function(settings) {};
 };
