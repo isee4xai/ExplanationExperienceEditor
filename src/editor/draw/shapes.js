@@ -167,7 +167,48 @@
 
   b3e.draw.actionShape = function (block, settings) {
 
-    var BackGraundColor=['#C5E2FA','#94ccfc','#3380C1'];
+    var Applicability;
+    var PopularityColorBorder = settings.get('block_border_color');
+    var BackGraundColor = ['#C5E2FA', '#94ccfc', '#3380C1'];
+    var bounds = block._displaySymbol.getBounds();
+
+    var w = Math.max(bounds.width + 15, block._width);
+    var h = Math.max(bounds.height + 15, block._height);
+    var anchorOffsetX = settings.get('anchor_offset_x');
+    var shape = block._displayShape;
+    block._width = w;
+    block._height = h;
+
+    var x = 0;
+    var y = 0;
+    if (settings.get('layout') === 'horizontal') {
+      x = w / 2 + anchorOffsetX;
+    } else {
+      y = h / 2 + anchorOffsetX;
+    }
+
+    if (block.properties.Applicability == false ) {
+      Applicability = [8, 4];
+      PopularityColorBorder = "#FF3E31";
+    }
+    makeAnchor(shape, -x, -y,
+      settings.get('anchor_radius'),
+      settings.get('anchor_background_color'),
+      settings.get('anchor_border_width'),
+      settings.get('block_border_color'),
+      Applicability || undefined
+    );
+
+    makeRect(shape, w, h, 15,
+      BackGraundColor[block.properties.Popularity] || settings.get('action_color'),
+      settings.get('block_border_width'),
+      PopularityColorBorder 
+    );
+    return shape;
+  };
+
+  b3e.draw.actionNoRunShape = function (block, settings, border) {
+    var BackGraundColor = ['#C5E2FA', '#94ccfc', '#3380C1'];
     var bounds = block._displaySymbol.getBounds();
 
     var w = Math.max(bounds.width + 15, block._width);
@@ -188,42 +229,6 @@
     makeAnchor(shape, -x, -y,
       settings.get('anchor_radius'),
       settings.get('anchor_background_color'),
-      settings.get('anchor_border_width'),
-      settings.get('block_border_color'),
-    );
-
-    makeRect(shape, w, h, 15,
-      BackGraundColor[block.properties.Popularity] || settings.get('action_color'),
-      settings.get('block_border_width'),
-      settings.get('block_border_color')
-    );
-    return shape;
-  };
-
-
-  b3e.draw.actionNoRunShape = function (block, settings, border) {
-   
-    var BackGraundColor=['#C5E2FA','#94ccfc','#3380C1'];
-    var bounds = block._displaySymbol.getBounds();
-
-    var w = Math.max(bounds.width + 15, block._width);
-    var h = Math.max(bounds.height + 15, block._height);
-    var anchorOffsetX = settings.get('anchor_offset_x');
-    var shape = block._displayShape;
-    block._width = w;
-    block._height = h;
-
-    var x = 0;
-    var y = 0;
-    if (settings.get('layout') === 'horizontal') {
-      x = w / 2 + anchorOffsetX;
-    } else {
-      y = h / 2 + anchorOffsetX;
-    }
-
-    makeAnchor(shape, -x, -y,
-      settings.get('anchor_radius'),
-      settings.get('anchor_background_color') ,
       settings.get('anchor_border_width'),
       "#FF3E31",
       border
