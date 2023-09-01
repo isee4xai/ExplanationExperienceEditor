@@ -944,14 +944,14 @@
 
                     break;
                 case 'Presentation format':
-                    var index = vm.PresentationFormat.findIndex(function (element) {
+                    var index = vm.checkedList.findIndex(function (element) {
                         return element.key === item.key && element.label === item.label;
                     });
 
                     if (index == -1) {
-                        vm.PresentationFormat.push(item);
+                        vm.checkedList.push(item);
                     } else {
-                        vm.PresentationFormat.splice(index, 1);
+                        vm.checkedList.splice(index, 1);
                     }
                     break;
             }
@@ -1028,7 +1028,7 @@
             if (vm.ImplementationFrameworkSubSelect.length > 0) {
                 nonEmptySelections.push('ImplementationFrameworkSub');
             }
-            if (vm.PresentationFormat.length > 0) {
+            if (vm.checkedList.length > 0) {
                 nonEmptySelections.push('PresentationformatSub');
             }
             if (vm.ExplanationScopeSubSelect.length > 0) {
@@ -1054,7 +1054,7 @@
             vm.ExplainerConcurrentnessSubSelect = [];
             vm.ComputationalComplexitySubSelect = [];
             vm.ImplementationFrameworkSubSelect = [];
-            vm.PresentationFormat = [];
+            vm.checkedList = [];
             vm.ExplanationScopeSubSelect = [];
             vm.ExplainersSubSelect = [];
         }
@@ -1132,7 +1132,6 @@
                         ModelGet.query = vm.original.query;
                     }
                 }
-
                 vm.block = {
                     title: vm.original.title,
                     description: vm.original.description,
@@ -1154,8 +1153,7 @@
                         console.log(vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0));
                         if (vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0)) {
                             paramsExpValue(vm.original.title);
-                        }
-                       */
+                        }*/
 
                         if (vm.block.params) {
                             CreateParams(vm.block.params);
@@ -1186,9 +1184,8 @@
                                 miDiv.innerHTML = '';
                             }
                         }
-                        vm.TitleName = vm.original.name;
-                        t.blocks.update(vm.original, vm.block);
 
+                        t.blocks.update(vm.original, vm.block);
                         AddListAllProperties();
                         break;
                     case "Condition":
@@ -1229,7 +1226,7 @@
                     vm.ExplainerConcurrentnessSubSelect = [];
                     vm.ComputationalComplexitySubSelect = [];
                     vm.ImplementationFrameworkSubSelect = [];
-                    vm.PresentationFormat = [];
+                    vm.checkedList = [];
                     vm.ExplanationScopeSubSelect = [];
                     vm.ExplainersSubSelect = [];
                 }
@@ -1445,21 +1442,6 @@
 
         function submitFormSub(item) {
 
-            var jsonDataNew = {
-                "technique": [],
-                "dataset_type": [],
-                "explanation_type": [],
-                "concurrentness": [],
-                "portability": [],
-                "scope": [],
-                "target": [],
-                "presentations": [],
-                "computational_complexity": [],
-                "ai_methods": [],
-                "ai_tasks": [],
-                "implementation": []
-            };
-
             var jsonData = {
                 "ExplainabilityTechnique": [],
                 "ExplainerConcurrentness": [],
@@ -1467,7 +1449,7 @@
                 "ImplementationFramework": [],
                 "ExplanationType": [],
                 "ExplanationScope": [],
-                "PresentationFormat": [],
+                "checkedList": [],
                 "Explainers": vm.ExplainersSubSelect,
             };
 
@@ -1480,10 +1462,6 @@
                         "children": item.children
                     };
                 });
-
-                jsonDataNew.explanation_type = vm.ExplanationTypeSubSelect.map(function (item) {
-                    return item.key;
-                });
             }
             if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
                 jsonData.ExplainabilityTechnique = vm.ExplainabilityTechniqueSubSelect.map(function (item) {
@@ -1494,10 +1472,6 @@
                         "children": item.children
                     };
                 });
-
-                jsonDataNew.technique = vm.ExplainabilityTechniqueSubSelect.map(function (item) {
-                    return item.key;
-                });
             }
             if (vm.ExplainerConcurrentnessSubSelect.length > 0) {
                 jsonData.ExplainerConcurrentness = vm.ExplainerConcurrentnessSubSelect.map(function (item) {
@@ -1505,10 +1479,6 @@
                         "key": item.key,
                         "label": item.label
                     };
-                });
-
-                jsonDataNew.concurrentness = vm.ExplainerConcurrentnessSubSelect.map(function (item) {
-                    return item.key;
                 });
             }
             if (vm.ComputationalComplexitySubSelect.length > 0) {
@@ -1518,11 +1488,6 @@
                         "label": item.label
                     };
                 });
-
-                jsonDataNew.computational_complexity = vm.ComputationalComplexitySubSelect.map(function (item) {
-                    return item.key;
-
-                });
             }
             if (vm.ImplementationFrameworkSubSelect.length > 0) {
                 jsonData.ImplementationFramework = vm.ImplementationFrameworkSubSelect.map(function (item) {
@@ -1531,21 +1496,13 @@
                         "label": item.label
                     };
                 });
-
-                jsonDataNew.implementation = vm.ImplementationFrameworkSubSelect.map(function (item) {
-                    return item.key;
-                });
             }
-            if (vm.PresentationFormat.length > 0) {
-                jsonData.PresentationFormat = vm.PresentationFormat.map(function (item) {
+            if (vm.checkedList.length > 0) {
+                jsonData.checkedList = vm.checkedList.map(function (item) {
                     return {
                         "key": item.key,
                         "label": item.label
                     };
-                });
-
-                jsonDataNew.dataset_type = vm.PresentationFormat.map(function (item) {
-                    return item.key
                 });
             }
             if (vm.ExplanationScopeSubSelect.length > 0) {
@@ -1554,11 +1511,6 @@
                         "key": item.key,
                         "label": item.label
                     };
-                });
-
-                jsonDataNew.scope = vm.ExplanationScopeSubSelect.map(function (item) {
-                    return item.key;
-
                 });
             }
 
@@ -1574,42 +1526,26 @@
                     break;
             }
             this.closeForm();
-            console.log(jsonData);
-            console.log(jsonDataNew);
         }
 
-        function GetJsonDataSub() {
+        function GetJsonDataSub(jsonData,) {
 
         }
-
 
         function SubstituteNodes(NodeSelect) {
-
-            var e = $window.editor.export;
-            var a = e.treeToData();
-
-            var child = a.nodes[NodeSelect.id].firstChild;
-            //selected tree data
-            console.log(a.nodes[NodeSelect.id]);
-            /* 
-            var JsonDataSelect={};
-            JsonDataSelect[NodeSelect.id]=a.nodes[NodeSelect.id];
-            do {
-                JsonDataSelect[child.Id]=a.nodes[child.Id];     
-                child = child.Next;
-            } while (child != null);
-            console.log(JsonDataSelect);
-            */
 
             var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
             if (existDiv.length > 0) {
                 existDiv[0].remove();
             }
 
+
+
             var padre = document.querySelector('.editor-page');
             var divGeneral = document.createElement('div');
 
-
+            divGeneral.style.left = '0';
+            divGeneral.style.right = '0';
 
             divGeneral.style.padding = '10px';
             divGeneral.style.zIndex = '90';
@@ -1992,11 +1928,12 @@
             var editorpricipal = $window.editor;
             var p1 = $window.editor._game.canvas;
 
+
+
             var editor1 = new b3e.editor.Editor();
             editor1.project.create();
-            var p = editor1.project.get();
-
             editor1.applySettingsFormat(editor1._game.canvas);
+            var p = editor1.project.get();
 
             divGeneral.appendChild(editor1._game.canvas);
 
@@ -2028,10 +1965,6 @@
             });
 
             $window.editor._initialize();
-
-            //zoom canvas from 1 to 1.75
-            var tSub = p.trees.getSelected();
-            tSub.view.zoom(1.75);
         }
 
         function CambiarOptionTree(treeId, editor1) {
@@ -2114,7 +2047,6 @@
 
 
         function RunNew(NodeId, block) {
-
             var jsonParam = {};
 
             var loaderDiv = document.querySelector('#loader');
@@ -2392,12 +2324,11 @@
 
         function UpdateProperties(option, block, nodeId) {
 
+
             if (vm.original.name == "Explanation Method") {
                 //block canvas
-                /*
                 var p1 = $window.editor._game.canvas;
                 p1.style.pointerEvents = 'none';
-                */
                 paramsExp(option, block, nodeId);
             }
 
@@ -2419,20 +2350,18 @@
             var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
             //define the properties
 
-
-
             if (selecionado != undefined) {
                 vm.block = {
                     title: selecionado.value,
                     properties: tine.merge({}, selecionado.properties) || null,
                     description: selecionado.description,
-                    propertyExpl: selecionado.propertyExpl,
+                    propertyExpl: selecionado.propertyExpl
                 };
             } else {
                 vm.block = {
                     title: option,
                     properties: tine.merge({}, vm.original.properties),
-                    description: vm.original.description,
+                    description: vm.original.description
                 };
             }
 
@@ -2521,6 +2450,7 @@
                 default:
                     break;
             }
+
             update();
         }
 
@@ -2636,36 +2566,17 @@
 
             projectModel.getConditionsEvaluationEXP(option, IdModel)
                 .then(function (x) {
-                    switch (true) {
-                        case x.hasOwnProperty("params"):
-                            // example of values Popularity and Applicability
-                            vm.block.properties.Popularity = Math.floor(Math.random() * 3);
-                            vm.block.properties.Applicability = Math.random() < 0.5;
+                    if (x.params) {
+                        CreateParams(x.params, block, nodeId);
+                    } else {
+                        vm.block.params = null;
+                        vm.ArrayParams = [];
+                        //des block canvas
+                        var p1 = $window.editor._game.canvas;
+                        p1.style.pointerEvents = 'auto';
 
-                            CreateParams(x.params, block, nodeId);
-                            break;
-                        case x == "Error in computer network communications":
-                            vm.ArrayParams = [];
-                            notificationService.error(
-                                'Error select Explanation Method',
-                                'Error in computer network communications [500]'
-                            );
-                            break;
-                        default:
-                            // example of values Popularity and Applicability
-                            vm.block.properties.Popularity = Math.floor(Math.random() * 3);
-                            vm.block.properties.Applicability = Math.random() < 0.5;
-
-                            vm.ArrayParams = [];
-                            //des block canvas
-                            /*
-                            var p1 = $window.editor._game.canvas;
-                            p1.style.pointerEvents = 'auto';
-                            */
-                            update();
-                            break;
+                        update();
                     }
-
 
                 });
 
@@ -2725,10 +2636,8 @@
                 });
             }
             //des block canvas
-            /*
             var p1 = $window.editor._game.canvas;
             p1.style.pointerEvents = 'auto';
-            */
             change(block, nodeId);
         }
 
@@ -2886,20 +2795,16 @@
             //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
-
-
             t.blocks.update(vm.original, vm.block);
 
             //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
             //returns the position in the AllPropertis
-            /*var estaEnLaLista = vm.AllProperties.findIndex(element => element.id == vm.original.id && vm.original.title == element.value);
-                        console.log(vm.AllProperties);
-            
-                        if (estaEnLaLista != -1) {
-                            vm.AllProperties[estaEnLaLista].description = vm.block.description;
-                            vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
-                        }*/
+            var estaEnLaLista = vm.AllProperties.findIndex(element => element.id == vm.original.id && vm.original.title == element.value);
 
+            if (estaEnLaLista != -1) {
+                vm.AllProperties[estaEnLaLista].description = vm.block.description;
+                vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
+            }
         }
 
         async function RunBt() {

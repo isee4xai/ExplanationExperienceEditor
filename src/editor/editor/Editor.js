@@ -12,8 +12,6 @@
     this._game = null;
     this._settings = new b3e.SettingsManager();
     this._dirty = 0;
-    // canvas [More like this?]
-    this.canvasSub = null
 
     // Systems
     this._systems = [];
@@ -33,6 +31,7 @@
     this._game = new tine.Game(null, {
       update: function () { self._update(); },
     });
+
     this._initialize();
   };
 
@@ -41,6 +40,7 @@
    */
   p._initialize = function () {
     var self = this;
+
     // RESIZE
     var resize = function () {
       self._game.canvas.width = window.innerWidth;
@@ -75,12 +75,6 @@
    * Called by creatine game.
    */
   p._update = function () {
-    //udate canvas  button [more like this?]
-    if (this.canvasSub) {
-      this.canvasSub.style.width = (window.innerWidth -540)/1.5  + "px"  ;
-      this.canvasSub.style.height = window.innerHeight / 2.5 + "px";
-    }
-
     var delta = this._game.time.delta;
     this._systems.forEach(function (system) {
       system.update(delta);
@@ -102,11 +96,10 @@
       settings = b3e.DEFAULT_SETTINGS;
       this._settings.clear();
     }
-    
+
     if (settings) {
       this._settings.load(settings);
     }
-    
     var canvas = this._game.canvas;
     canvas.style.backgroundColor = this._settings.get('background_color');
 
@@ -116,9 +109,10 @@
     this.shortcuts._applySettings(this._settings);
   };
 
-  p.applySettingsFormat = function (div , editor1) {
-    this.canvasSub = div;
+  p.applySettingsFormat = function (div){
     div.style.position = 'relative';
+    div.style.width = "100%";
+    div.style.height = "100%";
     div.style.border = "3px solid black";
 
   };
