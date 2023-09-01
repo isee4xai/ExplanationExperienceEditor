@@ -167,9 +167,7 @@
 
   b3e.draw.actionShape = function (block, settings) {
 
-    var Applicability;
-    var PopularityColorBorder = settings.get('block_border_color');
-    var BackGraundColor = ['#C5E2FA', '#94ccfc', '#3380C1'];
+    var BackGraundColor=['#C5E2FA','#94ccfc','#3380C1'];
     var bounds = block._displaySymbol.getBounds();
 
     var w = Math.max(bounds.width + 15, block._width);
@@ -187,28 +185,25 @@
       y = h / 2 + anchorOffsetX;
     }
 
-    if (block.properties.Applicability == false ) {
-      Applicability = [8, 4];
-      PopularityColorBorder = "#FF3E31";
-    }
     makeAnchor(shape, -x, -y,
       settings.get('anchor_radius'),
       settings.get('anchor_background_color'),
       settings.get('anchor_border_width'),
       settings.get('block_border_color'),
-      Applicability || undefined
     );
 
     makeRect(shape, w, h, 15,
       BackGraundColor[block.properties.Popularity] || settings.get('action_color'),
       settings.get('block_border_width'),
-      PopularityColorBorder 
+      settings.get('block_border_color')
     );
     return shape;
   };
 
+
   b3e.draw.actionNoRunShape = function (block, settings, border) {
-    var BackGraundColor = ['#C5E2FA', '#94ccfc', '#3380C1'];
+   
+    var BackGraundColor=['#C5E2FA','#94ccfc','#3380C1'];
     var bounds = block._displaySymbol.getBounds();
 
     var w = Math.max(bounds.width + 15, block._width);
@@ -228,7 +223,7 @@
 
     makeAnchor(shape, -x, -y,
       settings.get('anchor_radius'),
-      settings.get('anchor_background_color'),
+      settings.get('anchor_background_color') ,
       settings.get('anchor_border_width'),
       "#FF3E31",
       border

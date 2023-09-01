@@ -222,7 +222,7 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         var node = block.node;
         if (node.hasOwnProperty("node")) {
             console.log(node.node);
-            node = node.node
+            node= node.node
         }
 
         if (typeof template.name !== 'undefined') {
@@ -280,13 +280,13 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         } else {
             block.Json = node.Json || block.Json;
         }
-
+        
         // redraw canvas
-        if ( (block.properties.hasOwnProperty("Applicability") && !block.properties.Applicability ) && block.name == "Explanation Method" && block.title != "Explanation Method") {
+        if (!block.properties.Applicability  && block.name == "Explanation Method") {
             block._redraw(true);
-        } else {
+        }else{
             block._redraw();
-        }
+        } 
 
         var _newValues = {
             name: block.name,
@@ -331,22 +331,22 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         editor.trigger('blockchanged', block);
     };
 
-    this.removeMutilple = function (BlockDelete, firstNode) {
+    this.removeMutilple = function (BlockDelete,firstNode) {
         if (firstNode == true && BlocksDelet != []) {
             BlocksDelet = [];
         }
 
         for (let index = 0; index < BlockDelete.length; index++) {
-            BlocksDelet.push(this.removeCategorty(BlockDelete[index]._outBlock));
+            BlocksDelet.push(this.removeCategorty( BlockDelete[index]._outBlock));
         }
 
         if (firstNode == true && BlocksDelet != []) {
             BlocksDelet.forEach(element => {
-
+                
                 if (element._inConnection) {
                     tree.connections.remove(element._inConnection);
                 }
-
+        
                 if (element._outConnections.length > 0) {
                     for (var i = element._outConnections.length - 1; i >= 0; i--) {
                         tree.connections.remove(element._outConnections[i]);
@@ -365,7 +365,7 @@ b3e.tree.BlockManager = function (editor, project, tree) {
                 break;
             case "composite":
             case "decorator":
-                this.removeMutilple(block._outConnections, false);
+                this.removeMutilple(block._outConnections,false);
                 return block;
                 break;
             default:
