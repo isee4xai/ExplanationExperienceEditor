@@ -285,10 +285,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             try {
                 axios.get(server_url + method_url).then(function (response) {
                     resolve(response.data);
-                }, function (err) {
-                    resolve("Error in computer network communications");
                 });
-
             } catch (e) {
                 reject(e);
             }

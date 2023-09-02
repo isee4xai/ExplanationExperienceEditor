@@ -252,7 +252,6 @@
                     reject(e);
                 }
             });
-            
         }
 
         function getExplainers() {

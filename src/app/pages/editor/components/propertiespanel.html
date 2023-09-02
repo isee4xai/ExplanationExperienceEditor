@@ -55,7 +55,15 @@
                     placeholder="Title" ng-keydown="propertiespanel.keydown($event)"
                     ng-model="propertiespanel.block.title" ng-change="propertiespanel.update()">
             </div>
-           
+            <!--
+            <div class="form-group" ng-if="propertiespanel.original.name != 'Condition'">
+                <label for="description">Description</label>
+                <textarea name="description" rows="2" class="form-control" placeholder="Description"
+                    ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.description"
+                    ng-change="propertiespanel.update()">
+                </textarea>
+            </div>
+            -->
             <div class="form-group" ng-if="propertiespanel.original.name == 'Condition'">
                 <div id="header">
                     <ul class="nav">
@@ -79,13 +87,13 @@
                     ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.VariableName"
                     ng-change="propertiespanel.update()">
             </div>
-            
-            <div class="form-group" ng-show="propertiespanel.original.category == 'root'">
+
+            <div class="form-group">
                 <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()"
                     class="no-border">
                 </b3-key-table>
             </div>
-            
+
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <b3-key-table-Expl heading="Properties EXP" ng-model="propertiespanel.block.propertyExpl"
                     class="no-border">
@@ -569,15 +577,15 @@
                                                         is-pen="propertiespanel.ExplainerConcurrentnessAccordionOpen">
                                                         <accordion-heading>
                                                             <span class="placeholder-text"
-                                                                ng-show="propertiespanel.PresentationFormat.length == 0"
+                                                                ng-show="propertiespanel.checkedList.length == 0"
                                                                 class="placeholder-text">
                                                                 Explainer Concurrentnes
                                                             </span>
                                                             <span
-                                                                ng-show="propertiespanel.PresentationFormat.length != 0"
+                                                                ng-show="propertiespanel.checkedList.length != 0"
                                                                 class="selected-formats">
                                                                 <span
-                                                                    ng-repeat="item in propertiespanel.PresentationFormat">
+                                                                    ng-repeat="item in propertiespanel.checkedList">
                                                                     {{item.label}}{{$last ? '' : ', '}} </span>
                                                             </span>
     
