@@ -33,21 +33,6 @@ b3e.tree.BlockManager = function (editor, project, tree) {
                 case "composite":
                 case "decorator":
                     if (element.id == nodeSubRoot.id) {
-                    /*    var block = new b3e.Block(element);
-                        block._applySettings(editor._settings);
-                        block.x = element.x || 0;
-                        block.y = element.y || 0;
-                        block._snap();
-                        tree._blocks.addChild(block);
-
-                        editor.trigger('blockadded', block);
-
-                        var _old = [this, this.remove, [block]];
-                        var _new = [this, this.add, [block, block.x, block.y]];
-                        project.history._add(new b3e.Command(_old, _new));
-
-                        tree.connections.add(nodelSubSelect, block);
-*/
                         var outBlock = this.get(element._outConnections);
                         if (outBlock.length) {
                             outBlock.forEach(elementConection => {
@@ -227,18 +212,19 @@ b3e.tree.BlockManager = function (editor, project, tree) {
             query_id: block.query_id,
             img: block.img,
             Image: block.Image,
-            Json: block.Json
+            Json: block.Json,
+            available: block.available,
+            color: block.color
         };
 
         template = template || {};
 
         var node = block.node;
         if (node.hasOwnProperty("node")) {
-            console.log(block.node);
-            node= node.node
+            console.log(node.node);
+            node = node.node
         }
 
-       
         if (typeof template.name !== 'undefined') {
             block.name = template.name;
         } else {
@@ -274,13 +260,6 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         } else {
             block.VariableName = node.VariableName || block.VariableName;
         }
-        console.log("*********************************");
-        console.log(template.params);
-        console.log(block.params);
-        console.log(node.params);
-        console.log( block.node.node);
-        console.log("*********************************--------------------------------****************************");
-        
         if (typeof template.params !== 'undefined') {
             block.params = tine.merge({}, node.params, template.params);
         } else {
@@ -302,8 +281,12 @@ b3e.tree.BlockManager = function (editor, project, tree) {
             block.Json = node.Json || block.Json;
         }
 
-
-        block._redraw();
+        // redraw canvas
+        if ( (block.properties.hasOwnProperty("Applicability") && !block.properties.Applicability ) && block.name == "Explanation Method" && block.title != "Explanation Method") {
+            block._redraw(true);
+        } else {
+            block._redraw();
+        }
 
         var _newValues = {
             name: block.name,
@@ -348,22 +331,22 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         editor.trigger('blockchanged', block);
     };
 
-    this.removeMutilple = function (BlockDelete,firstNode) {
+    this.removeMutilple = function (BlockDelete, firstNode) {
         if (firstNode == true && BlocksDelet != []) {
             BlocksDelet = [];
         }
 
         for (let index = 0; index < BlockDelete.length; index++) {
-            BlocksDelet.push(this.removeCategorty( BlockDelete[index]._outBlock));
+            BlocksDelet.push(this.removeCategorty(BlockDelete[index]._outBlock));
         }
 
         if (firstNode == true && BlocksDelet != []) {
             BlocksDelet.forEach(element => {
-                
+
                 if (element._inConnection) {
                     tree.connections.remove(element._inConnection);
                 }
-        
+
                 if (element._outConnections.length > 0) {
                     for (var i = element._outConnections.length - 1; i >= 0; i--) {
                         tree.connections.remove(element._outConnections[i]);
@@ -382,7 +365,7 @@ b3e.tree.BlockManager = function (editor, project, tree) {
                 break;
             case "composite":
             case "decorator":
-                this.removeMutilple(block._outConnections,false);
+                this.removeMutilple(block._outConnections, false);
                 return block;
                 break;
             default:
