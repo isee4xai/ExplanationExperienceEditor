@@ -11,6 +11,7 @@
      * @param {Object} node A `b3e.Node` object.
      */
     var Block = function(node) {
+
         this.Container_constructor();
 
         var dict = node.prototype || node;
@@ -58,10 +59,16 @@
      * @method _redraw
      * @protected
      */
-    p._redraw = function() {
+    p._redraw = function(invalid) {
         var name = this.name;
         var category = this.category.toLowerCase();
-        var shape = b3e.draw.SHAPES[category];
+
+        if (invalid) {
+            var shape = b3e.draw.SHAPES["actionNoRun"]; 
+        }else{
+            var shape = b3e.draw.SHAPES[category];
+        }
+
         var symbol = b3e.draw.SYMBOLS[name] || b3e.draw.textSymbol;
 
         this._width = this._settings.get('block_' + category + '_width');
@@ -70,7 +77,14 @@
 
         this._displaySymbol = symbol(this, this._settings);
         this._displayShape.graphics.clear();
-        this._displayShape = shape(this, this._settings);
+
+       
+        if (invalid) {
+            this._displayShape = shape(this, this._settings,[8,4]);
+        }else{
+            this._displayShape = shape(this, this._settings);
+        }
+        
 
         this.addChild(this._displayShape);
         this.addChild(this._displaySymbol);
@@ -94,8 +108,6 @@
         block._applySettings(this._settings);
         block.x = this.x;
         block.y = this.y;
-
-
         return block;
     };
 
