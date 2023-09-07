@@ -221,7 +221,7 @@ b3e.tree.BlockManager = function (editor, project, tree) {
 
         var node = block.node;
         if (node.hasOwnProperty("node")) {
-            console.log(node.node);
+
             node = node.node
         }
 

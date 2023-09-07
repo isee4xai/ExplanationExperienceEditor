@@ -6,7 +6,7 @@
 
         // Variables
         this._id = b3.createUUID();
-        this._editor = editor;
+        this._editor = editor; 
         this._project = project;
         this._selectedBlocks = [];
         this._selectionBox = null;

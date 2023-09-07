@@ -46,7 +46,6 @@ b3e.editor.ImportManager = function (editor) {
                 block.Image = spec.Image;
                 block.Json = spec.Json;
 
-                //
                 var propertiesExpl = {};
                 var ArrayNameProperties = Object.keys(spec);
 
@@ -86,7 +85,7 @@ b3e.editor.ImportManager = function (editor) {
                 block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
                 block.DataType = spec.DataType;
                 block.VariableName = spec.VariableName;
- 
+
                 if (spec.id == "b79d53a4-7145-4ee8-9bfc-b07a32f4c4ad") {
                     Pricipal = block;
                 }
@@ -147,11 +146,11 @@ b3e.editor.ImportManager = function (editor) {
         editor.trigger('treeimported');
 
 
-        var TressOptions= [];
+        var TressOptions = [];
         var selected = p.trees.getSelected();
-        p.trees.each(function(tree) {
-            var root = tree.blocks.getRoot(); 
-               TressOptions.push({
+        p.trees.each(function (tree) {
+            var root = tree.blocks.getRoot();
+            TressOptions.push({
                 'id': tree._id,
                 'name': root.title || 'A behavior tree',
                 'active': tree === selected,
@@ -159,6 +158,119 @@ b3e.editor.ImportManager = function (editor) {
         });
         return TressOptions;
     }
+
+
+    this.NodeAsDataSubti = function (idActive, data, p) {
+        if (!p) return;
+
+        var cont = 0;
+        for (var id in data.OptionsSub) {
+
+            var tree;
+            tree = p.trees.add(id);
+
+            cont++;
+            var spec, display;
+
+            var Pricipal;
+
+            spec = data.OptionsSub[id];
+            var block = null;
+            display = spec[display] || {};
+
+            block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
+            block.id = spec.id;
+            block.title = spec.Instance || spec.title;
+            block.description = spec.description;
+            block.properties = tine.merge({}, block.properties, spec.properties);
+            block.params = tine.merge({}, block.params, spec.params);
+            block.idModel = spec.idModel;
+            block.query = spec.query;
+            block.query_id = spec.query_id;
+            block.img = spec.img;
+            block.Image = spec.Image;
+            block.Json = spec.Json;
+
+            var propertiesExpl = {};
+            var ArrayNameProperties = Object.keys(spec);
+
+            for (var index = 0; index < ArrayNameProperties.length; index++) {
+                switch (ArrayNameProperties[index]) {
+                    case "value":
+                        break;
+                    case "properties":
+                        break;
+                    case "description":
+                        break;
+                    case "id":
+                        break;
+                    case "$$hashKey":
+                        break;
+                    case "Concept":
+                        break;
+                    case "Instance":
+                        break;
+                    case "display":
+                        break;
+                    case "params":
+                        break;
+                    case "Image":
+                        break;
+                    default:
+                        if (Array.isArray(spec[ArrayNameProperties[index]])) {
+
+                            propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                        } else {
+                            propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                        }
+
+                        break;
+                }
+            }
+            block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
+            block.DataType = spec.DataType;
+            block.VariableName = spec.VariableName;
+
+            if (spec.id == idActive) {
+                Pricipal = block;
+            }
+            block._redraw();
+
+
+            var a = tree.blocks.getRoot();
+            if (Pricipal) {
+                tree.connections.add(a, Pricipal);
+                tree.organize.organize(a);
+            }
+            tree.blocks.remove(a);
+
+            p.history.clear();
+
+        }
+
+        var selected = p.trees.getSelected();
+
+        var rootPrincipal;
+
+        tree.selection.deselectAll();
+        p.history.clear();
+        editor.trigger('treeimported');
+
+
+        var TressOptions = [];
+        var selected = p.trees.getSelected();
+        p.trees.each(function (tree) {
+            var root = tree.blocks.getRoot();
+            TressOptions.push({
+                'id': tree._id,
+                'name': root.title || 'A behavior tree',
+                'active': tree === selected,
+            });
+        });
+        return TressOptions;
+    }
+
+
 
     this.treeAsData = function (data) {
         var project = editor.project.get();

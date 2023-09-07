@@ -11,7 +11,6 @@
      * @param {Object} node A `b3e.Node` object.
      */
     var Block = function(node) {
-
         this.Container_constructor();
 
         var dict = node.prototype || node;

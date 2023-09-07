@@ -53,11 +53,13 @@
         // substitute
         vm.FormSubstitute = FormSubstitute;
         vm.SubstituteNodes = SubstituteNodes;
+        vm.SubstituteOneNode = SubstituteOneNode;
         vm.getChildExplanations = getChildExplanations
         vm.hasChildren = hasChildren;
         vm.toggleContent = toggleContent;
         vm.submitFormSub = submitFormSub;
         vm.CambiarOptionTree = CambiarOptionTree;
+        vm.SubstituteNodeLook = SubstituteNodeLook;
         vm.updateNodeSub = updateNodeSub;
 
         vm.explainerAccordionOpen = false
@@ -1576,21 +1578,210 @@
             this.closeForm();
             console.log(jsonData);
             console.log(jsonDataNew);
+
+            /* var OptionNodeSub = {
+                            "OptionsSub": {
+                                "nodes1": {
+                                    "id": "bc77db9f-259e-49e7-8698-06da9c2917fb",
+                                    "Concept": "Explanation Method",
+                                    "Instance": "/Tabular/IREX",
+                                    "description": "",
+                                    "display": {
+                                        "x": 96,
+                                        "y": 252
+                                    },
+                                    "params": {
+                                        "expected_answers": {
+                                            "key": "expected_answers",
+                                            "value": "[ ]",
+                                            "default": "[ ]",
+                                            "range": [
+                                                null,
+                                                null
+                                            ],
+                                            "required": true,
+                                            "description": "Array containing the expected answers (according to experts) to the questions of a questionnaire that supossedly contribute to the target class.",
+                                            "type": "text"
+                                        },
+                                        "threshold": {
+                                            "key": "threshold",
+                                            "value": 0.21,
+                                            "default": 0.01,
+                                            "range": [
+                                                0,
+                                                1
+                                            ],
+                                            "required": "false",
+                                            "description": "A float between 0 and 1 for the threshold that will be used to determine anomalous variables. If a feature seems to be contradictory but its absolute ALE value is below this threshold, it will not be considered anomalous. Defaults to 0.01.",
+                                            "type": "number"
+                                        },
+                                        "classes_to_show": {
+                                            "key": "classes_to_show",
+                                            "value": "[ ]",
+                                            "default": "[ ]",
+                                            "range": [
+                                                null,
+                                                null
+                                            ],
+                                            "required": "false",
+                                            "description": "Array of string representing the names of the classes to be explained. Defaults to all classes.",
+                                            "type": "text"
+                                        }
+                                    }
+                                },
+                                "nodes2": {
+                                    "id": "15ea4e43-aa05-4015-a839-e965bcbd62ec",
+                                    "Concept": "Explanation Method",
+                                    "Instance": "/Tabular/ALE",
+                                    "description": "",
+                                    "display": {
+                                        "x": 96,
+                                        "y": 276
+                                    },
+                                    "params": {
+                                        "features_to_show": {
+                                            "key": "features_to_show",
+                                            "value": [
+                                                "reduction_previous_period",
+                                                "Media ¡_migrañas/mes_pretto",
+                                                "Migrañas/mes_(3m)"
+                                            ],
+                                            "default": [
+                                                "reduction_previous_period",
+                                                "Media ¡_migrañas/mes_pretto",
+                                                "Migrañas/mes_(3m)"
+                                            ],
+                                            "range": [
+                                                "reduction_previous_period",
+                                                "Media ¡_migrañas/mes_pretto",
+                                                "Migrañas/mes_(3m)"
+                                            ],
+                                            "required": "false",
+                                            "description": "Array of strings representing the name of the features to be explained. Defaults to all features.",
+                                            "type": "checkbox"
+                                        }
+                                    },
+                                    "Json": {
+                                        "type": "html",
+                                        "explanation": " <!DOCTYPE html> <html lang='en'> <head> <title>explainerdashboard</title> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'> <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js' integrity='sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB' crossorigin='anonymous'></script> <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js' integrity='sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13' crossorigin='anonymous'></script> </head> <body>  <div class='container'>  <div class='card h-100' >   <div class='card-header'><h3 class='card-title'>PR AUC Plot for Class Positive</h3><h6 class='card-subtitle'>Trade-off between Precision and Recall</h6></div>   <div class='card-body'>     <div class='w-100'>      <div class='row' style='margin-top: 20px;'>      <div class='col'> <div>                        <script type='text/javascript'>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>         <script charset='utf-8' src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>                <div id='ae7b1f13-90e5-4292-9c3f-3022205fa732' class='plotly-graph-div' style='height:100%; width:100%;'></div>            <script type='text/javascript'>                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById('ae7b1f13-90e5-4292-9c3f-3022205fa732')) {                    Plotly.newPlot(                        'ae7b1f13-90e5-4292-9c3f-3022205fa732',                        [{'hoverinfo':'text','mode':'lines','name':'PR AUC CURVE','text':['threshold: 0.21 <br>precision: 0.50 <br>recall: 1.00','threshold: 0.25 <br>precision: 0.51 <br>recall: 1.00','threshold: 0.25 <br>precision: 0.49 <br>recall: 0.96','threshold: 0.27 <br>precision: 0.51 <br>recall: 0.96','threshold: 0.27 <br>precision: 0.52 <br>recall: 0.92','threshold: 0.30 <br>precision: 0.53 <br>recall: 0.92','threshold: 0.31 <br>precision: 0.54 <br>recall: 0.92','threshold: 0.33 <br>precision: 0.56 <br>recall: 0.92','threshold: 0.33 <br>precision: 0.56 <br>recall: 0.90','threshold: 0.33 <br>precision: 0.57 <br>recall: 0.90','threshold: 0.33 <br>precision: 0.56 <br>recall: 0.88','threshold: 0.34 <br>precision: 0.55 <br>recall: 0.82','threshold: 0.37 <br>precision: 0.55 <br>recall: 0.80','threshold: 0.38 <br>precision: 0.55 <br>recall: 0.76','threshold: 0.38 <br>precision: 0.54 <br>recall: 0.74','threshold: 0.39 <br>precision: 0.55 <br>recall: 0.74','threshold: 0.40 <br>precision: 0.55 <br>recall: 0.72','threshold: 0.40 <br>precision: 0.54 <br>recall: 0.70','threshold: 0.40 <br>precision: 0.53 <br>recall: 0.68','threshold: 0.41 <br>precision: 0.52 <br>recall: 0.66','threshold: 0.41 <br>precision: 0.51 <br>recall: 0.58','threshold: 0.43 <br>precision: 0.52 <br>recall: 0.56','threshold: 0.43 <br>precision: 0.53 <br>recall: 0.56','threshold: 0.46 <br>precision: 0.52 <br>recall: 0.54','threshold: 0.47 <br>precision: 0.51 <br>recall: 0.52','threshold: 0.48 <br>precision: 0.52 <br>recall: 0.52','threshold: 0.49 <br>precision: 0.52 <br>recall: 0.50','threshold: 0.49 <br>precision: 0.53 <br>recall: 0.50','threshold: 0.50 <br>precision: 0.52 <br>recall: 0.48','threshold: 0.50 <br>precision: 0.51 <br>recall: 0.44','threshold: 0.50 <br>precision: 0.50 <br>recall: 0.42','threshold: 0.50 <br>precision: 0.49 <br>recall: 0.40','threshold: 0.51 <br>precision: 0.46 <br>recall: 0.36','threshold: 0.52 <br>precision: 0.45 <br>recall: 0.28','threshold: 0.53 <br>precision: 0.41 <br>recall: 0.24','threshold: 0.54 <br>precision: 0.39 <br>recall: 0.22','threshold: 0.56 <br>precision: 0.41 <br>recall: 0.22','threshold: 0.58 <br>precision: 0.46 <br>recall: 0.22','threshold: 0.61 <br>precision: 0.43 <br>recall: 0.20','threshold: 0.63 <br>precision: 0.42 <br>recall: 0.16','threshold: 0.64 <br>precision: 0.33 <br>recall: 0.10','threshold: 0.67 <br>precision: 0.36 <br>recall: 0.10','threshold: 0.68 <br>precision: 0.31 <br>recall: 0.08','threshold: 0.69 <br>precision: 0.25 <br>recall: 0.06','threshold: 0.70 <br>precision: 0.30 <br>recall: 0.06','threshold: 0.70 <br>precision: 0.33 <br>recall: 0.06','threshold: 0.71 <br>precision: 0.38 <br>recall: 0.06','threshold: 0.77 <br>precision: 0.43 <br>recall: 0.06','threshold: 0.78 <br>precision: 0.33 <br>recall: 0.04','threshold: 0.79 <br>precision: 0.20 <br>recall: 0.02','threshold: 0.79 <br>precision: 0.25 <br>recall: 0.02','threshold: 0.81 <br>precision: 0.50 <br>recall: 0.02','threshold: 0.83 <br>precision: 1.00 <br>recall: 0.02'],'x':[0.5,0.5050505050505051,0.4948453608247423,0.5052631578947369,0.5227272727272727,0.5287356321839081,0.5411764705882353,0.5609756097560976,0.5625,0.569620253164557,0.5641025641025641,0.5540540540540541,0.547945205479452,0.5507246376811594,0.5441176470588235,0.5522388059701493,0.5454545454545454,0.5384615384615384,0.53125,0.5238095238095238,0.5087719298245614,0.5185185185185185,0.5283018867924528,0.5192307692307693,0.5098039215686274,0.52,0.5208333333333334,0.5319148936170213,0.5217391304347826,0.5116279069767442,0.5,0.4878048780487805,0.46153846153846156,0.45161290322580644,0.41379310344827586,0.39285714285714285,0.4074074074074074,0.4583333333333333,0.43478260869565216,0.42105263157894735,0.3333333333333333,0.35714285714285715,0.3076923076923077,0.25,0.3,0.3333333333333333,0.375,0.42857142857142855,0.3333333333333333,0.2,0.25,0.5,1.0,1.0],'y':[1.0,1.0,0.96,0.96,0.92,0.92,0.92,0.92,0.9,0.9,0.88,0.82,0.8,0.76,0.74,0.74,0.72,0.7,0.68,0.66,0.58,0.56,0.56,0.54,0.52,0.52,0.5,0.5,0.48,0.44,0.42,0.4,0.36,0.28,0.24,0.22,0.22,0.22,0.2,0.16,0.1,0.1,0.08,0.06,0.06,0.06,0.06,0.06,0.04,0.02,0.02,0.02,0.02,0.0],'type':'scatter'}],                        {'hovermode':'closest','plot_bgcolor':'#fff','title':{'text':'PR AUC CURVE'},'xaxis':{'constrain':'domain','range':[0,1],'title':{'text':'Precision'}},'yaxis':{'constrain':'domain','range':[0,1],'scaleanchor':'x','scaleratio':1,'title':{'text':'Recall'}},'template':{'data':{'scatter':[{'type':'scatter'}]}},'annotations':[{'align':'right','showarrow':false,'text':'pr-auc-score: 0.50','x':0.15,'xanchor':'left','y':0.4,'yanchor':'top'},{'align':'right','showarrow':false,'text':'cutoff: 0.50','x':0.15,'xanchor':'left','y':0.35,'yanchor':'top'},{'align':'right','showarrow':false,'text':'precision: 0.50','x':0.15,'xanchor':'left','y':0.3,'yanchor':'top'},{'align':'right','showarrow':false,'text':'recall: 0.42','x':0.15,'xanchor':'left','y':0.25,'yanchor':'top'}],'shapes':[{'line':{'color':'lightslategray','width':1},'type':'line','x0':0,'x1':1,'xref':'x','y0':0.42,'y1':0.42,'yref':'y'},{'line':{'color':'lightslategray','width':1},'type':'line','x0':0.5,'x1':0.5,'xref':'x','y0':0,'y1':1,'yref':'y'}],'margin':{'t':40,'b':40,'l':40,'r':40}},                        {'responsive': true}                    )                };                            </script>        </div> </div>          </div>           </div>   </div> </div>  </div>  </body>  <script type='text/javascript'> window.dispatchEvent(new Event('resize')); </script>          </html>     "
+                                    }
+                                }
+                            }
+                        }
+                        */
+            switch (vm.original.category) {
+                case "action":
+                    var OptionNodeSub = [
+                        "/Images/Anchors",
+                        "/Images/GradCam",
+                        "/Misc/AIModelPerformance",
+                        "/Tabular/ALE",
+                        "/Tabular/DicePrivate"
+                    ]
+
+                    SubstituteOneNode(OptionNodeSub, vm.original, vm.block);
+                    break;
+                case "composite":
+                    var OptionNodeSub = [
+                        "Sequence",
+                        "Priority",
+                        "Supplement",
+                        "Replacement"
+                    ]
+                    break;
+                default:
+                    break;
+            }
         }
 
         function GetJsonDataSub() {
 
         }
 
+        function SubstituteOneNode(OptionNodeSub, NodeSelect, block) {
+
+            var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
+            if (existDiv.length > 0) {
+                existDiv[0].remove();
+            }
+
+            var padre = document.querySelector('.editor-page');
+            var divGeneral = document.createElement('div');
+            divGeneral.style.padding = '10px';
+            divGeneral.style.zIndex = '90';
+            divGeneral.style.borderRadius = "10px 0 0 10px";
+            divGeneral.style.marginRight = "250px";
+            divGeneral.style.marginLeft = "260px";
+            divGeneral.style.marginBottom = "20px";
+            divGeneral.style.bottom = '0';
+            divGeneral.style.position = 'absolute';
+            divGeneral.className = "mi-divCanvasGeneral";
+            padre.appendChild(divGeneral);
+
+
+            var divbuttons = document.createElement('div');
+            divbuttons.style.overflowX = 'auto';
+            divbuttons.style.whiteSpace = 'nowrap';
+            divbuttons.style.backgroundColor = "#454545";
+            //   divbuttons.style.marginRight = "auto";
+            divbuttons.style.marginBottom = "2px";
+            divbuttons.className = "mi-divButtons";
+            divGeneral.appendChild(divbuttons);
+
+            CreateButtonExit(divGeneral, padre, true);
+
+            var editorpricipal = $window.editor;
+            var canvasPopup = editorpricipal.applySettingsFormatOnlyNode(divGeneral, OptionNodeSub[0], vm.original.category, false);
+            divbuttons.style.width = canvasPopup.width + 3 + "px";
+
+            var cont = 0;
+            var NodeSelect;
+            var categoryNode = vm.original.category;
+            OptionNodeSub.forEach(element => {
+                var button = document.createElement('button');
+                button.textContent = 'Botón';
+                if (cont != 0) {
+                    button.style.marginLeft = "5px";
+                }
+                button.textContent = 'Substitute ' + (cont + 1);
+                button.style.backgroundColor = '#2f2f2f';
+                button.style.border = "none";
+                button.addEventListener('click', function () {
+                    editorpricipal.applySettingsFormatOnlyNode(divGeneral, element, categoryNode, canvasPopup);
+                    divbuttons.style.width = canvasPopup.width + 3 + "px";
+                    NodeSelect = element;
+                }); 
+                divbuttons.appendChild(button);
+
+                var buttonAdd = document.createElement('button');
+                buttonAdd.insertAdjacentHTML('beforeend', '<i class="fas fa-plus"></i> ');
+                buttonAdd.style.backgroundColor = '#47A447';
+                buttonAdd.style.border = "none";
+                buttonAdd.addEventListener('click', function () {
+                    UpdateProperties(element, block, NodeSelect.id);
+                    divGeneral.remove();
+                });
+                divbuttons.appendChild(buttonAdd);
+                cont++;
+            });
+        }
+
+        function SubstituteNodeLook() {
+
+        }
 
         function SubstituteNodes(NodeSelect) {
-
             var e = $window.editor.export;
             var a = e.treeToData();
-
-            var child = a.nodes[NodeSelect.id].firstChild;
+            // var child = a.nodes[NodeSelect.id].firstChild;
             //selected tree data
-            console.log(a.nodes[NodeSelect.id]);
+
+            var Node = {
+                [NodeSelect.id]: a.nodes[NodeSelect.id]
+            }
+            console.log(Node);
+
+            //console.log(a.nodes[NodeSelect.id]);
             /* 
             var JsonDataSelect={};
             JsonDataSelect[NodeSelect.id]=a.nodes[NodeSelect.id];
@@ -1609,8 +1800,6 @@
             var padre = document.querySelector('.editor-page');
             var divGeneral = document.createElement('div');
 
-
-
             divGeneral.style.padding = '10px';
             divGeneral.style.zIndex = '90';
             divGeneral.style.borderRadius = "10px 0 0 10px";
@@ -1622,13 +1811,6 @@
             divGeneral.className = "mi-divCanvasGeneral";
             padre.appendChild(divGeneral);
 
-            var canvas = document.createElement('div');
-            canvas.style.backgroundColor = 'red';
-            canvas.style.width = '100%';
-            canvas.style.position = 'absolute';
-            canvas.className = "mi-divCanvas";
-            divGeneral.appendChild(canvas);
-
             var divbuttons = document.createElement('div');
             divbuttons.style.width = '100%';
             divbuttons.style.marginRight = "auto";
@@ -1636,41 +1818,6 @@
             divGeneral.appendChild(divbuttons);
 
             CreateButtonExit(divGeneral, padre, true);
-            /*
-                        var padre = document.querySelector('.editor-page');
-                        var divGeneral = document.createElement('div');
-                        divGeneral.style.left = '0';
-                        divGeneral.style.right = '0';
-                        divGeneral.style.backgroundColor = 'black';
-                        divGeneral.style.padding = '10px';
-                        divGeneral.style.zIndex = '90';
-                        divGeneral.style.opacity = "1";
-                        divGeneral.style.marginRight = "250px";
-                        divGeneral.style.marginLeft = "250px";
-                        divGeneral.style.bottom = '0';
-                        divGeneral.style.position = 'fixed';
-                        divGeneral.style.height = '500px';
-                        divGeneral.className = "mi-divCanvasGeneral";
-                        padre.appendChild(divGeneral);
-            
-                        var canvas = document.createElement('div');
-                        canvas.style.backgroundColor = 'red';
-                        canvas.style.width = '100%';
-                        canvas.style.position = 'fixed';
-                        canvas.className = "mi-divCanvas";
-            
-            
-                        var divbuttons = document.createElement('div');
-                        divbuttons.style.width = '100%';
-                        divbuttons.style.marginRight = "auto";
-                        divbuttons.className = "mi-divButtons";
-            
-                        divGeneral.appendChild(canvas);
-            
-                        divGeneral.appendChild(divbuttons);
-            
-                        CreateButtonExit(divGeneral, padre, true);
-            */
             /*
             var a = {
                 "nodes": {
@@ -2041,14 +2188,17 @@
 
             var t = p.trees.getSelected();
             var s = t.blocks.getAll();
-
+            //zoom canvas from 1 to 1.75
+            t.view.zoom(1.75);
             return s;
         }
         function updateNodeSub(TreeSub, nodeSelect, editor1, aaa, divGeneral) {
             if (aaa == undefined) {
                 aaa = CambiarOptionTree(TreeSub, editor1)
             }
+
             var pSub = editor1.project.get();
+            pSub.trees.select(TreeSub.id);
             var tSub = pSub.trees.getSelected();
             var sSub = tSub.blocks.getAll();
             tSub.selection.deselectAll();
@@ -2112,6 +2262,18 @@
             update();
         }
 
+        function removeBase64Header(base64String) {
+            const comaIndex = base64String.indexOf(",");
+
+            if (comaIndex <= 0) {
+                return base64String;
+            }
+
+            const base64WithoutHeader = base64String.substring(comaIndex + 1);
+
+            return base64WithoutHeader;
+        }
+
 
         function RunNew(NodeId, block) {
 
@@ -2132,9 +2294,12 @@
                 params: jsonParam
             };
 
-            if (isBase64Image(vm.IdModel.query)) {
-                jsonObjectInstance.instance = vm.IdModel.query;
-                jsonObjectInstance.type = "image"
+            if (vm.IdModel.hasOwnProperty('img')) {
+                if (isBase64Image(vm.IdModel.img)) {
+                    const base64SinEncabezado = removeBase64Header(vm.IdModel.img);
+                    jsonObjectInstance.instance = base64SinEncabezado;
+                    jsonObjectInstance.type = "image"
+                }
             } else {
                 if (esJSONValido(vm.IdModel.query)) {
                     jsonObjectInstance.instance = JSON.parse(vm.IdModel.query);
@@ -2247,6 +2412,20 @@
         }
 
         function isBase64Image(str) {
+            var validImageHeaders = [
+                'data:image/jpeg;base64,',
+                'data:image/png;base64,',
+                'data:image/gif;base64,'
+            ];
+
+            for (const header of validImageHeaders) {
+                if (str.startsWith(header)) {
+                    return true;
+                }
+            }
+
+            return false;
+            /*
             if (str === '' || str.trim() === '') {
                 return false;
             }
@@ -2254,7 +2433,7 @@
                 return btoa(atob(str)) == str;
             } catch (err) {
                 return false;
-            }
+            }*/
         }
 
         function esJSONValido(cadena) {
@@ -2574,13 +2753,9 @@
                     CreateButtonExit(nuevoDiv, padre, true);
                 }
             }
-
-
         }
 
         function CreateButtonExit(nuevoDiv, padre, DeleteButton) {
-
-
             var divElement = document.createElement('div');
             divElement.style.position = 'fixed';
 
@@ -2588,7 +2763,7 @@
             divElement.style.right = '0';
             divElement.style.width = '30px';
             divElement.style.height = '30px';
-            divElement.style.borderRadius = '50%';
+            divElement.style.paddingLeft = ' 4px';
             divElement.style.cursor = 'pointer';
             divElement.style.marginRight = "250px";
             divElement.style.marginLeft = "255px";
@@ -2596,9 +2771,9 @@
             divElement.style.bottom = (nuevoDiv.offsetHeight - 5) + 'px';
             divElement.className = "mi.close";
             //Insert icon 
-            divElement.innerHTML = '<i class="fa fa-times" aria-hidden="true" style="color: red; font-size: 30px;"></i>';
+            divElement.innerHTML = '<i class="fa fa-times-circle" aria-hidden="true" style="color: red; font-size: 30px;"></i>';
 
-            padre.appendChild(divElement);
+            nuevoDiv.appendChild(divElement);
             divElement.addEventListener('click', function () {
                 divElement.remove();
                 nuevoDiv.remove();

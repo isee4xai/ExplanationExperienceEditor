@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 31/08/23";
+        vm.date = "version 07/09/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -428,7 +428,7 @@
             tree.organize.organize();
             return false;
         }
-
+ 
         function onZoomIn() {
             var tree = _getTree();
             tree.view.zoomIn();

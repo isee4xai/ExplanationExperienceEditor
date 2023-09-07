@@ -16,7 +16,7 @@
     ];
 
     function ImportController($scope,
-        $window,
+        $window, 
         $state,
         $stateParams,
         dialogService,
@@ -29,7 +29,7 @@
         vm.loadFromFile = loadFromFile;
         vm.data = '';
         vm.loadArchive = loadArchive;
-
+ 
         _active();
 
         function _active() {
@@ -62,22 +62,20 @@
 
                     reader.onload = function (e) {
                         var content = e.target.result;  
-                        vm.data = content;
+                        $scope.$apply(function () {
+                            vm.data = content;
+                        });
                     };
-
                     reader.readAsText(file);
                 }
             });
-
             inputElement.click();
         }
 
         function open() {
             var i = $window.editor.import;
-            console.log(vm.data);
-            var data = JSON.parse(vm.data);
-
-            try {
+            try { 
+                var data = JSON.parse(vm.data);
                 if (vm.type === 'project' && vm.format === 'json') {
                     i.projectAsData(data);
                 } else if (vm.type === 'tree' && vm.format === 'json') {

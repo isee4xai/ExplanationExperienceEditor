@@ -77,7 +77,7 @@
   p._update = function () {
     //udate canvas  button [more like this?]
     if (this.canvasSub) {
-      this.canvasSub.style.width = (window.innerWidth -540)/1.5  + "px"  ;
+      this.canvasSub.style.width = (window.innerWidth - 540) / 1.5 + "px";
       this.canvasSub.style.height = window.innerHeight / 2.5 + "px";
     }
 
@@ -102,11 +102,11 @@
       settings = b3e.DEFAULT_SETTINGS;
       this._settings.clear();
     }
-    
+
     if (settings) {
       this._settings.load(settings);
     }
-    
+
     var canvas = this._game.canvas;
     canvas.style.backgroundColor = this._settings.get('background_color');
 
@@ -116,11 +116,54 @@
     this.shortcuts._applySettings(this._settings);
   };
 
-  p.applySettingsFormat = function (div , editor1) {
+  p.applySettingsFormatOnlyNode = function (div, blockTitle, category, canvasPopup) {
+      var p = this.project.get();
+      var tree = p.trees.getSelected();
+      var block = new b3e.Block(blockTitle);
+    if (canvasPopup == false) {
+      var canvas = document.createElement('canvas');
+      
+      block.category = category,
+      block.title = blockTitle,
+      block._applySettings(this._settings);
+      block.x = block._width;
+      block.y = block._height;
+
+      canvas.setAttribute('width', block._width * tree.scaleX * 2);
+      canvas.setAttribute('height', block._height * tree.scaleY * 2);
+      canvas.style.border = '3px solid black';
+      canvas.style.backgroundColor = '#2f2f2f';
+
+      var stage = new createjs.Stage(canvas);
+      stage.scaleX = 1;
+      stage.scaleY = 1;
+      stage.addChild(block);
+      stage.update();
+      div.appendChild(canvas);
+    } else {
+      block.category = category,
+      block.title = blockTitle,
+      block._applySettings(this._settings);
+      block.x = block._width;
+      block.y = block._height;
+
+      canvasPopup.setAttribute('width', block._width * tree.scaleX * 2);
+      canvasPopup.setAttribute('height', block._height * tree.scaleY * 2);
+
+      var stage = new createjs.Stage(canvasPopup);
+      stage.scaleX = 1;
+      stage.scaleY = 1;
+      stage.addChild(block);
+      stage.update();
+      div.appendChild(canvasPopup);
+    }
+    return canvas;
+  }
+
+  p.applySettingsFormat = function (div, block) {
     this.canvasSub = div;
     div.style.position = 'relative';
     div.style.border = "3px solid black";
-
   };
 
   p.preview = function (name) {

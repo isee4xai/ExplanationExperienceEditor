@@ -266,7 +266,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             } catch (e) {
                 reject(e);
             }
-        });
+        }); 
     }
 
 
