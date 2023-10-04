@@ -13,25 +13,27 @@ b3e.editor.ImportManager = function (editor) {
         editor.trigger('projectimported');
     };
 
-    this.treeAsDataSubti = function (data, p) {
+    this.treeAsDataSubti = function (data, p, rootNode) {
         if (!p) return;
 
+  var tree;
         var cont = 0;
-        for (var nodesOp in data.OptionsSub) {
-            var tree;
+        data.forEach(Option => {
+          
             if (cont == 0) {
-                tree = p.trees.add("b79d53a4-7145-4ee8-9bfc-b07a32f4c4ad");
+                tree = p.trees.add(rootNode);
             } else {
-                tree = p.trees.add("a850c76b-395c-471b-85f8-62997123e4c1");
+                tree = p.trees.add(rootNode + '-opcion'+cont+'');
             }
             cont++;
             var spec, display;
-
             var Pricipal;
-            for (var id in data.OptionsSub[nodesOp]) {
-                spec = data.OptionsSub[nodesOp][id];
+
+            for (var id in Option.trees[0].nodes) {
+                spec = Option.trees[0].nodes[id];
                 var block = null;
                 display = spec.display || {};
+
 
                 block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
                 block.id = spec.id;
@@ -86,16 +88,17 @@ b3e.editor.ImportManager = function (editor) {
                 block.DataType = spec.DataType;
                 block.VariableName = spec.VariableName;
 
-                if (spec.id == "b79d53a4-7145-4ee8-9bfc-b07a32f4c4ad") {
+                if (spec.id == rootNode) {
                     Pricipal = block;
                 }
                 block._redraw();
             }
-
-            for (var id in data.OptionsSub[nodesOp]) {
-                spec = data.OptionsSub[nodesOp][id];
+          
+            for (var id in Option.trees[0].nodes) {
+                spec = Option.trees[0].nodes[id];
 
                 var inBlock = tree.blocks.get(id);
+             
                 var children = null;
                 var outBlock;
 
@@ -123,10 +126,11 @@ b3e.editor.ImportManager = function (editor) {
                     outBlock = tree.blocks.get(RouteOfObjectId);
                     tree.connections.add(inBlock, outBlock);
                 }
-
             }
 
-            var a = tree.blocks.getRoot();
+            var a = tree.blocks.getRoot();  
+            // display 
+            a.y = -200;
             if (Pricipal) {
                 tree.connections.add(a, Pricipal);
                 tree.organize.organize(a);
@@ -135,13 +139,16 @@ b3e.editor.ImportManager = function (editor) {
 
             p.history.clear();
 
-        }
+
+        });
 
         var selected = p.trees.getSelected();
 
         var rootPrincipal;
-
+       if (tree != undefined) {
         tree.selection.deselectAll();
+       }
+        
         p.history.clear();
         editor.trigger('treeimported');
 

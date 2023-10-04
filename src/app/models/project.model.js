@@ -51,6 +51,9 @@
             GetSimNL: GetSimNL,
             GetDesciptionExplainer: GetDesciptionExplainer,
             UpdateJsonQuey: UpdateJsonQuey,
+            getSimilarityValueExplainers:getSimilarityValueExplainers,
+            getAllExplainerProperties:getAllExplainerProperties,
+            getProjecAllData:getProjecAllData,
             GetInstanceModelSelect
         };
         return service;
@@ -121,6 +124,25 @@
                     recentCache = data;
                 }
                 resolve(recentCache);
+            });
+        }
+
+        function getProjecAllData(project) {
+            return $q(function (resolve, reject) {
+                try {
+                    project = project || currentProject;
+                   const promise = Promise.resolve(storageService.getProjecAllDataService(project.path));
+                   promise
+                       .then((value) => {
+                           resolve(value);
+                       })
+                       .catch((err) => {
+                        reject(e);
+                       });
+
+                } catch (e) {
+                    reject(e);
+                }
             });
         }
 
@@ -385,10 +407,29 @@
             project = project || currentProject;
             project.data = editorService.exportProject();
 
-            return project.data.trees[0];;
+            return project.data.trees[0];
         }
 
+        // SUSTITUTE 
 
+        function getSimilarityValueExplainers(callback){
+           storageService.getSimilarityValueExplainersService((error, similarity) => {
+            if (error) {
+                callback(error.message, null);
+            } else {
+                callback(null, similarity);
+            }
+          });
+        }
 
+        function getAllExplainerProperties(callback){
+            storageService.getAllExplainerPropertiesService((error, explainers ) => {
+             if (error) {
+                 callback(error.message, null);
+             } else {
+                 callback(null, explainers );
+             }
+           });
+         }
     }
 })();

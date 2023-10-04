@@ -28,6 +28,11 @@ b3e.tree.BlockManager = function (editor, project, tree) {
      * nodeSubRoot : node that you wanted to replace, contains a block
      */
     this.AddTreeBlockSub = function (sSub, nodelSubSelect, nodeSubRoot) {
+
+        if (nodeSubRoot.id.includes("-opcion")) {
+            nodeSubRoot.id = nodeSubRoot.id.slice(0, -8)
+        }
+
         sSub.forEach(element => {
             switch (element.category) {
                 case "composite":
@@ -221,7 +226,6 @@ b3e.tree.BlockManager = function (editor, project, tree) {
 
         var node = block.node;
         if (node.hasOwnProperty("node")) {
-
             node = node.node
         }
 
@@ -282,7 +286,7 @@ b3e.tree.BlockManager = function (editor, project, tree) {
         }
 
         // redraw canvas
-        if ( (block.properties.hasOwnProperty("Applicability") && !block.properties.Applicability ) && block.name == "Explanation Method" && block.title != "Explanation Method") {
+        if ((block.properties.hasOwnProperty("Applicability") && !block.properties.Applicability) && block.name == "Explanation Method" && block.title != "Explanation Method") {
             block._redraw(true);
         } else {
             block._redraw();

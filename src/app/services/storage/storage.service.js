@@ -34,13 +34,30 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         GetSimNLStorage: GetSimNLStorage,
         GetDesciptionExplainerStorage: GetDesciptionExplainerStorage,
         UpdateJsonQueyStorage: UpdateJsonQueyStorage,
-        GetInstanceModelSelectStorage: GetInstanceModelSelectStorage
+        GetInstanceModelSelectStorage: GetInstanceModelSelectStorage,
+        getSimilarityValueExplainersService: getSimilarityValueExplainersService,
+        getAllExplainerPropertiesService: getAllExplainerPropertiesService,
+        getProjecAllDataService: getProjecAllDataService
     };
     return service;
 
     function save(path, data) {
         storage.save(path, data);
     }
+
+    function getProjecAllDataService(path) {
+        return $q(function (resolve, reject) {
+            try {
+                if (localStorage.getItem(path) != null) {
+                    $http.get(SettingsAddres.httpAddresProjectsPath + path).success(function (dataJson) {
+                        resolve(dataJson)
+                    });
+                }
+            } catch (e) {
+                reject(e);
+            }
+        });
+    } 
 
     function saveJson(path, data) {
         return $q(function (resolve, reject) {
@@ -208,6 +225,8 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         });
     }
 
+    //Sub
+
     async function loadExplainersSubstitute() {
         var UrlCSV = "https://raw.githubusercontent.com/isee4xai/iSeeUtilities/main/ExplainerSimilarities/detail_with_weight.csv";
         var datos = [];
@@ -234,6 +253,37 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             }
         });
     }
+
+    async function getSimilarityValueExplainersService(callback) {
+        var UrlCSV = "https://raw.githubusercontent.com/isee4xai/iSeeUtilities/main/ExplainerSimilarities/detail_with_weight.csv";
+
+        axios.get(UrlCSV).then((response) => {
+            if (response.status !== 200) {
+                callback('Failed to fetch CSV data', null);
+                return;
+            }
+            callback(null, response.data);
+        })
+            .catch((error) => {
+                callback(error.message, null);
+            });
+    }
+
+    async function getAllExplainerPropertiesService(callback) {
+        var Url = "https://api-onto-dev.isee4xai.com/api/explainers/list";
+
+        axios.get(Url).then((response) => {
+            if (response.status !== 200) {
+                callback('Failed to fetch Explainer Properties', null);
+                return;
+            }
+            callback(null, response.data);
+        })
+            .catch((error) => {
+                callback(error.message, null);
+            });
+    }
+
 
     async function GetSimNLStorage(SubNameChange) {
 
@@ -266,7 +316,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             } catch (e) {
                 reject(e);
             }
-        }); 
+        });
     }
 
 
@@ -275,12 +325,18 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.httpAddresExplanations;
         //We set the method from which we want to take the params
+        console.log("**///**//***//**/");
+        console.log(method);
+        console.log(IdModel);
 
         if (IdModel == "" || IdModel == undefined) {
             var method_url = method;
         } else {
             var method_url = method + "/" + IdModel;
         }
+        console.log(method_url);
+        console.log(server_url + method_url);
+
         return $q(function (resolve, reject) {
             try {
                 axios.get(server_url + method_url).then(function (response) {
@@ -297,7 +353,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     async function loadModelsPrivate(idModelUrl) {
         //cambiar cuando me pasen la url
-        var server_url = SettingsAddres.httpAddresModels +"/alias/"+ idModelUrl;
+        var server_url = SettingsAddres.httpAddresModels + "/alias/" + idModelUrl;
 
         return $q(function (resolve, reject) {
             try {
@@ -399,10 +455,12 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             data: Json
         };
 
+        console.log(config);
         return $q(function (resolve, reject) {
             try {
                 axios(config)
                     .then(function (response) {
+                        console.log(response);
                         resolve(response.data)
                     })
                     .catch((error) => {
@@ -524,6 +582,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             }
         });
     }
+
 
 }
 

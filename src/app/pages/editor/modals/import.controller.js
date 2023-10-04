@@ -16,7 +16,7 @@
     ];
 
     function ImportController($scope,
-        $window, 
+        $window,
         $state,
         $stateParams,
         dialogService,

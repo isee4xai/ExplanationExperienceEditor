@@ -116,21 +116,21 @@
     this.shortcuts._applySettings(this._settings);
   };
 
-  p.applySettingsFormatOnlyNode = function (div, blockTitle, category, canvasPopup) {
+  p.applySettingsFormatOnlyNode = function (div, blockTitle, category) {
       var p = this.project.get();
       var tree = p.trees.getSelected();
       var block = new b3e.Block(blockTitle);
-    if (canvasPopup == false) {
+  
       var canvas = document.createElement('canvas');
       
       block.category = category,
       block.title = blockTitle,
       block._applySettings(this._settings);
-      block.x = block._width;
-      block.y = block._height;
+      block.x = block._width/1.2;
+      block.y = block._height*1.2;
 
-      canvas.setAttribute('width', block._width * tree.scaleX * 2);
-      canvas.setAttribute('height', block._height * tree.scaleY * 2);
+      canvas.setAttribute('width', block._width/1.2 * tree.scaleX * 2);
+      canvas.setAttribute('height', block._height*1.2 * tree.scaleY * 2);
       canvas.style.border = '3px solid black';
       canvas.style.backgroundColor = '#2f2f2f';
 
@@ -140,23 +140,7 @@
       stage.addChild(block);
       stage.update();
       div.appendChild(canvas);
-    } else {
-      block.category = category,
-      block.title = blockTitle,
-      block._applySettings(this._settings);
-      block.x = block._width;
-      block.y = block._height;
-
-      canvasPopup.setAttribute('width', block._width * tree.scaleX * 2);
-      canvasPopup.setAttribute('height', block._height * tree.scaleY * 2);
-
-      var stage = new createjs.Stage(canvasPopup);
-      stage.scaleX = 1;
-      stage.scaleY = 1;
-      stage.addChild(block);
-      stage.update();
-      div.appendChild(canvasPopup);
-    }
+   
     return canvas;
   }
 

@@ -89,7 +89,7 @@ function notificationService($window, $timeout, $compile, $rootScope, $sce) {
 
   function notify(config) {
     _note(config);
-  }
+  } 
   function simple(title, message) {
     _note({title:title, message:message, type:'default'});
   }
