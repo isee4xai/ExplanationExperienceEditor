@@ -77,8 +77,8 @@
   p._update = function () {
     //udate canvas  button [more like this?]
     if (this.canvasSub) {
-      this.canvasSub.style.width = (window.innerWidth - 540) / 1.5 + "px";
-      this.canvasSub.style.height = window.innerHeight / 2.5 + "px";
+      this.canvasSub.style.width =  window.innerWidth < 1400 ? "400px" : window.innerWidth / 3.5 + "px";
+      this.canvasSub.style.height = window.innerHeight < 747 ? "250px" : window.innerHeight / 3.5 + "px";
     }
 
     var delta = this._game.time.delta;
@@ -146,7 +146,7 @@
 
   p.applySettingsFormat = function (div, block) {
     this.canvasSub = div;
-    div.style.position = 'relative';
+    div.style.backgroundColor = '#2f2f2f';
     div.style.border = "3px solid black";
   };
 

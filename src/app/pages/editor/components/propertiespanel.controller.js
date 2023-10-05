@@ -1478,6 +1478,7 @@
 
             if (vm.ExplanationTypeSubSelect.length > 0) {
                 jsonDataNew.explanation_type = vm.ExplanationTypeSubSelect.map(function (item) {
+                    console.log(item);
                     return item.key;
                 });
             }
@@ -2545,6 +2546,10 @@
                                         }
                     */
                     var editor1 = new b3e.editor.Editor();
+                    console.log(editor1);
+                    editor1.scaleX = 1.5;
+                    editor1.scaleY =1.5;
+                    
                     editor1.project.create();
                     var p = editor1.project.get();
 
@@ -2553,7 +2558,6 @@
                     divGeneral.appendChild(editor1._game.canvas);
 
                     var TressOptions = editor1.import.treeAsDataSubti(a, p, a[0].trees[0].root);
-                    console.log(TressOptions);
                     TressOptions.shift();
                     var cont = 0;
                     var aaa;
@@ -2608,7 +2612,7 @@
             if (aaa == undefined) {
                 aaa = CambiarOptionTree(TreeSub, editor1)
             }
-
+ 
             var pSub = editor1.project.get();
             pSub.trees.select(TreeSub.id);
 

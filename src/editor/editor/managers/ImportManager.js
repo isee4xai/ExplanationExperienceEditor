@@ -130,7 +130,9 @@ b3e.editor.ImportManager = function (editor) {
 
             var a = tree.blocks.getRoot();  
             // display 
-            a.y = -200;
+            a.y = -300;
+            a.x = -200;
+            
             if (Pricipal) {
                 tree.connections.add(a, Pricipal);
                 tree.organize.organize(a);
