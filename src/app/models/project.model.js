@@ -54,6 +54,7 @@
             getSimilarityValueExplainers:getSimilarityValueExplainers,
             getAllExplainerProperties:getAllExplainerProperties,
             getProjecAllData:getProjecAllData,
+            getExplainerFieldsFiltered : getExplainerFieldsFiltered,
             GetInstanceModelSelect
         };
         return service;
@@ -428,6 +429,18 @@
                  callback(error.message, null);
              } else {
                  callback(null, explainers );
+             }
+           });
+         }
+
+        // FORM DATA 
+
+        function getExplainerFieldsFiltered(callback){
+            storageService.getExplainerFieldsFilteredService((error, data) => {
+             if (error) {
+                 callback(error.message, null);
+             } else {
+                 callback(null, data);
              }
            });
          }

@@ -122,567 +122,567 @@
 
         vm.filterSubitemClick = filterSubitemClick;
 
+        /*
+    vm.ExplanationTypeSub = [
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
+            "label": "Feature Influence Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Anchor_Explanation",
+                    "label": "Anchor Explanation",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Contrasting_Feature_Importance_Explanation",
+                    "label": "Contrasting Feature Importance Explanation",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Contribution_Distribution_Explanation",
+                    "label": "Contribution Distribution Explanation",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Saliency_Map",
+                    "label": "Saliency Map",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Sensitivity_Map",
+                    "label": "Sensitivity Map",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Neighbourhood_Explanation",
+            "label": "Neighbourhood Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Prototype_Explanation",
+            "label": "Prototype Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Semi-factual_Explanation",
+            "label": "Semi-factual Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "https://purl.org/heals/eo#CaseBasedExplanation",
+            "label": "Case Based Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "https://purl.org/heals/eo#ContextualExplanation",
+            "label": "Contextual Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Introspective_Explanation",
+                    "label": "Introspective Explanation",
+                    "parent": "https://purl.org/heals/eo#ContextualExplanation",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Rationalisation_Explanation",
+                    "label": "Rationalisation Explanation",
+                    "parent": "https://purl.org/heals/eo#ContextualExplanation",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "https://purl.org/heals/eo#CounterfactualExplanation",
+            "label": "Counterfactual Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "https://purl.org/heals/eo#DataExplanation",
+            "label": "Data Explanation",
+            "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
+            "children": []
+        },
+        {
+            "key": "https://purl.org/heals/eo#EverydayExplanation",
+            "label": "Everyday Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": [
+                {
+                    "key": "https://purl.org/heals/eo#ClinicalPearl",
+                    "label": "Clinical Pearls",
+                    "parent": "https://purl.org/heals/eo#EverydayExplanation",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "https://purl.org/heals/eo#ImpactExplanation",
+            "label": "Impact Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": [
+                {
+                    "key": "https://purl.org/heals/eo#FairnessExplanation",
+                    "label": "Fairness Explanation",
+                    "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "https://purl.org/heals/eo#RationaleExplanation",
+            "label": "Rationale Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": [
+                {
+                    "key": "https://purl.org/heals/eo#TraceBasedExplanation",
+                    "label": "Trace Based Explanation",
+                    "parent": "https://purl.org/heals/eo#RationaleExplanation",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "https://purl.org/heals/eo#ResponsibilityExplanation",
+            "label": "Responsibility Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
+            "label": "Safety and Performance Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": [
+                {
+                    "key": "https://purl.org/heals/eo#DataExplanation",
+                    "label": "Data Explanation",
+                    "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
+                    "children": []
+                },
+                {
+                    "key": "https://purl.org/heals/eo#FairnessExplanation",
+                    "label": "Fairness Explanation",
+                    "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "https://purl.org/heals/eo#SimulationBasedExplanation",
+            "label": "Simulation Based Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "https://purl.org/heals/eo#StatisticalExplanation",
+            "label": "Statistical Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": []
+        },
+        {
+            "key": "https://purl.org/heals/eo#scientificExplanation",
+            "label": "Scientific Explanation",
+            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
+            "children": [
+                {
+                    "key": "https://purl.org/heals/eo#Evidence_Based_Explanation",
+                    "label": "Evidence Based Explanation",
+                    "parent": "https://purl.org/heals/eo#scientificExplanation",
+                    "children": []
+                },
+                {
+                    "key": "https://purl.org/heals/eo#Mechanistic_Explanation",
+                    "label": "Mechanistic Explanation",
+                    "parent": "https://purl.org/heals/eo#scientificExplanation",
+                    "children": []
+                }
+            ]
+        }
 
-        vm.ExplanationTypeSub = [
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                "label": "Feature Influence Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Anchor_Explanation",
-                        "label": "Anchor Explanation",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Contrasting_Feature_Importance_Explanation",
-                        "label": "Contrasting Feature Importance Explanation",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Contribution_Distribution_Explanation",
-                        "label": "Contribution Distribution Explanation",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Saliency_Map",
-                        "label": "Saliency Map",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Sensitivity_Map",
-                        "label": "Sensitivity Map",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Neighbourhood_Explanation",
-                "label": "Neighbourhood Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Prototype_Explanation",
-                "label": "Prototype Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Semi-factual_Explanation",
-                "label": "Semi-factual Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "https://purl.org/heals/eo#CaseBasedExplanation",
-                "label": "Case Based Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "https://purl.org/heals/eo#ContextualExplanation",
-                "label": "Contextual Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Introspective_Explanation",
-                        "label": "Introspective Explanation",
-                        "parent": "https://purl.org/heals/eo#ContextualExplanation",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Rationalisation_Explanation",
-                        "label": "Rationalisation Explanation",
-                        "parent": "https://purl.org/heals/eo#ContextualExplanation",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "https://purl.org/heals/eo#CounterfactualExplanation",
-                "label": "Counterfactual Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "https://purl.org/heals/eo#DataExplanation",
-                "label": "Data Explanation",
-                "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                "children": []
-            },
-            {
-                "key": "https://purl.org/heals/eo#EverydayExplanation",
-                "label": "Everyday Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": [
-                    {
-                        "key": "https://purl.org/heals/eo#ClinicalPearl",
-                        "label": "Clinical Pearls",
-                        "parent": "https://purl.org/heals/eo#EverydayExplanation",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "https://purl.org/heals/eo#ImpactExplanation",
-                "label": "Impact Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": [
-                    {
-                        "key": "https://purl.org/heals/eo#FairnessExplanation",
-                        "label": "Fairness Explanation",
-                        "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "https://purl.org/heals/eo#RationaleExplanation",
-                "label": "Rationale Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": [
-                    {
-                        "key": "https://purl.org/heals/eo#TraceBasedExplanation",
-                        "label": "Trace Based Explanation",
-                        "parent": "https://purl.org/heals/eo#RationaleExplanation",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "https://purl.org/heals/eo#ResponsibilityExplanation",
-                "label": "Responsibility Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                "label": "Safety and Performance Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": [
-                    {
-                        "key": "https://purl.org/heals/eo#DataExplanation",
-                        "label": "Data Explanation",
-                        "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                        "children": []
-                    },
-                    {
-                        "key": "https://purl.org/heals/eo#FairnessExplanation",
-                        "label": "Fairness Explanation",
-                        "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "https://purl.org/heals/eo#SimulationBasedExplanation",
-                "label": "Simulation Based Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "https://purl.org/heals/eo#StatisticalExplanation",
-                "label": "Statistical Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": []
-            },
-            {
-                "key": "https://purl.org/heals/eo#scientificExplanation",
-                "label": "Scientific Explanation",
-                "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-                "children": [
-                    {
-                        "key": "https://purl.org/heals/eo#Evidence_Based_Explanation",
-                        "label": "Evidence Based Explanation",
-                        "parent": "https://purl.org/heals/eo#scientificExplanation",
-                        "children": []
-                    },
-                    {
-                        "key": "https://purl.org/heals/eo#Mechanistic_Explanation",
-                        "label": "Mechanistic Explanation",
-                        "parent": "https://purl.org/heals/eo#scientificExplanation",
-                        "children": []
-                    }
-                ]
-            }
-
-        ];
-        vm.ExplainabilityTechniqueSub = [
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Activation_Clusters",
-                "label": "Activation Clusters",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": []
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                "label": "Architecture Modification",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Attention_Network",
-                        "label": "Attention Network",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Layer_Modification",
-                        "label": "Layer Modification",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Loss_Modification",
-                        "label": "Loss Modification",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Model_Combination",
-                        "label": "Model Combination",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Composite",
-                "label": "Composite",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": []
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
-                "label": "Data-driven",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Caption_Generation",
-                        "label": "Caption Generation",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#DisCERN",
-                        "label": "DisCERN",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                "label": "Feature Relevance",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Game_Theory_Technique",
-                        "label": "Game Theory Technique",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                        "children": [
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#SHAP",
-                                "label": "SHAP",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Game_Theory_Technique",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                        "label": "Gradient-based Technique",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                        "children": [
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#Contrasting_Gradient_Technique",
-                                "label": "Contrasting Gradient Technique",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                                "children": []
-                            },
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#DeepLIFT",
-                                "label": "DeepLIFT",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                                "children": []
-                            },
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#GradCam_Technique",
-                                "label": "GradCam Technique",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                                "children": []
-                            },
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#Integrated_Gradient_Technique",
-                                "label": "Integrated Gradient Technique",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                                "children": []
-                            },
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#SmoothGrad_Technique",
-                                "label": "SmoothGrad Technique",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                        "label": "Influence Function",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                        "children": [
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#ALE",
-                                "label": "ALE",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                                "children": []
-                            },
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#Individual_Condition_Expectation_Plot",
-                                "label": "Individual Condition Expectation Plot",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                                "children": []
-                            },
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#Partial_Dependence_Plot",
-                                "label": "Partial Dependence Plot",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Saliency",
-                        "label": "Saliency",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                        "children": [
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#Hidden-layer_Clustering",
-                                "label": "Hidden-layer Clustering",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#Saliency",
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Filter",
-                "label": "Filter",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": []
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Knowledge_Extraction",
-                "label": "Knowledge Extraction",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": []
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
-                "label": "Optimisation Based",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#DiCE",
-                        "label": "DiCE",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Wachter",
-                        "label": "Wachter",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Probabilistic",
-                "label": "Probabilistic",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": []
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                "label": "Simplification",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#SimplicationByWeightsDropout",
-                        "label": "Simplication By Weights Dropout",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByDecisionTree",
-                        "label": "Simplification By Decision Tree",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByForests",
-                        "label": "Simplification By Forests",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Proxy_Model",
-                        "label": "Simplification By Linear Proxy Model",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                        "children": []
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Regression",
-                        "label": "Simplification By Linear Regression",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                        "children": [
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#LIME",
-                                "label": "LIME",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Regression",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByRule_Extraction",
-                        "label": "Simplification By Rule Extraction",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                        "children": [
-                            {
-                                "key": "http://www.w3id.org/iSeeOnto/explainer#Anchor",
-                                "label": "Anchor",
-                                "parent": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByRule_Extraction",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationBykNN",
-                        "label": "Simplification By kNN",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Statistics",
-                "label": "Statistics",
-                "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-                "children": [
-                    {
-                        "key": "http://www.w3id.org/iSeeOnto/explainer#Conditional_Plots",
-                        "label": "Conditional Plots",
-                        "parent": "http://www.w3id.org/iSeeOnto/explainer#Statistics",
-                        "children": []
-                    }
-                ]
-            }
-        ];
-        vm.ExplainerConcurrentnessSub = [
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#ante-hoc",
-                "label": "Ante-hoc"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#post-hoc",
-                "label": "Post-hoc"
-            }
-        ];
-        vm.ExplanationScopeSub = [
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#cohort",
-                "label": "Cohort"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#global",
-                "label": "Global"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#local",
-                "label": "Local"
-            }
-        ];
-        vm.ComputationalComplexitySub = [
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Constant_time",
-                "label": "Constant time"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Exponential_time",
-                "label": "Exponential time"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Factorial_time",
-                "label": "Factorial time"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Linearithmic_time",
-                "label": "Linearithmic time"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Log-logarithmic_time",
-                "label": "Log-logarithmic time"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Logarithmic_time",
-                "label": "Logarithmic time"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Quadratic_time",
-                "label": "Quadratic time"
-            }
-        ];
-        vm.ImplementationFrameworkSub = [
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Any",
-                "label": "Any"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#LightGBM",
-                "label": "LightGBM"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#PyTorch",
-                "label": "PyTorch"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#Sklearn",
-                "label": "Sklearn"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#TensorFlow1",
-                "label": "TensorFlow 1"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#TensorFlow2",
-                "label": "TensorFlow 2"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#XGBoost",
-                "label": "XGBoost"
-            }
-        ];
-        vm.PresentationformatSub = [
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#text",
-                "label": "Text"
-            },
-            {
-                "key": 'http://www.w3id.org/iSeeOnto/explainer#multivariate',
-                "label": "multivariate"
-            },
-            {
-                "key": "http://www.w3id.org/iSeeOnto/explainer#image",
-                "label": "Image"
-            }
-        ];
+    ];
+    vm.ExplainabilityTechniqueSub = [
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Activation_Clusters",
+            "label": "Activation Clusters",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": []
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
+            "label": "Architecture Modification",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Attention_Network",
+                    "label": "Attention Network",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Layer_Modification",
+                    "label": "Layer Modification",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Loss_Modification",
+                    "label": "Loss Modification",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Model_Combination",
+                    "label": "Model Combination",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Composite",
+            "label": "Composite",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": []
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
+            "label": "Data-driven",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Caption_Generation",
+                    "label": "Caption Generation",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#DisCERN",
+                    "label": "DisCERN",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
+            "label": "Feature Relevance",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Game_Theory_Technique",
+                    "label": "Game Theory Technique",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
+                    "children": [
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#SHAP",
+                            "label": "SHAP",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Game_Theory_Technique",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
+                    "label": "Gradient-based Technique",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
+                    "children": [
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#Contrasting_Gradient_Technique",
+                            "label": "Contrasting Gradient Technique",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
+                            "children": []
+                        },
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#DeepLIFT",
+                            "label": "DeepLIFT",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
+                            "children": []
+                        },
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#GradCam_Technique",
+                            "label": "GradCam Technique",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
+                            "children": []
+                        },
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#Integrated_Gradient_Technique",
+                            "label": "Integrated Gradient Technique",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
+                            "children": []
+                        },
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#SmoothGrad_Technique",
+                            "label": "SmoothGrad Technique",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
+                    "label": "Influence Function",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
+                    "children": [
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#ALE",
+                            "label": "ALE",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
+                            "children": []
+                        },
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#Individual_Condition_Expectation_Plot",
+                            "label": "Individual Condition Expectation Plot",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
+                            "children": []
+                        },
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#Partial_Dependence_Plot",
+                            "label": "Partial Dependence Plot",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Saliency",
+                    "label": "Saliency",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
+                    "children": [
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#Hidden-layer_Clustering",
+                            "label": "Hidden-layer Clustering",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Saliency",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Filter",
+            "label": "Filter",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": []
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Knowledge_Extraction",
+            "label": "Knowledge Extraction",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": []
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
+            "label": "Optimisation Based",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#DiCE",
+                    "label": "DiCE",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Wachter",
+                    "label": "Wachter",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Probabilistic",
+            "label": "Probabilistic",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": []
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+            "label": "Simplification",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplicationByWeightsDropout",
+                    "label": "Simplication By Weights Dropout",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByDecisionTree",
+                    "label": "Simplification By Decision Tree",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByForests",
+                    "label": "Simplification By Forests",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Proxy_Model",
+                    "label": "Simplification By Linear Proxy Model",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+                    "children": []
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Regression",
+                    "label": "Simplification By Linear Regression",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+                    "children": [
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#LIME",
+                            "label": "LIME",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Regression",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByRule_Extraction",
+                    "label": "Simplification By Rule Extraction",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+                    "children": [
+                        {
+                            "key": "http://www.w3id.org/iSeeOnto/explainer#Anchor",
+                            "label": "Anchor",
+                            "parent": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByRule_Extraction",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationBykNN",
+                    "label": "Simplification By kNN",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Statistics",
+            "label": "Statistics",
+            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
+            "children": [
+                {
+                    "key": "http://www.w3id.org/iSeeOnto/explainer#Conditional_Plots",
+                    "label": "Conditional Plots",
+                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Statistics",
+                    "children": []
+                }
+            ]
+        }
+    ];
+    vm.ExplainerConcurrentnessSub = [
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#ante-hoc",
+            "label": "Ante-hoc"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#post-hoc",
+            "label": "Post-hoc"
+        }
+    ];
+    vm.ExplanationScopeSub = [
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#cohort",
+            "label": "Cohort"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#global",
+            "label": "Global"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#local",
+            "label": "Local"
+        }
+    ];
+    vm.ComputationalComplexitySub = [
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Constant_time",
+            "label": "Constant time"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Exponential_time",
+            "label": "Exponential time"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Factorial_time",
+            "label": "Factorial time"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Linearithmic_time",
+            "label": "Linearithmic time"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Log-logarithmic_time",
+            "label": "Log-logarithmic time"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Logarithmic_time",
+            "label": "Logarithmic time"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Quadratic_time",
+            "label": "Quadratic time"
+        }
+    ];
+    vm.ImplementationFrameworkSub = [
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Any",
+            "label": "Any"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#LightGBM",
+            "label": "LightGBM"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#PyTorch",
+            "label": "PyTorch"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#Sklearn",
+            "label": "Sklearn"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#TensorFlow1",
+            "label": "TensorFlow 1"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#TensorFlow2",
+            "label": "TensorFlow 2"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#XGBoost",
+            "label": "XGBoost"
+        }
+    ];
+    vm.PresentationformatSub = [
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#text",
+            "label": "Text"
+        },
+        {
+            "key": 'http://www.w3id.org/iSeeOnto/explainer#multivariate',
+            "label": "multivariate"
+        },
+        {
+            "key": "http://www.w3id.org/iSeeOnto/explainer#image",
+            "label": "Image"
+        }
+    ];  */
         vm.ExplainersSub = [
             "/Images/Anchors",
             "/Images/GradCam",
@@ -722,6 +722,17 @@
             "/Timeseries/iGenCBR",
             "/Misc/AIModelPerformance"
         ]
+
+
+        vm.ExplanationTypeSub = null;
+        vm.ExplainabilityTechniqueSub = null;
+        vm.ExplainerConcurrentnessSub = null;
+        vm.ExplanationScopeSub = null;
+        vm.ComputationalComplexitySub = null;
+        vm.ImplementationFrameworkSub = null;
+        vm.PresentationformatSub = null;
+        //  vm.ExplainersSub = null;
+
 
         vm.convertToObjects = function () {
             if (vm.ExplainersSub[0].hasOwnProperty("checked")) {
@@ -1448,11 +1459,47 @@
             }
         }
 
-        function FormSubstitute() {
-            var modalFormSub = document.getElementById("formSubstitute");
-            modalFormSub.style.display = "block";
+        async function FormSubstitute() {
+            try {
+                if (vm.ExplanationTypeSub == null) {
+                    notificationService.load(
+                        'Loading', 'Please wait while your request is being processed...'
+                    );
+                    await getExplainerDataForm();
+                }
+                var modalFormSub = document.getElementById("formSubstitute");
+                modalFormSub.style.display = "block";
+                vm.ExplainersSub = vm.convertToObjects();
 
-            vm.ExplainersSub = vm.convertToObjects();
+
+            } catch (error) {
+                console.log(error);
+                notificationService.error(
+                    'An error occurred. Please try again later.'
+                );
+            }
+        }
+
+        function getExplainerDataForm() {
+
+            return new Promise((resolve, reject) => {
+                projectModel.getExplainerFieldsFiltered((error, explainers) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        console.log(explainers);
+                        vm.ExplanationTypeSub = explainers.Explanation.children;
+                        vm.ExplainabilityTechniqueSub = explainers.ExplainabilityTechnique.children;
+                        vm.ExplainerConcurrentnessSub = explainers.Concurrentness;
+                        vm.ExplanationScopeSub = explainers.Scope;
+                        vm.ComputationalComplexitySub = explainers.ComputationalComplexity;
+                        vm.ImplementationFrameworkSub = explainers.Implementation_Framework;
+                        vm.PresentationformatSub = explainers.DatasetType;
+                        resolve();
+                    }
+                });
+            });
+
         }
 
         async function submitFormSub(item) {
@@ -1477,14 +1524,28 @@
             };
 
             if (vm.ExplanationTypeSubSelect.length > 0) {
-                jsonDataNew.explanation_type = vm.ExplanationTypeSubSelect.map(function (item) {
-                    console.log(item);
-                    return item.key;
+                vm.ExplanationTypeSubSelect.forEach(function (item) {
+                    if (item.children.length == 0) {
+                        jsonDataNew.explanation_type.push(item.key);
+                    } else {
+                        item.children.forEach(function (element) {
+                            jsonDataNew.explanation_type.push(element.key);
+                        });
+                    }
+
                 });
             }
             if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
-                jsonDataNew.technique = vm.ExplainabilityTechniqueSubSelect.map(function (item) {
-                    return item.key;
+
+                vm.ExplainabilityTechniqueSubSelect.forEach(function (item) {
+                    if (item.children.length == 0) {
+                        jsonDataNew.technique.push(item.key);
+                    } else {
+                        item.children.forEach(function (element) {
+                            jsonDataNew.technique.push(element.key);
+                        });
+                    }
+
                 });
             }
             if (vm.ExplainerConcurrentnessSubSelect.length > 0) {
@@ -1552,7 +1613,6 @@
                         }
 
                     } catch (error) {
-                        console.log(error);
                         notificationService.error(
                             'An error occurred. Please try again later.'
                         );
@@ -1577,7 +1637,6 @@
             return new Promise((resolve, reject) => {
                 projectModel.getAllExplainerProperties((error, explainers) => {
                     if (error) {
-                        console.log('Failed to retrieve explainer properties. Please try again later.');
                         reject(error);
                     } else {
                         vm.AllExplainerSubstitute = explainers;
@@ -1592,7 +1651,6 @@
             return new Promise((resolve, reject) => {
                 projectModel.getSimilarityValueExplainers((error, similarity) => {
                     if (error) {
-                        console.log('errror en la llamada');
                         reject(error);
                     } else {
                         Papa.parse(similarity, {
@@ -1608,7 +1666,6 @@
                                 resolve();
                             },
                             error: function (error) {
-                                console.log('error');
                                 reject(error);
                             },
                         });
@@ -2546,10 +2603,8 @@
                                         }
                     */
                     var editor1 = new b3e.editor.Editor();
-                    console.log(editor1);
                     editor1.scaleX = 1.5;
-                    editor1.scaleY =1.5;
-                    
+                    editor1.scaleY = 1.5;
                     editor1.project.create();
                     var p = editor1.project.get();
 
@@ -2612,7 +2667,7 @@
             if (aaa == undefined) {
                 aaa = CambiarOptionTree(TreeSub, editor1)
             }
- 
+
             var pSub = editor1.project.get();
             pSub.trees.select(TreeSub.id);
 
@@ -2987,53 +3042,51 @@
         }
 
         async function UpdateProperties(option, block, nodeId) {
-
-            var Continue = true;
-            if (vm.original.name == "Explanation Method") {
-                await paramsExp(option, block, nodeId)
-                    .catch((error) => {
-                        Continue = false;
-                    });
-            }
-            if (Continue) {
-                if (vm.original.Json != undefined) {
-                    vm.original.Json = undefined;
-                    const miDiv = document.getElementById('mi-div');
-                    if (miDiv !== null) {
-                        miDiv.innerHTML = "";
-                    }
-                } else if (vm.original.Image != undefined) {
-                    vm.original.Image = undefined;
-                    if (document.getElementById("ImgExpl") !== null) {
-                        document.getElementById("ImgExpl").src = "";
-                    }
+          
+            if (option != block.title) {
+                var Continue = true;
+                if (vm.original.name == "Explanation Method") {
+                    await paramsExp(option, block, nodeId)
+                        .catch((error) => {
+                            Continue = false;
+                        });
                 }
+                if (Continue) {
+                    if (vm.original.Json != undefined) {
+                        vm.original.Json = undefined;
+                        const miDiv = document.getElementById('mi-div');
+                        if (miDiv !== null) {
+                            miDiv.innerHTML = "";
+                        }
+                    } else if (vm.original.Image != undefined) {
+                        vm.original.Image = undefined;
+                        if (document.getElementById("ImgExpl") !== null) {
+                            document.getElementById("ImgExpl").src = "";
+                        }
+                    }
+                    //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
+                    var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
+                    //define the properties
 
+                    if (selecionado != undefined) {
+                        vm.block = {
+                            title: selecionado.value,
+                            properties: tine.merge({}, selecionado.properties) || null,
+                            description: selecionado.description,
+                            propertyExpl: selecionado.propertyExpl,
+                        };
+                    } else {
+                        vm.block = {
+                            title: option,
+                            properties: tine.merge({}, vm.original.properties),
+                            description: vm.original.description,
+                        };
+                    }
 
-                //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
-                var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
-                //define the properties
-
-
-
-                if (selecionado != undefined) {
-                    vm.block = {
-                        title: selecionado.value,
-                        properties: tine.merge({}, selecionado.properties) || null,
-                        description: selecionado.description,
-                        propertyExpl: selecionado.propertyExpl,
-                    };
-                } else {
-                    vm.block = {
-                        title: option,
-                        properties: tine.merge({}, vm.original.properties),
-                        description: vm.original.description,
-                    };
-                }
-
-                _SearchSubstituteExplainers();
-                cancelTimeout();
-                update();
+                    _SearchSubstituteExplainers();
+                    cancelTimeout();
+                    update();
+                } 
             }
 
         }

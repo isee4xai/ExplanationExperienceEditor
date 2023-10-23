@@ -37,7 +37,8 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         GetInstanceModelSelectStorage: GetInstanceModelSelectStorage,
         getSimilarityValueExplainersService: getSimilarityValueExplainersService,
         getAllExplainerPropertiesService: getAllExplainerPropertiesService,
-        getProjecAllDataService: getProjecAllDataService
+        getProjecAllDataService: getProjecAllDataService,
+        getExplainerFieldsFilteredService: getExplainerFieldsFilteredService
     };
     return service;
 
@@ -57,10 +58,10 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                 reject(e);
             }
         });
-    } 
+    }
 
     function saveJson(path, data) {
-        return $q(function (resolve, reject) {
+        return $q(function (resolve, reject) { 
             try {
                 if (localStorage.getItem(path) != null) {
                     //get date now
@@ -285,6 +286,30 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
 
+    async function getExplainerFieldsFilteredService(callback) {
+       
+        var Url = "https://api-onto-dev.isee4xai.com/api/reuse/ExplainerFieldsFiltered";
+
+        axios.get(Url).then((response) => {
+            if (response.status !== 200) {
+                callback('Failed to fetch Explainer Properties', null);
+                return;
+            }
+            callback(null, response.data);
+        })
+            .catch((error) => {
+                callback(error.message, null);
+            });
+          
+
+    }
+
+    function getToken() {
+        // Implementa la lógica para obtener el token
+        return 'mi_token';
+      }
+
+
     async function GetSimNLStorage(SubNameChange) {
 
         var server_url = SettingsAddres.httpAddresExplanations + "NLPExplainerComparison";
@@ -325,17 +350,12 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         //We set the server URL, make sure it's the one in your machine.
         var server_url = SettingsAddres.httpAddresExplanations;
         //We set the method from which we want to take the params
-        console.log("**///**//***//**/");
-        console.log(method);
-        console.log(IdModel);
 
         if (IdModel == "" || IdModel == undefined) {
             var method_url = method;
         } else {
             var method_url = method + "/" + IdModel;
         }
-        console.log(method_url);
-        console.log(server_url + method_url);
 
         return $q(function (resolve, reject) {
             try {
