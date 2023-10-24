@@ -220,7 +220,7 @@
                     ng-click="propertiespanel.RunNew(propertiespanel.original.id,propertiespanel.block)">Run</button>
             </div>
 
-            <div id="loader" style="display: none;" ng-if="propertiespanel.original.name == 'Explanation Method'">
+            <div id="loader" style="display: none;">
                 <div class="load">
                     <hr />
                     <hr />
@@ -246,9 +246,9 @@
                     ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
 
                 </div>
-
+ 
             </div>
-
+ 
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <div id="header" ng-if="propertiespanel.TitleName">
                     <ul class="nav">
@@ -265,7 +265,7 @@
                                         <div class="progress-bar" ng-style="{ 'width': (value * 100) + '%' }">
                                         </div>
                                         <div>
-                                            <p class="progress-bar-text">{{(value * 100).toFixed(0)}}% {{key}}</p>
+                                            <p class="progress-bar-text truncate-text">{{(value * 100).toFixed(0)}}% {{key}}</p>
                                         </div>
                                     </div>
 
@@ -372,7 +372,7 @@
                                                     <span class="placeholder-text"
                                                         ng-show="propertiespanel.ExplanationScopeSubSelect.length == 0"
                                                         class="placeholder-text">
-                                                        Implementation Framework
+                                                        Explanation Scope
                                                     </span>
                                                     <span
                                                         ng-show="propertiespanel.ExplanationScopeSubSelect.length != 0"
@@ -413,7 +413,7 @@
                                                     <span class="placeholder-text"
                                                         ng-show="propertiespanel.ExplanationTypeSubSelect.length == 0"
                                                         class="placeholder-text">
-                                                        Pick or Search Presentation Formats
+                                                        Pick or Search Explainability Type
                                                     </span>
                                                     <span ng-show="propertiespanel.ExplanationTypeSubSelect.length != 0"
                                                         class="selected-formats">
@@ -465,7 +465,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </li>
-                                                            </ul>
+                                                            </ul> 
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -482,7 +482,7 @@
                                                         <span class="placeholder-text"
                                                             ng-show="propertiespanel.ExplainabilityTechniqueSubSelect.length == 0"
                                                             class="placeholder-text">
-                                                            Pick or Search Presentation Formats
+                                                            Pick or Search Explainability Technique
                                                         </span>
                                                         <span
                                                             ng-show="propertiespanel.ExplainabilityTechniqueSubSelect.length != 0"
@@ -571,7 +571,7 @@
                                                             <span class="placeholder-text"
                                                                 ng-show="propertiespanel.PresentationFormat.length == 0"
                                                                 class="placeholder-text">
-                                                                Explainer Concurrentnes
+                                                                Pick or Search Presentation Formats
                                                             </span>
                                                             <span
                                                                 ng-show="propertiespanel.PresentationFormat.length != 0"
@@ -613,7 +613,7 @@
                                                         <span class="placeholder-text"
                                                             ng-show="propertiespanel.ComputationalComplexitySubSelect.length == 0"
                                                             class="placeholder-text">
-                                                            Explainer Concurrentnes
+                                                            Computational Complexity
                                                         </span>
                                                         <span
                                                             ng-show="propertiespanel.ComputationalComplexitySubSelect.length != 0"
@@ -653,7 +653,7 @@
                                                         <span class="placeholder-text"
                                                             ng-show="propertiespanel.ImplementationFrameworkSubSelect.length == 0"
                                                             class="placeholder-text">
-                                                            Explainer Concurrentnes
+                                                            Implementation Framework
                                                         </span>
                                                         <span
                                                             ng-show="propertiespanel.ImplementationFrameworkSubSelect.length != 0"
@@ -733,7 +733,7 @@
                                                 ng-click=" propertiespanel.expandAdvancedPropertis()">Advanced
                                                 properties</button>
                                             <button type="button"
-                                                ng-click="propertiespanel.submitFormSub()">Accept</button>
+                                                ng-click="propertiespanel.submitFormSub(propertiespanel.original)">Accept</button>
                                         </div>
                                         <div class="button-container-right">
 

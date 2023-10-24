@@ -33,7 +33,6 @@
         vm.block = null;
         vm.update = update;
         vm.keydown = keydown;
-        vm.CSVData = null;
 
         vm.UpdateProperties = UpdateProperties;
         vm.renameIntends = renameIntends;
@@ -60,9 +59,7 @@
         vm.toggleContent = toggleContent;
         vm.submitFormSub = submitFormSub;
         vm.CambiarOptionTree = CambiarOptionTree;
-        vm.AllExplainerProperties = AllExplainerProperties;
         vm.updateNodeSub = updateNodeSub;
-        vm.AllExplainerSubstitute = null;
 
         vm.explainerAccordionOpen = false
         vm.ExplainerConcurrentnessAccordionOpen = false
@@ -122,567 +119,9 @@
 
         vm.filterSubitemClick = filterSubitemClick;
 
-        /*
-    vm.ExplanationTypeSub = [
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-            "label": "Feature Influence Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Anchor_Explanation",
-                    "label": "Anchor Explanation",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Contrasting_Feature_Importance_Explanation",
-                    "label": "Contrasting Feature Importance Explanation",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Contribution_Distribution_Explanation",
-                    "label": "Contribution Distribution Explanation",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Saliency_Map",
-                    "label": "Saliency Map",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Sensitivity_Map",
-                    "label": "Sensitivity Map",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Influence_Explanation",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Neighbourhood_Explanation",
-            "label": "Neighbourhood Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Prototype_Explanation",
-            "label": "Prototype Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Semi-factual_Explanation",
-            "label": "Semi-factual Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "https://purl.org/heals/eo#CaseBasedExplanation",
-            "label": "Case Based Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "https://purl.org/heals/eo#ContextualExplanation",
-            "label": "Contextual Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Introspective_Explanation",
-                    "label": "Introspective Explanation",
-                    "parent": "https://purl.org/heals/eo#ContextualExplanation",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Rationalisation_Explanation",
-                    "label": "Rationalisation Explanation",
-                    "parent": "https://purl.org/heals/eo#ContextualExplanation",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "https://purl.org/heals/eo#CounterfactualExplanation",
-            "label": "Counterfactual Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "https://purl.org/heals/eo#DataExplanation",
-            "label": "Data Explanation",
-            "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-            "children": []
-        },
-        {
-            "key": "https://purl.org/heals/eo#EverydayExplanation",
-            "label": "Everyday Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": [
-                {
-                    "key": "https://purl.org/heals/eo#ClinicalPearl",
-                    "label": "Clinical Pearls",
-                    "parent": "https://purl.org/heals/eo#EverydayExplanation",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "https://purl.org/heals/eo#ImpactExplanation",
-            "label": "Impact Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": [
-                {
-                    "key": "https://purl.org/heals/eo#FairnessExplanation",
-                    "label": "Fairness Explanation",
-                    "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "https://purl.org/heals/eo#RationaleExplanation",
-            "label": "Rationale Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": [
-                {
-                    "key": "https://purl.org/heals/eo#TraceBasedExplanation",
-                    "label": "Trace Based Explanation",
-                    "parent": "https://purl.org/heals/eo#RationaleExplanation",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "https://purl.org/heals/eo#ResponsibilityExplanation",
-            "label": "Responsibility Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-            "label": "Safety and Performance Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": [
-                {
-                    "key": "https://purl.org/heals/eo#DataExplanation",
-                    "label": "Data Explanation",
-                    "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                    "children": []
-                },
-                {
-                    "key": "https://purl.org/heals/eo#FairnessExplanation",
-                    "label": "Fairness Explanation",
-                    "parent": "https://purl.org/heals/eo#SafetyAndPerformanceExplanation",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "https://purl.org/heals/eo#SimulationBasedExplanation",
-            "label": "Simulation Based Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "https://purl.org/heals/eo#StatisticalExplanation",
-            "label": "Statistical Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": []
-        },
-        {
-            "key": "https://purl.org/heals/eo#scientificExplanation",
-            "label": "Scientific Explanation",
-            "parent": "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation",
-            "children": [
-                {
-                    "key": "https://purl.org/heals/eo#Evidence_Based_Explanation",
-                    "label": "Evidence Based Explanation",
-                    "parent": "https://purl.org/heals/eo#scientificExplanation",
-                    "children": []
-                },
-                {
-                    "key": "https://purl.org/heals/eo#Mechanistic_Explanation",
-                    "label": "Mechanistic Explanation",
-                    "parent": "https://purl.org/heals/eo#scientificExplanation",
-                    "children": []
-                }
-            ]
-        }
-
-    ];
-    vm.ExplainabilityTechniqueSub = [
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Activation_Clusters",
-            "label": "Activation Clusters",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": []
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-            "label": "Architecture Modification",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Attention_Network",
-                    "label": "Attention Network",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Layer_Modification",
-                    "label": "Layer Modification",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Loss_Modification",
-                    "label": "Loss Modification",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Model_Combination",
-                    "label": "Model Combination",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Architecture_Modification",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Composite",
-            "label": "Composite",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": []
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
-            "label": "Data-driven",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Caption_Generation",
-                    "label": "Caption Generation",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#DisCERN",
-                    "label": "DisCERN",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Data-driven",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-            "label": "Feature Relevance",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Game_Theory_Technique",
-                    "label": "Game Theory Technique",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                    "children": [
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#SHAP",
-                            "label": "SHAP",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Game_Theory_Technique",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                    "label": "Gradient-based Technique",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                    "children": [
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#Contrasting_Gradient_Technique",
-                            "label": "Contrasting Gradient Technique",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                            "children": []
-                        },
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#DeepLIFT",
-                            "label": "DeepLIFT",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                            "children": []
-                        },
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#GradCam_Technique",
-                            "label": "GradCam Technique",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                            "children": []
-                        },
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#Integrated_Gradient_Technique",
-                            "label": "Integrated Gradient Technique",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                            "children": []
-                        },
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#SmoothGrad_Technique",
-                            "label": "SmoothGrad Technique",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Gradient-based_Technique",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                    "label": "Influence Function",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                    "children": [
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#ALE",
-                            "label": "ALE",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                            "children": []
-                        },
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#Individual_Condition_Expectation_Plot",
-                            "label": "Individual Condition Expectation Plot",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                            "children": []
-                        },
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#Partial_Dependence_Plot",
-                            "label": "Partial Dependence Plot",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Influence_Function",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Saliency",
-                    "label": "Saliency",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Feature_Relevance",
-                    "children": [
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#Hidden-layer_Clustering",
-                            "label": "Hidden-layer Clustering",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#Saliency",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Filter",
-            "label": "Filter",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": []
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Knowledge_Extraction",
-            "label": "Knowledge Extraction",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": []
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
-            "label": "Optimisation Based",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#DiCE",
-                    "label": "DiCE",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Wachter",
-                    "label": "Wachter",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Optimisation_Based",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Probabilistic",
-            "label": "Probabilistic",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": []
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-            "label": "Simplification",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplicationByWeightsDropout",
-                    "label": "Simplication By Weights Dropout",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByDecisionTree",
-                    "label": "Simplification By Decision Tree",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByForests",
-                    "label": "Simplification By Forests",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Proxy_Model",
-                    "label": "Simplification By Linear Proxy Model",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                    "children": []
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Regression",
-                    "label": "Simplification By Linear Regression",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                    "children": [
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#LIME",
-                            "label": "LIME",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByLinear_Regression",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByRule_Extraction",
-                    "label": "Simplification By Rule Extraction",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                    "children": [
-                        {
-                            "key": "http://www.w3id.org/iSeeOnto/explainer#Anchor",
-                            "label": "Anchor",
-                            "parent": "http://www.w3id.org/iSeeOnto/explainer#SimplificationByRule_Extraction",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#SimplificationBykNN",
-                    "label": "Simplification By kNN",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Simplification",
-                    "children": []
-                }
-            ]
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Statistics",
-            "label": "Statistics",
-            "parent": "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique",
-            "children": [
-                {
-                    "key": "http://www.w3id.org/iSeeOnto/explainer#Conditional_Plots",
-                    "label": "Conditional Plots",
-                    "parent": "http://www.w3id.org/iSeeOnto/explainer#Statistics",
-                    "children": []
-                }
-            ]
-        }
-    ];
-    vm.ExplainerConcurrentnessSub = [
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#ante-hoc",
-            "label": "Ante-hoc"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#post-hoc",
-            "label": "Post-hoc"
-        }
-    ];
-    vm.ExplanationScopeSub = [
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#cohort",
-            "label": "Cohort"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#global",
-            "label": "Global"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#local",
-            "label": "Local"
-        }
-    ];
-    vm.ComputationalComplexitySub = [
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Constant_time",
-            "label": "Constant time"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Exponential_time",
-            "label": "Exponential time"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Factorial_time",
-            "label": "Factorial time"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Linearithmic_time",
-            "label": "Linearithmic time"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Log-logarithmic_time",
-            "label": "Log-logarithmic time"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Logarithmic_time",
-            "label": "Logarithmic time"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Quadratic_time",
-            "label": "Quadratic time"
-        }
-    ];
-    vm.ImplementationFrameworkSub = [
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Any",
-            "label": "Any"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#LightGBM",
-            "label": "LightGBM"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#PyTorch",
-            "label": "PyTorch"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#Sklearn",
-            "label": "Sklearn"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#TensorFlow1",
-            "label": "TensorFlow 1"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#TensorFlow2",
-            "label": "TensorFlow 2"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#XGBoost",
-            "label": "XGBoost"
-        }
-    ];
-    vm.PresentationformatSub = [
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#text",
-            "label": "Text"
-        },
-        {
-            "key": 'http://www.w3id.org/iSeeOnto/explainer#multivariate',
-            "label": "multivariate"
-        },
-        {
-            "key": "http://www.w3id.org/iSeeOnto/explainer#image",
-            "label": "Image"
-        }
-    ];  */
+        //applicability 
+        vm.applicabilityList = null;
+        
         vm.ExplainersSub = [
             "/Images/Anchors",
             "/Images/GradCam",
@@ -1417,44 +856,44 @@
         }
 
         function _getArrayExplainersSubstitute() {
-            //Get Explainers Substitute
-            projectModel.getExplainersSubstitute()
-                .then(function (x) {
-                    vm.ExplainersSubstituteAll = x;
+            //Get Explainers Substitute 
+
+            return new Promise((resolve, reject) => {
+                projectModel.getExplainersSubstitute((error, similarity) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        vm.ExplainersSubstituteAll = similarity;
+                        resolve();
+                    }
                 });
+            });
         }
 
         function _SearchSubstituteExplainers() {
+            var filtered = [];
+            vm.ExplainersSubstitute = [];
+
             if (vm.ExplainersSubstituteAll == null) {
                 projectModel.getExplainersSubstitute()
                     .then(function (x) {
-                        var filtered = [];
-                        vm.ExplainersSubstitute = [];
-                        if (vm.block.title != "Explanation Method") {
-                            vm.ExplainersSubstitute = Object.values(x)
-                                .filter(obj => obj.explainer === vm.block.title)
-                                .map(({ explainer, ...rest }) => rest)
-                                .map(obj => Object.fromEntries(
-                                    Object.entries(obj)
-                                        .filter(([_, value]) => value !== "0.0" && value !== "1.0")
-                                        .map(([key, value]) => [key, parseFloat(value).toFixed(2)])
-                                        .sort((a, b) => b[1] - a[1])
-                                ))[0];
-                        }
+                        vm.ExplainersSubstituteAll = x;
+                        setExplainersSubstitute();
                     });
             } else {
-                var filtered = [];
-                vm.ExplainersSubstitute = [];
+                setExplainersSubstitute();
+            }
+
+            function setExplainersSubstitute() {
                 if (vm.ExplainersSubstituteAll && vm.block.title != "Explanation Method") {
-                    vm.ExplainersSubstitute = Object.values(vm.ExplainersSubstituteAll)
-                        .filter(obj => obj.explainer === vm.block.title)
-                        .map(({ explainer, ...rest }) => rest)
-                        .map(obj => Object.fromEntries(
-                            Object.entries(obj)
-                                .filter(([_, value]) => value !== "0.0" && value !== "1.0")
-                                .map(([key, value]) => [key, parseFloat(value).toFixed(2)])
-                                .sort((a, b) => b[1] - a[1])
-                        ))[0];
+                    vm.ExplainersSubstitute = Object.entries(vm.ExplainersSubstituteAll[vm.block.title] || {})
+                        .filter(([key, value]) => key !== vm.block.title && value !== 0)
+                        .map(([key, value]) => [key, parseFloat(value).toFixed(2)])
+                        .sort((a, b) => b[1] - a[1])
+                        .reduce((obj, [key, value]) => {
+                            obj[key] = value;
+                            return obj;
+                        }, {});
                 }
             }
         }
@@ -1465,13 +904,14 @@
                     notificationService.load(
                         'Loading', 'Please wait while your request is being processed...'
                     );
-                    await getExplainerDataForm();
+                    var loaderDiv = document.querySelector('#loader');
+                    loaderDiv.style.display = 'block';
+                            await getExplainerDataForm();
+                            loaderDiv.style.display = "none";
                 }
                 var modalFormSub = document.getElementById("formSubstitute");
                 modalFormSub.style.display = "block";
                 vm.ExplainersSub = vm.convertToObjects();
-
-
             } catch (error) {
                 console.log(error);
                 notificationService.error(
@@ -1481,13 +921,11 @@
         }
 
         function getExplainerDataForm() {
-
             return new Promise((resolve, reject) => {
                 projectModel.getExplainerFieldsFiltered((error, explainers) => {
                     if (error) {
                         reject(error);
                     } else {
-                        console.log(explainers);
                         vm.ExplanationTypeSub = explainers.Explanation.children;
                         vm.ExplainabilityTechniqueSub = explainers.ExplainabilityTechnique.children;
                         vm.ExplainerConcurrentnessSub = explainers.Concurrentness;
@@ -1502,7 +940,7 @@
 
         }
 
-        async function submitFormSub(item) {
+        async function submitFormSub(NodeSelect) {
 
             notificationService.load(
                 'Loading', 'Please wait while your request is being processed...'
@@ -1520,11 +958,17 @@
                 "ai_methods": [],
                 "ai_tasks": [],
                 "implementation": [],
-                "Explainers": vm.block.title
+                // "Explainers": vm.block.title
             };
 
             if (vm.ExplanationTypeSubSelect.length > 0) {
+                /* mostrar Padre
+                jsonDataNew.explanation_type = vm.ExplanationTypeSubSelect.map(function (item) {
+                    return item.key;
+                });
+                Mostrar hijos*/ 
                 vm.ExplanationTypeSubSelect.forEach(function (item) {
+                    console.log(item);
                     if (item.children.length == 0) {
                         jsonDataNew.explanation_type.push(item.key);
                     } else {
@@ -1532,10 +976,15 @@
                             jsonDataNew.explanation_type.push(element.key);
                         });
                     }
-
                 });
+                
             }
             if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
+                /* mostrar Padre
+                jsonDataNew.technique = vm.ExplainabilityTechniqueSubSelect.map(function (item) {
+                    return item.key;
+                });
+                Mostrar hijos*/ 
 
                 vm.ExplainabilityTechniqueSubSelect.forEach(function (item) {
                     if (item.children.length == 0) {
@@ -1545,7 +994,6 @@
                             jsonDataNew.technique.push(element.key);
                         });
                     }
-
                 });
             }
             if (vm.ExplainerConcurrentnessSubSelect.length > 0) {
@@ -1556,7 +1004,6 @@
             if (vm.ComputationalComplexitySubSelect.length > 0) {
                 jsonDataNew.computational_complexity = vm.ComputationalComplexitySubSelect.map(function (item) {
                     return item.key;
-
                 });
             }
             if (vm.ImplementationFrameworkSubSelect.length > 0) {
@@ -1565,18 +1012,13 @@
                 });
             }
             if (vm.PresentationFormat.length > 0) {
-                if (vm.PresentationFormat.length === 1) {
-                    jsonDataNew.dataset_type = vm.PresentationFormat[0].key;
-                } else {
-                    jsonDataNew.dataset_type = vm.PresentationFormat.map(function (item) {
-                        return item.key;
-                    });
-                }
+                jsonDataNew.dataset_type = vm.PresentationFormat.map(function (item) {
+                    return item.key;
+                });
             }
             if (vm.ExplanationScopeSubSelect.length > 0) {
                 jsonDataNew.scope = vm.ExplanationScopeSubSelect.map(function (item) {
                     return item.key;
-
                 });
             }
 
@@ -1587,30 +1029,16 @@
             switch (vm.original.category) {
                 case "action":
                     try {
-                        if (vm.AllExplainerSubstitute == null) {
-                            await AllExplainerProperties();
-                        }
-
-                        if (vm.CSVData == null) {
-                            await getSimilarityValueExplainersEditor();
-                        }
-
-                        var my_explainers = [];
-                        vm.AllExplainerSubstitute.forEach(function (e) {
-                            if (e.dataset_type === jsonDataNew.dataset_type) {
-                                if (compareListProperties(e, jsonDataNew)) {
-                                    my_explainers.push(e.name);
+                        projectModel.GetSubstituteExplainer(jsonDataNew, vm.block.title, $location.search().usecaseId)
+                            .then(function (x) {
+                                if (x.length > 0) {
+                                    SubstituteOneNode(x, vm.original, vm.block);
+                                } else {
+                                    notificationService.error(
+                                        'No matches found'
+                                    );
                                 }
-                            }
-                        });
-                        console.log(my_explainers);
-                        if (my_explainers.length > 0) {
-                            SubstituteOneNode(my_explainers, vm.original, vm.block);
-                        } else {
-                            notificationService.error(
-                                'No matches found'
-                            );
-                        }
+                            });
 
                     } catch (error) {
                         notificationService.error(
@@ -1620,93 +1048,11 @@
 
                     break;
                 case "composite":
-                    var OptionNodeSub = [
-                        "Sequence",
-                        "Priority",
-                        "Supplement",
-                        "Replacement"
-                    ]
+                    SubstituteNodes(NodeSelect, jsonDataNew);
+
                     break;
                 default:
                     break;
-            }
-        }
-
-        function AllExplainerProperties() {
-
-            return new Promise((resolve, reject) => {
-                projectModel.getAllExplainerProperties((error, explainers) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        vm.AllExplainerSubstitute = explainers;
-                        resolve();
-                    }
-                });
-            });
-
-        }
-
-        function getSimilarityValueExplainersEditor() {
-            return new Promise((resolve, reject) => {
-                projectModel.getSimilarityValueExplainers((error, similarity) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        Papa.parse(similarity, {
-                            header: true,
-                            skipEmptyLines: true,
-                            complete: function (results) {
-                                vm.CSVData = {};
-                                for (const row of results.data) {
-                                    const explainer = row.explainer;
-                                    delete row.explainer;
-                                    vm.CSVData[explainer] = row;
-                                }
-                                resolve();
-                            },
-                            error: function (error) {
-                                reject(error);
-                            },
-                        });
-                    }
-                });
-            });
-        }
-
-        function compareListProperties(e1, e2) {
-            var explainersEquals = false;
-            if (
-                (
-                    critiqueIsInExplainer(e2.technique, e1.technique) &&
-                    critiqueIsInExplainer(e2.explanation_type, e1.explanation_type) &&
-                    critiqueIsInExplainer(e2.concurrentness, e1.concurrentness) &&
-                    critiqueIsInExplainer(e2.portability, e1.portability) &&
-                    critiqueIsInExplainer(e2.scope, e1.scope) &&
-                    critiqueIsInExplainer(e2.target, e1.target) &&
-                    critiqueIsInExplainer(e2.computational_complexity, e1.computational_complexity) &&
-                    critiqueIsInExplainer(e2.presentations, e1.presentations) &&
-                    critiqueIsInExplainer(e2.ai_methods, e1.ai_methods) &&
-                    critiqueIsInExplainer(e2.ai_tasks, e1.ai_tasks) &&
-                    critiqueIsInExplainer(e2.implementation, e1.implementation)) &&
-                e1.name != e2.Explainers
-            ) {
-                explainersEquals = true;
-            }
-
-            return explainersEquals;
-        }
-
-        function critiqueIsInExplainer(critiques, properties_explainer) {
-            if (critiques.length === 0 || critiques.includes('http://www.w3id.org/iSeeOnto/explainer#Any')) {
-                return true;
-            } else {
-                for (var i = 0; i < critiques.length; i++) {
-                    if (properties_explainer.includes(critiques[i])) {
-                        return true;
-                    }
-                }
-                return false;
             }
         }
 
@@ -1768,7 +1114,7 @@
                 buttonAddInfo.style.backgroundColor = '#5bc0de';
                 buttonAddInfo.style.border = "none";
                 buttonAddInfo.addEventListener('mouseenter', function () {
-                    startTimeout(OptionNodeSub[i], 'substitute', function () {
+                    startTimeout(OptionNodeSub[i].explanation, 'substituteExpl', function () {
                         var tooltip = document.querySelector(".mi-tooltip");
                         if (tooltip) {
                             tooltip.style.marginBottom = nuevoDiv.offsetHeight + 20 + "px";
@@ -1777,7 +1123,7 @@
                     });
                 });
                 buttonAddInfo.addEventListener('mouseleave', function () {
-                    cancelTimeout(OptionNodeSub[i], 'substitute');
+                    cancelTimeout(OptionNodeSub[i].explanation, 'substituteExpl');
                 });
 
                 var buttonAddPlus = document.createElement('button');
@@ -1785,14 +1131,11 @@
                 buttonAddPlus.style.backgroundColor = '#47A447';
                 buttonAddPlus.style.border = "none";
                 buttonAddPlus.addEventListener('click', function () {
-                    UpdateProperties(OptionNodeSub[i], block, NodeSelect.id);
+                    UpdateProperties(OptionNodeSub[i].explainer, block, NodeSelect.id);
                     nuevoDiv.remove();
                 });
 
-                var similarityValue = null;
-                if (vm.CSVData[block.title] && vm.CSVData[block.title][OptionNodeSub[i]]) {
-                    similarityValue = parseFloat(vm.CSVData[block.title][OptionNodeSub[i]]);
-                }
+
                 var progressBarContainer = document.createElement('div');
                 progressBarContainer.style.flexGrow = 1;
                 progressBarContainer.style.position = 'relative';
@@ -1801,7 +1144,7 @@
                 var progressBar = document.createElement('div');
                 progressBar.className = 'progress-bar';
                 progressBar.style.backgroundColor = '#1b6d85';
-                progressBar.style.width = ((similarityValue * 100).toFixed(0)) + '% ';
+                progressBar.style.width = ((OptionNodeSub[i].similarity * 100).toFixed(0)) + '% ';
                 progressBar.style.height = " 26px";
 
                 var progressText = document.createElement('div');
@@ -1811,7 +1154,7 @@
 
                 var progressTextParagraph = document.createElement('p');
                 progressTextParagraph.className = 'progress-bar-text';
-                progressTextParagraph.textContent = ((similarityValue * 100).toFixed(0)) + '%  Similarity';
+                progressTextParagraph.textContent = ((OptionNodeSub[i].similarity * 100).toFixed(0)) + '%  Similarity';
 
                 progressText.appendChild(progressTextParagraph);
                 progressBarContainer.appendChild(progressBar);
@@ -1829,7 +1172,7 @@
 
                 divbuttonsContainer.appendChild(divbuttons);
 
-                var canvasPopup = editorpricipal.applySettingsFormatOnlyNode(DivCanvas, OptionNodeSub[i], vm.original.category);
+                var canvasPopup = editorpricipal.applySettingsFormatOnlyNode(DivCanvas, OptionNodeSub[i].explainer, vm.original.category);
                 var canvasPopupAncho = canvasPopup.offsetWidth;
 
                 divbuttons.style.width = canvasPopupAncho + 'px';
@@ -1865,791 +1208,142 @@
             return descendientes;
         }
 
-
-        function SubstituteNodes(NodeSelect) {
-            notificationService.load(
-                'Loading', 'Please wait while your request is being processed...'
-            );
-            projectModel.getProjecAllData()
-                .then(function (x) {
-                    var e = $window.editor.export;
-                    var ProjectExpor = e.projectToData();
-
-                    var a = ProjectExpor.trees[0];
-                    var child = a.nodes[NodeSelect.id].firstChild;
-                    var JsonDataSelect = {};
-                    JsonDataSelect[NodeSelect.id] = a.nodes[NodeSelect.id];
-
-                    const nodosDescendientes = obtenerDescendientes(a.nodes, NodeSelect.id);
-
-                    ProjectExpor.trees[0].nodes = nodosDescendientes;
-                    ProjectExpor.trees[0].root = NodeSelect.id;
-                    x[0].data = ProjectExpor;
-                    console.log(x[0]);
-
-                    var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
-                    if (existDiv.length > 0) {
-                        existDiv[0].remove();
-                    }
-
-                    var padre = document.querySelector('.editor-page');
-                    var divGeneral = document.createElement('div');
-
-                    divGeneral.style.padding = '10px';
-                    divGeneral.style.zIndex = '10';
-                    divGeneral.style.borderRadius = "10px 0 0 10px";
-                    divGeneral.style.marginRight = "250px";
-                    divGeneral.style.marginLeft = "260px";
-                    divGeneral.style.marginBottom = "20px";
-                    divGeneral.style.bottom = '0';
-                    divGeneral.style.position = 'absolute';
-                    divGeneral.className = "mi-divCanvasGeneral";
-                    padre.appendChild(divGeneral);
-
-                    var divbuttons = document.createElement('div');
-                    divbuttons.style.width = '100%';
-                    divbuttons.style.marginRight = "auto";
-                    divbuttons.className = "mi-divButtons";
-                    divGeneral.appendChild(divbuttons);
-
-                    CreateButtonExit(divGeneral, padre, true);
-
-                    var dataGet = {
-                        "version": "0.1.0",
-                        "scope": "project",
-                        "selectedTree": "33def3ec-31a8-47c1-856c-7fd724718df2",
-                        "trees": [
-                            {
-                                "version": "0.1.0",
-                                "scope": "tree",
-                                "id": "33def3ec-31a8-47c1-856c-7fd724718df2",
-                                "Instance": "Explanation Experience",
-                                "description": "",
-                                "root": "546f5cee-68b0-4b90-85be-786b9957d03a",
-                                "query": "[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]",
-                                "idModel": "ECG200LSTM",
-                                "nodes": {
-                                    "546f5cee-68b0-4b90-85be-786b9957d03a": {
-                                        "id": "546f5cee-68b0-4b90-85be-786b9957d03a",
-                                        "Concept": "Priority",
-                                        "Instance": "Priority",
-                                        "description": "",
-                                        "display": {
-                                            "x": -60,
-                                            "y": 84
-                                        },
-                                        "firstChild": {
-                                            "Id": "5112868d-f790-4665-ab3e-18a36a857363",
-                                            "Next": "None"
-                                        }
-                                    },
-                                    "5112868d-f790-4665-ab3e-18a36a857363": {
-                                        "id": "5112868d-f790-4665-ab3e-18a36a857363",
-                                        "Concept": "Sequence",
-                                        "Instance": "Sequence",
-                                        "description": "",
-                                        "properties": {
-
-                                        },
-                                        "display": {
-                                            "x": -60,
-                                            "y": 168
-                                        },
-                                        "firstChild": {
-                                            "Id": "85b9b22e-1b0a-4a9b-81a9-83952d27271a",
-                                            "Next": {
-                                                "Id": "5829d6db-5011-4ad8-846a-ab8452c6be46",
-                                                "Next": "None"
-                                            }
-                                        }
-                                    },
-                                    "85b9b22e-1b0a-4a9b-81a9-83952d27271a": {
-                                        "id": "85b9b22e-1b0a-4a9b-81a9-83952d27271a",
-                                        "Concept": "User Question",
-                                        "Instance": "User Question",
-                                        "description": "",
-                                        "properties": {
-
-                                        },
-                                        "display": {
-                                            "x": -192,
-                                            "y": 324
-                                        },
-                                        "params": {
-                                            "Question": {
-                                                "key": "Question",
-                                                "value": "What contributed to this income prediction?"
-                                            }
-                                        }
-                                    },
-                                    "5829d6db-5011-4ad8-846a-ab8452c6be46": {
-                                        "id": "5829d6db-5011-4ad8-846a-ab8452c6be46",
-                                        "Concept": "Explanation Method",
-                                        "Instance": "/Tabular/LIME",
-                                        "description": "",
-                                        "properties": {
-
-                                        },
-                                        "display": {
-                                            "x": 60,
-                                            "y": 324
-                                        },
-                                        "params": {
-                                            "output_classes": {
-                                                "key": "output_classes",
-                                                "value": "[ ]",
-                                                "default": "[ ]",
-                                                "range": [
-                                                    "None",
-                                                    "None"
-                                                ],
-                                                "required": "false",
-                                                "description": "Array of integers representing the classes to be explained. Defaults to class 1.",
-                                                "type": "text"
-                                            },
-                                            "top_classes": {
-                                                "key": "top_classes",
-                                                "value": 1,
-                                                "default": 1,
-                                                "range": [
-                                                    "None",
-                                                    "None"
-                                                ],
-                                                "required": "false",
-                                                "description": "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                                "type": "number"
-                                            },
-                                            "num_features": {
-                                                "key": "num_features",
-                                                "value": 10,
-                                                "default": 10,
-                                                "range": [
-                                                    "None",
-                                                    "None"
-                                                ],
-                                                "required": "false",
-                                                "description": "Integer representing the maximum number of features to be included in the explanation.",
-                                                "type": "number"
-                                            },
-                                            "png_width": {
-                                                "key": "png_width",
-                                                "value": 1000,
-                                                "default": 1000,
-                                                "range": [
-                                                    "None",
-                                                    "None"
-                                                ],
-                                                "required": "false",
-                                                "description": "Width (in pixels) of the png image containing the explanation.",
-                                                "type": "number"
-                                            },
-                                            "png_height": {
-                                                "key": "png_height",
-                                                "value": 400,
-                                                "default": 400,
-                                                "range": [
-                                                    "None",
-                                                    "None"
-                                                ],
-                                                "required": "false",
-                                                "description": "Height (in pixels) of the png image containing the explanation.",
-                                                "type": "number"
-                                            }
-                                        }
-                                    }
-                                },
-                                "display": {
-                                    "camera_x": 821.0999999642372,
-                                    "camera_y": 332.69999998807907,
-                                    "camera_z": 1,
-                                    "x": -60,
-                                    "y": 0
-                                }
-                            }
-                        ],
-                        "custom_nodes": [
-
-                        ]
-                    };
-                    //console.log(dataGet.trees[0].nodes);
-
-                    var a = [{
-                        'version': '0.1.0',
-                        'scope': 'project',
-                        'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                        'trees': [{
-                            'version': '0.1.0',
-                            'scope': 'tree',
-                            'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                            'Instance': 'Explanation Experience',
-                            'description': '',
-                            'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                            'idModel': 'ECG200LSTM',
-                            'nodes': {
-                                '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                                    'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                                    'Concept': 'Priority',
-                                    'Instance': 'Priority',
-                                    'description': '',
-                                    'display': { 'x': -60, 'y': 84 },
-                                    'firstChild': {
-                                        'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                        'Next': null
-                                    }
-                                },
-                                '5112868d-f790-4665-ab3e-18a36a857363': {
-                                    'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                    'Concept': 'Sequence',
-                                    'Instance': 'Sequence',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -60, 'y': 168 },
-                                    'firstChild': {
-                                        'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                        'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                                    }
-                                },
-                                '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                                    'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                    'Concept': 'User Question',
-                                    'Instance': 'User Question',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -192, 'y': 324 },
-                                    'params': {
-                                        'Question': {
-                                            'key': 'Question',
-                                            'value': 'What contributed to this income prediction?'
-                                        }
-                                    }
-                                },
-                                '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                                    'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                                    'Concept': 'Explanation Method',
-                                    'Instance': '/Tabular/LIME',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': 60, 'y': 324 },
-                                    'params': {
-                                        'output_classes': {
-                                            'key': 'output_classes',
-                                            'value': '[ ]',
-                                            'default': '[ ]',
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                            'type': 'text'
-                                        },
-                                        'top_classes': {
-                                            'key': 'top_classes',
-                                            'value': 1,
-                                            'default': 1,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                            'type': 'number'
-                                        },
-                                        'num_features': {
-                                            'key': 'num_features',
-                                            'value': 10,
-                                            'default': 10,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_width': {
-                                            'key': 'png_width',
-                                            'value': 1000,
-                                            'default': 1000,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Width (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_height': {
-                                            'key': 'png_height',
-                                            'value': 400,
-                                            'default': 400,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Height (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        }
-                                    }
-                                }
-                            },
-                            'display': {
-                                'camera_x': 821.0999999642372,
-                                'camera_y': 332.69999998807907,
-                                'camera_z': 1,
-                                'x': -60,
-                                'y': 0
-                            }
-                        }],
-                        'custom_nodes': []
-                    },
-                    {
-                        'version': '0.1.0',
-                        'scope': 'project',
-                        'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                        'trees': [{
-                            'version': '0.1.0',
-                            'scope': 'tree',
-                            'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                            'Instance': 'Explanation Experience',
-                            'description': '',
-                            'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                            'idModel': 'ECG200LSTM',
-                            'nodes': {
-                                '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                                    'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                                    'Concept': 'Priority',
-                                    'Instance': 'Priority',
-                                    'description': '',
-                                    'display': { 'x': -60, 'y': 84 },
-                                    'firstChild': {
-                                        'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                        'Next': null
-                                    }
-                                },
-                                '5112868d-f790-4665-ab3e-18a36a857363': {
-                                    'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                    'Concept': 'Sequence',
-                                    'Instance': 'Sequence',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -60, 'y': 168 },
-                                    'firstChild': {
-                                        'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                        'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                                    }
-                                },
-                                '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                                    'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                    'Concept': 'User Question',
-                                    'Instance': 'User Question',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -192, 'y': 324 },
-                                    'params': {
-                                        'Question': {
-                                            'key': 'Question',
-                                            'value': 'How can patient X reduce cancer risk?'
-                                        }
-                                    }
-                                },
-                                '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                                    'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                                    'Concept': 'Explanation Method',
-                                    'Instance': '/Tabular/DisCERN',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': 60, 'y': 324 },
-                                    'params': {
-                                        'output_classes': {
-                                            'key': 'output_classes',
-                                            'value': '[ ]',
-                                            'default': '[ ]',
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                            'type': 'text'
-                                        },
-                                        'top_classes': {
-                                            'key': 'top_classes',
-                                            'value': 1,
-                                            'default': 1,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                            'type': 'number'
-                                        },
-                                        'num_features': {
-                                            'key': 'num_features',
-                                            'value': 10,
-                                            'default': 10,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_width': {
-                                            'key': 'png_width',
-                                            'value': 1000,
-                                            'default': 1000,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Width (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_height': {
-                                            'key': 'png_height',
-                                            'value': 400,
-                                            'default': 400,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Height (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        }
-                                    }
-                                }
-                            },
-                            'display': {
-                                'camera_x': 821.0999999642372,
-                                'camera_y': 332.69999998807907,
-                                'camera_z': 1,
-                                'x': -60,
-                                'y': 0
-                            }
-                        }],
-                        'custom_nodes': []
-                    },
-                    {
-                        'version': '0.1.0',
-                        'scope': 'project',
-                        'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                        'trees': [{
-                            'version': '0.1.0',
-                            'scope': 'tree',
-                            'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                            'Instance': 'Explanation Experience',
-                            'description': '',
-                            'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                            'idModel': 'ECG200LSTM',
-                            'nodes': {
-                                '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                                    'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                                    'Concept': 'Priority',
-                                    'Instance': 'Priority',
-                                    'description': '',
-                                    'display': { 'x': -60, 'y': 84 },
-                                    'firstChild': {
-                                        'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                        'Next': null
-                                    }
-                                },
-                                '5112868d-f790-4665-ab3e-18a36a857363': {
-                                    'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                    'Concept': 'Sequence',
-                                    'Instance': 'Sequence',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -60, 'y': 168 },
-                                    'firstChild': {
-                                        'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                        'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                                    }
-                                },
-                                '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                                    'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                    'Concept': 'User Question',
-                                    'Instance': 'User Question',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -192, 'y': 324 },
-                                    'params': {
-                                        'Question': {
-                                            'key': 'Question',
-                                            'value': 'What features contributed to predicting mortality Y for patient X?'
-                                        }
-                                    }
-                                },
-                                '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                                    'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                                    'Concept': 'Explanation Method',
-                                    'Instance': '/Tabular/DeepSHAPLocal',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': 60, 'y': 324 },
-                                    'params': {
-                                        'output_classes': {
-                                            'key': 'output_classes',
-                                            'value': '[ ]',
-                                            'default': '[ ]',
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                            'type': 'text'
-                                        },
-                                        'top_classes': {
-                                            'key': 'top_classes',
-                                            'value': 1,
-                                            'default': 1,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                            'type': 'number'
-                                        },
-                                        'num_features': {
-                                            'key': 'num_features',
-                                            'value': 10,
-                                            'default': 10,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_width': {
-                                            'key': 'png_width',
-                                            'value': 1000,
-                                            'default': 1000,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Width (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_height': {
-                                            'key': 'png_height',
-                                            'value': 400,
-                                            'default': 400,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Height (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        }
-                                    }
-                                }
-                            },
-                            'display': {
-                                'camera_x': 821.0999999642372,
-                                'camera_y': 332.69999998807907,
-                                'camera_z': 1,
-                                'x': -60,
-                                'y': 0
-                            }
-                        }],
-                        'custom_nodes': []
-                    },
-                    {
-                        'version': '0.1.0',
-                        'scope': 'project',
-                        'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                        'trees': [{
-                            'version': '0.1.0',
-                            'scope': 'tree',
-                            'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                            'Instance': 'Explanation Experience',
-                            'description': '',
-                            'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                            'idModel': 'ECG200LSTM',
-                            'nodes': {
-                                '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                                    'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                                    'Concept': 'Priority',
-                                    'Instance': 'Priority',
-                                    'description': '',
-                                    'display': { 'x': -60, 'y': 84 },
-                                    'firstChild': {
-                                        'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                        'Next': null
-                                    }
-                                },
-                                '5112868d-f790-4665-ab3e-18a36a857363': {
-                                    'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                    'Concept': 'Sequence',
-                                    'Instance': 'Sequence',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -60, 'y': 168 },
-                                    'firstChild': {
-                                        'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                        'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                                    }
-                                },
-                                '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                                    'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                    'Concept': 'User Question',
-                                    'Instance': 'User Question',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': -192, 'y': 324 },
-                                    'params': {
-                                        'Question': {
-                                            'key': 'Question',
-                                            'value': 'What features contributed to predicting mortality?'
-                                        }
-                                    }
-                                },
-                                '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                                    'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                                    'Concept': 'Explanation Method',
-                                    'Instance': '/Tabular/DeepSHAPGlobal',
-                                    'description': '',
-                                    'properties': {},
-                                    'display': { 'x': 60, 'y': 324 },
-                                    'params': {
-                                        'output_classes': {
-                                            'key': 'output_classes',
-                                            'value': '[ ]',
-                                            'default': '[ ]',
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                            'type': 'text'
-                                        },
-                                        'top_classes': {
-                                            'key': 'top_classes',
-                                            'value': 1,
-                                            'default': 1,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                            'type': 'number'
-                                        },
-                                        'num_features': {
-                                            'key': 'num_features',
-                                            'value': 10,
-                                            'default': 10,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_width': {
-                                            'key': 'png_width',
-                                            'value': 1000,
-                                            'default': 1000,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Width (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        },
-                                        'png_height': {
-                                            'key': 'png_height',
-                                            'value': 400,
-                                            'default': 400,
-                                            'range': [null, null],
-                                            'required': 'false',
-                                            'description': 'Height (in pixels) of the png image containing the explanation.',
-                                            'type': 'number'
-                                        }
-                                    }
-                                }
-                            },
-                            'display': {
-                                'camera_x': 821.0999999642372,
-                                'camera_y': 332.69999998807907,
-                                'camera_z': 1,
-                                'x': -60,
-                                'y': 0
-                            }
-                        }],
-                        'custom_nodes': []
-                    }];
-
-                    /*
-                                        var a = {
-                                            "OptionsSub": {
-                                                "nodes1": dataGet.trees[0].nodes,
-                                                "nodes2": {
-                                                    "15ea4e43-aa05-4015-a839-e965bcbd62ec": {
-                                                        "id": "15ea4e43-aa05-4015-a839-e965bcbd62ec",
-                                                        "Concept": "Explanation Method",
-                                                        "Instance": "/Tabular/ALE",
-                                                        "description": "",
-                                                        "display": {
-                                                            "x": 96,
-                                                            "y": 276
-                                                        },
-                                                        "params": {
-                                                            "features_to_show": {
-                                                                "key": "features_to_show",
-                                                                "value": [
-                                                                    "reduction_previous_period",
-                                                                    "Media ¡_migrañas/mes_pretto",
-                                                                    "Migrañas/mes_(3m)"
-                                                                ],
-                                                                "default": [
-                                                                    "reduction_previous_period",
-                                                                    "Media ¡_migrañas/mes_pretto",
-                                                                    "Migrañas/mes_(3m)"
-                                                                ],
-                                                                "range": [
-                                                                    "reduction_previous_period",
-                                                                    "Media ¡_migrañas/mes_pretto",
-                                                                    "Migrañas/mes_(3m)"
-                                                                ],
-                                                                "required": "false",
-                                                                "description": "Array of strings representing the name of the features to be explained. Defaults to all features.",
-                                                                "type": "checkbox"
-                                                            }
-                                                        },
-                                                        "Json": {
-                                                            "type": "html",
-                                                            "explanation": " <!DOCTYPE html> <html lang='en'> <head> <title>explainerdashboard</title> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'> <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js' integrity='sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB' crossorigin='anonymous'></script> <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js' integrity='sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13' crossorigin='anonymous'></script> </head> <body>  <div class='container'>  <div class='card h-100' >   <div class='card-header'><h3 class='card-title'>PR AUC Plot for Class Positive</h3><h6 class='card-subtitle'>Trade-off between Precision and Recall</h6></div>   <div class='card-body'>     <div class='w-100'>      <div class='row' style='margin-top: 20px;'>      <div class='col'> <div>                        <script type='text/javascript'>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>         <script charset='utf-8' src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>                <div id='ae7b1f13-90e5-4292-9c3f-3022205fa732' class='plotly-graph-div' style='height:100%; width:100%;'></div>            <script type='text/javascript'>                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById('ae7b1f13-90e5-4292-9c3f-3022205fa732')) {                    Plotly.newPlot(                        'ae7b1f13-90e5-4292-9c3f-3022205fa732',                        [{'hoverinfo':'text','mode':'lines','name':'PR AUC CURVE','text':['threshold: 0.21 <br>precision: 0.50 <br>recall: 1.00','threshold: 0.25 <br>precision: 0.51 <br>recall: 1.00','threshold: 0.25 <br>precision: 0.49 <br>recall: 0.96','threshold: 0.27 <br>precision: 0.51 <br>recall: 0.96','threshold: 0.27 <br>precision: 0.52 <br>recall: 0.92','threshold: 0.30 <br>precision: 0.53 <br>recall: 0.92','threshold: 0.31 <br>precision: 0.54 <br>recall: 0.92','threshold: 0.33 <br>precision: 0.56 <br>recall: 0.92','threshold: 0.33 <br>precision: 0.56 <br>recall: 0.90','threshold: 0.33 <br>precision: 0.57 <br>recall: 0.90','threshold: 0.33 <br>precision: 0.56 <br>recall: 0.88','threshold: 0.34 <br>precision: 0.55 <br>recall: 0.82','threshold: 0.37 <br>precision: 0.55 <br>recall: 0.80','threshold: 0.38 <br>precision: 0.55 <br>recall: 0.76','threshold: 0.38 <br>precision: 0.54 <br>recall: 0.74','threshold: 0.39 <br>precision: 0.55 <br>recall: 0.74','threshold: 0.40 <br>precision: 0.55 <br>recall: 0.72','threshold: 0.40 <br>precision: 0.54 <br>recall: 0.70','threshold: 0.40 <br>precision: 0.53 <br>recall: 0.68','threshold: 0.41 <br>precision: 0.52 <br>recall: 0.66','threshold: 0.41 <br>precision: 0.51 <br>recall: 0.58','threshold: 0.43 <br>precision: 0.52 <br>recall: 0.56','threshold: 0.43 <br>precision: 0.53 <br>recall: 0.56','threshold: 0.46 <br>precision: 0.52 <br>recall: 0.54','threshold: 0.47 <br>precision: 0.51 <br>recall: 0.52','threshold: 0.48 <br>precision: 0.52 <br>recall: 0.52','threshold: 0.49 <br>precision: 0.52 <br>recall: 0.50','threshold: 0.49 <br>precision: 0.53 <br>recall: 0.50','threshold: 0.50 <br>precision: 0.52 <br>recall: 0.48','threshold: 0.50 <br>precision: 0.51 <br>recall: 0.44','threshold: 0.50 <br>precision: 0.50 <br>recall: 0.42','threshold: 0.50 <br>precision: 0.49 <br>recall: 0.40','threshold: 0.51 <br>precision: 0.46 <br>recall: 0.36','threshold: 0.52 <br>precision: 0.45 <br>recall: 0.28','threshold: 0.53 <br>precision: 0.41 <br>recall: 0.24','threshold: 0.54 <br>precision: 0.39 <br>recall: 0.22','threshold: 0.56 <br>precision: 0.41 <br>recall: 0.22','threshold: 0.58 <br>precision: 0.46 <br>recall: 0.22','threshold: 0.61 <br>precision: 0.43 <br>recall: 0.20','threshold: 0.63 <br>precision: 0.42 <br>recall: 0.16','threshold: 0.64 <br>precision: 0.33 <br>recall: 0.10','threshold: 0.67 <br>precision: 0.36 <br>recall: 0.10','threshold: 0.68 <br>precision: 0.31 <br>recall: 0.08','threshold: 0.69 <br>precision: 0.25 <br>recall: 0.06','threshold: 0.70 <br>precision: 0.30 <br>recall: 0.06','threshold: 0.70 <br>precision: 0.33 <br>recall: 0.06','threshold: 0.71 <br>precision: 0.38 <br>recall: 0.06','threshold: 0.77 <br>precision: 0.43 <br>recall: 0.06','threshold: 0.78 <br>precision: 0.33 <br>recall: 0.04','threshold: 0.79 <br>precision: 0.20 <br>recall: 0.02','threshold: 0.79 <br>precision: 0.25 <br>recall: 0.02','threshold: 0.81 <br>precision: 0.50 <br>recall: 0.02','threshold: 0.83 <br>precision: 1.00 <br>recall: 0.02'],'x':[0.5,0.5050505050505051,0.4948453608247423,0.5052631578947369,0.5227272727272727,0.5287356321839081,0.5411764705882353,0.5609756097560976,0.5625,0.569620253164557,0.5641025641025641,0.5540540540540541,0.547945205479452,0.5507246376811594,0.5441176470588235,0.5522388059701493,0.5454545454545454,0.5384615384615384,0.53125,0.5238095238095238,0.5087719298245614,0.5185185185185185,0.5283018867924528,0.5192307692307693,0.5098039215686274,0.52,0.5208333333333334,0.5319148936170213,0.5217391304347826,0.5116279069767442,0.5,0.4878048780487805,0.46153846153846156,0.45161290322580644,0.41379310344827586,0.39285714285714285,0.4074074074074074,0.4583333333333333,0.43478260869565216,0.42105263157894735,0.3333333333333333,0.35714285714285715,0.3076923076923077,0.25,0.3,0.3333333333333333,0.375,0.42857142857142855,0.3333333333333333,0.2,0.25,0.5,1.0,1.0],'y':[1.0,1.0,0.96,0.96,0.92,0.92,0.92,0.92,0.9,0.9,0.88,0.82,0.8,0.76,0.74,0.74,0.72,0.7,0.68,0.66,0.58,0.56,0.56,0.54,0.52,0.52,0.5,0.5,0.48,0.44,0.42,0.4,0.36,0.28,0.24,0.22,0.22,0.22,0.2,0.16,0.1,0.1,0.08,0.06,0.06,0.06,0.06,0.06,0.04,0.02,0.02,0.02,0.02,0.0],'type':'scatter'}],                        {'hovermode':'closest','plot_bgcolor':'#fff','title':{'text':'PR AUC CURVE'},'xaxis':{'constrain':'domain','range':[0,1],'title':{'text':'Precision'}},'yaxis':{'constrain':'domain','range':[0,1],'scaleanchor':'x','scaleratio':1,'title':{'text':'Recall'}},'template':{'data':{'scatter':[{'type':'scatter'}]}},'annotations':[{'align':'right','showarrow':false,'text':'pr-auc-score: 0.50','x':0.15,'xanchor':'left','y':0.4,'yanchor':'top'},{'align':'right','showarrow':false,'text':'cutoff: 0.50','x':0.15,'xanchor':'left','y':0.35,'yanchor':'top'},{'align':'right','showarrow':false,'text':'precision: 0.50','x':0.15,'xanchor':'left','y':0.3,'yanchor':'top'},{'align':'right','showarrow':false,'text':'recall: 0.42','x':0.15,'xanchor':'left','y':0.25,'yanchor':'top'}],'shapes':[{'line':{'color':'lightslategray','width':1},'type':'line','x0':0,'x1':1,'xref':'x','y0':0.42,'y1':0.42,'yref':'y'},{'line':{'color':'lightslategray','width':1},'type':'line','x0':0.5,'x1':0.5,'xref':'x','y0':0,'y1':1,'yref':'y'}],'margin':{'t':40,'b':40,'l':40,'r':40}},                        {'responsive': true}                    )                };                            </script>        </div> </div>          </div>           </div>   </div> </div>  </div>  </body>  <script type='text/javascript'> window.dispatchEvent(new Event('resize')); </script>          </html>     "
-                                                        }
-                                                    },
-                                                    "a850c76b-395c-471b-85f8-62997123e4c1": {
-                                                        "id": "a850c76b-395c-471b-85f8-62997123e4c1",
-                                                        "Concept": "Priority",
-                                                        "Instance": "Priority",
-                                                        "description": "",
-                                                        "display": {
-                                                            "x": -24,
-                                                            "y": 84
-                                                        },
-                                                        "firstChild": {
-                                                            "Id": "15ea4e43-aa05-4015-a839-e965bcbd62ec",
-                                                            "Next": null
-                                                        }
-                                                    }
-                                                },
-                                            }
-                                        }
-                    */
-                    var editor1 = new b3e.editor.Editor();
-                    editor1.scaleX = 1.5;
-                    editor1.scaleY = 1.5;
-                    editor1.project.create();
-                    var p = editor1.project.get();
-
-                    editor1.applySettingsFormat(editor1._game.canvas);
-
-                    divGeneral.appendChild(editor1._game.canvas);
-
-                    var TressOptions = editor1.import.treeAsDataSubti(a, p, a[0].trees[0].root);
-                    TressOptions.shift();
-                    var cont = 0;
-                    var aaa;
-                    TressOptions.forEach(element => {
-                        var button = document.createElement('button');
-                        button.textContent = 'Botón';
-                        button.style.marginLeft = "5px";
-                        button.textContent = 'option ' + (cont + 1);
-                        button.style.backgroundColor = '#1b6d85';
-                        button.style.border = "none";
-                        button.addEventListener('click', function () {
-                            aaa = CambiarOptionTree(element, editor1);
-                        });
-                        divbuttons.appendChild(button);
-                        var buttonAdd = document.createElement('button');
-                        //buttonAdd.textContent = '<i class="fa-sharp fa-solid fa-plus"></i>';
-                        buttonAdd.insertAdjacentHTML('beforeend', '<i class="fas fa-plus"></i> ');
-                        buttonAdd.style.backgroundColor = '#47A447';
-                        buttonAdd.style.border = "none";
-                        buttonAdd.addEventListener('click', function () {
-                            updateNodeSub(element, NodeSelect, editor1, aaa, divGeneral);
-                        });
-                        divbuttons.appendChild(buttonAdd);
-                        cont++;
+        function GetProjectData(NodeSelect) {
+            return new Promise((resolve, reject) => {
+                projectModel.getProjecAllData()
+                    .then(function (x) {
+                        var e = $window.editor.export;
+                        var ProjectExpor = e.projectToData();
+                        
+                        var a = ProjectExpor.trees[0];
+                        var child = a.nodes[NodeSelect.id].firstChild;
+                        var JsonDataSelect = {};
+                        JsonDataSelect[NodeSelect.id] = a.nodes[NodeSelect.id];
+                        const nodosDescendientes = obtenerDescendientes(a.nodes, NodeSelect.id);
+                    
+                        ProjectExpor.trees[0].nodes = nodosDescendientes;
+                        ProjectExpor.trees[0].root = NodeSelect.id;
+                        x[0].data = ProjectExpor;
+                        resolve(x[0]);
                     });
+            });
+        }
 
-                    $window.editor._initialize();
+        function SubstituteNodes(NodeSelect, dataCriteria) {
 
-                    //zoom canvas from 1 to 1.75
-                    var tSub = p.trees.getSelected();
-                    tSub.view.zoom(1.75);
+            GetProjectData(NodeSelect).then(function (x) {
+                var DataSubstituteSubtree;
+                var usecaseId = $location.search().usecaseId;
+                
+                if (dataCriteria) {
+                    // datos
+                    var cont = 0;
+                    var targetNode = null;
 
-                    notificationService.success(
-                        'Success', 'The operation was successful.'
-                    );
+                    do {
+                        targetNode = x.data.trees[cont].nodes.find((nodo) => nodo.id === NodeSelect.id);
+                        cont++;
+                    } while (!targetNode && cont < x.data.trees.length);
+
+                    if (targetNode) {
+                        DataSubstituteSubtree = {
+                            "treeId": x.data.trees[cont - 1].id,
+                            "subtreeId": NodeSelect.id,
+                            "k": 3,
+                            "criteria": dataCriteria
+                        };
+                    } else {
+                        console.log("The node was not found in any tree.");
+                    }
+                    projectModel.PostSubstituteSubtree(DataSubstituteSubtree,usecaseId)
+                        .then(function (data) {
+                            DrawCanvas(data, NodeSelect);
+                        });
+                } else {
+                    projectModel.SustituteSubTreeReuse(x,usecaseId)
+                        .then(function (data) {
+                            DrawCanvas(data, NodeSelect);
+                        });
+                }
+            });
+
+        }
+
+        function DrawCanvas(a, NodeSelect) {
+
+            var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
+            if (existDiv.length > 0) {
+                existDiv[0].remove();
+            }
+
+            var padre = document.querySelector('.editor-page');
+            var divGeneral = document.createElement('div');
+
+            divGeneral.style.padding = '10px';
+            divGeneral.style.zIndex = '10';
+            divGeneral.style.borderRadius = "10px 0 0 10px";
+            divGeneral.style.marginRight = "250px";
+            divGeneral.style.marginLeft = "260px";
+            divGeneral.style.marginBottom = "20px";
+            divGeneral.style.bottom = '0';
+            divGeneral.style.position = 'absolute';
+            divGeneral.className = "mi-divCanvasGeneral";
+            padre.appendChild(divGeneral);
+
+            var divbuttons = document.createElement('div');
+            divbuttons.style.width = '100%';
+            divbuttons.style.marginRight = "auto";
+            divbuttons.className = "mi-divButtons";
+            divGeneral.appendChild(divbuttons);
+
+            CreateButtonExit(divGeneral, padre, true);
+
+            var editor1 = new b3e.editor.Editor();
+            editor1.scaleX = 1.5;
+            editor1.scaleY = 1.5;
+            editor1.project.create();
+            var p = editor1.project.get();
+
+            editor1.applySettingsFormat(editor1._game.canvas);
+
+            divGeneral.appendChild(editor1._game.canvas);
+
+            var TressOptions = editor1.import.treeAsDataSubti(a, p, a[0].trees[0].root);
+            TressOptions.shift();
+            var cont = 0;
+            var aaa;
+            TressOptions.forEach(element => {
+                var button = document.createElement('button');
+                button.textContent = 'Botón';
+                button.style.marginLeft = "5px";
+                button.textContent = 'option ' + (cont + 1);
+                button.style.backgroundColor = '#1b6d85';
+                button.style.border = "none";
+                button.addEventListener('click', function () {
+                    aaa = CambiarOptionTree(element, editor1);
                 });
+                divbuttons.appendChild(button);
+                var buttonAdd = document.createElement('button');
+                //buttonAdd.textContent = '<i class="fa-sharp fa-solid fa-plus"></i>';
+                buttonAdd.insertAdjacentHTML('beforeend', '<i class="fas fa-plus"></i> ');
+                buttonAdd.style.backgroundColor = '#47A447';
+                buttonAdd.style.border = "none";
+                buttonAdd.addEventListener('click', function () {
+                    updateNodeSub(element, NodeSelect, editor1, aaa, divGeneral);
+                });
+                divbuttons.appendChild(buttonAdd);
+                cont++;
+            });
 
+            $window.editor._initialize();
+
+            //zoom canvas from 1 to 1.75
+            var tSub = p.trees.getSelected();
+            tSub.view.zoom(1.75);
+
+            notificationService.success(
+                'Success', 'The operation was successful.'
+            );
         }
 
         function CambiarOptionTree(treeId, editor1) {
@@ -3042,7 +1736,7 @@
         }
 
         async function UpdateProperties(option, block, nodeId) {
-          
+
             if (option != block.title) {
                 var Continue = true;
                 if (vm.original.name == "Explanation Method") {
@@ -3086,7 +1780,7 @@
                     _SearchSubstituteExplainers();
                     cancelTimeout();
                     update();
-                } 
+                }
             }
 
         }
@@ -3267,58 +1961,76 @@
         }
 
 
+        function getApplicabilityList() {
+            if (!vm.applicabilityList) {
+                vm.applicabilityList = projectModel.GetApplicabilityExplanation($location.search().usecaseId)
+                    .then(function (applicabilityData) {
+                        return applicabilityData;
+                    })
+                    .catch(function (error) {
+                        throw error;
+                    });
+            }
+            return vm.applicabilityList;
+        }
+
+
         function paramsExp(option, block, nodeId) {
             var IdModel = "";
-
             return new Promise((resolve, reject) => {
-                for (var i = 0; i < vm.original.parent.children.length; i++) {
-                    if (vm.original.parent.children[i].category === "root") {
-                        if (!vm.original.parent.children[i].hasOwnProperty("ModelRoot")) {
-                            IdModel = vm.original.parent.children[i].idModel
-                        } else {
-                            IdModel = vm.original.parent.children[i].ModelRoot.idModel;
+                getApplicabilityList()
+                    .then(function (applicabilityList) {
+                        for (var i = 0; i < vm.original.parent.children.length; i++) {
+                            if (vm.original.parent.children[i].category === "root") {
+                                if (!vm.original.parent.children[i].hasOwnProperty("ModelRoot")) {
+                                    IdModel = vm.original.parent.children[i].idModel
+                                } else {
+                                    IdModel = vm.original.parent.children[i].ModelRoot.idModel;
+                                }
+                            }
                         }
-                    }
-                }
 
-                projectModel.getConditionsEvaluationEXP(option, IdModel)
-                    .then(function (x) {
-                        console.log(x);
-                        switch (true) {
-                            case x.hasOwnProperty("params"):
-                                // example of values Popularity and Applicability
-                                vm.block.properties.Popularity = Math.floor(Math.random() * 3);
-                                vm.block.properties.Applicability = Math.random() < 0.5;
+                        projectModel.getConditionsEvaluationEXP(option, IdModel)
+                            .then(function (x) {
+                                switch (true) {
+                                    case x.hasOwnProperty("params"):
+                                        // example of values Popularity and Applicability
+                                        vm.block.properties.Popularity = Math.floor(Math.random() * 3);
+                                        vm.block.properties.Applicability = applicabilityList[option].flag;
 
-                                CreateParams(x.params, block, nodeId);
-                                resolve(); // Resuelve la promesa en caso de éxito
-                                break;
-                            case x == "Error in computer network communications":
-                                vm.ArrayParams = [];
-                                notificationService.error(
-                                    'Error select Explanation Method',
-                                    'Error in computer network communications [500]'
-                                );
-                                reject(new Error('Error in computer network communications [500]')); // Rechaza la promesa en caso de error
-                                break;
-                            default:
-                                // example of values Popularity and Applicability
-                                vm.block.properties.Popularity = Math.floor(Math.random() * 3);
-                                vm.block.properties.Applicability = Math.random() < 0.5;
+                                        CreateParams(x.params, block, nodeId);
+                                        resolve(); // Resuelve la promesa en caso de éxito
+                                        break;
+                                    case x == "Error in computer network communications":
+                                        vm.ArrayParams = [];
+                                        notificationService.error(
+                                            'Error select Explanation Method',
+                                            'Error in computer network communications [500]'
+                                        );
+                                        reject(new Error('Error in computer network communications [500]'));
+                                        break;
+                                    default:
+                                        // example of values Popularity and Applicability
+                                        vm.block.properties.Popularity = Math.floor(Math.random() * 3);
+                                        vm.block.properties.Applicability = applicabilityList[option].flag;
 
-                                vm.ArrayParams = [];
-                                //des block canvas
-                                /*
-                                var p1 = $window.editor._game.canvas;
-                                p1.style.pointerEvents = 'auto';
-                                */
-                                update();
-                                resolve(); // Resuelve la promesa en caso de éxito
-                                break;
-                        }
+                                        vm.ArrayParams = [];
+                                        //des block canvas
+                                        /*
+                                        var p1 = $window.editor._game.canvas;
+                                        p1.style.pointerEvents = 'auto';
+                                        */
+                                        update();
+                                        resolve(); // Resuelve la promesa en caso de éxito
+                                        break;
+                                }
+                            })
+                            .catch((error) => {
+                                reject(error);
+                            });
                     })
                     .catch((error) => {
-                        reject(error); // Rechaza la promesa en caso de error en la llamada a 'projectModel.getConditionsEvaluationEXP'
+                        reject(error);
                     });
             });
         }
@@ -3496,6 +2208,9 @@
                 case 'title':
                     timeoutDuration = 500;
                     break;
+                case 'substituteExpl':
+                    timeoutDuration = 1000;
+                    break;
                 default:
                     break;
             }
@@ -3507,6 +2222,10 @@
                         break;
                     case 'substitute':
                         GetInfoParamSubstitute(key, option, callback);
+                        break;
+                    case 'substituteExpl':
+                        CreateTooltip(key, "substitute",callback);
+                        callback();
                         break;
                     case 'title':
                         mostrarTexto(key, option);
@@ -3546,28 +2265,14 @@
 
 
         function update() {
-
             //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
 
-
             t.blocks.update(vm.original, vm.block);
-
-            //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
-            //returns the position in the AllPropertis
-            /*var estaEnLaLista = vm.AllProperties.findIndex(element => element.id == vm.original.id && vm.original.title == element.value);
-                        console.log(vm.AllProperties);
-            
-                        if (estaEnLaLista != -1) {
-                            vm.AllProperties[estaEnLaLista].description = vm.block.description;
-                            vm.AllProperties[estaEnLaLista].properties = vm.original.properties;
-            }*/
-
         }
 
         async function RunBt() {
-
             vm.RunBtString.push("START RUN BT");
             vm.jsonData = projectModel.runBT();
 

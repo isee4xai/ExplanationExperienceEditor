@@ -51,10 +51,12 @@
             GetSimNL: GetSimNL,
             GetDesciptionExplainer: GetDesciptionExplainer,
             UpdateJsonQuey: UpdateJsonQuey,
-            getSimilarityValueExplainers:getSimilarityValueExplainers,
-            getAllExplainerProperties:getAllExplainerProperties,
-            getProjecAllData:getProjecAllData,
-            getExplainerFieldsFiltered : getExplainerFieldsFiltered,
+            GetSubstituteExplainer: GetSubstituteExplainer,
+            getProjecAllData: getProjecAllData,
+            getExplainerFieldsFiltered: getExplainerFieldsFiltered,
+            PostSubstituteSubtree: PostSubstituteSubtree,
+            GetApplicabilityExplanation: GetApplicabilityExplanation,
+            SustituteSubTreeReuse: SustituteSubTreeReuse,
             GetInstanceModelSelect
         };
         return service;
@@ -132,14 +134,14 @@
             return $q(function (resolve, reject) {
                 try {
                     project = project || currentProject;
-                   const promise = Promise.resolve(storageService.getProjecAllDataService(project.path));
-                   promise
-                       .then((value) => {
-                           resolve(value);
-                       })
-                       .catch((err) => {
-                        reject(e);
-                       });
+                    const promise = Promise.resolve(storageService.getProjecAllDataService(project.path));
+                    promise
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            reject(e);
+                        });
 
                 } catch (e) {
                     reject(e);
@@ -275,7 +277,7 @@
                     reject(e);
                 }
             });
-             
+
         }
 
         function getExplainers() {
@@ -413,36 +415,96 @@
 
         // SUSTITUTE 
 
-        function getSimilarityValueExplainers(callback){
-           storageService.getSimilarityValueExplainersService((error, similarity) => {
-            if (error) {
-                callback(error.message, null);
-            } else {
-                callback(null, similarity);
-            }
-          });
-        }
 
-        function getAllExplainerProperties(callback){
-            storageService.getAllExplainerPropertiesService((error, explainers ) => {
-             if (error) {
-                 callback(error.message, null);
-             } else {
-                 callback(null, explainers );
-             }
-           });
-         }
+        function GetSubstituteExplainer(Criteria,TitleExplan,usecaseId) {
+            return $q(function (resolve, reject) {
+                try {
+                    const promise = Promise.resolve(storageService.GetSubstituteExplainerService(Criteria,TitleExplan,usecaseId));
+                    promise
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
 
         // FORM DATA 
 
-        function getExplainerFieldsFiltered(callback){
+        function getExplainerFieldsFiltered(callback) {
             storageService.getExplainerFieldsFilteredService((error, data) => {
-             if (error) {
-                 callback(error.message, null);
-             } else {
-                 callback(null, data);
-             }
-           });
-         }
+                if (error) {
+                    callback(error.message, null);
+                } else {
+                    callback(null, data);
+                }
+            });
+        }
+
+
+
+        // Subtree
+        function PostSubstituteSubtree(data,usecaseId) {
+            return $q(function (resolve, reject) {
+                try {
+                    const promise = Promise.resolve(storageService.PostSubstituteSubtreeService(data,usecaseId));
+                    promise
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+         // Reuse
+         function SustituteSubTreeReuse(Project,usecaseId) {
+            return $q(function (resolve, reject) {
+                try {
+                    const promise = Promise.resolve(storageService.SustituteSubTreeReuseService(Project,usecaseId));
+                    promise
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
+
+        //draw the dotted line
+        function GetApplicabilityExplanation(usecaseId) {
+            return $q(function (resolve, reject) {
+                try {
+                    const promise = Promise.resolve(storageService.GetApplicabilityExplanationService(usecaseId));
+                    promise
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
     }
 })();
