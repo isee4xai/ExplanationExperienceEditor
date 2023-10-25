@@ -15,5 +15,5 @@
     },
     "dependencies": {
         "angular-cookies": "1.4.14"
-      } 
+    }
 }

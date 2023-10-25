@@ -237,6 +237,11 @@
             "integrity": "sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=",
             "dev": true
         },
+        "angular-cookies": {
+            "version": "1.4.14",
+            "resolved": "https://registry.npmjs.org/angular-cookies/-/angular-cookies-1.4.14.tgz",
+            "integrity": "sha512-KB7g4oWxUG3+fsPlyWOht+f+VTma1qKJCM/zzVzRbQfe8oZBw1+loO1gMiOyKdsb1+OUNiptjGrC/qFvdwrASg=="
+        },
         "ansi-gray": {
             "version": "0.1.1",
             "resolved": "https://registry.npmjs.org/ansi-gray/-/ansi-gray-0.1.1.tgz",
