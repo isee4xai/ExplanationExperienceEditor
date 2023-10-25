@@ -66,7 +66,7 @@
         vm.ExplainerScopeAccordionOpen = false
         vm.ComputationalComplexityAccordionOpen = false
         vm.ImplementationFrameworksAccordionOpen = false
-        //vm.isAccordionEnabled = false;
+  
         vm.isAccordionEnabled = false;
 
         vm.node = null;
@@ -121,7 +121,7 @@
 
         //applicability 
         vm.applicabilityList = null;
-        
+
         vm.ExplainersSub = [
             "/Images/Anchors",
             "/Images/GradCam",
@@ -170,7 +170,7 @@
         vm.ComputationalComplexitySub = null;
         vm.ImplementationFrameworkSub = null;
         vm.PresentationformatSub = null;
-        //  vm.ExplainersSub = null;
+       
 
 
         vm.convertToObjects = function () {
@@ -203,6 +203,9 @@
 
 
         vm.toggleItemSelection = function (listSub, item) {
+
+            console.log(listSub);
+            console.log(item);
             switch (listSub) {
                 case 'Explanation Type':
                     if (item.children.length != []) {
@@ -281,7 +284,6 @@
                     if (item.children.length != []) {
                         vm.checkDescendants(item);
                     }
-
                     var elementoEncontrado = vm.buscarPorKey(vm.ExplainabilityTechniqueSub, item.parent);
 
                     if (item.parent == "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique") {
@@ -402,15 +404,73 @@
 
                     break;
                 case 'Presentation format':
-                    var index = vm.PresentationFormat.findIndex(function (element) {
-                        return element.key === item.key && element.label === item.label;
-                    });
-
-                    if (index == -1) {
-                        vm.PresentationFormat.push(item);
-                    } else {
-                        vm.PresentationFormat.splice(index, 1);
+                 
+                    if (item.children.length != []) {
+                        vm.checkDescendants(item);
                     }
+               
+                    var elementoEncontrado = vm.buscarPorKey(vm.PresentationformatSub, item.parent);
+
+                    if (item.parent == "http://semanticscience.org/resource/SIO_000015") {
+                        var index = vm.PresentationFormatSubSelect.findIndex(function (element) {
+                            return element.key === item.key && element.label === item.label;
+                        });
+
+                        if (index == -1 && item.checked === true) {
+                            vm.PresentationFormatSubSelect = vm.PresentationFormatSubSelect.filter(function (element) {
+                                return element.parent !== item.key;
+                            });
+
+                            vm.PresentationFormatSubSelect.push(item);
+                        } else {
+                            vm.PresentationFormatSubSelect.splice(index, 1);
+                        }
+                    } else if (elementoEncontrado !== null) {
+
+                        var hasCheckedTrue = elementoEncontrado.children.some(function (obj) {
+                            return obj.checked === false || !obj.hasOwnProperty('checked');
+                        });
+
+                        if (hasCheckedTrue == true) {
+                            var index3 = vm.PresentationFormatSubSelect.findIndex(function (element) {
+                                return element.key === elementoEncontrado.key;
+                            });
+
+                            if (index3 != -1) {
+                                var foundItem = vm.ExplanationTypeSub.find(function (item) {
+                                    return item.key === elementoEncontrado.key;
+                                });
+                                if (foundItem) {
+                                    foundItem.checked = false;
+                                }
+                                vm.PresentationFormatSubSelect.splice(index3, 1);
+
+                                elementoEncontrado.children.forEach(element => {
+                                    if (element.checked == true) {
+                                        vm.PresentationFormatSubSelect.push(element);
+                                    }
+                                });
+                            } else {
+                                var index2 = vm.PresentationFormatSubSelect.findIndex(function (element) {
+                                    return element.key === item.key;
+                                });
+
+                                if (index2 == -1) {
+                                    vm.PresentationFormatSubSelect.push(item);
+                                } else {
+                                    vm.PresentationFormatSubSelect.splice(index2, 1);
+                                }
+                            }
+                        } else {
+                            var array = vm.PresentationFormatSubSelect.filter(function (obj) {
+                                return obj.parent !== elementoEncontrado.key;
+                            });
+                            array.push(elementoEncontrado);
+                            elementoEncontrado.checked = true;
+                            vm.PresentationFormatSubSelect = array;
+                        }
+                    }
+
                     break;
             }
         };
@@ -434,6 +494,8 @@
         };
 
         vm.buscarPorKey = function (elementos, keyABuscar) {
+            console.log(elementos);
+            console.log(keyABuscar);
             for (var i = 0; i < elementos.length; i++) {
                 if (elementos[i].key === keyABuscar) {
                     return elementos[i];
@@ -486,7 +548,7 @@
             if (vm.ImplementationFrameworkSubSelect.length > 0) {
                 nonEmptySelections.push('ImplementationFrameworkSub');
             }
-            if (vm.PresentationFormat.length > 0) {
+            if (vm.PresentationFormatSubSelect.length > 0) {
                 nonEmptySelections.push('PresentationformatSub');
             }
             if (vm.ExplanationScopeSubSelect.length > 0) {
@@ -512,7 +574,7 @@
             vm.ExplainerConcurrentnessSubSelect = [];
             vm.ComputationalComplexitySubSelect = [];
             vm.ImplementationFrameworkSubSelect = [];
-            vm.PresentationFormat = [];
+            vm.PresentationFormatSubSelect = [];
             vm.ExplanationScopeSubSelect = [];
             vm.ExplainersSubSelect = [];
         }
@@ -610,6 +672,10 @@
 
                 //  check if the property that is selected to define its values ​​in the properties component
                 //  is the explain method and the evaluate method or intends
+                if (!vm.applicabilityList) {
+                    getApplicabilityList();
+                }
+
                 switch (vm.original.name) {
                     case "Explanation Method":
                         /*
@@ -691,7 +757,7 @@
                     vm.ExplainerConcurrentnessSubSelect = [];
                     vm.ComputationalComplexitySubSelect = [];
                     vm.ImplementationFrameworkSubSelect = [];
-                    vm.PresentationFormat = [];
+                    vm.PresentationFormatSubSelect = [];
                     vm.ExplanationScopeSubSelect = [];
                     vm.ExplainersSubSelect = [];
                 }
@@ -883,7 +949,6 @@
             } else {
                 setExplainersSubstitute();
             }
-
             function setExplainersSubstitute() {
                 if (vm.ExplainersSubstituteAll && vm.block.title != "Explanation Method") {
                     vm.ExplainersSubstitute = Object.entries(vm.ExplainersSubstituteAll[vm.block.title] || {})
@@ -906,8 +971,8 @@
                     );
                     var loaderDiv = document.querySelector('#loader');
                     loaderDiv.style.display = 'block';
-                            await getExplainerDataForm();
-                            loaderDiv.style.display = "none";
+                    await getExplainerDataForm();
+                    loaderDiv.style.display = "none";
                 }
                 var modalFormSub = document.getElementById("formSubstitute");
                 modalFormSub.style.display = "block";
@@ -932,7 +997,7 @@
                         vm.ExplanationScopeSub = explainers.Scope;
                         vm.ComputationalComplexitySub = explainers.ComputationalComplexity;
                         vm.ImplementationFrameworkSub = explainers.Implementation_Framework;
-                        vm.PresentationformatSub = explainers.DatasetType;
+                        vm.PresentationformatSub = explainers.InformationContentEntity.children;
                         resolve();
                     }
                 });
@@ -946,27 +1011,15 @@
                 'Loading', 'Please wait while your request is being processed...'
             );
             var jsonDataNew = {
-                "technique": [],
-                "dataset_type": [],
-                "explanation_type": [],
-                "concurrentness": [],
-                "portability": [],
-                "scope": [],
-                "target": [],
-                "presentations": [],
-                "computational_complexity": [],
-                "ai_methods": [],
-                "ai_tasks": [],
-                "implementation": [],
                 // "Explainers": vm.block.title
             };
 
             if (vm.ExplanationTypeSubSelect.length > 0) {
-                /* mostrar Padre
+
                 jsonDataNew.explanation_type = vm.ExplanationTypeSubSelect.map(function (item) {
                     return item.key;
                 });
-                Mostrar hijos*/ 
+
                 vm.ExplanationTypeSubSelect.forEach(function (item) {
                     console.log(item);
                     if (item.children.length == 0) {
@@ -977,14 +1030,12 @@
                         });
                     }
                 });
-                
+
             }
             if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
-                /* mostrar Padre
                 jsonDataNew.technique = vm.ExplainabilityTechniqueSubSelect.map(function (item) {
                     return item.key;
                 });
-                Mostrar hijos*/ 
 
                 vm.ExplainabilityTechniqueSubSelect.forEach(function (item) {
                     if (item.children.length == 0) {
@@ -1011,11 +1062,24 @@
                     return item.key;
                 });
             }
-            if (vm.PresentationFormat.length > 0) {
-                jsonDataNew.dataset_type = vm.PresentationFormat.map(function (item) {
+          
+
+            if (vm.PresentationFormatSubSelect.length > 0) {
+                jsonDataNew.presentations = vm.PresentationFormatSubSelect.map(function (item) {
                     return item.key;
                 });
+
+                vm.PresentationFormatSubSelect.forEach(function (item) {
+                    if (item.children.length == 0) {
+                        jsonDataNew.presentations.push(item.key);
+                    } else {
+                        item.children.forEach(function (element) {
+                            jsonDataNew.presentations.push(element.key);
+                        });
+                    }
+                });
             }
+
             if (vm.ExplanationScopeSubSelect.length > 0) {
                 jsonDataNew.scope = vm.ExplanationScopeSubSelect.map(function (item) {
                     return item.key;
@@ -1214,13 +1278,13 @@
                     .then(function (x) {
                         var e = $window.editor.export;
                         var ProjectExpor = e.projectToData();
-                        
+
                         var a = ProjectExpor.trees[0];
                         var child = a.nodes[NodeSelect.id].firstChild;
                         var JsonDataSelect = {};
                         JsonDataSelect[NodeSelect.id] = a.nodes[NodeSelect.id];
                         const nodosDescendientes = obtenerDescendientes(a.nodes, NodeSelect.id);
-                    
+
                         ProjectExpor.trees[0].nodes = nodosDescendientes;
                         ProjectExpor.trees[0].root = NodeSelect.id;
                         x[0].data = ProjectExpor;
@@ -1232,35 +1296,39 @@
         function SubstituteNodes(NodeSelect, dataCriteria) {
 
             GetProjectData(NodeSelect).then(function (x) {
-                var DataSubstituteSubtree;
+                var  DataSubstituteSubtree = {
+                    "treeId": x.id,
+                    "subtreeId": NodeSelect.id,
+                    "k": 3,
+                    "criteria": dataCriteria
+                };
                 var usecaseId = $location.search().usecaseId;
-                
+                /*
+                var cont = 0;
+                var targetNode = null;
+
+                do {
+                    targetNode = x.data.trees[cont].nodes.find((nodo) => nodo.id === NodeSelect.id);
+                    cont++;
+                } while (!targetNode && cont < x.data.trees.length);
+
+                if (targetNode) {
+                    DataSubstituteSubtree.treeId = "65364e5c9e59608d3018a1aa";
+                    //x.data.trees[cont - 1].id;
+                } else {
+                    console.log("The node was not found in any tree.");
+                }
+                */
                 if (dataCriteria) {
-                    // datos
-                    var cont = 0;
-                    var targetNode = null;
-
-                    do {
-                        targetNode = x.data.trees[cont].nodes.find((nodo) => nodo.id === NodeSelect.id);
-                        cont++;
-                    } while (!targetNode && cont < x.data.trees.length);
-
-                    if (targetNode) {
-                        DataSubstituteSubtree = {
-                            "treeId": x.data.trees[cont - 1].id,
-                            "subtreeId": NodeSelect.id,
-                            "k": 3,
-                            "criteria": dataCriteria
-                        };
-                    } else {
-                        console.log("The node was not found in any tree.");
-                    }
-                    projectModel.PostSubstituteSubtree(DataSubstituteSubtree,usecaseId)
+                    projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId)
                         .then(function (data) {
+                            console.log("-------");
+                            console.log(data);
                             DrawCanvas(data, NodeSelect);
                         });
                 } else {
-                    projectModel.SustituteSubTreeReuse(x,usecaseId)
+                    delete DataSubstituteSubtree.criteria; 
+                    projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
                         .then(function (data) {
                             DrawCanvas(data, NodeSelect);
                         });
@@ -1736,7 +1804,7 @@
         }
 
         async function UpdateProperties(option, block, nodeId) {
-
+            console.log(option);
             if (option != block.title) {
                 var Continue = true;
                 if (vm.original.name == "Explanation Method") {
@@ -1962,78 +2030,78 @@
 
 
         function getApplicabilityList() {
-            if (!vm.applicabilityList) {
+            return new Promise((resolve, reject) => {
                 vm.applicabilityList = projectModel.GetApplicabilityExplanation($location.search().usecaseId)
-                    .then(function (applicabilityData) {
-                        return applicabilityData;
+                    .then(function (x) {
+                        vm.applicabilityList = x;
+                        resolve();
                     })
                     .catch(function (error) {
-                        throw error;
+                        reject(new Error('Error in computer network communications [500]'));
                     });
-            }
-            return vm.applicabilityList;
+            });
         }
 
 
         function paramsExp(option, block, nodeId) {
             var IdModel = "";
             return new Promise((resolve, reject) => {
-                getApplicabilityList()
-                    .then(function (applicabilityList) {
-                        for (var i = 0; i < vm.original.parent.children.length; i++) {
-                            if (vm.original.parent.children[i].category === "root") {
-                                if (!vm.original.parent.children[i].hasOwnProperty("ModelRoot")) {
-                                    IdModel = vm.original.parent.children[i].idModel
-                                } else {
-                                    IdModel = vm.original.parent.children[i].ModelRoot.idModel;
-                                }
-                            }
+
+                for (var i = 0; i < vm.original.parent.children.length; i++) {
+                    if (vm.original.parent.children[i].category === "root") {
+                        if (!vm.original.parent.children[i].hasOwnProperty("ModelRoot")) {
+                            IdModel = vm.original.parent.children[i].idModel
+                        } else {
+                            IdModel = vm.original.parent.children[i].ModelRoot.idModel;
                         }
+                    }
+                }
 
-                        projectModel.getConditionsEvaluationEXP(option, IdModel)
-                            .then(function (x) {
-                                switch (true) {
-                                    case x.hasOwnProperty("params"):
-                                        // example of values Popularity and Applicability
-                                        vm.block.properties.Popularity = Math.floor(Math.random() * 3);
-                                        vm.block.properties.Applicability = applicabilityList[option].flag;
+                projectModel.getConditionsEvaluationEXP(option, IdModel)
+                    .then(function (x) {
+                        switch (true) {
+                            case x.hasOwnProperty("params"):
+                                // example of values Popularity and Applicability
+                                vm.block.properties.Popularity = Math.floor(Math.random() * 3);
+                                vm.block.properties.Applicability = vm.applicabilityList[option].flag;
 
-                                        CreateParams(x.params, block, nodeId);
-                                        resolve(); // Resuelve la promesa en caso de éxito
-                                        break;
-                                    case x == "Error in computer network communications":
-                                        vm.ArrayParams = [];
-                                        notificationService.error(
-                                            'Error select Explanation Method',
-                                            'Error in computer network communications [500]'
-                                        );
-                                        reject(new Error('Error in computer network communications [500]'));
-                                        break;
-                                    default:
-                                        // example of values Popularity and Applicability
-                                        vm.block.properties.Popularity = Math.floor(Math.random() * 3);
-                                        vm.block.properties.Applicability = applicabilityList[option].flag;
+                                CreateParams(x.params, block, nodeId);
+                                resolve(); // Resuelve la promesa en caso de éxito
+                                break;
+                            case x == "Error in computer network communications":
+                                vm.ArrayParams = [];
+                                notificationService.error(
+                                    'Error select Explanation Method',
+                                    'Error in computer network communications [500]'
+                                );
+                                reject(new Error('Error in computer network communications [500]'));
+                                break;
+                            default:
+                                // example of values Popularity and Applicability
+                                vm.block.properties.Popularity = Math.floor(Math.random() * 3);
+                                vm.block.properties.Applicability = vm.applicabilityList[option].flag;
 
-                                        vm.ArrayParams = [];
-                                        //des block canvas
-                                        /*
-                                        var p1 = $window.editor._game.canvas;
-                                        p1.style.pointerEvents = 'auto';
-                                        */
-                                        update();
-                                        resolve(); // Resuelve la promesa en caso de éxito
-                                        break;
-                                }
-                            })
-                            .catch((error) => {
-                                reject(error);
-                            });
+                                vm.ArrayParams = [];
+                                //des block canvas
+                                /*
+                                var p1 = $window.editor._game.canvas;
+                                p1.style.pointerEvents = 'auto';
+                                */
+                                update();
+                                resolve(); // Resuelve la promesa en caso de éxito
+                                break;
+                        }
                     })
                     .catch((error) => {
                         reject(error);
                     });
-            });
+            })
+                .catch((error) => {
+                    reject(error);
+                });
+
         }
+
 
         function CreateParams(params, block, nodeId) {
             vm.JsonParams = {};
@@ -2224,7 +2292,7 @@
                         GetInfoParamSubstitute(key, option, callback);
                         break;
                     case 'substituteExpl':
-                        CreateTooltip(key, "substitute",callback);
+                        CreateTooltip(key, "substitute", callback);
                         callback();
                         break;
                     case 'title':

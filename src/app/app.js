@@ -2,7 +2,8 @@ angular.module('app', [
     'ui.router',
     'ui.bootstrap',
     'ngAnimate',
-    'templates'
+    'templates',
+    'ngCookies'
 ])
     .run(['$rootScope', '$window', '$state',
         function Execute($rootScope, $window, $state) {

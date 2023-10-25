@@ -565,41 +565,108 @@
                                             <h4 class="titleSubForm"> <span class="asterisk">*</span>
                                                 Presentation format</h4>   
                                             <accordion>
-                                                    <accordion-group
-                                                        is-pen="propertiespanel.ExplainerConcurrentnessAccordionOpen">
-                                                        <accordion-heading>
-                                                            <span class="placeholder-text"
-                                                                ng-show="propertiespanel.PresentationFormat.length == 0"
-                                                                class="placeholder-text">
-                                                                Pick or Search Presentation Formats
-                                                            </span>
+                                                <accordion-group>
+                                                    <accordion-heading>
+                                                        <span class="placeholder-text"
+                                                            ng-show="propertiespanel.PresentationFormatSubSelect.length == 0"
+                                                            class="placeholder-text">
+                                                            Pick or Search Explainability Technique
+                                                        </span>
+                                                        <span
+                                                            ng-show="propertiespanel.PresentationFormatSubSelect.length != 0"
+                                                            class="selected-formats">
                                                             <span
-                                                                ng-show="propertiespanel.PresentationFormat.length != 0"
-                                                                class="selected-formats">
-                                                                <span
-                                                                    ng-repeat="item in propertiespanel.PresentationFormat">
-                                                                    {{item.label}}{{$last ? '' : ', '}} </span>
-                                                            </span>
+                                                                ng-repeat="item in propertiespanel.PresentationFormatSubSelect">
+                                                                {{
+                                                                item.label }}{{$last ? '' : ', '}} </span>
+                                                        </span>
+
+
+                                                    </accordion-heading>
+                                                    <div class="checkbox-tree"
+                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
+                                                        <span>Unselect explainer</span>
+                                                    </div>
+                                                    <div class="checkbox-tree"
+                                                        ng-show="propertiespanel.original.title != 'Explanation Method'">
+                                                        <ul>
+                                                            <li
+                                                                ng-repeat="item in propertiespanel.PresentationformatSub">
+                                                                <div class="DivCheckboxFormSub">
+                                                                    <i class="fas fa" ng-if="item.children.length > 0"
+                                                                        class="fas"
+                                                                        ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
+                                                                        ng-click="propertiespanel.toggleItem(item, $event)"></i>
+
+                                                                    <label>
+                                                                        <input type="checkbox" ng-model="item.checked"
+                                                                            ng-change="propertiespanel.toggleItemSelection( 'Presentation format',item)"
+                                                                            ng-click="$event.stopPropagation()">
+                                                                        {{item.label}}
+                                                                    </label>
+                                                                </div>
+
+                                                                <ul
+                                                                    ng-show="item.expanded && propertiespanel.hasChildren(item)">
+                                                                    <li ng-repeat="childItem in item.children">
+                                                                        <div class="DivCheckboxFormSub">
+                                                                            <i class="fas fa"
+                                                                                ng-if="childItem.children.length > 0"
+                                                                                class="fas"
+                                                                                ng-class="{'fa-caret-down': childItem.expanded && propertiespanel.hasChildren(childItem) && childItem.checked, 'fa-caret-right': !childItem.expanded || !propertiespanel.hasChildren(childItem) || !childItem.checked}"
+                                                                                ng-click="propertiespanel.toggleItem(childItem, $event)"></i>
+
+                                                                            <label>
+                                                                                <input type="checkbox"
+                                                                                    ng-model="childItem.checked"
+                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Presentation format' ,childItem)">
+                                                                                {{childItem.label}}
+                                                                            </label>
+                                                                        </div>
+                                                                        <ul
+                                                                            ng-show="childItem.expanded && propertiespanel.hasChildren(childItem)">
+                                                                            <li
+                                                                                ng-repeat="grandchildItem in childItem.children">
+                                                                                <div class="DivCheckboxFormSub">
+                                                                                    <i class="fas fa"
+                                                                                        ng-if="grandchildItem.children.length > 0"
+                                                                                        class="fas"
+                                                                                        ng-class="{'fa-caret-down': grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
+                                                                                        ng-click="propertiespanel.toggleItem(grandchildItem, $event)"></i>
+
+                                                                                    <label>
+                                                                                        <input type="checkbox"
+                                                                                            ng-model="grandchildItem.checked"
+                                                                                            ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem)">
+                                                                                        {{grandchildItem.label}}
+                                                                                    </label>
+                                                                                </div>
+                                                                                <ul
+                                                                                ng-show="grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem)">
+                                                                                <li
+                                                                                    ng-repeat="grandchildItem1 in grandchildItem.children">
+                                                                                    <div class="DivCheckboxFormSub">
+                                                                                        <i class="fas fa"
+                                                                                            ng-if="grandchildItem1.children.length > 0"
+                                                                                            class="fas"
+                                                                                            ng-class="{'fa-caret-down': grandchildItem1.expanded && propertiespanel.hasChildren(grandchildItem1) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
+                                                                                            ng-click="propertiespanel.toggleItem(grandchildItem1, $event)"></i>
     
-                                                        </accordion-heading>
-                                                        <div class="checkbox-tree"
-                                                              ng-show="propertiespanel.original.title ==  'Explanation Method'">
-                                                            <span>Unselect explainer</span>
-                                                        </div>
-                                                        <div class="checkbox-tree"
-                                                            ng-show="propertiespanel.original.title != 'Explanation Method'">
-                                                            <ul class="ulSelect">
-                                                                <li class="LiSelect"
-                                                                    ng-repeat="item in propertiespanel.PresentationformatSub">
-                                                                    <div class="DivCheckboxFormSub">
-                                                                        <label>
-                                                                            <input type="checkbox" ng-model="item.checked"
-                                                                                ng-change="propertiespanel.toggleItemSelection('Presentation format',item)">
-                                                                            {{item.label}}
-                                                                        </label>
-                                                                    </div>
-                                                        </div>
-                                                    </accordion-group>
+                                                                                        <label>
+                                                                                            <input type="checkbox"
+                                                                                                ng-model="grandchildItem1.checked"
+                                                                                                ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem1)">
+                                                                                            {{grandchildItem1.label}}
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                    </div>
+                                                </accordion-group>
                                             </accordion>    
                                  
 

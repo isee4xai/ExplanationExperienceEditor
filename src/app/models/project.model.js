@@ -486,7 +486,6 @@
             });
         }
 
-
         //draw the dotted line
         function GetApplicabilityExplanation(usecaseId) {
             return $q(function (resolve, reject) {
@@ -505,6 +504,5 @@
                 }
             });
         }
-
     }
 })();

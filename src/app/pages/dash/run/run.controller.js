@@ -17,8 +17,6 @@
 
         var vm = this;
         vm.ExecutionsRunEditor = null;
-        vm.aaa = "Sadas"
-
         _activate();
 
         function _activate() {

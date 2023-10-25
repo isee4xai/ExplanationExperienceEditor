@@ -13,5 +13,7 @@
         "sweetalert": "~1.0.0-beta",
         "axios": "0.27.2"
     },
-    "dependencies": {}
+    "dependencies": {
+        "angular-cookies": "1.4.14"
+      } 
 }

@@ -2,11 +2,11 @@ angular
     .module('app')
     .factory('storageService', storageService);
 
-storageService.$inject = ['$state', '$q', 'localStorageService', 'fileStorageService', '$http',
+storageService.$inject = ['$state', '$q', 'localStorageService', 'fileStorageService', '$http','$cookies',
     'editorService', 'systemService'
 ];
 
-function storageService($state, $q, localStorageService, fileStorageService, $http, editorService, systemService) {
+function storageService($state, $q, localStorageService, fileStorageService, $http,$cookies , editorService, systemService) {
     var storage = (fileStorageService.ok ? fileStorageService : localStorageService);
 
     var settingsPath = systemService.join(systemService.getDataPath(), 'settings.json');
@@ -248,9 +248,13 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     async function GetSubstituteExplainerService(Criteria, TitleExplan,usecaseId) {
         var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteExplainer";
 
+        console.log(server_url);
+
+        var token = getToken();
+
         var headers = {
             "Content-Type": "application/json",
-            "x-access-token": "token"
+            "x-access-token": token
         };
 
         var data = {
@@ -259,7 +263,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         }
 
         return $q(function (resolve, reject) {
-            /*   try {
+               try {
                    axios.post(server_url, data, { headers: headers }).then(function (response) {
                        resolve(response.data);
                    }, function (err) {
@@ -268,7 +272,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                } catch (e) {
                    reject(e);
                }
-           */
+         /* 
             var datosFalsos = [
                 {
                     "explainer": "/Images/LIME",
@@ -289,7 +293,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
                 }
             ]
-            resolve(datosFalsos);
+            resolve(datosFalsos); */
         });
     }
 
@@ -313,8 +317,10 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     function getToken() {
-        // Implementa la lógica para obtener el token
-        return 'mi_token';
+        var favoriteCookie1 = $cookies.get('auth');
+        console.log(favoriteCookie1);
+
+        return favoriteCookie1;
     }
 
 
@@ -612,996 +618,22 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
     async function PostSubstituteSubtreeService(data,usecaseId) {
         var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteSubtree";
+
+        console.log(server_url);
+        console.log(data);
+
+        var token = getToken();
+
         var headers = {
             "Content-Type": "application/json",
-            "x-access-token": "token"
+            "x-access-token": token
         };
+
         return $q(function (resolve, reject) {
-            /*
+            
             try {
                 axios.post(server_url, data, { headers: headers }).then(function (response) {
-                    resolve(response.data);
-                }, function (err) {
-                    resolve("Error in computer network communications");
-                });
-            } catch (e) {
-                reject(e);
-            }*/
-            var a = [{
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'What contributed to this income prediction?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/LIME',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            },
-            {
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'How can patient X reduce cancer risk?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/DisCERN',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            },
-            {
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'What features contributed to predicting mortality Y for patient X?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/DeepSHAPLocal',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            },
-            {
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'What features contributed to predicting mortality?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/DeepSHAPGlobal',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            }];
-
-            resolve(a);
-        });
-    }
-
-    async function SustituteSubTreeReuseService(data,usecaseId) {
-        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteSubtree";
-        var headers = {
-            "Content-Type": "application/json",
-            "x-access-token": "token"
-        };
-        return $q(function (resolve, reject) {
-            /*
-            try {
-                axios.post(server_url, data, { headers: headers }).then(function (response) {
-                    resolve(response.data);
-                }, function (err) {
-                    resolve("Error in computer network communications");
-                });
-            } catch (e) {
-                reject(e);
-            }*/
-            var a = [{
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'What contributed to this income prediction?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/LIME',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            },
-            {
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'How can patient X reduce cancer risk?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/DisCERN',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            },
-            {
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'What features contributed to predicting mortality Y for patient X?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/DeepSHAPLocal',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            },
-            {
-                'version': '0.1.0',
-                'scope': 'project',
-                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                'trees': [{
-                    'version': '0.1.0',
-                    'scope': 'tree',
-                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
-                    'Instance': 'Explanation Experience',
-                    'description': '',
-                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
-                    'idModel': 'ECG200LSTM',
-                    'nodes': {
-                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
-                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
-                            'Concept': 'Priority',
-                            'Instance': 'Priority',
-                            'description': '',
-                            'display': { 'x': -60, 'y': 84 },
-                            'firstChild': {
-                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
-                                'Next': null
-                            }
-                        },
-                        '5112868d-f790-4665-ab3e-18a36a857363': {
-                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
-                            'Concept': 'Sequence',
-                            'Instance': 'Sequence',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -60, 'y': 168 },
-                            'firstChild': {
-                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
-                            }
-                        },
-                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
-                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
-                            'Concept': 'User Question',
-                            'Instance': 'User Question',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': -192, 'y': 324 },
-                            'params': {
-                                'Question': {
-                                    'key': 'Question',
-                                    'value': 'What features contributed to predicting mortality?'
-                                }
-                            }
-                        },
-                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
-                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
-                            'Concept': 'Explanation Method',
-                            'Instance': '/Tabular/DeepSHAPGlobal',
-                            'description': '',
-                            'properties': {},
-                            'display': { 'x': 60, 'y': 324 },
-                            'params': {
-                                'output_classes': {
-                                    'key': 'output_classes',
-                                    'value': '[ ]',
-                                    'default': '[ ]',
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
-                                    'type': 'text'
-                                },
-                                'top_classes': {
-                                    'key': 'top_classes',
-                                    'value': 1,
-                                    'default': 1,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
-                                    'type': 'number'
-                                },
-                                'num_features': {
-                                    'key': 'num_features',
-                                    'value': 10,
-                                    'default': 10,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_width': {
-                                    'key': 'png_width',
-                                    'value': 1000,
-                                    'default': 1000,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Width (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                },
-                                'png_height': {
-                                    'key': 'png_height',
-                                    'value': 400,
-                                    'default': 400,
-                                    'range': [null, null],
-                                    'required': 'false',
-                                    'description': 'Height (in pixels) of the png image containing the explanation.',
-                                    'type': 'number'
-                                }
-                            }
-                        }
-                    },
-                    'display': {
-                        'camera_x': 821.0999999642372,
-                        'camera_y': 332.69999998807907,
-                        'camera_z': 1,
-                        'x': -60,
-                        'y': 0
-                    }
-                }],
-                'custom_nodes': []
-            }];
-
-            resolve(a);
-        });
-    }
-
-
-    async function GetApplicabilityExplanationService(usecaseId) {
-        
-        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/applicability";
-        var headers = {
-            "Content-Type": "application/json",
-            "x-access-token": "token"
-        };
-        return $q(function (resolve, reject) {
-           /* 
-           try {
-                axios.post(server_url, { headers: headers }).then(function (response) {
+                    console.log(response.datas);
                     resolve(response.data);
                 }, function (err) {
                     resolve("Error in computer network communications");
@@ -1609,7 +641,1009 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
             } catch (e) {
                 reject(e);
             }
-            */
+            /*
+            var a = [{
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'What contributed to this income prediction?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/LIME',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            },
+            {
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'How can patient X reduce cancer risk?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/DisCERN',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            },
+            {
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'What features contributed to predicting mortality Y for patient X?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/DeepSHAPLocal',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            },
+            {
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'What features contributed to predicting mortality?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/DeepSHAPGlobal',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            }];
+
+            resolve(a);*/
+        });
+    }
+
+    async function SustituteSubTreeReuseService(data,usecaseId) {
+        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteSubtree";
+
+        console.log(server_url);
+        console.log(data);
+
+        var token = getToken();
+
+        var headers = {
+            "Content-Type": "application/json",
+            "x-access-token": token
+        };
+
+        return $q(function (resolve, reject) {
+            
+            try {
+                axios.post(server_url, data, { headers: headers }).then(function (response) {
+                    resolve(response.data);
+                }, function (err) {
+                    resolve("Error in computer network communications");
+                });
+            } catch (e) {
+                reject(e);
+            }
+            /*
+            var a = [{
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'What contributed to this income prediction?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/LIME',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            },
+            {
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'How can patient X reduce cancer risk?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/DisCERN',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            },
+            {
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'What features contributed to predicting mortality Y for patient X?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/DeepSHAPLocal',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            },
+            {
+                'version': '0.1.0',
+                'scope': 'project',
+                'selectedTree': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                'trees': [{
+                    'version': '0.1.0',
+                    'scope': 'tree',
+                    'id': '33def3ec-31a8-47c1-856c-7fd724718df2',
+                    'Instance': 'Explanation Experience',
+                    'description': '',
+                    'root': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                    'query': '[ 0.79567475,  0.9502404 ,  1.1466679 ,  1.7491252 ,  2.4258016 ,\\n        2.6709641 ,  2.4624665 ,  2.0670781 ,  1.6233579 ,  1.088265  ,\\n        0.48325747,  0.02906767, -0.10205782, -0.04598573, -0.0671826 ,\\n       -0.19722394, -0.2485563 , -0.16774872, -0.14832422, -0.28560195,\\n       -0.40439817, -0.44400887, -0.57232183, -0.74243746, -0.76085833,\\n       -0.73913887, -0.79702819, -0.82658122, -0.86103224, -0.92441019,\\n       -0.92853065, -1.0558294 , -1.342795  , -1.4240432 , -1.3925323 ,\\n       -1.6146891 , -1.8213559 , -1.7714491 , -1.812784  , -2.0056145 ,\\n       -1.9994011 , -1.8152135 , -1.7312891 , -1.7231695 , -1.595469  ,\\n       -1.3787969 , -1.2431864 , -1.1277632 , -0.82712383, -0.43367487,\\n       -0.24352558, -0.24418688, -0.13786127,  0.12819149,  0.28449563,\\n        0.27788564,  0.34869189,  0.47325956,  0.46019376,  0.43604088,\\n        0.46587407,  0.36677829,  0.29225774,  0.45376562,  0.5617359 ,\\n        0.44966833,  0.36502024,  0.37485964,  0.38958319,  0.43390585,\\n        0.45581797,  0.40363272,  0.39960026,  0.49559394,  0.56183973,\\n        0.54000099,  0.5069879 ,  0.48365207,  0.46294595,  0.5407128 ,\\n        0.71064026,  0.7848302 ,  0.74619101,  0.73161313,  0.68733161,\\n        0.53590909,  0.43032121,  0.48710724,  0.57974138,  0.56283371,\\n        0.46409311,  0.40246792,  0.44930481,  0.55808223,  0.56857857,\\n        0.40117688]',
+                    'idModel': 'ECG200LSTM',
+                    'nodes': {
+                        '546f5cee-68b0-4b90-85be-786b9957d03a': {
+                            'id': '546f5cee-68b0-4b90-85be-786b9957d03a',
+                            'Concept': 'Priority',
+                            'Instance': 'Priority',
+                            'description': '',
+                            'display': { 'x': -60, 'y': 84 },
+                            'firstChild': {
+                                'Id': '5112868d-f790-4665-ab3e-18a36a857363',
+                                'Next': null
+                            }
+                        },
+                        '5112868d-f790-4665-ab3e-18a36a857363': {
+                            'id': '5112868d-f790-4665-ab3e-18a36a857363',
+                            'Concept': 'Sequence',
+                            'Instance': 'Sequence',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -60, 'y': 168 },
+                            'firstChild': {
+                                'Id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                                'Next': { 'Id': '5829d6db-5011-4ad8-846a-ab8452c6be46', 'Next': null }
+                            }
+                        },
+                        '85b9b22e-1b0a-4a9b-81a9-83952d27271a': {
+                            'id': '85b9b22e-1b0a-4a9b-81a9-83952d27271a',
+                            'Concept': 'User Question',
+                            'Instance': 'User Question',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': -192, 'y': 324 },
+                            'params': {
+                                'Question': {
+                                    'key': 'Question',
+                                    'value': 'What features contributed to predicting mortality?'
+                                }
+                            }
+                        },
+                        '5829d6db-5011-4ad8-846a-ab8452c6be46': {
+                            'id': '5829d6db-5011-4ad8-846a-ab8452c6be46',
+                            'Concept': 'Explanation Method',
+                            'Instance': '/Tabular/DeepSHAPGlobal',
+                            'description': '',
+                            'properties': {},
+                            'display': { 'x': 60, 'y': 324 },
+                            'params': {
+                                'output_classes': {
+                                    'key': 'output_classes',
+                                    'value': '[ ]',
+                                    'default': '[ ]',
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Array of integers representing the classes to be explained. Defaults to class 1.',
+                                    'type': 'text'
+                                },
+                                'top_classes': {
+                                    'key': 'top_classes',
+                                    'value': 1,
+                                    'default': 1,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': "Integer representing the number of classes with the highest prediction probability to be explained. Overrides 'output_classes' if provided.",
+                                    'type': 'number'
+                                },
+                                'num_features': {
+                                    'key': 'num_features',
+                                    'value': 10,
+                                    'default': 10,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Integer representing the maximum number of features to be included in the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_width': {
+                                    'key': 'png_width',
+                                    'value': 1000,
+                                    'default': 1000,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Width (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                },
+                                'png_height': {
+                                    'key': 'png_height',
+                                    'value': 400,
+                                    'default': 400,
+                                    'range': [null, null],
+                                    'required': 'false',
+                                    'description': 'Height (in pixels) of the png image containing the explanation.',
+                                    'type': 'number'
+                                }
+                            }
+                        }
+                    },
+                    'display': {
+                        'camera_x': 821.0999999642372,
+                        'camera_y': 332.69999998807907,
+                        'camera_z': 1,
+                        'x': -60,
+                        'y': 0
+                    }
+                }],
+                'custom_nodes': []
+            }];
+
+            resolve(a);*/
+        });
+    }
+
+
+    async function GetApplicabilityExplanationService(usecaseId) {
+        
+        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/applicability";
+        console.log(server_url);
+        
+        var token = getToken();
+
+      
+
+        return $q(function (resolve, reject) {
+           
+            try {
+                axios.post(server_url, {}, {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'x-access-token': token
+                    }
+                  })
+                  .then(function (response) {
+                    console.log(response);
+                    resolve(response.data);
+                  })
+                  .catch(function (err) {
+                    console.log(err);
+                    resolve('Error in computer network communications');
+                  });
+            } catch (e) {
+                reject(e);
+            }
+            /* 
             var datos = {
                 "/Tabular/LIME": {
                     "flag": false,
@@ -1812,7 +1846,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                     "message": "\n- Dataset Type Mismatch: The model uses Image data but /Timeseries/SummaryMetrics only supports Univariate time series data."
                 }
             };
-            resolve(datos);
+            resolve(datos);*/
         });
         
         

@@ -53,10 +53,6 @@ function EditorController($state, $window, $location, projectModel, dialogServic
                         .then(function (recents) {
                             const resultado = recents.find(elemento => elemento.id === Id);
 
-                            console.log(recents);
-                            console.log(resultado);
-                            console.log(Id);
-
                             if (recents != undefined && resultado != undefined) {
                                 recents.forEach(element => {
                                     if (element.isOpen == true && element.id != Id) {
