@@ -14,7 +14,7 @@
                 <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
                     <button id="ButtonSave" type="button" ng-click="propertiespanel.RunBt()">RUN BT</button>
                 </div>
-            </div> 
+            </div>
 
             <div class="form-group">
                 <label for="title" ng-if="propertiespanel.original.category == 'root'">Intent</label>
@@ -35,7 +35,8 @@
                             <ul>
                                 <li ng-if="propertiespanel.original.name == 'Explanation Method'"
                                     ng-repeat="option in propertiespanel.Explainers"
-                                    ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id)" ng-disabled="item.fixed"
+                                    ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id)"
+                                    ng-disabled="item.fixed"
                                     ng-mouseenter="propertiespanel.startTimeout(option,'Explanation')"
                                     ng-mouseleave="propertiespanel.cancelTimeout(option,'Explanation')">
                                     <a>{{option}}</a>
@@ -55,7 +56,7 @@
                     placeholder="Title" ng-keydown="propertiespanel.keydown($event)"
                     ng-model="propertiespanel.block.title" ng-change="propertiespanel.update()">
             </div>
-           
+
             <div class="form-group" ng-if="propertiespanel.original.name == 'Condition'">
                 <div id="header">
                     <ul class="nav">
@@ -79,13 +80,13 @@
                     ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.VariableName"
                     ng-change="propertiespanel.update()">
             </div>
-            
+
             <div class="form-group" ng-show="propertiespanel.original.category == 'root'">
                 <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()"
                     class="no-border">
                 </b3-key-table>
             </div>
-            
+
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <b3-key-table-Expl heading="Properties EXP" ng-model="propertiespanel.block.propertyExpl"
                     class="no-border">
@@ -246,31 +247,43 @@
                     ng-click="propertiespanel.PopUpHtml(propertiespanel.block.Json)">
 
                 </div>
- 
+
             </div>
- 
+
+
+
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <div id="header" ng-if="propertiespanel.TitleName">
                     <ul class="nav">
                         <li ng-if="propertiespanel.original.category != 'root'">
-                            <a ng-model="propertiespanel.block.title">Search substitute explainers</a>
-                            <ul ng-if="propertiespanel.original.name == 'Explanation Method'"
-                                ng-repeat="(key, value) in propertiespanel.ExplainersSubstitute">
-
-                                <li ng-disabled="item.fixed" ng-model="item.key" readonly="readonly"
-                                    ng-click="propertiespanel.UpdateProperties(key,propertiespanel.block,propertiespanel.original.id)"
-                                    ng-mouseenter="propertiespanel.startTimeout(key,'substitute')"
-                                    ng-mouseleave="propertiespanel.cancelTimeout(key,'substitute')">
-                                    <div class="progress">
-                                        <div class="progress-bar" ng-style="{ 'width': (value * 100) + '%' }">
-                                        </div>
+                            <a ng-model="propertiespanel.block.title"
+                                ng-click="propertiespanel._SearchSubstituteExplainers(propertiespanel.block.title)">Search
+                                substitute explainers</a>
+                            <ul ng-if="propertiespanel.original.name == 'Explanation Method'">
+                                <!-- Mostrar "Cargando" mientras se obtienen los datos -->
+                                <li ng-if="propertiespanel.isLoading">
+                                    <div class="progress" ng-if="!isEmpty(propertiespanel.ExplainersSubstitute)">
                                         <div>
-                                            <p class="progress-bar-text truncate-text">{{(value * 100).toFixed(0)}}% {{key}}</p>
+                                            <p class="progress-bar-text truncate-text">Loading, please wait...</p>
                                         </div>
                                     </div>
-
                                 </li>
-
+                                <!-- Mostrar la lista una vez que los datos estén disponibles -->
+                                <li ng-if="!propertiespanel.isLoading"
+                                    ng-repeat="item in propertiespanel.ExplainersSubstitute" g-disabled="item.fixed"
+                                    ng-model="item.key" readonly="readonly"
+                                    ng-click="propertiespanel.UpdateProperties(item.explainer, propertiespanel.block, propertiespanel.original.id)"
+                                    ng-mouseenter="propertiespanel.startTimeout(item,'substitute')"
+                                    ng-mouseleave="propertiespanel.cancelTimeout(item,'substitute')">
+                                    <div class="progress" ng-if="!isEmpty(propertiespanel.ExplainersSubstitute)">
+                                        <div class="progress-bar" ng-style="{ 'width': (item.similarity * 100) + '%' }">
+                                        </div>
+                                        <div>
+                                            <p class="progress-bar-text truncate-text">{{(item.similarity *
+                                                100).toFixed(0)}}% {{item.explainer}}</p>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -331,7 +344,7 @@
 
                                     <form action="">
                                         <div ng-show="propertiespanel.original.category == 'composite'">
-                                            <h4 class="titleSubForm"> 
+                                            <h4 class="titleSubForm">
                                                 Explainer</h4>
                                             <accordion>
                                                 <accordion-group is-pen="propertiespanel.explainerAccordionOpen">
@@ -341,7 +354,7 @@
                                                             class="placeholder-text">
                                                             Select Explainer
                                                         </span>
-                                                        <span  ng-show="propertiespanel.ExplainersSubSelect != 0"
+                                                        <span ng-show="propertiespanel.ExplainersSubSelect != 0"
                                                             class="selected-formats">
                                                             <span
                                                                 ng-repeat="item in propertiespanel.ExplainersSubSelect">
@@ -404,7 +417,7 @@
                                         </accordion>
 
 
-                                        <h4 class="titleSubForm"> 
+                                        <h4 class="titleSubForm">
                                             Explanation Type</h4>
 
                                         <accordion>
@@ -426,7 +439,7 @@
 
                                                 </accordion-heading>
                                                 <div class="checkbox-tree"
-                                                      ng-show="propertiespanel.original.title ==  'Explanation Method'">
+                                                    ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                     <span>Unselect explainer</span>
                                                 </div>
                                                 <div class="checkbox-tree"
@@ -465,7 +478,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </li>
-                                                            </ul> 
+                                                            </ul>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -474,7 +487,7 @@
 
                                         <div ng-show="divExpanded || propertiespanel.original.category != 'composite'">
 
-                                            <h4 class="titleSubForm"> 
+                                            <h4 class="titleSubForm">
                                                 Explainability Technique</h4>
                                             <accordion>
                                                 <accordion-group>
@@ -496,7 +509,7 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
+                                                        ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
@@ -562,8 +575,8 @@
                                             </accordion>
 
 
-                                            <h4 class="titleSubForm"> <span class="asterisk">*</span>
-                                                Presentation format</h4>   
+                                            <h4 class="titleSubForm">
+                                                Presentation format</h4>
                                             <accordion>
                                                 <accordion-group>
                                                     <accordion-heading>
@@ -584,7 +597,7 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
+                                                        ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
@@ -642,36 +655,36 @@
                                                                                     </label>
                                                                                 </div>
                                                                                 <ul
-                                                                                ng-show="grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem)">
-                                                                                <li
-                                                                                    ng-repeat="grandchildItem1 in grandchildItem.children">
-                                                                                    <div class="DivCheckboxFormSub">
-                                                                                        <i class="fas fa"
-                                                                                            ng-if="grandchildItem1.children.length > 0"
-                                                                                            class="fas"
-                                                                                            ng-class="{'fa-caret-down': grandchildItem1.expanded && propertiespanel.hasChildren(grandchildItem1) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
-                                                                                            ng-click="propertiespanel.toggleItem(grandchildItem1, $event)"></i>
-    
-                                                                                        <label>
-                                                                                            <input type="checkbox"
-                                                                                                ng-model="grandchildItem1.checked"
-                                                                                                ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem1)">
-                                                                                            {{grandchildItem1.label}}
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </li>
-                                                                            </ul>
+                                                                                    ng-show="grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem)">
+                                                                                    <li
+                                                                                        ng-repeat="grandchildItem1 in grandchildItem.children">
+                                                                                        <div class="DivCheckboxFormSub">
+                                                                                            <i class="fas fa"
+                                                                                                ng-if="grandchildItem1.children.length > 0"
+                                                                                                class="fas"
+                                                                                                ng-class="{'fa-caret-down': grandchildItem1.expanded && propertiespanel.hasChildren(grandchildItem1) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
+                                                                                                ng-click="propertiespanel.toggleItem(grandchildItem1, $event)"></i>
+
+                                                                                            <label>
+                                                                                                <input type="checkbox"
+                                                                                                    ng-model="grandchildItem1.checked"
+                                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem1)">
+                                                                                                {{grandchildItem1.label}}
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                </ul>
                                                                             </li>
                                                                         </ul>
                                                                     </li>
                                                                 </ul>
                                                     </div>
                                                 </accordion-group>
-                                            </accordion>    
-                                 
+                                            </accordion>
+
 
                                             <!-- ok -->
-                                            <h4 class="titleSubForm"> 
+                                            <h4 class="titleSubForm">
                                                 Computational Complexity</h4>
                                             <accordion>
                                                 <accordion-group
@@ -692,7 +705,7 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
+                                                        ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
@@ -712,7 +725,7 @@
                                             </accordion>
 
                                             <!-- ok -->
-                                            <h4 class="titleSubForm"> 
+                                            <h4 class="titleSubForm">
                                                 Implementation Framework</h4>
                                             <accordion>
                                                 <accordion-group>
@@ -732,7 +745,7 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
+                                                        ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"
@@ -752,7 +765,7 @@
                                             </accordion>
 
                                             <!-- ok -->
-                                            <h4 class="titleSubForm"> 
+                                            <h4 class="titleSubForm">
                                                 Explainer Concurrentnes</h4>
                                             <accordion>
                                                 <accordion-group
@@ -773,7 +786,7 @@
 
                                                     </accordion-heading>
                                                     <div class="checkbox-tree"
-                                                          ng-show="propertiespanel.original.title ==  'Explanation Method'">
+                                                        ng-show="propertiespanel.original.title ==  'Explanation Method'">
                                                         <span>Unselect explainer</span>
                                                     </div>
                                                     <div class="checkbox-tree"

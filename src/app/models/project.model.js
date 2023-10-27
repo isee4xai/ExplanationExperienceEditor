@@ -30,6 +30,7 @@
 
         var service = {
             getRecentProjects: getRecentProjects,
+            getTokenModel: getTokenModel,
             newProject: newProject,
             getProject: getProject,
             saveProject: saveProject,
@@ -416,10 +417,10 @@
         // SUSTITUTE 
 
 
-        function GetSubstituteExplainer(Criteria,TitleExplan,usecaseId) {
+        function GetSubstituteExplainer(data,usecaseId) {
             return $q(function (resolve, reject) {
                 try {
-                    const promise = Promise.resolve(storageService.GetSubstituteExplainerService(Criteria,TitleExplan,usecaseId));
+                    const promise = Promise.resolve(storageService.GetSubstituteExplainerService(data,usecaseId));
                     promise
                         .then((value) => {
                             resolve(value);
@@ -458,7 +459,7 @@
                             resolve(value);
                         })
                         .catch((err) => {
-                            console.log(err);
+                            reject("error");
                         });
 
                 } catch (e) {
@@ -504,5 +505,24 @@
                 }
             });
         }
+
+        function getTokenModel() {
+            return $q(function (resolve, reject) {
+                try {
+                    const promise = Promise.resolve(storageService.getToken());
+                    promise
+                        .then((value) => {
+                            resolve(value);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }
+
     }
 })();

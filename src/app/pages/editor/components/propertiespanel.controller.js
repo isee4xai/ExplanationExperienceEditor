@@ -51,6 +51,7 @@
         vm.isBase64Image = isBase64Image;
         vm.esJSONValido = esJSONValido;
         // substitute
+        vm._SearchSubstituteExplainers = _SearchSubstituteExplainers;
         vm.FormSubstitute = FormSubstitute;
         vm.SubstituteNodes = SubstituteNodes;
         vm.SubstituteOneNode = SubstituteOneNode;
@@ -60,23 +61,22 @@
         vm.submitFormSub = submitFormSub;
         vm.CambiarOptionTree = CambiarOptionTree;
         vm.updateNodeSub = updateNodeSub;
+        vm.isLoading = false;
 
         vm.explainerAccordionOpen = false
         vm.ExplainerConcurrentnessAccordionOpen = false
         vm.ExplainerScopeAccordionOpen = false
         vm.ComputationalComplexityAccordionOpen = false
         vm.ImplementationFrameworksAccordionOpen = false
-  
+
         vm.isAccordionEnabled = false;
 
         vm.node = null;
         vm.explanation = null;
         vm.evaluation = null;
         vm.Explainers = null;
-        vm.ExplainersSubstituteAll = null;
+        vm.ExplainersSubstituteAll = {};
         vm.ExplainersSubstitute = [];
-
-        vm.GetInfoParamSubstitute = GetInfoParamSubstitute;
 
         vm.TitleSelect = null;
         vm.TitleName = null;
@@ -170,7 +170,7 @@
         vm.ComputationalComplexitySub = null;
         vm.ImplementationFrameworkSub = null;
         vm.PresentationformatSub = null;
-       
+
 
 
         vm.convertToObjects = function () {
@@ -214,7 +214,7 @@
                     }
                     //comprobamos si tiene padre el item selecionado
                     var elementoEncontrado = vm.buscarPorKey(vm.ExplanationTypeSub, item.parent);
-
+                    console.log(elementoEncontrado);
                     //primero comprobamos si el elemento selecionado es hijo del primer padre 
                     if (item.parent == "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation") {
                         //buscamos si existe el elemento selecionado para saber si borrarlo o añadirlo
@@ -404,13 +404,14 @@
 
                     break;
                 case 'Presentation format':
-                 
+
                     if (item.children.length != []) {
                         vm.checkDescendants(item);
                     }
-               
+
                     var elementoEncontrado = vm.buscarPorKey(vm.PresentationformatSub, item.parent);
 
+                    console.log(elementoEncontrado);
                     if (item.parent == "http://semanticscience.org/resource/SIO_000015") {
                         var index = vm.PresentationFormatSubSelect.findIndex(function (element) {
                             return element.key === item.key && element.label === item.label;
@@ -470,7 +471,6 @@
                             vm.PresentationFormatSubSelect = array;
                         }
                     }
-
                     break;
             }
         };
@@ -494,8 +494,6 @@
         };
 
         vm.buscarPorKey = function (elementos, keyABuscar) {
-            console.log(elementos);
-            console.log(keyABuscar);
             for (var i = 0; i < elementos.length; i++) {
                 if (elementos[i].key === keyABuscar) {
                     return elementos[i];
@@ -678,6 +676,7 @@
 
                 switch (vm.original.name) {
                     case "Explanation Method":
+                        vm.isLoading = false;
                         /*
                         console.log(vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0));
                         if (vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0)) {
@@ -691,9 +690,15 @@
 
                         if (vm.Explainers == null) {
                             _getArrayExplainers();
-                            _getArrayExplainersSubstitute();
                         }
-                        _SearchSubstituteExplainers();
+
+                        if (vm.ExplainersSubstituteAll[vm.block.title] && vm.block.title != "Explanation Method") {
+                            setExplainersSubstitute(vm.block.title);
+                        } else {
+                            vm.ExplainersSubstitute = [];
+                        }
+
+                        //_SearchSubstituteExplainers(vm.block.title);
                         if (vm.original.Json != undefined) {
                             LoadHtmlCode();
 
@@ -921,45 +926,60 @@
                 });
         }
 
-        function _getArrayExplainersSubstitute() {
-            //Get Explainers Substitute 
-
-            return new Promise((resolve, reject) => {
-                projectModel.getExplainersSubstitute((error, similarity) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        vm.ExplainersSubstituteAll = similarity;
-                        resolve();
-                    }
-                });
-            });
+        function _SearchSubstituteExplainers(title) {
+            vm.ExplainersSubstitute = [];
+            vm.isLoading = true;
+            if (!vm.ExplainersSubstituteAll[title] && title != "Explanation Method") {
+                var data = {
+                    "explainer": title
+                }
+                try {
+                    projectModel.GetSubstituteExplainer(data, $location.search().usecaseId)
+                        .then(function (x) {
+                            if (x.length > 0) {
+                                vm.ExplainersSubstituteAll[title] = x;
+                                setExplainersSubstitute(title);
+                            } else {
+                                notificationService.error(
+                                    'No matches found'
+                                );
+                            }
+                        });
+                } catch (error) {
+                    notificationService.error(
+                        'An error occurred. Please try again later.'
+                    );
+                    vm.isLoading = false;
+                }
+            } else {
+                setExplainersSubstitute(title);
+                vm.isLoading = false;
+            }
         }
 
-        function _SearchSubstituteExplainers() {
-            var filtered = [];
-            vm.ExplainersSubstitute = [];
+        function setExplainersSubstitute(title) {
+            if (vm.ExplainersSubstituteAll && title != "Explanation Method") {
+                var entriesArray = Object.entries(vm.ExplainersSubstituteAll[title] || {});
+                var filteredEntries = entriesArray
+                    .filter(([key, entry]) => entry.similarity !== 0)
+                    .map(([key, entry]) => {
+                        return {
+                            "explainer": entry.explainer,
+                            "explanation": entry.explanation,
+                            "similarity": entry.similarity
+                        };
+                    })
+                    .sort((a, b) => b.similarity - a.similarity);
 
-            if (vm.ExplainersSubstituteAll == null) {
-                projectModel.getExplainersSubstitute()
-                    .then(function (x) {
-                        vm.ExplainersSubstituteAll = x;
-                        setExplainersSubstitute();
-                    });
-            } else {
-                setExplainersSubstitute();
-            }
-            function setExplainersSubstitute() {
-                if (vm.ExplainersSubstituteAll && vm.block.title != "Explanation Method") {
-                    vm.ExplainersSubstitute = Object.entries(vm.ExplainersSubstituteAll[vm.block.title] || {})
-                        .filter(([key, value]) => key !== vm.block.title && value !== 0)
-                        .map(([key, value]) => [key, parseFloat(value).toFixed(2)])
-                        .sort((a, b) => b[1] - a[1])
-                        .reduce((obj, [key, value]) => {
-                            obj[key] = value;
-                            return obj;
-                        }, {});
+                vm.isLoading = false;
+
+                if (filteredEntries.length === 0) {
+                    notificationService.error('No similarity was found');
+                } else {
+                    vm.ExplainersSubstitute = filteredEntries;
                 }
+
+
             }
         }
 
@@ -1006,10 +1026,6 @@
         }
 
         async function submitFormSub(NodeSelect) {
-
-            notificationService.load(
-                'Loading', 'Please wait while your request is being processed...'
-            );
             var jsonDataNew = {
                 // "Explainers": vm.block.title
             };
@@ -1062,22 +1078,28 @@
                     return item.key;
                 });
             }
-          
+
 
             if (vm.PresentationFormatSubSelect.length > 0) {
-                jsonDataNew.presentations = vm.PresentationFormatSubSelect.map(function (item) {
-                    return item.key;
-                });
-
-                vm.PresentationFormatSubSelect.forEach(function (item) {
-                    if (item.children.length == 0) {
-                        jsonDataNew.presentations.push(item.key);
-                    } else {
-                        item.children.forEach(function (element) {
-                            jsonDataNew.presentations.push(element.key);
-                        });
+                vm.addChildrenKeys = function (item) {
+                    if (item.children && item.children.length > 0) {
+                        for (var i = 0; i < item.children.length; i++) {
+                            jsonDataNew.presentations.push(item.children[i].key);
+                            vm.addChildrenKeys(item.children[i]);
+                        }
                     }
-                });
+                };
+
+                if (vm.PresentationFormatSubSelect.length > 0) {
+                    jsonDataNew.presentations = vm.PresentationFormatSubSelect.map(function (item) {
+                        return item.key;
+                    });
+
+                    vm.PresentationFormatSubSelect.forEach(function (item) {
+                        jsonDataNew.presentations.push(item.key);
+                        vm.addChildrenKeys(item);
+                    });
+                }
             }
 
             if (vm.ExplanationScopeSubSelect.length > 0) {
@@ -1087,13 +1109,18 @@
             }
 
             this.closeForm();
-            console.log(jsonDataNew);
-
 
             switch (vm.original.category) {
                 case "action":
+                    notificationService.load(
+                        'Loading', 'Please wait while your request is being processed...'
+                    );
                     try {
-                        projectModel.GetSubstituteExplainer(jsonDataNew, vm.block.title, $location.search().usecaseId)
+                        var data = {
+                            "criteria": jsonDataNew,
+                            "explainer": vm.block.title
+                        }
+                        projectModel.GetSubstituteExplainer(data, $location.search().usecaseId)
                             .then(function (x) {
                                 if (x.length > 0) {
                                     SubstituteOneNode(x, vm.original, vm.block);
@@ -1103,13 +1130,11 @@
                                     );
                                 }
                             });
-
                     } catch (error) {
                         notificationService.error(
                             'An error occurred. Please try again later.'
                         );
                     }
-
                     break;
                 case "composite":
                     SubstituteNodes(NodeSelect, jsonDataNew);
@@ -1276,61 +1301,69 @@
             return new Promise((resolve, reject) => {
                 projectModel.getProjecAllData()
                     .then(function (x) {
-                        var e = $window.editor.export;
-                        var ProjectExpor = e.projectToData();
-
-                        var a = ProjectExpor.trees[0];
-                        var child = a.nodes[NodeSelect.id].firstChild;
-                        var JsonDataSelect = {};
-                        JsonDataSelect[NodeSelect.id] = a.nodes[NodeSelect.id];
-                        const nodosDescendientes = obtenerDescendientes(a.nodes, NodeSelect.id);
-
-                        ProjectExpor.trees[0].nodes = nodosDescendientes;
-                        ProjectExpor.trees[0].root = NodeSelect.id;
-                        x[0].data = ProjectExpor;
-                        resolve(x[0]);
+                        /*  var e = $window.editor.export;
+                          var ProjectExpor = e.projectToData();
+  
+                          var a = ProjectExpor.trees[0];
+                          var child = a.nodes[NodeSelect.id].firstChild;
+                          var JsonDataSelect = {};
+                          JsonDataSelect[NodeSelect.id] = a.nodes[NodeSelect.id];
+                          const nodosDescendientes = obtenerDescendientes(a.nodes, NodeSelect.id);
+  
+                          ProjectExpor.trees[0].nodes = nodosDescendientes;
+                          ProjectExpor.trees[0].root = NodeSelect.id;
+                          x[0].data = ProjectExpor;
+                          resolve(x[0]);*/
+                        resolve(x);
                     });
             });
         }
 
         function SubstituteNodes(NodeSelect, dataCriteria) {
-
+            notificationService.load(
+                'Loading', 'Please wait while your request is being processed...'
+            );
             GetProjectData(NodeSelect).then(function (x) {
-                var  DataSubstituteSubtree = {
+                console.log(x);
+                var DataSubstituteSubtree = {
                     "treeId": x.id,
                     "subtreeId": NodeSelect.id,
+                    "tree": x,
                     "k": 3,
                     "criteria": dataCriteria
                 };
                 var usecaseId = $location.search().usecaseId;
-                /*
-                var cont = 0;
-                var targetNode = null;
 
-                do {
-                    targetNode = x.data.trees[cont].nodes.find((nodo) => nodo.id === NodeSelect.id);
-                    cont++;
-                } while (!targetNode && cont < x.data.trees.length);
-
-                if (targetNode) {
-                    DataSubstituteSubtree.treeId = "65364e5c9e59608d3018a1aa";
-                    //x.data.trees[cont - 1].id;
-                } else {
-                    console.log("The node was not found in any tree.");
-                }
-                */
                 if (dataCriteria) {
                     projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId)
                         .then(function (data) {
-                            console.log("-------");
-                            console.log(data);
-                            DrawCanvas(data, NodeSelect);
+                            if (data.length > 0) {
+                                DrawCanvas(data, NodeSelect);
+                            } else if (data.length == 0) {
+                                notificationService.info(
+                                    'No substitution options found', 'No options available for substitution in this context.'
+                                );
+                            } else {
+                                notificationService.error(
+                                    'An error occurred. Please try again later.'
+                                );
+                            }
                         });
                 } else {
-                    delete DataSubstituteSubtree.criteria; 
+                    delete DataSubstituteSubtree.criteria;
                     projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
                         .then(function (data) {
-                            DrawCanvas(data, NodeSelect);
+                            if (data.length > 0) {
+                                DrawCanvas(data, NodeSelect);
+                            } else if (data.length == 0) {
+                                notificationService.info(
+                                    'No substitution options found', 'No options available for substitution in this context.'
+                                );
+                            } else {
+                                notificationService.error(
+                                    'An error occurred. Please try again later.'
+                                );
+                            }
                         });
                 }
             });
@@ -1376,7 +1409,8 @@
 
             divGeneral.appendChild(editor1._game.canvas);
 
-            var TressOptions = editor1.import.treeAsDataSubti(a, p, a[0].trees[0].root);
+            console.log(a[0].data.trees[0].root);
+            var TressOptions = editor1.import.treeAsDataSubti(a, p, NodeSelect.id, a[0].data.trees[0].root);
             TressOptions.shift();
             var cont = 0;
             var aaa;
@@ -1804,7 +1838,7 @@
         }
 
         async function UpdateProperties(option, block, nodeId) {
-            console.log(option);
+
             if (option != block.title) {
                 var Continue = true;
                 if (vm.original.name == "Explanation Method") {
@@ -1845,7 +1879,8 @@
                         };
                     }
 
-                    _SearchSubstituteExplainers();
+                    // _SearchSubstituteExplainers(block.title);
+                    vm.ExplainersSubstitute = [];
                     cancelTimeout();
                     update();
                 }
@@ -1858,6 +1893,8 @@
 
             switch (vm.original.name) {
                 case "Explanation Method":
+
+                vm.block.params = {};
                     for (var keyParam in vm.block.params) {
                         if (vm.block.params.hasOwnProperty(keyParam)) {
                             if (keyParam == "key" || keyParam == "value") {
@@ -2059,6 +2096,7 @@
 
                 projectModel.getConditionsEvaluationEXP(option, IdModel)
                     .then(function (x) {
+                        console.log(x);
                         switch (true) {
                             case x.hasOwnProperty("params"):
                                 // example of values Popularity and Applicability
@@ -2201,15 +2239,6 @@
                 });
         }
 
-        function GetInfoParamSubstitute(NameExpl, option, callback) {
-            var SubNameChange = [vm.block.title, NameExpl];
-
-            projectModel.GetSimNL(SubNameChange)
-                .then(function (x) {
-                    CreateTooltip(x, option);
-                    callback();
-                });
-        }
 
         function LookDescriptionExplanation(explainerTitle, option) {
 
@@ -2289,7 +2318,7 @@
                         LookDescriptionExplanation(key, option);
                         break;
                     case 'substitute':
-                        GetInfoParamSubstitute(key, option, callback);
+                        CreateTooltip(key.explanation, option);
                         break;
                     case 'substituteExpl':
                         CreateTooltip(key, "substitute", callback);

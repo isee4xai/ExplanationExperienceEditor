@@ -13,126 +13,131 @@ b3e.editor.ImportManager = function (editor) {
         editor.trigger('projectimported');
     };
 
-    this.treeAsDataSubti = function (data, p, rootNode) {
+    this.treeAsDataSubti = function (data, p, rootNode, rootId) {
         if (!p) return;
 
-  var tree;
+        var tree;
         var cont = 0;
         data.forEach(Option => {
-          
             if (cont == 0) {
                 tree = p.trees.add(rootNode);
             } else {
-                tree = p.trees.add(rootNode + '-opcion'+cont+'');
+                tree = p.trees.add(rootNode + '-opcion' + cont + '');
             }
             cont++;
             var spec, display;
             var Pricipal;
 
-            for (var id in Option.trees[0].nodes) {
-                spec = Option.trees[0].nodes[id];
-                var block = null;
-                display = spec.display || {};
+            for (var id in Option.data.trees[0].nodes) {
+                if (Option.data.trees[0].nodes[id].id != rootId) {
+                    spec = Option.data.trees[0].nodes[id];
+
+                    var block = null;
+                    display = spec.display || {};
 
 
-                block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
-                block.id = spec.id;
-                block.title = spec.Instance || spec.title;
-                block.description = spec.description;
-                block.properties = tine.merge({}, block.properties, spec.properties);
-                block.params = tine.merge({}, block.params, spec.params);
-                block.idModel = spec.idModel;
-                block.query = spec.query;
-                block.query_id = spec.query_id;
-                block.img = spec.img;
-                block.Image = spec.Image;
-                block.Json = spec.Json;
+                    block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
+                    block.id = spec.id;
+                    block.title = spec.Instance || spec.title;
+                    block.description = spec.description;
+                    block.properties = tine.merge({}, block.properties, spec.properties);
+                    block.params = tine.merge({}, block.params, spec.params);
+                    block.idModel = spec.idModel;
+                    block.query = spec.query;
+                    block.query_id = spec.query_id;
+                    block.img = spec.img;
+                    block.Image = spec.Image;
+                    block.Json = spec.Json;
 
-                var propertiesExpl = {};
-                var ArrayNameProperties = Object.keys(spec);
+                    var propertiesExpl = {};
+                    var ArrayNameProperties = Object.keys(spec);
 
-                for (var index = 0; index < ArrayNameProperties.length; index++) {
-                    switch (ArrayNameProperties[index]) {
-                        case "value":
-                            break;
-                        case "properties":
-                            break;
-                        case "description":
-                            break;
-                        case "id":
-                            break;
-                        case "$$hashKey":
-                            break;
-                        case "Concept":
-                            break;
-                        case "Instance":
-                            break;
-                        case "display":
-                            break;
-                        case "params":
-                            break;
-                        case "Image":
-                            break;
-                        default:
-                            if (Array.isArray(spec[ArrayNameProperties[index]])) {
+                    for (var index = 0; index < ArrayNameProperties.length; index++) {
+                        switch (ArrayNameProperties[index]) {
+                            case "value":
+                                break;
+                            case "properties":
+                                break;
+                            case "description":
+                                break;
+                            case "id":
+                                break;
+                            case "$$hashKey":
+                                break;
+                            case "Concept":
+                                break;
+                            case "Instance":
+                                break;
+                            case "display":
+                                break;
+                            case "params":
+                                break;
+                            case "Image":
+                                break;
+                            default:
+                                if (Array.isArray(spec[ArrayNameProperties[index]])) {
 
-                                propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
-                            } else {
-                                propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
-                            }
+                                    propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                                } else {
+                                    propertiesExpl[ArrayNameProperties[index]] = spec[ArrayNameProperties[index]];
+                                }
 
-                            break;
+                                break;
+                        }
                     }
-                }
-                block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
-                block.DataType = spec.DataType;
-                block.VariableName = spec.VariableName;
+                    block.propertyExpl = tine.merge({}, block.propertyExpl, propertiesExpl);
+                    block.DataType = spec.DataType;
+                    block.VariableName = spec.VariableName;
 
-                if (spec.id == rootNode) {
-                    Pricipal = block;
+                    if (spec.id == rootNode) {
+                        Pricipal = block;
+                    }
+                    block._redraw();
+
                 }
-                block._redraw();
             }
-          
-            for (var id in Option.trees[0].nodes) {
-                spec = Option.trees[0].nodes[id];
 
-                var inBlock = tree.blocks.get(id);
-             
-                var children = null;
-                var outBlock;
+            for (var id in Option.data.trees[0].nodes) {
+                if (Option.data.trees[0].nodes[id].id != rootId) {
+                    spec = Option.data.trees[0].nodes[id];
 
-                if (inBlock.category === 'composite' && spec.firstChild) {
-                    children = spec.firstChild;
-                } else if (spec.firstChild && (inBlock.category == 'decorator' ||
-                    inBlock.category == 'root')) {
-                    children = spec.firstChild;
-                }
+                    var inBlock = tree.blocks.get(id);
 
-                if (children) {
-                    var propertieNext = ["Next"];
-                    var IdProper = ["Id"];
-                    var RouteOfObject = children["Next"];
-                    var RouteOfObjectId = children["Id"];
+                    var children = null;
+                    var outBlock;
 
-                    while (RouteOfObject != null) {
+                    if (inBlock.category === 'composite' && spec.firstChild) {
+                        children = spec.firstChild;
+                    } else if (spec.firstChild && (inBlock.category == 'decorator' ||
+                        inBlock.category == 'root')) {
+                        children = spec.firstChild;
+                    }
+
+                    if (children) {
+                        var propertieNext = ["Next"];
+                        var IdProper = ["Id"];
+                        var RouteOfObject = children["Next"];
+                        var RouteOfObjectId = children["Id"];
+
+                        while (RouteOfObject != null) {
+                            outBlock = tree.blocks.get(RouteOfObjectId);
+                            tree.connections.add(inBlock, outBlock);
+
+                            RouteOfObjectId = RouteOfObject[IdProper];
+                            RouteOfObject = RouteOfObject[propertieNext];
+
+                        }
                         outBlock = tree.blocks.get(RouteOfObjectId);
                         tree.connections.add(inBlock, outBlock);
-
-                        RouteOfObjectId = RouteOfObject[IdProper];
-                        RouteOfObject = RouteOfObject[propertieNext];
-
                     }
-                    outBlock = tree.blocks.get(RouteOfObjectId);
-                    tree.connections.add(inBlock, outBlock);
                 }
             }
 
-            var a = tree.blocks.getRoot();  
+            var a = tree.blocks.getRoot();
             // display 
             a.y = -300;
             a.x = -200;
-            
+
             if (Pricipal) {
                 tree.connections.add(a, Pricipal);
                 tree.organize.organize(a);
@@ -147,10 +152,10 @@ b3e.editor.ImportManager = function (editor) {
         var selected = p.trees.getSelected();
 
         var rootPrincipal;
-       if (tree != undefined) {
-        tree.selection.deselectAll();
-       }
-        
+        if (tree != undefined) {
+            tree.selection.deselectAll();
+        }
+
         p.history.clear();
         editor.trigger('treeimported');
 

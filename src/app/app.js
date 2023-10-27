@@ -14,7 +14,7 @@ angular.module('app', [
         }
     ])
 
-    .run(['$state', '$window', 'dialogService', '$animate', '$location', '$document', '$timeout', 'settingsModel', 'projectModel', 'editorService',
+    .run(['$state', '$window', 'dialogService', '$animate', '$location', '$document', '$timeout', 'settingsModel', 'projectModel', 'editorService', 'notificationService',
         function Execute($state,
             $window,
             dialogService,
@@ -24,7 +24,8 @@ angular.module('app', [
             $timeout,
             settingsModel,
             projectModel,
-            editorService) {
+            editorService,
+            notificationService) {
 
 
             // reset path
@@ -32,6 +33,7 @@ angular.module('app', [
             we hide the redirection to the urlRouterProvider route
             $location.path('/');
             */
+
 
             // add drop to canvas
             angular
@@ -90,5 +92,39 @@ angular.module('app', [
                             });
                     }
                 });
+
+
+
+            projectModel.getTokenModel().then(function (x) {
+
+                var redirigirDespuesDe5Segundos = function () {
+                    $window.location.href = 'https://cockpit-dev.isee4xai.com/explainers';
+                };
+
+                switch (x) {
+                    case "CookieExpire":
+                        notificationService.warning(
+                            'Cookie Expired',
+                            'The cookie has expired. Please log in to the cockpit to renew it.'
+                        );
+                        var tiempoEsperaEnMilisegundos = 8000; 
+                        $timeout(redirigirDespuesDe5Segundos, tiempoEsperaEnMilisegundos);
+                        break;
+                    case "NoExistCookie":
+                        notificationService.warning(
+                            'Cookie Not Found',
+                            'The cookie does not exist. Please log in to the cockpit to obtain it.'
+                        );
+                        var tiempoEsperaEnMilisegundos = 7000; 
+                        $timeout(redirigirDespuesDe5Segundos, tiempoEsperaEnMilisegundos);
+                        break;
+                    default:
+                        break;
+                }
+
+            }).catch(function (error) {
+                console.error(error);
+            });
+
         }
     ]);
