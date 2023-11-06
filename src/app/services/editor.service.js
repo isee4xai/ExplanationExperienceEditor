@@ -10,7 +10,7 @@ function editorService($window) {
         applySettings: applySettings,
         newProject: newProject,
         openProject: openProject,
-        closeProject: closeProject,
+        closeProject: closeProject, 
         exportProject: exportProject,
     };
     return service;
@@ -27,8 +27,8 @@ function editorService($window) {
         $window.editor.project.create();
     }
 
-    function openProject(data) {
-        $window.editor.project.open(data);
+    function openProject(data,outcome,Applicability) {
+        $window.editor.project.open(data,outcome,Applicability);
     }
 
     function closeProject() {

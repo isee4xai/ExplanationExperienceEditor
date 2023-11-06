@@ -12,7 +12,8 @@
         'storageService',
         'systemService',
         'localStorageService',
-        'editorService'
+        'editorService',
+        '$location'
     ];
 
     function projectModel($q,
@@ -21,12 +22,17 @@
         storageService,
         systemService,
         localStorageService,
-        editorService) {
+        editorService,
+        $location) {
 
         // HEAD //
         var recentPath = systemService.join(systemService.getDataPath(), 'recents.json');
         var recentCache = null;
         var currentProject = null;
+        var ApplicabilityList = null;
+        var ExplainersListParam = null;
+        var ProjectRecientPath = null;
+        var ProjectRecient = null;
 
         var service = {
             getRecentProjects: getRecentProjects,
@@ -58,7 +64,7 @@
             PostSubstituteSubtree: PostSubstituteSubtree,
             GetApplicabilityExplanation: GetApplicabilityExplanation,
             SustituteSubTreeReuse: SustituteSubTreeReuse,
-            GetInstanceModelSelect
+            GetExplainersListForm: GetExplainersListForm
         };
         return service;
 
@@ -108,7 +114,7 @@
             // Set current open project to the localStorage, so the app can open it
             //   during intialization
             currentProject = project;
-
+            
             _updateRecentProjects(project);
             $rootScope.$broadcast('dash-projectchanged');
         }
@@ -169,6 +175,7 @@
                     });
             });
         }
+
 
         function getProject() {
             return currentProject;
@@ -417,10 +424,10 @@
         // SUSTITUTE 
 
 
-        function GetSubstituteExplainer(data,usecaseId) {
+        function GetSubstituteExplainer(data, usecaseId) {
             return $q(function (resolve, reject) {
                 try {
-                    const promise = Promise.resolve(storageService.GetSubstituteExplainerService(data,usecaseId));
+                    const promise = Promise.resolve(storageService.GetSubstituteExplainerService(data, usecaseId));
                     promise
                         .then((value) => {
                             resolve(value);
@@ -450,10 +457,10 @@
 
 
         // Subtree
-        function PostSubstituteSubtree(data,usecaseId) {
+        function PostSubstituteSubtree(data, usecaseId) {
             return $q(function (resolve, reject) {
                 try {
-                    const promise = Promise.resolve(storageService.PostSubstituteSubtreeService(data,usecaseId));
+                    const promise = Promise.resolve(storageService.PostSubstituteSubtreeService(data, usecaseId));
                     promise
                         .then((value) => {
                             resolve(value);
@@ -468,11 +475,11 @@
             });
         }
 
-         // Reuse
-         function SustituteSubTreeReuse(Project,usecaseId) {
+        // Reuse
+        function SustituteSubTreeReuse(Project, usecaseId) {
             return $q(function (resolve, reject) {
                 try {
-                    const promise = Promise.resolve(storageService.SustituteSubTreeReuseService(Project,usecaseId));
+                    const promise = Promise.resolve(storageService.SustituteSubTreeReuseService(Project, usecaseId));
                     promise
                         .then((value) => {
                             resolve(value);
@@ -490,18 +497,22 @@
         //draw the dotted line
         function GetApplicabilityExplanation(usecaseId) {
             return $q(function (resolve, reject) {
-                try {
-                    const promise = Promise.resolve(storageService.GetApplicabilityExplanationService(usecaseId));
-                    promise
-                        .then((value) => {
-                            resolve(value);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-
-                } catch (e) {
-                    reject(e);
+                if (ApplicabilityList == null) {
+                    try {
+                        const promise = Promise.resolve(storageService.GetApplicabilityExplanationService(usecaseId));
+                        promise
+                            .then((value) => {
+                                resolve(value);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+    
+                    } catch (e) {
+                        reject(e);
+                    }
+                }else{
+                    resolve(ApplicabilityList);
                 }
             });
         }
@@ -524,5 +535,26 @@
             });
         }
 
+        function GetExplainersListForm() {
+            return $q(function (resolve, reject) {
+                if (ExplainersListParam == null) {
+                    try {
+                        const promise = Promise.resolve(storageService.GetExplainersListFormService());
+                        promise
+                            .then((value) => {
+                                resolve(value);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+    
+                    } catch (e) {
+                        reject(e);
+                    }
+                }else{
+                    resolve(ExplainersListParam);
+                }
+            });    
+        }
     }
 })();

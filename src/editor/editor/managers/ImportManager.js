@@ -1,12 +1,12 @@
 b3e.editor.ImportManager = function (editor) {
     "use strict";
 
-    this.projectAsData = function (data) {
+    this.projectAsData = function (data, outcome,Applicability) {
         var project = editor.project.get();
         if (!project) return;
 
         if (data.custom_nodes) this.nodesAsData(data.custom_nodes);
-        if (data.trees) this.treesAsData(data.trees);
+        if (data.trees) this.treesAsData(data.trees, outcome, Applicability);
         if (data.selectedTree) {
             project.trees.select(data.selectedTree);
         }
@@ -29,7 +29,8 @@ b3e.editor.ImportManager = function (editor) {
             var Pricipal;
 
             for (var id in Option.data.trees[0].nodes) {
-                if (Option.data.trees[0].nodes[id].id != rootId) {
+
+                if (id != rootId) {
                     spec = Option.data.trees[0].nodes[id];
 
                     var block = null;
@@ -286,7 +287,7 @@ b3e.editor.ImportManager = function (editor) {
 
 
 
-    this.treeAsData = function (data) {
+    this.treeAsData = function (data, Popularity, Applicability) {
         var project = editor.project.get();
         if (!project) return;
 
@@ -335,7 +336,7 @@ b3e.editor.ImportManager = function (editor) {
             block.id = spec.id;
             block.title = spec.Instance || spec.title;
             block.description = spec.description;
-            block.properties = tine.merge({}, block.properties, spec.properties);
+            // block.properties = tine.merge({}, block.properties, spec.properties);
             block.params = tine.merge({}, block.params, spec.params);
             block.idModel = spec.idModel;
             block.query = spec.query;
@@ -344,7 +345,30 @@ b3e.editor.ImportManager = function (editor) {
             block.Image = spec.Image;
             block.Json = spec.Json;
 
-            //
+            if (block.name == "Explanation Method") {
+                //Popularity
+                if (typeof Popularity !== 'undefined' && typeof Popularity.Popularity !== 'undefined') {
+                    if (block.id in Popularity.Popularity) {
+                        block.properties.Popularity = Popularity.Popularity[spec.id];
+                    } else {
+                        block.properties.Popularity = 1
+                    }
+                } else {
+                    block.properties.Popularity = 1;
+                }
+
+                //Applicability
+                if (Applicability != null) {
+                    if (Applicability[block.title] != undefined) {
+                        block.properties.Applicability = Applicability[block.title].flag;
+                    } else {
+                        block.properties.Applicability = false
+                    }
+                }else{
+                    block.properties.Applicability = false;
+                }
+            }
+
             var propertiesExpl = {};
             var ArrayNameProperties = Object.keys(spec);
 
@@ -462,9 +486,9 @@ b3e.editor.ImportManager = function (editor) {
         editor.trigger('treeimported');
     };
 
-    this.treesAsData = function (data) {
+    this.treesAsData = function (data, outcome, Applicability) {
         for (var i = 0; i < data.length; i++) {
-            this.treeAsData(data[i]);
+            this.treeAsData(data[i], outcome, Applicability);
         }
     };
 

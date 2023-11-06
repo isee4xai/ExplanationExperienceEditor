@@ -42,6 +42,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         PostSubstituteSubtreeService: PostSubstituteSubtreeService,
         GetApplicabilityExplanationService: GetApplicabilityExplanationService,
         SustituteSubTreeReuseService: SustituteSubTreeReuseService,
+        GetExplainersListFormService: GetExplainersListFormService
     };
     return service;
 
@@ -183,6 +184,9 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         return $q(function (resolve, reject) {
             try {
                 var data;
+
+                console.log(SettingsAddres.httpAddresProjects + '/' + id);
+
                 $http.get(SettingsAddres.httpAddresProjects + '/' + id).then(function (dataJson) {
                     storage.save(dataJson.data.path, dataJson.data);
                     data = storage.load(dataJson.data.path);
@@ -249,29 +253,28 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     async function GetSubstituteExplainerService(data, usecaseId) {
         var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteExplainer";
 
-        console.log(server_url);
-
-        var token = $cookies.get('auth'); 
-       
-
-        var headers = {
-            "Content-Type": "application/json",
-            "x-access-token": token
-        };
-
         return $q(function (resolve, reject) {
             try {
-                axios.post(server_url, data, { headers: headers }).then(function (response) {
-                    resolve(response.data);
-                }, function (err) {
-                    resolve("Error in computer network communications");
-                });
+                var token = $cookies.get('auth');
+                axios.post(server_url, data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        resolve(response.data);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        resolve('Error in computer network communications');
+                    });
             } catch (e) {
                 reject(e);
             }
         });
     }
-
 
     async function getExplainerFieldsFilteredService(callback) {
 
@@ -292,20 +295,28 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     function getToken() {
-        return $q(function (resolve, reject) {
-            var Cookie = $cookies.get('auth');
+        /*
+        var Cookie = $cookies.get('auth');
 
-            if (Cookie) {
-                if (Cookie.expires instanceof Date) {
-                    var currentDate = new Date();
-                    if (currentDate > Cookie.expires) {
-                      resolve("CookieExpire");
-                    } 
+        if (favoriteCookie1) {
+            if (favoriteCookie1.expires instanceof Date) {
+                var currentDate = new Date();
+                if (currentDate > favoriteCookie1.expires) {
+                  return "CookieExpire";
                 } 
-            } else {
-                 resolve("NoExistCookie");
-            }
-            resolve(Cookie);
+            } 
+        } else {
+             return "NoExistCookie";
+        }
+
+        return Cookie;
+        */
+
+
+        return $q(function (resolve, reject) {
+            var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmMyZjIwYmNmNzZkNzU1ZGNhOTU0ZWMiLCJjb21wYW55SWQiOiI2MmMyZjIwYmNmNzZkNzU1ZGNhOTU0ZWEiLCJpYXQiOjE2OTkyNzIxNTcsImV4cCI6MTY5OTM1ODU1N30.f-8i1c0jPZ45haQEqjzP7STpTWS-9oa4Pj91XKrPqXs";
+
+            resolve(token);
         });
     }
 
@@ -445,7 +456,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     async function GetInstanceModelSelectStorage(ModelId) {
-
+        console.log(SettingsAddres.AddresInstanceModels + ModelId + '/0');
         var server_url = SettingsAddres.AddresInstanceModels + ModelId + '/0';
         return $q(function (resolve, reject) {
             try {
@@ -605,60 +616,10 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     async function PostSubstituteSubtreeService(data, usecaseId) {
         var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteSubtree";
 
-        var token = $cookies.get('auth'); 
-       
-        var headers = {
-            "Content-Type": "application/json",
-            "x-access-token": token
-        };
-
-        return $q(function (resolve, reject) {
-
-            try {
-                axios.post(server_url, data, { headers: headers }).then(function (response) {
-                    console.log(response.datas);
-                    resolve(response.data);
-                }, function (err) {
-                    resolve("Error in computer network communications");
-                });
-            } catch (e) {
-                reject(e);
-            }
-        });
-    }
-
-    async function SustituteSubTreeReuseService(data, usecaseId) {
-        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteSubtree";
-
-        var token = $cookies.get('auth'); 
-       
-        var headers = {
-            "Content-Type": "application/json",
-            "x-access-token": token
-        };
-
-        return $q(function (resolve, reject) {
-
-            try {
-                axios.post(server_url, data, { headers: headers }).then(function (response) {
-                    resolve(response.data);
-                }, function (err) {
-                    resolve("Error in computer network communications");
-                });
-            } catch (e) {
-                reject(e);
-            }
-        });
-    }
-
-    async function GetApplicabilityExplanationService(usecaseId) {
-        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/applicability";
-
-        var token = $cookies.get('auth'); 
-       
         return $q(function (resolve, reject) {
             try {
-                axios.post(server_url, {}, {
+                var token = $cookies.get('auth');
+                axios.post(server_url, data, {
                     headers: {
                         'Content-Type': 'application/json',
                         'x-access-token': token
@@ -676,8 +637,77 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                 reject(e);
             }
         });
+    }
 
+    async function SustituteSubTreeReuseService(data, usecaseId) {
+        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/substituteSubtree";
 
+        return $q(function (resolve, reject) {
+            try {
+                var token = $cookies.get('auth');
+                axios.post(server_url, data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        resolve(response.data);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        resolve('Error in computer network communications');
+                    });
+            } catch (e) {
+                reject(e);
+            }
+
+        });
+
+    }
+
+    async function GetExplainersListFormService() {
+        var server_url = "https://api-onto-dev.isee4xai.com/api/explainers/list";
+
+        return $q(function (resolve, reject) {
+            try {
+                axios.get(server_url).then(function (response) {
+                    resolve(response.data);
+                }, function (err) {
+                    resolve("Error in computer network communications");
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    async function GetApplicabilityExplanationService(usecaseId) {
+        var server_url = "https://api-dev.isee4xai.com/api/cbr/" + usecaseId + "/applicability";
+
+        return $q(function (resolve, reject) {
+            try {
+                var token = $cookies.get('auth');
+                axios.post(server_url, {}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        resolve(response.data);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        resolve('Error in computer network communications');
+                    });
+            } catch (e) {
+                reject(e);
+            }
+
+        });
     }
 
 }

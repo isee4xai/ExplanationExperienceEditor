@@ -94,7 +94,8 @@
             </div>
 
             <div class="form-group" ng-show="propertiespanel.original.category == 'composite'">
-                <button id="ButtonSubMore" type="button" ng-click="propertiespanel.FormSubstitute()"> More like this
+                <button id="ButtonSubMore" type="button"
+                    ng-click="propertiespanel.FormSubstitute(propertiespanel.original)"> More like this
                     but...?</button>
                 <button id="ButtonSubMore" type="button"
                     ng-click="propertiespanel.SubstituteNodes(propertiespanel.original)">More like this?</button>
@@ -358,19 +359,18 @@
                                                             class="selected-formats">
                                                             <span
                                                                 ng-repeat="item in propertiespanel.ExplainersSubSelect">
-                                                                {{item.name}}{{$last ? '' : ', '}} </span>
+                                                                {{item.label}}{{$last ? '' : ', '}} </span>
                                                         </span>
-
                                                     </accordion-heading>
                                                     <div class="checkbox-tree">
-                                                        <ul class="ulSelect">
+                                                        <ul class="ulSelect" ng-if="!propertiespanel.isLoading">
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ExplainersSub">
                                                                 <div class="DivCheckboxFormSub">
                                                                     <label>
                                                                         <input type="checkbox" ng-model="item.checked"
-                                                                            ng-change="propertiespanel.toggleItemSelection('Explainer',item)">
-                                                                        {{item.name}}
+                                                                            ng-change="propertiespanel.toggleItemSelection('Explainer',item,true)">
+                                                                        {{item.label}}
                                                                     </label>
                                                                 </div>
                                                     </div>
@@ -408,7 +408,7 @@
                                                             <div class="DivCheckboxFormSub">
                                                                 <label>
                                                                     <input type="checkbox" ng-model="item.checked"
-                                                                        ng-change="propertiespanel.toggleItemSelection('Explanation Scope',item)">
+                                                                        ng-change="propertiespanel.toggleItemSelection('Explanation Scope',item,true)">
                                                                     {{item.label}}
                                                                 </label>
                                                             </div>
@@ -454,7 +454,7 @@
 
                                                                 <label>
                                                                     <input type="checkbox" ng-model="item.checked"
-                                                                        ng-change="propertiespanel.toggleItemSelection( 'Explanation Type',item)"
+                                                                        ng-change="propertiespanel.toggleItemSelection( 'Explanation Type',item,true)"
                                                                         ng-click="$event.stopPropagation()">
                                                                     {{item.label}}
                                                                 </label>
@@ -473,7 +473,7 @@
                                                                         <label>
                                                                             <input type="checkbox"
                                                                                 ng-model="childItem.checked"
-                                                                                ng-change="propertiespanel.toggleItemSelection( 'Explanation Type' ,childItem)">
+                                                                                ng-change="propertiespanel.toggleItemSelection( 'Explanation Type' ,childItem,true)">
                                                                             {{childItem.label}}
                                                                         </label>
                                                                     </div>
@@ -525,7 +525,7 @@
 
                                                                     <label>
                                                                         <input type="checkbox" ng-model="item.checked"
-                                                                            ng-change="propertiespanel.toggleItemSelection( 'Explainability Technique',item)"
+                                                                            ng-change="propertiespanel.toggleItemSelection( 'Explainability Technique',item,true)"
                                                                             ng-click="$event.stopPropagation()">
                                                                         {{item.label}}
                                                                     </label>
@@ -544,7 +544,7 @@
                                                                             <label>
                                                                                 <input type="checkbox"
                                                                                     ng-model="childItem.checked"
-                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Explainability Technique' ,childItem)">
+                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Explainability Technique' ,childItem,true)">
                                                                                 {{childItem.label}}
                                                                             </label>
                                                                         </div>
@@ -562,7 +562,7 @@
                                                                                     <label>
                                                                                         <input type="checkbox"
                                                                                             ng-model="grandchildItem.checked"
-                                                                                            ng-change="propertiespanel.toggleItemSelection('Explainability Technique',grandchildItem)">
+                                                                                            ng-change="propertiespanel.toggleItemSelection('Explainability Technique',grandchildItem,true)">
                                                                                         {{grandchildItem.label}}
                                                                                     </label>
                                                                                 </div>
@@ -613,7 +613,7 @@
 
                                                                     <label>
                                                                         <input type="checkbox" ng-model="item.checked"
-                                                                            ng-change="propertiespanel.toggleItemSelection( 'Presentation format',item)"
+                                                                            ng-change="propertiespanel.toggleItemSelection( 'Presentation format',item,true)"
                                                                             ng-click="$event.stopPropagation()">
                                                                         {{item.label}}
                                                                     </label>
@@ -632,7 +632,7 @@
                                                                             <label>
                                                                                 <input type="checkbox"
                                                                                     ng-model="childItem.checked"
-                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Presentation format' ,childItem)">
+                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Presentation format' ,childItem,true)">
                                                                                 {{childItem.label}}
                                                                             </label>
                                                                         </div>
@@ -650,7 +650,7 @@
                                                                                     <label>
                                                                                         <input type="checkbox"
                                                                                             ng-model="grandchildItem.checked"
-                                                                                            ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem)">
+                                                                                            ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem,true)">
                                                                                         {{grandchildItem.label}}
                                                                                     </label>
                                                                                 </div>
@@ -668,7 +668,7 @@
                                                                                             <label>
                                                                                                 <input type="checkbox"
                                                                                                     ng-model="grandchildItem1.checked"
-                                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem1)">
+                                                                                                    ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem1,true)">
                                                                                                 {{grandchildItem1.label}}
                                                                                             </label>
                                                                                         </div>
@@ -716,7 +716,7 @@
                                                                 <div class="DivCheckboxFormSub">
                                                                     <label>
                                                                         <input type="checkbox" ng-model="item.checked"
-                                                                            ng-change="propertiespanel.toggleItemSelection('Computational Complexity',item)">
+                                                                            ng-change="propertiespanel.toggleItemSelection('Computational Complexity',item,true)">
                                                                         {{item.label}}
                                                                     </label>
                                                                 </div>
@@ -756,7 +756,7 @@
                                                                 <div class="DivCheckboxFormSub">
                                                                     <label>
                                                                         <input type="checkbox" ng-model="item.checked"
-                                                                            ng-change="propertiespanel.toggleItemSelection('Implementation Framework',item)">
+                                                                            ng-change="propertiespanel.toggleItemSelection('Implementation Framework',item,true)">
                                                                         {{item.label}}
                                                                     </label>
                                                                 </div>
@@ -797,7 +797,7 @@
                                                                 <div class="DivCheckboxFormSub">
                                                                     <label>
                                                                         <input type="checkbox" ng-model="item.checked"
-                                                                            ng-change="propertiespanel.toggleItemSelection('Explainer Concurrentnes',item)">
+                                                                            ng-change="propertiespanel.toggleItemSelection('Explainer Concurrentnes',item,true)">
                                                                         {{item.label}}
                                                                     </label>
                                                                 </div>
