@@ -1052,6 +1052,11 @@
             var ExplainerSelect = [];
             if (original && original._outConnections) {
                 AllExplainerFormSelect(original._outConnections);
+            }else{
+                if (vm.original.name == "Explanation Method") {
+                    ExplainerSelect.push(vm.original.title);
+                }
+                
             }
 
             try {
@@ -1393,8 +1398,6 @@
             return new Promise((resolve, reject) => {
                 projectModel.getProjecAllData()
                     .then(function (x) {
-                        console.log("sssssssssssssssss");
-                        console.log(x);
                         /*  var e = $window.editor.export;
                           var ProjectExpor = e.projectToData();
   
@@ -1451,6 +1454,8 @@
                     delete DataSubstituteSubtree.criteria;
                     projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
                         .then(function (data) {
+                            console.log("data");
+                            console.log(data);
                             switch (data.length) {
                                 case 40:
                                     notificationService.error(
@@ -1511,8 +1516,10 @@
 
             divGeneral.appendChild(editor1._game.canvas);
 
-            var TressOptions = editor1.import.treeAsDataSubti(a, p, NodeSelect.id, a[0].data.trees[0].root);
+            var TressOptions = editor1.import.treeAsDataSubti(a, p, NodeSelect.id, a[0].data.trees[0].root, vm.applicabilityList);
             TressOptions.shift();
+
+            console.log(TressOptions);
 
             var cont = 0;
             var aaa;

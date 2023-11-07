@@ -23,7 +23,6 @@ b3e.editor.ProjectManager = function(editor) {
         var project = new b3e.project.Project(editor);
         editor.addChild(project);
         editor._project = project; 
-
         editor.import.projectAsData(data,outcome,Applicability);
         editor.trigger('projectopened', editor._project);
         editor.clearDirty();
@@ -33,7 +32,7 @@ b3e.editor.ProjectManager = function(editor) {
      * Exit the current project.
      */
     this.close = function() {
-        var project = editor._project; 
+        var project = editor._project;
         if (project) {
             editor.removeChild(project);
             editor.trigger('projectclosed', project);

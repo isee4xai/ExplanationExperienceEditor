@@ -314,9 +314,9 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
 
 
         return $q(function (resolve, reject) {
-            var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmMyZjIwYmNmNzZkNzU1ZGNhOTU0ZWMiLCJjb21wYW55SWQiOiI2MmMyZjIwYmNmNzZkNzU1ZGNhOTU0ZWEiLCJpYXQiOjE2OTkyNzIxNTcsImV4cCI6MTY5OTM1ODU1N30.f-8i1c0jPZ45haQEqjzP7STpTWS-9oa4Pj91XKrPqXs";
-
-            resolve(token);
+         //   var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmMyZjIwYmNmNzZkNzU1ZGNhOTU0ZWMiLCJjb21wYW55SWQiOiI2MmMyZjIwYmNmNzZkNzU1ZGNhOTU0ZWEiLCJpYXQiOjE2OTkyNzIxNTcsImV4cCI6MTY5OTM1ODU1N30.f-8i1c0jPZ45haQEqjzP7STpTWS-9oa4Pj91XKrPqXs";
+            var Cookie = $cookies.get('auth');
+            resolve(Cookie);
         });
     }
 

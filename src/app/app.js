@@ -34,7 +34,6 @@ angular.module('app', [
             $location.path('/');
             */
 
-
             // add drop to canvas
             angular
                 .element($window.editor._game.canvas)
@@ -66,32 +65,42 @@ angular.module('app', [
                             });
                     }
 
-                    
-                    if (projects.length > 0 && projects[0].isOpen) {
-                        projectModel
-                            .openProject(projects[0].path)
-                            .then(function () {
-                                closePreload();
-                            });
+                    projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (x) {
+                        
+                        if (x === "Error in computer network communications") {
+                            notificationService.warning(
+                                'Applicability Not Found',
+                                'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
+                            );
+                        } 
 
-                    } else {
-                        var nameProject = "Project 1";
-                        projectModel
-                            .getRecentProjects()
-                            .then(function (recents) {
-                                if (recents.length == 0) {
-                                    var path = 'b3projects-' + b3.createUUID();
-                                    _newProject(path, nameProject);
+                        if (projects.length > 0 && projects[0].isOpen) {
+                            projectModel
+                                .openProject(projects[0].path, x)
+                                .then(function () {
+                                    closePreload();
+                                });
 
-                                    projectModel
-                                        .openProject(path)
-                                        .then(function () {
-                                            closePreload();
-                                            location.reload();
-                                        });
-                                }
-                            });
-                    }
+                        } else {
+                            var nameProject = "Project 1";
+                            projectModel
+                                .getRecentProjects()
+                                .then(function (recents) {
+                                    if (recents.length == 0) {
+                                        var path = 'b3projects-' + b3.createUUID();
+                                        _newProject(path, nameProject);
+
+                                        projectModel
+                                            .openProject(path)
+                                            .then(function () {
+                                                closePreload();
+                                                location.reload();
+                                            });
+                                    }
+                                });
+                        }
+                    });
+
                 });
 
 

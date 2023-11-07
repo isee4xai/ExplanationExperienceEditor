@@ -211,11 +211,12 @@
         }
 
 
-        function openProject(path) {
+        function openProject(path,applicability) {
             return $q(function (resolve, reject) {
                 try {
                     var project = storageService.load(path);
-                    editorService.openProject(project.data);
+                    ApplicabilityList = applicability;
+                    editorService.openProject(project.data, project.outcome,applicability);
                     _setProject(project);
                     resolve();
                 } catch (e) {
@@ -224,13 +225,14 @@
             });
         }
 
-        function openProjectId(id) {
+        function openProjectId(id,applicability) {
             return $q(function (resolve, reject) {
                 try {
                     storageService
                         .loadProjectId(id)
                         .then(function (json) {
-                            editorService.openProject(json.data);
+                            ApplicabilityList = applicability;
+                            editorService.openProject(json.data, json.outcome,applicability);
                             _setProject(json);
                             resolve(json);
                         });
@@ -238,7 +240,7 @@
                     reject(e);
                 }
             });
-        }
+        } 
 
         function closeProject() {
             return $q(function (resolve, reject) {

@@ -12,7 +12,7 @@ EditorController.$inject = [
 ];
 
 function EditorController($state, $window, $location, projectModel, dialogService, systemService) {
-
+ 
     //get id from url
     var url = $location.url().slice(1);
     urlSplit = url.split("/");

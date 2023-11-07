@@ -13,8 +13,12 @@ b3e.editor.ImportManager = function (editor) {
         editor.trigger('projectimported');
     };
 
-    this.treeAsDataSubti = function (data, p, rootNode, rootId) {
+    this.treeAsDataSubti = function (data, p, rootNode, rootId, Applicability) {
         if (!p) return;
+
+        console.log("treeAsDataSubti treeAsDataSubti treeAsDataSubti treeAsDataSubti ");
+        console.log(data);
+        console.log(rootNode);
 
         var tree;
         var cont = 0;
@@ -28,9 +32,7 @@ b3e.editor.ImportManager = function (editor) {
             var spec, display;
             var Pricipal;
 
-            for (var id in Option.data.trees[0].nodes) {
-
-                if (id != rootId) {
+            for (var id in Option.data.trees[0].nodes) {  
                     spec = Option.data.trees[0].nodes[id];
 
                     var block = null;
@@ -49,6 +51,30 @@ b3e.editor.ImportManager = function (editor) {
                     block.img = spec.img;
                     block.Image = spec.Image;
                     block.Json = spec.Json;
+
+                    if (block.name == "Explanation Method") {
+                        //Popularity
+                        if (typeof Option.outcome !== 'undefined' && Option.outcome !== null && typeof Option.outcome.Popularity !== 'undefined') {
+                            if (block.id in Option.outcome.Popularity) {
+                                block.properties.Popularity = Option.outcome.Popularity[block.id];
+                            } else {
+                                block.properties.Popularity = 1;
+                            }
+                        } else {
+                            block.properties.Popularity = 1;
+                        }
+                    
+                        //Applicability
+                        if (Applicability != null) {
+                            if (Applicability[block.title] != undefined) {
+                                block.properties.Applicability = Applicability[block.title].flag;
+                            } else {
+                                block.properties.Applicability = false
+                            }
+                        }else{
+                            block.properties.Applicability = false;
+                        }
+                    }
 
                     var propertiesExpl = {};
                     var ArrayNameProperties = Object.keys(spec);
@@ -95,11 +121,10 @@ b3e.editor.ImportManager = function (editor) {
                     }
                     block._redraw();
 
-                }
+                
             }
 
-            for (var id in Option.data.trees[0].nodes) {
-                if (Option.data.trees[0].nodes[id].id != rootId) {
+            for (var id in Option.data.trees[0].nodes) {  
                     spec = Option.data.trees[0].nodes[id];
 
                     var inBlock = tree.blocks.get(id);
@@ -126,12 +151,10 @@ b3e.editor.ImportManager = function (editor) {
 
                             RouteOfObjectId = RouteOfObject[IdProper];
                             RouteOfObject = RouteOfObject[propertieNext];
-
                         }
                         outBlock = tree.blocks.get(RouteOfObjectId);
                         tree.connections.add(inBlock, outBlock);
-                    }
-                }
+                    }        
             }
 
             var a = tree.blocks.getRoot();
@@ -345,18 +368,20 @@ b3e.editor.ImportManager = function (editor) {
             block.Image = spec.Image;
             block.Json = spec.Json;
 
+            
+          
             if (block.name == "Explanation Method") {
                 //Popularity
-                if (typeof Popularity !== 'undefined' && typeof Popularity.Popularity !== 'undefined') {
+                if (typeof Popularity !== 'undefined' && Popularity !== null && typeof Popularity.Popularity !== 'undefined') {
                     if (block.id in Popularity.Popularity) {
-                        block.properties.Popularity = Popularity.Popularity[spec.id];
+                        block.properties.Popularity = Popularity.Popularity[block.id];
                     } else {
-                        block.properties.Popularity = 1
+                        block.properties.Popularity = 1;
                     }
                 } else {
                     block.properties.Popularity = 1;
                 }
-
+            
                 //Applicability
                 if (Applicability != null) {
                     if (Applicability[block.title] != undefined) {

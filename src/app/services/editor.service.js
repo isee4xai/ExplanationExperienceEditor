@@ -27,8 +27,8 @@ function editorService($window) {
         $window.editor.project.create();
     }
 
-    function openProject(data,outcome,Applicability) {
-        $window.editor.project.open(data,outcome,Applicability);
+    function openProject(data,outcome,applicability) {
+        $window.editor.project.open(data,outcome,applicability);
     }
 
     function closeProject() {
