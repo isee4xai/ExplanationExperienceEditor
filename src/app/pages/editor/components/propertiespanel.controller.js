@@ -1545,7 +1545,7 @@
                 buttonAdd.addEventListener('click', function () {
                     updateNodeSub(element, NodeSelect, editor1, aaa, divGeneral);
                 });
-                
+
                 var buttonAddInfo = document.createElement('button');
                 buttonAddInfo.insertAdjacentHTML('beforeend', '<i class="fa fa-info-circle"></i> ');
                 buttonAddInfo.style.backgroundColor = '#5bc0de';
@@ -2258,80 +2258,15 @@
                 }
                 projectModel.getConditionsEvaluationEXP(option, IdModel)
                     .then(function (x) {
-                        if (!vm.applicabilityList) {
-                            notificationService.info(
-                                'Checking the applicability of the explainer...'
-                            );
-                            projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (y) {
-                                vm.applicabilityList = y;
-                                switch (true) {
-                                    case x.hasOwnProperty("params"):
-                                        if (vm.applicabilityList[option] != undefined) {
-                                            vm.block.properties.Applicability = vm.applicabilityList[option].flag;
-                                        } else {
-                                            vm.block.properties.Applicability = false
-                                        }
-                                        vm.block.properties.Popularity = 1;
-                                        CreateParams(x.params, block, nodeId);
-                                        resolve();
-                                        break;
-                                    case x == "Error in computer network communications":
-                                        vm.ArrayParams = [];
-                                        notificationService.error(
-                                            'Error select Explanation Method',
-                                            'Error in computer network communications [500]'
-                                        );
-                                        reject(new Error('Error in computer network communications [500]'));
-                                        break;
-                                    default:
-                                        // example of values Popularity and Applicability
-                                        if (vm.applicabilityList[option] != undefined) {
-                                            vm.block.properties.Applicability = vm.applicabilityList[option].flag;
-                                        } else {
-                                            vm.block.properties.Applicability = false
-                                        }
-                                        vm.block.properties.Popularity = 1;
-                                        vm.ArrayParams = [];
-
-                                        update();
-                                        resolve();
-                                        break;
-                                }
-                            });
+                        if (x != "Error in computer network communications") {
+                            paintExplanation(x,option, block, nodeId);
+                            resolve();
                         } else {
-                            switch (true) {
-                                case x.hasOwnProperty("params"):
-                                    if (vm.applicabilityList[option] != undefined) {
-                                        vm.block.properties.Applicability = vm.applicabilityList[option].flag;
-                                    } else {
-                                        vm.block.properties.Applicability = false
-                                    }
-                                    vm.block.properties.Popularity = 1;
-                                    CreateParams(x.params, block, nodeId);
+                            projectModel.getConditionsEvaluationEXP(option, "")
+                                .then(function (y) {
+                                    paintExplanation(y,option,block, nodeId);
                                     resolve();
-                                    break;
-                                case x == "Error in computer network communications":
-                                    vm.ArrayParams = [];
-                                    notificationService.error(
-                                        'Error select Explanation Method',
-                                        'Error in computer network communications [500]'
-                                    );
-                                    reject(new Error('Error in computer network communications [500]'));
-                                    break;
-                                default:
-                                    // example of values Popularity and Applicability
-                                    if (vm.applicabilityList[option] != undefined) {
-                                        vm.block.properties.Applicability = vm.applicabilityList[option].flag;
-                                    } else {
-                                        vm.block.properties.Applicability = false
-                                    }
-                                    vm.block.properties.Popularity = 1;
-                                    vm.ArrayParams = [];
-
-                                    update();
-                                    resolve();
-                                    break;
-                            }
+                                })
                         }
                     })
                     .catch((error) => {
@@ -2342,6 +2277,81 @@
                     reject(error);
                 });
 
+        }
+
+        function paintExplanation(x, option, block, nodeId) {
+            if (!vm.applicabilityList) {
+                notificationService.info(
+                    'Checking the applicability of the explainer...'
+                );
+                projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (y) {
+                    vm.applicabilityList = y;
+                    switch (true) {
+                        case x.hasOwnProperty("params"):
+                            if (vm.applicabilityList[option] != undefined) {
+                                vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                            } else {
+                                vm.block.properties.Applicability = false
+                            }
+                            vm.block.properties.Popularity = 1;
+                            vm.block.title = option;
+                            CreateParams(x.params, block, nodeId);
+                            break;
+                        case x == "Error in computer network communications":
+                            vm.ArrayParams = [];
+                            notificationService.error(
+                                'Error select Explanation Method',
+                                'Error in computer network communications [500]'
+                            );
+                            break;
+                        default:
+                            // example of values Popularity and Applicability
+                            if (vm.applicabilityList[option] != undefined) {
+                                vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                            } else {
+                                vm.block.properties.Applicability = false
+                            }
+                            vm.block.properties.Popularity = 1;
+                            vm.block.title = option;
+                            vm.ArrayParams = [];
+
+                            update();
+                            break;
+                    }
+                });
+            } else {
+                switch (true) {
+                    case x.hasOwnProperty("params"):
+                        if (vm.applicabilityList[option] != undefined) {
+                            vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                        } else {
+                            vm.block.properties.Applicability = false
+                        }
+                        vm.block.properties.Popularity = 1;
+                        vm.block.title = option;
+                        CreateParams(x.params, block, nodeId);
+                        break;
+                    case x == "Error in computer network communications":
+                        vm.ArrayParams = [];
+                        notificationService.error(
+                            'Error select Explanation Method',
+                            'Error in computer network communications [500]'
+                        );
+                        break;
+                    default:
+                        // example of values Popularity and Applicability
+                        if (vm.applicabilityList[option] != undefined) {
+                            vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                        } else {
+                            vm.block.properties.Applicability = false
+                        }
+                        vm.block.properties.Popularity = 1;
+                        vm.ArrayParams = [];
+
+                        update();
+                        break;
+                }
+            }
         }
 
 
@@ -2398,11 +2408,7 @@
                     fixed: false
                 });
             }
-            //des block canvas
-            /*
-            var p1 = $window.editor._game.canvas;
-            p1.style.pointerEvents = 'auto';
-            */
+        
             change(block, nodeId);
         }
 
@@ -2569,7 +2575,6 @@
             //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
-
             t.blocks.update(vm.original, vm.block);
         }
 
