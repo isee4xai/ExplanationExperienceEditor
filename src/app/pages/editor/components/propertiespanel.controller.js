@@ -937,10 +937,12 @@
                             case Object.keys(x).length != 0 && typeof x != 'string':
                                 vm.models = x;
                                 // delete models test
+                                /*
                                 var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
                                 for (let index = 0; index < deleteModels.length; index++) {
                                     delete vm.models[deleteModels[index]];
                                 }
+                                */
                                 notificationService.success(
                                     "Added Private Models"
                                 );
@@ -970,11 +972,12 @@
                             //set private model as first element and remove repeated
                             vm.models = Object.assign({}, vm.models, x);
                             // delete models test
+                            /*
                             var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
                             for (let index = 0; index < deleteModels.length; index++) {
                                 delete vm.models[deleteModels[index]];
                             }
-
+                            */
                             notificationService.success(
                                 "Added Public Models"
                             );
@@ -1052,11 +1055,11 @@
             var ExplainerSelect = [];
             if (original && original._outConnections) {
                 AllExplainerFormSelect(original._outConnections);
-            }else{
+            } else {
                 if (vm.original.name == "Explanation Method") {
                     ExplainerSelect.push(vm.original.title);
                 }
-                
+
             }
 
             try {
@@ -1211,13 +1214,13 @@
                         }
                         projectModel.GetSubstituteExplainer(data, $location.search().usecaseId)
                             .then(function (x) {
-                                
+
                                 switch (true) {
                                     case x === "Error in computer network communications":
                                         notificationService.error(x);
                                         break;
                                     case x.length > 0:
-                                        x.sort(function(a, b) {
+                                        x.sort(function (a, b) {
                                             return b.similarity - a.similarity;
                                         });
                                         SubstituteOneNode(x, vm.original, vm.block);
@@ -1542,7 +1545,26 @@
                 buttonAdd.addEventListener('click', function () {
                     updateNodeSub(element, NodeSelect, editor1, aaa, divGeneral);
                 });
+                
+                var buttonAddInfo = document.createElement('button');
+                buttonAddInfo.insertAdjacentHTML('beforeend', '<i class="fa fa-info-circle"></i> ');
+                buttonAddInfo.style.backgroundColor = '#5bc0de';
+                buttonAddInfo.style.border = "none";
+                /*buttonAddInfo.addEventListener('mouseenter', function () {
+                    startTimeout("Description Sub", 'substituteExpl', function () {
+                        var tooltip = document.querySelector(".mi-tooltip");
+                        if (tooltip) {
+                            tooltip.style.marginBottom = nuevoDiv.offsetHeight + 20 + "px";
+                            tooltip.style.marginLeft = 300 + "px";
+                        }
+                    });
+                });
+                buttonAddInfo.addEventListener('mouseleave', function () {
+                    cancelTimeout(OptionNodeSub[i].explanation, 'substituteExpl');
+                });
+                */
                 divbuttons.appendChild(buttonAdd);
+                divbuttons.appendChild(buttonAddInfo);
                 cont++;
             });
 
@@ -1626,15 +1648,24 @@
 
 
         function SelectModel(data) {
-
             vm.modelsSelect = data;
             vm.block.ModelRoot.idModel = Object.keys(vm.models).find(key => vm.models[key] === data);
 
             projectModel.GetInstanceModelSelect(vm.block.ModelRoot.idModel)
                 .then(function (x) {
-                    //Tabular data
-                    var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
-                    miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
+                    if (x && x.instance && x.type) {
+                        var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
+                        miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
+                    } else {
+                        notificationService.info(
+                            'Query Model', 'No model query was found, or the call failed'
+                        );
+                    }
+                })
+                .catch(function (error) {
+                    notificationService.info(
+                        'Query Model', 'No model query was found, or the call failed'
+                    );
                 });
             update();
         }

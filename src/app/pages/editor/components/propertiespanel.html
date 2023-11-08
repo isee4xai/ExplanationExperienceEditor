@@ -95,8 +95,7 @@
 
             <div class="form-group" ng-show="propertiespanel.original.category == 'composite'">
                 <button id="ButtonSubMore" type="button"
-                    ng-click="propertiespanel.FormSubstitute(propertiespanel.original)"> More like this
-                    but...?</button>
+                    ng-click="propertiespanel.FormSubstitute(propertiespanel.original)"> More like this...?</button>
                 <button id="ButtonSubMore" type="button"
                     ng-click="propertiespanel.SubstituteNodes(propertiespanel.original)">More like this?</button>
             </div>
@@ -200,21 +199,16 @@
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.name == 'User Question'">
-                <table class="table table-condensed keytable" ng-repeat="item in propertiespanel.ArrayParams">
 
-                    <tr ng-repeat="item in propertiespanel.ArrayParams" class="keyPropertiesTdParams">
-                        <td>
-                            <input id="ParamsKey" type="text" class="form-control" value="{{item.key}}"
-                                ng-disabled="item.fixed" ng-model="item.key" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr ng-repeat="item in propertiespanel.ArrayParams" style="margin-top: 50px;">
-                        <td>
-                            <input type="text" class="form-control" value="{{item.value}}" ng-model="item.value"
-                                ng-change="propertiespanel.change()" />
-                        </td>
-                    </tr>
-                </table>
+                <div id="TextAreaEpl" class="form-group">
+                    <input id="ParamsKey" type="text" class="form-control" value="{{item.key}}" ng-disabled="item.fixed"
+                        ng-model="propertiespanel.ArrayParams[0].key" readonly="readonly" />
+                   <p></p>
+                    <textarea id="TextArea" name="description" rows="4" class="form-control"
+                        ng-model="propertiespanel.ArrayParams[0].value" readonly>
+                    </textarea>
+                </div>
+
             </div>
 
             <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">

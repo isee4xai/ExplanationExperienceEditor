@@ -66,17 +66,35 @@ angular.module('app', [
                     }
 
                     projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (x) {
-                        
+
                         if (x === "Error in computer network communications") {
                             notificationService.warning(
                                 'Applicability Not Found',
                                 'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
                             );
-                        } 
+                        }
 
-                        if (projects.length > 0 && projects[0].isOpen) {
+                        if (projects.length > 0) {
+
+                            var url = $location.url().slice(1);
+                            urlSplit = url.split("/");
+                            var Id = "";
+                            var elementoEncontrado;
+                            if (urlSplit.length > 1) {
+                                Id = urlSplit[1];
+                                if (Id.includes("?")) {
+                                    Id = Id.split("?")[0];
+                                }
+                            }
+
+                            if (Id != "") {
+                                elementoEncontrado = projects.find(elemento => elemento.id === Id);
+                            } else {
+                                elementoEncontrado = projects.find(elemento => elemento.isOpen === true);
+                            }
+
                             projectModel
-                                .openProject(projects[0].path, x)
+                                .openProject(elementoEncontrado.path, x)
                                 .then(function () {
                                     closePreload();
                                 });

@@ -64,7 +64,8 @@
             PostSubstituteSubtree: PostSubstituteSubtree,
             GetApplicabilityExplanation: GetApplicabilityExplanation,
             SustituteSubTreeReuse: SustituteSubTreeReuse,
-            GetExplainersListForm: GetExplainersListForm
+            GetExplainersListForm: GetExplainersListForm,
+            GetInstanceModelSelect: GetInstanceModelSelect
         };
         return service;
 
