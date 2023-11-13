@@ -1,7 +1,7 @@
 b3e.editor.ImportManager = function (editor) {
     "use strict";
 
-    this.projectAsData = function (data, outcome,Applicability) {
+    this.projectAsData = function (data, outcome, Applicability) {
         var project = editor.project.get();
         if (!project) return;
 
@@ -15,11 +15,6 @@ b3e.editor.ImportManager = function (editor) {
 
     this.treeAsDataSubti = function (data, p, rootNode, rootId, Applicability) {
         if (!p) return;
-
-        console.log("treeAsDataSubti treeAsDataSubti treeAsDataSubti treeAsDataSubti ");
-        console.log(data);
-        console.log(rootNode);
-
         var tree;
         var cont = 0;
         data.forEach(Option => {
@@ -31,13 +26,15 @@ b3e.editor.ImportManager = function (editor) {
             cont++;
             var spec, display;
             var Pricipal;
+            var draw=false;
 
-            for (var id in Option.data.trees[0].nodes) {  
-                    spec = Option.data.trees[0].nodes[id];
+            for (var id in Option.data.trees[0].nodes) {
+                spec = Option.data.trees[0].nodes[id];
 
+                if (draw || spec.id == rootNode) {
+                    draw = true;
                     var block = null;
                     display = spec.display || {};
-
 
                     block = tree.blocks.add(spec.Concept || spec.name, spec.display.x, spec.display.y);
                     block.id = spec.id;
@@ -63,7 +60,7 @@ b3e.editor.ImportManager = function (editor) {
                         } else {
                             block.properties.Popularity = 1;
                         }
-                    
+
                         //Applicability
                         if (Applicability != null) {
                             if (Applicability[block.title] != undefined) {
@@ -71,7 +68,7 @@ b3e.editor.ImportManager = function (editor) {
                             } else {
                                 block.properties.Applicability = false
                             }
-                        }else{
+                        } else {
                             block.properties.Applicability = false;
                         }
                     }
@@ -120,13 +117,16 @@ b3e.editor.ImportManager = function (editor) {
                         Pricipal = block;
                     }
                     block._redraw();
-
-                
+                }
             }
 
-            for (var id in Option.data.trees[0].nodes) {  
-                    spec = Option.data.trees[0].nodes[id];
+            draw = false;
 
+            for (var id in Option.data.trees[0].nodes) {
+                spec = Option.data.trees[0].nodes[id];
+
+                if (draw || spec.id == rootNode) {
+                    draw = true;
                     var inBlock = tree.blocks.get(id);
 
                     var children = null;
@@ -154,7 +154,8 @@ b3e.editor.ImportManager = function (editor) {
                         }
                         outBlock = tree.blocks.get(RouteOfObjectId);
                         tree.connections.add(inBlock, outBlock);
-                    }        
+                    }
+                }
             }
 
             var a = tree.blocks.getRoot();
@@ -169,8 +170,6 @@ b3e.editor.ImportManager = function (editor) {
             tree.blocks.remove(a);
 
             p.history.clear();
-
-
         });
 
         var selected = p.trees.getSelected();
@@ -368,8 +367,8 @@ b3e.editor.ImportManager = function (editor) {
             block.Image = spec.Image;
             block.Json = spec.Json;
 
-            
-          
+
+
             if (block.name == "Explanation Method") {
                 //Popularity
                 if (typeof Popularity !== 'undefined' && Popularity !== null && typeof Popularity.Popularity !== 'undefined') {
@@ -381,7 +380,7 @@ b3e.editor.ImportManager = function (editor) {
                 } else {
                     block.properties.Popularity = 1;
                 }
-            
+
                 //Applicability
                 if (Applicability != null) {
                     if (Applicability[block.title] != undefined) {
@@ -389,7 +388,7 @@ b3e.editor.ImportManager = function (editor) {
                     } else {
                         block.properties.Applicability = false
                     }
-                }else{
+                } else {
                     block.properties.Applicability = false;
                 }
             }

@@ -937,12 +937,14 @@
                             case Object.keys(x).length != 0 && typeof x != 'string':
                                 vm.models = x;
                                 // delete models test
-                                /*
+
                                 var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
                                 for (let index = 0; index < deleteModels.length; index++) {
-                                    delete vm.models[deleteModels[index]];
+                                    //delete vm.models[deleteModels[index]];
+
+                                    vm.models[deleteModels[index]] = "Model " + (index + 1);
                                 }
-                                */
+
                                 notificationService.success(
                                     "Added Private Models"
                                 );
@@ -1059,7 +1061,6 @@
                 if (vm.original.name == "Explanation Method") {
                     ExplainerSelect.push(vm.original.title);
                 }
-
             }
 
             try {
@@ -1377,44 +1378,53 @@
         }
 
         function obtenerDescendientes(arbol, nodoId) {
-
-            const descendientes = [];
-
-            function buscarDescendientes(nodoId) {
-                const nodo = arbol[nodoId];
-                if (!nodo) return;
-
-                descendientes.push(nodo);
-                var child = nodo.firstChild;
-                if (child) {
-                    do {
-                        buscarDescendientes(child.Id);
-                        child = child.Next;
-                    } while (child != null);
+            if (arbol.firstChild.id != nodoId) {
+                return true;
+            } else {
+                if (arbol.firstChild.Next != null) {
+                    buscarDescendientes(arbol.firstChild.Next, nodoId);
+                } else {
+                    return false;
                 }
             }
-            buscarDescendientes(nodoId);
-            return descendientes;
+
+            function buscarDescendientes(Next, IdSeach) {
+                if (Next.id != nodoId) {
+                    return true;
+                } else {
+                    if (Next.Next != null) {
+                        buscarDescendientes(Next.Next, IdSeach);
+                    } else {
+                        return false;
+                    }
+                }
+
+            }
         }
 
         function GetProjectData(NodeSelect) {
             return new Promise((resolve, reject) => {
                 projectModel.getProjecAllData()
                     .then(function (x) {
-                        /*  var e = $window.editor.export;
-                          var ProjectExpor = e.projectToData();
-  
-                          var a = ProjectExpor.trees[0];
-                          var child = a.nodes[NodeSelect.id].firstChild;
-                          var JsonDataSelect = {};
-                          JsonDataSelect[NodeSelect.id] = a.nodes[NodeSelect.id];
-                          const nodosDescendientes = obtenerDescendientes(a.nodes, NodeSelect.id);
-  
-                          ProjectExpor.trees[0].nodes = nodosDescendientes;
-                          ProjectExpor.trees[0].root = NodeSelect.id;
-                          x[0].data = ProjectExpor;
-                          resolve(x[0]);*/
-                        resolve(x);
+                        var e = $window.editor.export;
+                        var ProjectExpor = e.projectToData();
+                        var trees = ProjectExpor.trees;
+
+                        var arbolesContenedores = trees.filter(arbol => arbol.nodes[NodeSelect.id]);
+
+                        var arbolContenedor = arbolesContenedores[0];
+
+                        var idNodoRaiz = arbolContenedor.root;
+                        var nodoRaiz = arbolContenedor.nodes[idNodoRaiz];
+
+                        var idNodoPadre = nodoRaiz && Object.keys(arbolContenedor.nodes).find(
+                            (key) => true == obtenerDescendientes(arbolContenedor.nodes[idNodoRaiz], NodeSelect.id)
+                        );
+
+                        x.data = e.projectToData();
+
+                        resolve({ projectData: x, parentNode: arbolContenedor.nodes[idNodoPadre] });
+
                     });
             });
         }
@@ -1424,11 +1434,10 @@
                 'Loading', 'Please wait while your request is being processed...'
             );
             GetProjectData(NodeSelect).then(function (x) {
-                console.log(x);
                 var DataSubstituteSubtree = {
-                    "treeId": x.id,
+                    "treeId": x.projectData.id,
                     "subtreeId": NodeSelect.id,
-                    "tree": x,
+                    "tree": x.projectData,
                     "k": 3,
                     "criteria": dataCriteria
                 };
@@ -1521,8 +1530,6 @@
 
             var TressOptions = editor1.import.treeAsDataSubti(a, p, NodeSelect.id, a[0].data.trees[0].root, vm.applicabilityList);
             TressOptions.shift();
-
-            console.log(TressOptions);
 
             var cont = 0;
             var aaa;
@@ -2259,12 +2266,12 @@
                 projectModel.getConditionsEvaluationEXP(option, IdModel)
                     .then(function (x) {
                         if (x != "Error in computer network communications") {
-                            paintExplanation(x,option, block, nodeId);
+                            paintExplanation(x, option, block, nodeId);
                             resolve();
                         } else {
                             projectModel.getConditionsEvaluationEXP(option, "")
                                 .then(function (y) {
-                                    paintExplanation(y,option,block, nodeId);
+                                    paintExplanation(y, option, block, nodeId);
                                     resolve();
                                 })
                         }
@@ -2408,7 +2415,7 @@
                     fixed: false
                 });
             }
-        
+
             change(block, nodeId);
         }
 
