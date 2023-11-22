@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -43,22 +43,26 @@
             var p = $window.editor.project.get();
 
 
-            p.nodes.each(function(node) {
-                if (node.category === 'tree') return;
+            p.nodes.each(function (node) {
+                //coment User Question
+                if (node.name != "User Question") {
+                    if (node.category === 'tree') return;
 
-                var list = vm.nodes[node.category];
+                    var list = vm.nodes[node.category];
 
-                if (!list) return;
-                list.push({
-                    name: node.name,
-                    title: _getTitle(node),
-                    isDefault: node.isDefault
-                });
+                    if (!list) return;
+                    list.push({
+                        name: node.name,
+                        title: _getTitle(node),
+                        isDefault: node.isDefault
+                    })
+                }
+                ;
 
             });
 
             var selected = p.trees.getSelected();
-            p.trees.each(function(tree) {
+            p.trees.each(function (tree) {
                 var root = tree.blocks.getRoot();
                 vm.trees.push({
                     'id': tree._id,
@@ -71,7 +75,7 @@
         }
 
         function _event(e) {
-            setTimeout(function() { $scope.$apply(function() { _activate(); }); }, 0);
+            setTimeout(function () { $scope.$apply(function () { _activate(); }); }, 0);
         }
 
 
@@ -100,7 +104,7 @@
         function _getTitle(node) {
             var title = node.title || node.name;
             try {
-                title = title.replace(/(<\w+>)/g, function(match, key) { return '@'; });
+                title = title.replace(/(<\w+>)/g, function (match, key) { return '@'; });
             } catch (error) {
                 console.log(error);
             }
@@ -130,17 +134,17 @@
 
         function remove(id) {
             dialogService.
-            confirm(
-                'Remove tree?',
-                'Are you sure you want to remove this tree?\n\nNote: all blocks using this tree will be removed.'
-            ).then(function() {
-                var p = $window.editor.project.get();
-                p.trees.remove(id);
-                notificationService.success(
-                    'Tree removed',
-                    'The tree has been removed from this project.'
-                );
-            });
+                confirm(
+                    'Remove tree?',
+                    'Are you sure you want to remove this tree?\n\nNote: all blocks using this tree will be removed.'
+                ).then(function () {
+                    var p = $window.editor.project.get();
+                    p.trees.remove(id);
+                    notificationService.success(
+                        'Tree removed',
+                        'The tree has been removed from this project.'
+                    );
+                });
         }
     }
 })();

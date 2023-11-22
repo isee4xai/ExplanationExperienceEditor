@@ -98,7 +98,12 @@ b3e.editor.ExportManager = function (editor) {
                     data.query = root.query;
                 }
                 if (root.hasOwnProperty("img") && root.img != undefined) {
+                    data.img = root.img;
+                }
+                /*
+                if (root.hasOwnProperty("img") && root.img != undefined) {
                     var reader = new FileReader();
+                    console.log(typeof root.img)
                     reader.readAsDataURL(root.img);
                     reader.onload = function () {
                         data.img = reader.result;
@@ -107,7 +112,7 @@ b3e.editor.ExportManager = function (editor) {
                         console.log('Error: ', error);
                     };
 
-                }
+                }*/
                 if (root.hasOwnProperty("idModel")) {
                     data.idModel = root.idModel;
                 }

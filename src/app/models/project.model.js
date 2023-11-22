@@ -321,7 +321,7 @@
                 } catch (e) {
                     reject(e);
                 }
-            });
+            }); 
         }
 
         async function GetSimNL(SubNameChange) {

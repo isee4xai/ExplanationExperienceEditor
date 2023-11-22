@@ -106,8 +106,7 @@
         vm.GetModels = GetModels;
         vm.GetModelsPublic = GetModelsPublic;
         vm.models = [];
-        vm.keyModel = "";
-        vm.IdQuery = "";
+        var getCallMade = false;
 
         var timeoutPromise = null;
         vm.startTimeout = startTimeout;
@@ -125,7 +124,6 @@
         vm.ParamterosExplainer = null;
 
         vm.ExplainersSub = null;
-
         vm.ExplanationTypeSub = null;
         vm.ExplainabilityTechniqueSub = null;
         vm.ExplainerConcurrentnessSub = null;
@@ -136,8 +134,7 @@
 
 
 
-        vm.convertToObjects = function (ExplainerSelect, select) {
-
+        vm.convertToObjects = function (ExplainerSelect, select, composite) {
             if (vm.ParamterosExplainer == null) {
                 notificationService.load(
                     'Loading properties Explanation ', 'Please wait while your request is being processed...'
@@ -160,26 +157,71 @@
                     });
                     //si se encuentra los datos del explainer
                     if (resultado) {
-                        marcarElemento(vm.ExplainerConcurrentnessSub, resultado.concurrentness, 'Explainer Concurrentnes', vm.ExplainerConcurrentnessSubSelect);
-                        marcarElemento(vm.ExplanationScopeSub, resultado.scope, 'Explanation Scope', vm.ExplanationScopeSubSelect);
-                        marcarElemento(vm.ComputationalComplexitySub, resultado.computational_complexity, 'Computational Complexity', vm.ComputationalComplexitySubSelect);
-                        resultado.implementation.forEach(element => {
-                            marcarElemento(vm.ImplementationFrameworkSub, element, 'Implementation Framework', vm.ImplementationFrameworkSubSelect);
-                        });
-                        resultado.presentations.forEach(element => {
-                            marcarElemento(vm.PresentationformatSub, element, 'Presentation format', vm.PresentationFormatSubSelect);
-                        });
-                        marcarElemento(vm.ExplanationTypeSub, resultado.explanation_type, 'Explanation Type', vm.ExplanationTypeSubSelect);
-                        marcarElemento(vm.ExplainabilityTechniqueSub, resultado.technique, 'Explainability Technique', vm.ExplainabilityTechniqueSubSelect);
+                        if (!composite) {
+                            marcarElemento(vm.ExplanationScopeSub,
+                                resultado.scope,
+                                'Explanation Scope',
+                                vm.ExplanationScopeSubSelect,
+                                "radio");
+                            marcarElemento(vm.ComputationalComplexitySub,
+                                resultado.computational_complexity,
+                                'Computational Complexity',
+                                vm.ComputationalComplexitySubSelect,
+                                "radio");
+
+                            marcarElemento(vm.ExplanationTypeSub,
+                                resultado.explanation_type,
+                                'Explanation Type',
+                                vm.ExplanationTypeSubSelect,
+                                "radio");
+                            marcarElemento(vm.ExplainabilityTechniqueSub,
+                                resultado.technique,
+                                'Explainability Technique',
+                                vm.ExplainabilityTechniqueSubSelect,
+                                "radio");
+                            resultado.implementation.forEach(element => {
+                                marcarElemento(vm.ImplementationFrameworkSub, element, 'Implementation Framework', vm.ImplementationFrameworkSubSelect);
+                            });
+                            resultado.presentations.forEach(element => {
+                                marcarElemento(vm.PresentationformatSub, element, 'Presentation format', vm.PresentationFormatSubSelect);
+                            });
+                            marcarElemento(vm.ExplainerConcurrentnessSub, resultado.concurrentness, 'Explainer Concurrentnes', vm.ExplainerConcurrentnessSubSelect);
+                        }
                         marcarElemento(vm.ExplainersSub, resultado.name, 'Explainer', vm.ExplainersSubSelect);
                     }
                 });
             }
 
-            function marcarElemento(array, keyBuscado, type, ArraySelect) {
+            function marcarElemento(array, keyBuscado, type, ArraySelect, typeInput) {
                 var elementoEncontrado;
-                if (select) {
-                    if (!ArraySelect.some(item => item.key === keyBuscado) || ArraySelect.length === 0) {
+
+                if (typeInput == "radio") {
+
+                    elementoEncontrado = buscarElementoPorKey(array, keyBuscado);
+
+                    if (elementoEncontrado) {
+                        vm.toggleItemSelection(type, elementoEncontrado, false);
+                    }
+                } else {
+                    if (select) {
+
+                        if (!ArraySelect.some(item => item.key === keyBuscado) || ArraySelect.length === 0) {
+                            if (type != 'Explainer') {
+                                elementoEncontrado = buscarElementoPorKey(array, keyBuscado);
+                            } else {
+                                elementoEncontrado = array.find(function (element) {
+                                    return element.key === keyBuscado;
+                                });
+                            }
+                        }
+
+                        if (elementoEncontrado) {
+                            if (elementoEncontrado.checked == false || !elementoEncontrado.hasOwnProperty("checked")) {
+                                elementoEncontrado.checked = true;
+                                vm.toggleItemSelection(type, elementoEncontrado, false);
+                            }
+                        }
+                    } else {
                         if (type != 'Explainer') {
                             elementoEncontrado = buscarElementoPorKey(array, keyBuscado);
                         } else {
@@ -187,31 +229,17 @@
                                 return element.key === keyBuscado;
                             });
                         }
-                    }
 
-                    if (elementoEncontrado) {
-                        if (elementoEncontrado.checked == false || !elementoEncontrado.hasOwnProperty("checked")) {
-                            elementoEncontrado.checked = true;
-                            vm.toggleItemSelection(type, elementoEncontrado, false);
-                        }
-                    }
-                } else {
-
-                    if (type != 'Explainer') {
-                        elementoEncontrado = buscarElementoPorKey(array, keyBuscado);
-                    } else {
-                        elementoEncontrado = array.find(function (element) {
-                            return element.key === keyBuscado;
-                        });
-                    }
-
-                    if (elementoEncontrado) {
-                        if (elementoEncontrado.checked == true || !elementoEncontrado.hasOwnProperty("checked")) {
-                            elementoEncontrado.checked = false;
-                            vm.toggleItemSelection(type, elementoEncontrado, false);
+                        if (elementoEncontrado) {
+                            if (elementoEncontrado.checked == true || !elementoEncontrado.hasOwnProperty("checked")) {
+                                elementoEncontrado.checked = false;
+                                vm.toggleItemSelection(type, elementoEncontrado, false);
+                            }
                         }
                     }
                 }
+
+
 
             }
 
@@ -246,10 +274,32 @@
             }
         };
 
+        vm.setAllItemsUnchecked = function (items) {
+            items.forEach(function (item) {
+                item.checked = false;
+                if (item.children.length > 0) {
+                    vm.setAllItemsUnchecked(item.children);
+                }
+            });
+        };
+        
+  
+
 
         vm.toggleItemSelection = function (listSub, item, form) {
+
             switch (listSub) {
                 case 'Explanation Type':
+
+                    vm.setAllItemsUnchecked(vm.ExplanationTypeSub);
+                    vm.ExplanationTypeSubSelect = [];
+                    item.checked = true;
+                    if (item.children.length !== 0) {
+                        
+                        vm.checkDescendants(item);
+                    }
+                    vm.ExplanationTypeSubSelect.push(item);
+                    /*
                     if (item.children.length != []) {
                         //selecionamos todos los hijos del item selecionado 
                         vm.checkDescendants(item);
@@ -320,9 +370,10 @@
                             vm.ExplanationTypeSubSelect = array;
                         }
                     }
+                    */
                     break;
                 case 'Explainability Technique':
-
+                    /*
                     if (item.children.length != []) {
                         vm.checkDescendants(item);
                     }
@@ -386,7 +437,16 @@
                             elementoEncontrado.checked = true;
                             vm.ExplainabilityTechniqueSubSelect = array;
                         }
+                    }*/
+
+                    vm.setAllItemsUnchecked(vm.ExplainabilityTechniqueSub);
+                    vm.ExplainabilityTechniqueSubSelect = [];
+                    item.checked = true;
+                    if (item.children.length !== 0) {
+                        vm.checkDescendants(item);
                     }
+                    vm.ExplainabilityTechniqueSubSelect.push(item);
+
                     break;
                 case 'Explainer Concurrentnes':
                     var index = vm.ExplainerConcurrentnessSubSelect.findIndex(function (element) {
@@ -400,7 +460,7 @@
                     }
                     break;
                 case 'Explanation Scope':
-                    var index = vm.ExplanationScopeSubSelect.findIndex(function (element) {
+                    /* var index = vm.ExplanationScopeSubSelect.findIndex(function (element) {
                         return element.key === item.key && element.label === item.label;
                     });
 
@@ -408,18 +468,21 @@
                         vm.ExplanationScopeSubSelect.push(item);
                     } else {
                         vm.ExplanationScopeSubSelect.splice(index, 1);
-                    }
+                    } */
+                    vm.ExplanationScopeSubSelect = item;
                     break;
                 case 'Computational Complexity':
-                    var index = vm.ComputationalComplexitySubSelect.findIndex(function (element) {
-                        return element.key === item.key && element.label === item.label;
-                    });
+                    /*   var index = vm.ComputationalComplexitySubSelect.findIndex(function (element) {
+                           return element.key === item.key && element.label === item.label;
+                       });
+   
+                       if (index == -1) {
+                           vm.ComputationalComplexitySubSelect.push(item);
+                       } else {
+                           vm.ComputationalComplexitySubSelect.splice(index, 1);
+                       }*/
 
-                    if (index == -1) {
-                        vm.ComputationalComplexitySubSelect.push(item);
-                    } else {
-                        vm.ComputationalComplexitySubSelect.splice(index, 1);
-                    }
+                    vm.ComputationalComplexitySubSelect = item;
                     break;
                 case 'Implementation Framework':
                     var index = vm.ImplementationFrameworkSubSelect.findIndex(function (element) {
@@ -443,17 +506,17 @@
                             var newArray = vm.ExplainersSubSelect.map(function (item) {
                                 return item.key;
                             });
-                            vm.convertToObjects(newArray, true);
+                            //  vm.convertToObjects(newArray, true);
                         } else {
                             vm.ExplainersSubSelect.splice(index, 1);
-                            vm.convertToObjects([item.key], false);
+                            //  vm.convertToObjects([item.key], false);
 
 
 
                             var newArray = vm.ExplainersSubSelect.map(function (item) {
                                 return item.key;
                             });
-                            vm.convertToObjects(newArray, true);
+                            //  vm.convertToObjects(newArray, true);
 
                         }
                     } else {
@@ -595,27 +658,34 @@
         vm.resetFormSub = function () {
 
             var nonEmptySelections = [];
+            
             if (vm.ExplanationTypeSubSelect.length > 0) {
                 nonEmptySelections.push('ExplanationTypeSub');
             }
+            
             if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
                 nonEmptySelections.push('ExplainabilityTechniqueSub');
             }
+            
             if (vm.ExplainerConcurrentnessSubSelect.length > 0) {
                 nonEmptySelections.push('ExplainerConcurrentnessSub');
             }
+            /*
             if (vm.ComputationalComplexitySubSelect.length > 0) {
                 nonEmptySelections.push('ComputationalComplexitySub');
             }
+            */
             if (vm.ImplementationFrameworkSubSelect.length > 0) {
                 nonEmptySelections.push('ImplementationFrameworkSub');
             }
             if (vm.PresentationFormatSubSelect.length > 0) {
                 nonEmptySelections.push('PresentationformatSub');
             }
+            /*
             if (vm.ExplanationScopeSubSelect.length > 0) {
                 nonEmptySelections.push('ExplanationScopeSub');
             }
+            */
             if (vm.ExplainersSubSelect.length > 0) {
                 nonEmptySelections.push('ExplainersSub');
             }
@@ -631,13 +701,13 @@
                 return null;
             }
 
-            vm.ExplanationTypeSubSelect = []
+            vm.ExplanationTypeSubSelect = [];
             vm.ExplainabilityTechniqueSubSelect = [];
             vm.ExplainerConcurrentnessSubSelect = [];
-            vm.ComputationalComplexitySubSelect = [];
+            vm.ComputationalComplexitySubSelect = "";
             vm.ImplementationFrameworkSubSelect = [];
             vm.PresentationFormatSubSelect = [];
-            vm.ExplanationScopeSubSelect = [];
+            vm.ExplanationScopeSubSelect = "";
             vm.ExplainersSubSelect = [];
         }
 
@@ -671,11 +741,11 @@
         }
 
         if (vm.models.length === 0) {
-            GetModels();
-            vm.modelsSelect = "Model";
-            _create();
-            _activate();
-
+            GetModels().then(function () {
+                vm.modelsSelect = "Model";
+                _create();
+                _activate();
+            });
         } else {
             _create();
             _activate();
@@ -684,6 +754,7 @@
         $scope.$on('$destroy', _destroy);
 
         function _activate() {
+
             var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
             if (existDiv.length > 0) {
                 existDiv[0].remove();
@@ -742,12 +813,6 @@
                 switch (vm.original.name) {
                     case "Explanation Method":
                         vm.isLoading = false;
-                        /*
-                        console.log(vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0));
-                        if (vm.original.title != "Explanation Method" && (vm.JsonParams === null || typeof vm.JsonParams === 'undefined' || Object.keys(vm.JsonParams).length === 0)) {
-                            paramsExpValue(vm.original.title);
-                        }
-                       */
 
                         if (vm.block.params) {
                             CreateParams(vm.block.params);
@@ -800,6 +865,24 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
                         vm.IdModel = vm.block.ModelRoot;
+                        if (!getCallMade) {
+                            if (vm.block.ModelRoot && (vm.block.ModelRoot.img || vm.block.ModelRoot.query)) {
+                                if (vm.block.ModelRoot.img) {
+                                    notificationService.success(
+                                        'Add image Model', 'image model by default'
+                                    );
+                                }
+                                if (vm.block.ModelRoot.query) {
+                                    notificationService.success(
+                                        'Add Query Model', 'Query model by default'
+                                    );
+                                }
+                            } else {
+                                SelectModel(vm.models[vm.idModelUrl]);
+                            }
+
+                            getCallMade = true;
+                        }
                         break;
                     case "User Question":
                         vm.TitleName = vm.original.name;
@@ -822,22 +905,20 @@
                 }
 
                 if (vm.original.category == "composite" || vm.original.name == "Explanation Method") {
-                    vm.ExplanationTypeSubSelect = []
+                    vm.ExplanationTypeSubSelect = [];
                     vm.ExplainabilityTechniqueSubSelect = [];
                     vm.ExplainerConcurrentnessSubSelect = [];
-                    vm.ComputationalComplexitySubSelect = [];
+                    vm.ComputationalComplexitySubSelect = "";
                     vm.ImplementationFrameworkSubSelect = [];
                     vm.PresentationFormatSubSelect = [];
-                    vm.ExplanationScopeSubSelect = [];
+                    vm.ExplanationScopeSubSelect = "";
                     vm.ExplainersSubSelect = [];
                 }
             } else {
                 vm.original = false;
                 vm.block = false;
             }
-
         }
-
 
         function loadModel() {
             setTimeout(() => {
@@ -918,9 +999,8 @@
             if (url.includes("usecaseId=")) {
                 vm.idModelUrl = url.split("usecaseId=")[1];
 
-                projectModel.getModelsRootPrivate(vm.idModelUrl)
+                return projectModel.getModelsRootPrivate(vm.idModelUrl)
                     .then(function (x) {
-
                         switch (true) {
                             case Object.keys(x).length === 0:
                                 notificationService.error(
@@ -946,7 +1026,7 @@
                                 }
 
                                 notificationService.success(
-                                    "Added Private Models"
+                                    "Added Private Model"
                                 );
                                 break;
                         }
@@ -1055,6 +1135,7 @@
 
         async function FormSubstitute(original) {
             var ExplainerSelect = [];
+
             if (original && original._outConnections) {
                 AllExplainerFormSelect(original._outConnections);
             } else {
@@ -1062,6 +1143,7 @@
                     ExplainerSelect.push(vm.original.title);
                 }
             }
+
 
             try {
                 if (vm.ExplanationTypeSub == null) {
@@ -1076,7 +1158,7 @@
                 }
                 var modalFormSub = document.getElementById("formSubstitute");
                 modalFormSub.style.display = "block";
-                vm.convertToObjects(ExplainerSelect, true);
+                vm.convertToObjects(ExplainerSelect, true, original);
             } catch (error) {
                 console.log(error);
                 notificationService.error(
@@ -1116,16 +1198,19 @@
                     }
                 });
             });
+        }
+
+        async function CleanFormSubtitute(NodeSelect) {
 
         }
 
+
         async function submitFormSub(NodeSelect) {
             var jsonDataNew = {
-                // "Explainers": vm.block.title
             };
 
             if (vm.ExplanationTypeSubSelect.length > 0) {
-
+                
                 jsonDataNew.explanation_type = vm.ExplanationTypeSubSelect.map(function (item) {
                     return item.key;
                 });
@@ -1139,9 +1224,10 @@
                         });
                     }
                 });
-
+                
             }
             if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
+                
                 jsonDataNew.technique = vm.ExplainabilityTechniqueSubSelect.map(function (item) {
                     return item.key;
                 });
@@ -1156,23 +1242,21 @@
                     }
                 });
             }
+          /* DELETE Concurrentness FORM
             if (vm.ExplainerConcurrentnessSubSelect.length > 0) {
                 jsonDataNew.concurrentness = vm.ExplainerConcurrentnessSubSelect.map(function (item) {
                     return item.key;
                 });
-            }
-            if (vm.ComputationalComplexitySubSelect.length > 0) {
-                jsonDataNew.computational_complexity = vm.ComputationalComplexitySubSelect.map(function (item) {
-                    return item.key;
-                });
+            }*/
+
+            if (vm.ComputationalComplexitySubSelect != "") {
+                jsonDataNew.computational_complexity = [vm.ComputationalComplexitySubSelect.key];
             }
             if (vm.ImplementationFrameworkSubSelect.length > 0) {
                 jsonDataNew.implementation = vm.ImplementationFrameworkSubSelect.map(function (item) {
                     return item.key;
                 });
             }
-
-
             if (vm.PresentationFormatSubSelect.length > 0) {
                 vm.addChildrenKeys = function (item) {
                     if (item.children && item.children.length > 0) {
@@ -1195,11 +1279,17 @@
                 }
             }
 
-            if (vm.ExplanationScopeSubSelect.length > 0) {
-                jsonDataNew.scope = vm.ExplanationScopeSubSelect.map(function (item) {
+            if (vm.ExplanationScopeSubSelect != "") {
+                jsonDataNew.scope = [vm.ExplanationScopeSubSelect.key];
+            }
+            if (NodeSelect.category == "composite") {
+                /*
+                jsonDataNew.explainer = vm.ExplainersSubSelect.map(function (item) {
                     return item.key;
                 });
+                */
             }
+            console.log(jsonDataNew);
 
             this.closeForm();
 
@@ -1215,7 +1305,6 @@
                         }
                         projectModel.GetSubstituteExplainer(data, $location.search().usecaseId)
                             .then(function (x) {
-
                                 switch (true) {
                                     case x === "Error in computer network communications":
                                         notificationService.error(x);
@@ -1239,7 +1328,6 @@
                     break;
                 case "composite":
                     SubstituteNodes(NodeSelect, jsonDataNew);
-
                     break;
                 default:
                     break;
@@ -1377,29 +1465,48 @@
             );
         }
 
-        function obtenerDescendientes(arbol, nodoId) {
+        function GetFatherNodeSub(arbol, nodoId) {
             if (arbol.firstChild.id != nodoId) {
                 return true;
             } else {
                 if (arbol.firstChild.Next != null) {
-                    buscarDescendientes(arbol.firstChild.Next, nodoId);
+                    GetFather(arbol.firstChild.Next, nodoId);
                 } else {
                     return false;
                 }
             }
 
-            function buscarDescendientes(Next, IdSeach) {
+            function GetFather(Next, IdSeach) {
                 if (Next.id != nodoId) {
                     return true;
                 } else {
                     if (Next.Next != null) {
-                        buscarDescendientes(Next.Next, IdSeach);
+                        GetFather(Next.Next, IdSeach);
                     } else {
                         return false;
                     }
                 }
-
             }
+        }
+
+        function obtenerDescendientes(arbol, nodoId) {
+            var descendientes = [];
+
+            function buscarDescendientes(nodoId) {
+                var nodo = arbol[nodoId];
+                if (!nodo) return;
+                descendientes.push(nodo.id);
+                var child = nodo.firstChild;
+                if (child) {
+                    do {
+                        buscarDescendientes(child.Id);
+                        child = child.Next;
+                    } while (child != null);
+
+                }
+            }
+            buscarDescendientes(nodoId);
+            return descendientes;
         }
 
         function GetProjectData(NodeSelect) {
@@ -1408,23 +1515,21 @@
                     .then(function (x) {
                         var e = $window.editor.export;
                         var ProjectExpor = e.projectToData();
+                        // Get Father ID
                         var trees = ProjectExpor.trees;
-
                         var arbolesContenedores = trees.filter(arbol => arbol.nodes[NodeSelect.id]);
-
                         var arbolContenedor = arbolesContenedores[0];
-
                         var idNodoRaiz = arbolContenedor.root;
                         var nodoRaiz = arbolContenedor.nodes[idNodoRaiz];
 
                         var idNodoPadre = nodoRaiz && Object.keys(arbolContenedor.nodes).find(
-                            (key) => true == obtenerDescendientes(arbolContenedor.nodes[idNodoRaiz], NodeSelect.id)
+                            (key) => true == GetFatherNodeSub(arbolContenedor.nodes[idNodoRaiz], NodeSelect.id)
                         );
 
+                        var nodosDescendientes = obtenerDescendientes(arbolContenedor.nodes, arbolContenedor.nodes[idNodoPadre].id);
+
                         x.data = e.projectToData();
-
-                        resolve({ projectData: x, parentNode: arbolContenedor.nodes[idNodoPadre] });
-
+                        resolve({ projectData: x, parentNode: arbolContenedor.nodes[idNodoPadre], decendents: nodosDescendientes });
                     });
             });
         }
@@ -1434,6 +1539,7 @@
                 'Loading', 'Please wait while your request is being processed...'
             );
             GetProjectData(NodeSelect).then(function (x) {
+
                 var DataSubstituteSubtree = {
                     "treeId": x.projectData.id,
                     "subtreeId": NodeSelect.id,
@@ -1458,7 +1564,7 @@
                                     );
                                     break;
                                 default:
-                                    DrawCanvas(data, NodeSelect);
+                                    DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
                                     break;
                             }
                         });
@@ -1466,8 +1572,6 @@
                     delete DataSubstituteSubtree.criteria;
                     projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
                         .then(function (data) {
-                            console.log("data");
-                            console.log(data);
                             switch (data.length) {
                                 case 40:
                                     notificationService.error(
@@ -1480,7 +1584,7 @@
                                     );
                                     break;
                                 default:
-                                    DrawCanvas(data, NodeSelect);
+                                    DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
                                     break;
                             }
                         });
@@ -1489,8 +1593,7 @@
 
         }
 
-        function DrawCanvas(a, NodeSelect) {
-
+        function DrawCanvas(a, NodeSelect, IdSub, decendents) {
             var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
             if (existDiv.length > 0) {
                 existDiv[0].remove();
@@ -1528,7 +1631,7 @@
 
             divGeneral.appendChild(editor1._game.canvas);
 
-            var TressOptions = editor1.import.treeAsDataSubti(a, p, NodeSelect.id, a[0].data.trees[0].root, vm.applicabilityList);
+            var TressOptions = editor1.import.treeAsDataSubti(a, p, IdSub.id, a[0].data.trees[0].root, vm.applicabilityList, decendents);
             TressOptions.shift();
 
             var cont = 0;
@@ -1550,7 +1653,7 @@
                 buttonAdd.style.backgroundColor = '#47A447';
                 buttonAdd.style.border = "none";
                 buttonAdd.addEventListener('click', function () {
-                    updateNodeSub(element, NodeSelect, editor1, aaa, divGeneral);
+                    updateNodeSub(element, IdSub, editor1, aaa, divGeneral);
                 });
 
                 var buttonAddInfo = document.createElement('button');
@@ -1611,11 +1714,14 @@
 
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
+
+            var datos2 = t.blocks.get(nodeSelect.id);
+
             //elimiar los hijos que se sustituye
-            var BlockDelete = nodeSelect._outConnections;
+            var BlockDelete = datos2._outConnections;
             t.blocks.removeMutilple(BlockDelete, true);
             //pasarlos a canvas original 
-            t.blocks.AddTreeBlockSub(sSub, nodeSelect, TreeSub);
+            t.blocks.AddTreeBlockSub(sSub, datos2, TreeSub);
             //Organize Canvas
             t.organize.organize();
             //delete div sub
@@ -1663,7 +1769,13 @@
                     if (x && x.instance && x.type) {
                         var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
                         miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
+                        notificationService.success(
+                            'Add Query Model', 'Query model by default'
+                        );
                     } else {
+                        //Clean Quey
+                        var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
+                        miDirectiva.scope().ProperParams.InstanceModeldefault(null, null);
                         notificationService.info(
                             'Query Model', 'No model query was found, or the call failed'
                         );
@@ -1698,7 +1810,6 @@
             loaderDiv.style.display = 'block';
 
             for (var i = 0; i < vm.ArrayParams.length; i++) {
-                // if ((vm.ArrayParams[i].value != "" && vm.ArrayParams[i].value !== null) && vm.ArrayParams[i].value !== "[ ]") {
                 if (vm.ArrayParams[i].value !== null && vm.ArrayParams[i].value !== "[ ]") {
                     jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
                 }
@@ -1714,6 +1825,10 @@
                     const base64SinEncabezado = removeBase64Header(vm.IdModel.img);
                     jsonObjectInstance.instance = base64SinEncabezado;
                     jsonObjectInstance.type = "image"
+                } else {
+                    notificationService.error(
+                        'File Model error', 'the file is not an image'
+                    );
                 }
             } else {
                 if (esJSONValido(vm.IdModel.query)) {
@@ -1827,28 +1942,8 @@
         }
 
         function isBase64Image(str) {
-            var validImageHeaders = [
-                'data:image/jpeg;base64,',
-                'data:image/png;base64,',
-                'data:image/gif;base64,'
-            ];
-
-            for (const header of validImageHeaders) {
-                if (str.startsWith(header)) {
-                    return true;
-                }
-            }
-
-            return false;
-            /*
-            if (str === '' || str.trim() === '') {
-                return false;
-            }
-            try {
-                return btoa(atob(str)) == str;
-            } catch (err) {
-                return false;
-            }*/
+            const base64Regex = /^(data:image\/[a-zA-Z]+;base64,)?[A-Za-z0-9+/]+[=]{0,2}$/;
+            return base64Regex.test(str);
         }
 
         function esJSONValido(cadena) {
@@ -2235,7 +2330,8 @@
                             if (x[key].flag === true) {
                                 ExplainerTrue.push({
                                     "key": key,
-                                    "label": key
+                                    "label": key,
+                                    "description": "Click to retrieve the description for " + key
                                 });
                             }
                         });
@@ -2448,11 +2544,21 @@
 
         }
 
-        function mostrarTexto(explainerTitle, option) {
-
+        function mostrarTexto(explainerTitle, option, event, item) {
             projectModel.GetDesciptionExplainer(explainerTitle)
                 .then(function (x) {
-                    CreateTooltip(x, option);
+                    item.description = x;
+                    var targetElement = event.currentTarget || event.target;
+
+                    if (targetElement) {
+                        angular.element(targetElement).attr('data-tooltip', item.description);
+                        if (!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                    } else {
+                        CreateTooltip(x, option);
+                    }
+
                 });
         }
 
