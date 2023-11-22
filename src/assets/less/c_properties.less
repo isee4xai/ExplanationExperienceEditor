@@ -56,11 +56,13 @@
   .nav li:hover>ul {
     display: block;
     background-color: @color-light4;
+
     .first-model {
-      background-color: #34798D; /* Cambia el color como desees */
+      background-color: #34798D;
+      /* Cambia el color como desees */
     }
-    
-    .first-model:hover  {
+
+    .first-model:hover {
       background-color: @color-blue-light;
     }
   }
@@ -69,7 +71,7 @@
     position: relative;
     color: #fff;
     background-color: @color-light4;
-    
+
   }
 
   .nav>li {
@@ -356,6 +358,7 @@
     font-size: 11px;
     margin-right: 4px;
   }
+
   .DivModel button:hover {
     background-color: @color-green;
   }
@@ -540,7 +543,7 @@
     color: #999;
   }
 
-  .checkbox-tree {}
+  // .checkbox-tree {}
 
   .checkbox-tree label {
     display: block;
@@ -573,7 +576,7 @@
     margin-top: 12px;
     margin-left: 10px;
     color: @color-dark1;
-
+    font-weight: bold;
   }
 
   .ulSelect {
@@ -615,20 +618,55 @@
   //advanced-properties-button Substitute
   #buttonContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
   }
-  .advanced-properties-button{
-    font-style: italic; 
+
+  .advanced-properties-button {
+    font-style: italic;
     text-align: center;
     border: none;
-    border-radius: 10px; 
+    border-radius: 10px;
+    background-color:  @color-light3;
+    color: @color-light1;
+    font-weight: bold;
+    margin-right: auto;
   }
 
-  //
   .truncate-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .search-link {
+    font-size: 15px;
+  }
+
+  //Form Sustitute 
+  #FormExplainerAccordeon {
+    background-color: #85d0e7;
+    .panel-heading {
+      background-color: #2c3e50;
+      color: @color-light1;
+    }
+  }
+
+  .SearchSutitutebutton{
+    background-color: @color-green ;
+    color: @color-light1;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 2px;
+    border: none;
+  }
+  .CleanSutitutebutton{
+    background-color: @color-blue;
+    color: @color-light1;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 2px;
+    border: none;
+  }
+
 }
