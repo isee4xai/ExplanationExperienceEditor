@@ -122,22 +122,29 @@
             <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
                 <div class="DivModel">
                     <label>Model</label>
-                    <button ng-click="propertiespanel.GetModelsPublic()">Load Public Models</button>
+                  <!--  <button ng-click="propertiespanel.GetModelsPublic()">Load Public Models</button> -->
                 </div>
 
                 <div class="form-group">
                     <div id="header">
                         <ul class="nav">
                             <li>
+                                <a ng-model="propertiespanel.modelsSelect"
+                                    >{{propertiespanel.modelsSelect}}</a>
+
+
+                              <!-- 
                                 <a ng-model="propertiespanel.Models"
-                                    ng-init="propertiespanel.loadModel()">{{propertiespanel.modelsSelect}}</a>
+                                ng-init="propertiespanel.loadModel()"
+                                    >{{propertiespanel.modelsSelect}}</a>
+
                                 <ul>
                                     <li ng-repeat="Model in propertiespanel.models"
                                         ng-click="propertiespanel.SelectModel(Model)">
                                         <a
                                             ng-class="{'first-model': Model ===  propertiespanel.models[propertiespanel.idModelUrl] }">{{Model}}</a>
                                     </li>
-                                </ul>
+                                </ul>-->
                             </li>
 
                         </ul>
@@ -269,7 +276,7 @@
                     <ul class="nav">
                         <li ng-if="propertiespanel.original.category != 'root'">
                             <a ng-model="propertiespanel.block.title" ng-click="propertiespanel.FormSubstitute()"
-                                class="search-link">
+                                class="search-link-long">
                                 Substitute explainer with criteria</a>
                         </li>
                     </ul>
@@ -366,8 +373,13 @@
 
                                     <form action="">
                                         <div ng-show="propertiespanel.original.category == 'composite'">
-                                            <h4 class="titleSubForm">
-                                                Explainer</h4>
+                                            <div class="headerFormH4">
+                                                <h4 class="titleFormH4">Explainer</h4>
+                                                <a class="InfoForm"
+                                                    data-tooltip="Please, select the explainers that you want for sure in your new strategy">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
                                             <accordion id="FormExplainerAccordeon">
                                                 <accordion-group is-pen="propertiespanel.explainerAccordionOpen">
                                                     <accordion-heading>
@@ -394,7 +406,7 @@
                                                                             data-tooltip="{{item.description}}">
                                                                         </i>
                                                                     </a>
-                                                                    <label>
+                                                                    <label ng-class="{ 'bold-text': item.checked }">
                                                                         <input type="checkbox" ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection('Explainer', item, true)">
                                                                         {{item.label}}
@@ -408,8 +420,14 @@
 
 
                                         <div ng-show="divExpanded || propertiespanel.original.category != 'composite'">
-                                            <!-- ok -->
-                                            <h4 class="titleSubForm"> Explanation Scope </h4>
+                                            <div class="headerFormH4">
+                                                <h4 class="titleFormH4">
+                                                    Explanation Scope</h4>
+                                                <a class="InfoForm"
+                                                    data-tooltip="Please select the Explanation Scope value that you want for sure for the explainers in your new strategy.">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
                                             <accordion>
                                                 <accordion-group>
                                                     <accordion-heading>
@@ -434,7 +452,7 @@
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ExplanationScopeSub">
                                                                 <div class="DivCheckboxFormSub">
-                                                                    <label>
+                                                                    <label ng-class="{ 'bold-text': propertiespanel.ExplanationScopeSubSelect === item }">
                                                                         <input type="radio" name="explanationScopeRadio"
                                                                             ng-model="propertiespanel.ExplanationScopeSubSelect"
                                                                             ng-value="item"
@@ -448,8 +466,14 @@
                                                 </accordion-group>
                                             </accordion>
 
-                                            <h4 class="titleSubForm">
-                                                Explanation Type</h4>
+                                            <div class="headerFormH4">
+                                                <h4 class="titleFormH4">
+                                                    Explanation Type</h4>
+                                                <a class="InfoForm"
+                                                    data-tooltip="Please select the Explanation Type value that you want for sure for the explainers in your new strategy.">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
 
                                             <accordion>
                                                 <accordion-group>
@@ -482,7 +506,7 @@
                                                                         ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
                                                                         ng-click="propertiespanel.toggleItem(item, $event)"></i>
 
-                                                                    <label>
+                                                                    <label ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
                                                                         <input type="checkbox" class="CheckboxCircule"
                                                                             ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection( 'Explanation Type',item,true)"
@@ -501,7 +525,7 @@
                                                                                 ng-class="{'fa-caret-down': childItem.expanded && propertiespanel.hasChildren(childItem) && childItem.checked, 'fa-caret-right': !childItem.expanded || !propertiespanel.hasChildren(childItem) || !childItem.checked}"
                                                                                 ng-click="propertiespanel.toggleItem(childItem, $event)"></i>
 
-                                                                            <label>
+                                                                            <label ng-class="{ 'bold-text': childItem.checked }">
                                                                                 <input type="checkbox"
                                                                                     class="CheckboxCircule"
                                                                                     ng-model="childItem.checked"
@@ -517,9 +541,14 @@
                                                 </accordion-group>
                                             </accordion>
 
-
-                                            <h4 class="titleSubForm">
-                                                Explainability Technique </h4>
+                                            <div class="headerFormH4">
+                                                <h4 class="titleFormH4">
+                                                    Explainability Technique </h4>
+                                                <a class="InfoForm"
+                                                    data-tooltip="Please select the Explainability Technique value that you want for sure for the explainers in your new strategy.">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
 
                                             <accordion>
                                                 <accordion-group>
@@ -555,7 +584,7 @@
                                                                         ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
                                                                         ng-click="propertiespanel.toggleItem(item, $event)"></i>
 
-                                                                    <label>
+                                                                    <label ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
                                                                         <input type="checkbox" class="CheckboxCircule"
                                                                             ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection( 'Explainability Technique',item,true)"
@@ -574,7 +603,8 @@
                                                                                 ng-class="{'fa-caret-down': childItem.expanded && propertiespanel.hasChildren(childItem) && childItem.checked, 'fa-caret-right': !childItem.expanded || !propertiespanel.hasChildren(childItem) || !childItem.checked}"
                                                                                 ng-click="propertiespanel.toggleItem(childItem, $event)"></i>
 
-                                                                            <label>
+                                                                            <label
+                                                                                ng-class="{ 'bold-text': childItem.checked || propertiespanel.hasSelectedChild(childItem)}">
                                                                                 <input type="checkbox"
                                                                                     class="CheckboxCircule"
                                                                                     ng-model="childItem.checked"
@@ -593,7 +623,8 @@
                                                                                         ng-class="{'fa-caret-down': grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
                                                                                         ng-click="propertiespanel.toggleItem(grandchildItem, $event)"></i>
 
-                                                                                    <label>
+                                                                                    <label
+                                                                                        ng-class="{ 'bold-text': grandchildItem.checked }">
                                                                                         <input type="checkbox"
                                                                                             class="CheckboxCircule"
                                                                                             ng-model="grandchildItem.checked"
@@ -609,9 +640,14 @@
                                                 </accordion-group>
                                             </accordion>
 
-
-                                            <h4 class="titleSubForm">
-                                                Presentation format</h4>
+                                            <div class="headerFormH4">
+                                                <h4 class="titleFormH4">
+                                                    Presentation format</h4>
+                                                <a class="InfoForm"
+                                                    data-tooltip="Please select the Presentation format value that you want for sure for the explainers in your new strategy.">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
                                             <accordion>
                                                 <accordion-group>
                                                     <accordion-heading>
@@ -646,7 +682,7 @@
                                                                         ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
                                                                         ng-click="propertiespanel.toggleItem(item, $event)"></i>
 
-                                                                    <label>
+                                                                    <label ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
                                                                         <input type="checkbox" ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection( 'Presentation format',item,true)"
                                                                             ng-click="$event.stopPropagation()">
@@ -664,7 +700,8 @@
                                                                                 ng-class="{'fa-caret-down': childItem.expanded && propertiespanel.hasChildren(childItem) && childItem.checked, 'fa-caret-right': !childItem.expanded || !propertiespanel.hasChildren(childItem) || !childItem.checked}"
                                                                                 ng-click="propertiespanel.toggleItem(childItem, $event)"></i>
 
-                                                                            <label>
+                                                                            <label
+                                                                                ng-class="{ 'bold-text': childItem.checked || propertiespanel.hasSelectedChild(childItem)}">
                                                                                 <input type="checkbox"
                                                                                     ng-model="childItem.checked"
                                                                                     ng-change="propertiespanel.toggleItemSelection( 'Presentation format' ,childItem,true)">
@@ -682,7 +719,8 @@
                                                                                         ng-class="{'fa-caret-down': grandchildItem.expanded && propertiespanel.hasChildren(grandchildItem) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
                                                                                         ng-click="propertiespanel.toggleItem(grandchildItem, $event)"></i>
 
-                                                                                    <label>
+                                                                                    <label
+                                                                                        ng-class="{ 'bold-text': grandchildItem.checked || propertiespanel.hasSelectedChild(grandchildItem)}">
                                                                                         <input type="checkbox"
                                                                                             ng-model="grandchildItem.checked"
                                                                                             ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem,true)">
@@ -700,7 +738,8 @@
                                                                                                 ng-class="{'fa-caret-down': grandchildItem1.expanded && propertiespanel.hasChildren(grandchildItem1) && grandchildItem.checked, 'fa-caret-right': !grandchildItem.expanded || !propertiespanel.hasChildren(grandchildItem) || !grandchildItem.checked}"
                                                                                                 ng-click="propertiespanel.toggleItem(grandchildItem1, $event)"></i>
 
-                                                                                            <label>
+                                                                                            <label
+                                                                                                ng-class="{ 'bold-text': grandchildItem1.checked }">
                                                                                                 <input type="checkbox"
                                                                                                     ng-model="grandchildItem1.checked"
                                                                                                     ng-change="propertiespanel.toggleItemSelection( 'Presentation format',grandchildItem1,true)">
@@ -717,10 +756,14 @@
                                                 </accordion-group>
                                             </accordion>
 
-
-                                            <!-- ok -->
-                                            <h4 class="titleSubForm">
-                                                Computational Complexity </h4>
+                                            <div class="headerFormH4">
+                                                <h4 class="titleFormH4">
+                                                    Computational Complexity </h4>
+                                                <a class="InfoForm"
+                                                    data-tooltip="Please select the Computational Complexity value that you want for sure for the explainers in your new strategy.">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
                                             <accordion>
                                                 <accordion-group
                                                     is-pen="propertiespanel.ComputationalComplexityAccordionOpen">
@@ -747,7 +790,7 @@
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ComputationalComplexitySub">
                                                                 <div class="DivCheckboxFormSub">
-                                                                    <label>
+                                                                    <label ng-class="{ 'bold-text': propertiespanel.ComputationalComplexitySubSelect === item }">
                                                                         <input type="radio"
                                                                             name="computationalComplexityRadio"
                                                                             ng-model="propertiespanel.ComputationalComplexitySubSelect"
@@ -799,9 +842,14 @@
                                             </accordion>
 
 
-                                            <!-- ok -->
-                                            <h4 class="titleSubForm">
-                                                Implementation Framework</h4>
+                                            <div class="headerFormH4">
+                                                <h4 class="titleFormH4">
+                                                    Implementation Framework</h4>
+                                                <a class="InfoForm"
+                                                    data-tooltip="Please select the Implementation Framework value that you want for sure for the explainers in your new strategy.">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
                                             <accordion>
                                                 <accordion-group>
                                                     <accordion-heading>
@@ -829,7 +877,7 @@
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ImplementationFrameworkSub">
                                                                 <div class="DivCheckboxFormSub">
-                                                                    <label>
+                                                                    <label ng-class="{ 'bold-text': item.checked }">
                                                                         <input type="checkbox" ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection('Implementation Framework',item,true)">
                                                                         {{item.label}}

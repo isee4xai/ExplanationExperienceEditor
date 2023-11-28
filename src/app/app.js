@@ -65,6 +65,8 @@ angular.module('app', [
                             });
                     }
 
+                    console.log(projects);
+
                     projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (x) {
 
                         if (x === "Error in computer network communications") {
