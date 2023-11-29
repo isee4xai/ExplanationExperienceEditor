@@ -44,20 +44,25 @@
 
 
             p.nodes.each(function (node) {
-                //coment User Question
-                if (node.name != "User Question") {
-                    if (node.category === 'tree') return;
 
-                    var list = vm.nodes[node.category];
+                switch (node.name) {
+                    case "User Question":
+                    case "Failer":
+                    case "Succeeder":
+                        break;
+                    default:
+                        if (node.category === 'tree') return;
 
-                    if (!list) return;
-                    list.push({
-                        name: node.name,
-                        title: _getTitle(node),
-                        isDefault: node.isDefault
-                    })
+                        var list = vm.nodes[node.category];
+
+                        if (!list) return;
+                        list.push({
+                            name: node.name,
+                            title: _getTitle(node),
+                            isDefault: node.isDefault
+                        })
+                        break;
                 }
-                ;
 
             });
 

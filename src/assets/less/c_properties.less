@@ -705,4 +705,37 @@
     font-weight: bold;
   }
 
+  #IfAdvancedProperties {
+    color: @color-dark1 ;
+    font-weight: bold;
+    font-size: 10px;
+  }
+
+  .CheckboxCircule {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #5d5d5d;
+    outline: none;
+    cursor: pointer;
+    position: relative; 
+  }
+
+  .CheckboxCircule:checked {
+    border: 1px solid #0075ff;
+  }
+
+  .CheckboxCircule:checked::after {
+    content: "\2022";
+    font-size: 29px;
+    color: #0075ff;
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+  }
+
 }

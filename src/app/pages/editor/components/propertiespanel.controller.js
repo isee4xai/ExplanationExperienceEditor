@@ -287,162 +287,44 @@
 
             switch (listSub) {
                 case 'Explanation Type':
+                    var index3 = vm.ExplanationTypeSubSelect.findIndex(function (element) {
+                        return element.key === item.key;
+                    });
 
-                    vm.setAllItemsUnchecked(vm.ExplanationTypeSub);
-                    vm.ExplanationTypeSubSelect = [];
-                    item.checked = true;
-                    if (item.children.length !== 0) {
-
-                        vm.checkDescendants(item);
-                    }
-                    vm.ExplanationTypeSubSelect.push(item);
-                    /*
-                    if (item.children.length != []) {
-                        //selecionamos todos los hijos del item selecionado 
-                        vm.checkDescendants(item);
-                    }
-                    //comprobamos si tiene padre el item selecionado
-                    var elementoEncontrado = vm.buscarPorKey(vm.ExplanationTypeSub, item.parent);
-
-                    //primero comprobamos si el elemento selecionado es hijo del primer padre 
-                    if (item.parent == "http://linkedu.eu/dedalo/explanationPattern.owl#Explanation") {
-                        //buscamos si existe el elemento selecionado para saber si borrarlo o añadirlo
-                        var index = vm.ExplanationTypeSubSelect.findIndex(function (element) {
-                            return element.key === item.key && element.label === item.label;
-                        });
-
-                        if (index == -1 && item.checked === true) {
-                            //para elimiar dulicados
-                            vm.ExplanationTypeSubSelect = vm.ExplanationTypeSubSelect.filter(function (element) {
-                                return element.parent !== item.key;
-                            });
-                            // insertamos el elemento selecionado 
-                            vm.ExplanationTypeSubSelect.push(item);
-                        } else {
-                            vm.ExplanationTypeSubSelect.splice(index, 1);
+                    if (index3 != -1) {
+                        vm.ExplanationTypeSub.forEach(function (item) {
+                            this.uncheckItemAndChildren(item);
+                        }, this);
+                        vm.ExplanationTypeSubSelect = [];
+                    } else {
+                        vm.setAllItemsUnchecked(vm.ExplanationTypeSub);
+                        vm.ExplanationTypeSubSelect = [];
+                        item.checked = true;
+                        if (item.children.length !== 0) {
+                            vm.checkDescendants(item);
                         }
-                    } else if (elementoEncontrado !== null) {
-                        //comprobamos si el padre del elemento selecionado tiene todos sus hijos en true o false
-                        var hasCheckedTrue = elementoEncontrado.children.some(function (obj) {
-                            return obj.checked === false || !obj.hasOwnProperty('checked');
-                        });
-                        //true si algun hijo no esta checked(false)
-                        if (hasCheckedTrue == true) {
-                            var index3 = vm.ExplanationTypeSubSelect.findIndex(function (element) {
-                                return element.key === elementoEncontrado.key;
-                            });
-                            if (index3 != -1) {
-                                var foundItem = vm.ExplanationTypeSub.find(function (item) {
-                                    return item.key === elementoEncontrado.key;
-                                });
-                                if (foundItem) {
-                                    foundItem.checked = false;
-                                }
-
-                                vm.ExplanationTypeSubSelect.splice(index3, 1);
-
-                                elementoEncontrado.children.forEach(element => {
-                                    if (element.checked == true) {
-                                        vm.ExplanationTypeSubSelect.push(element);
-                                    }
-                                });
-                            } else {
-                                var index2 = vm.ExplanationTypeSubSelect.findIndex(function (element) {
-                                    return element.key === item.key;
-                                });
-
-                                if (index2 == -1) {
-                                    vm.ExplanationTypeSubSelect.push(item);
-                                } else {
-                                    vm.ExplanationTypeSubSelect.splice(index2, 1);
-                                }
-                            }
-
-                        } else {
-                            var array = vm.ExplanationTypeSubSelect.filter(function (obj) {
-                                return obj.parent !== elementoEncontrado.key;
-                            });
-                            array.push(elementoEncontrado);
-                            elementoEncontrado.checked = true;
-                            vm.ExplanationTypeSubSelect = array;
-                        }
+                        vm.ExplanationTypeSubSelect.push(item);
                     }
-                    */
                     break;
                 case 'Explainability Technique':
-                    /*
-                    if (item.children.length != []) {
-                        vm.checkDescendants(item);
-                    }
-                    var elementoEncontrado = vm.buscarPorKey(vm.ExplainabilityTechniqueSub, item.parent);
+                    var index3 = vm.ExplainabilityTechniqueSubSelect.findIndex(function (element) {
+                        return element.key === item.key;
+                    });
 
-                    if (item.parent == "http://www.w3id.org/iSeeOnto/explainer#ExplainabilityTechnique") {
-                        var index = vm.ExplainabilityTechniqueSubSelect.findIndex(function (element) {
-                            return element.key === item.key && element.label === item.label;
-                        });
-
-                        if (index == -1 && item.checked === true) {
-                            vm.ExplainabilityTechniqueSubSelect = vm.ExplainabilityTechniqueSubSelect.filter(function (element) {
-                                return element.parent !== item.key;
-                            });
-
-                            vm.ExplainabilityTechniqueSubSelect.push(item);
-                        } else {
-                            vm.ExplainabilityTechniqueSubSelect.splice(index, 1);
+                    if (index3 != -1) {
+                        vm.ExplainabilityTechniqueSub.forEach(function (item) {
+                            this.uncheckItemAndChildren(item);
+                        }, this);
+                        vm.ExplainabilityTechniqueSubSelect = [];
+                    } else {
+                        vm.setAllItemsUnchecked(vm.ExplainabilityTechniqueSub);
+                        vm.ExplainabilityTechniqueSubSelect = [];
+                        item.checked = true;
+                        if (item.children.length !== 0) {
+                            vm.checkDescendants(item);
                         }
-                    } else if (elementoEncontrado !== null) {
-
-                        var hasCheckedTrue = elementoEncontrado.children.some(function (obj) {
-                            return obj.checked === false || !obj.hasOwnProperty('checked');
-                        });
-
-                        if (hasCheckedTrue == true) {
-                            var index3 = vm.ExplainabilityTechniqueSubSelect.findIndex(function (element) {
-                                return element.key === elementoEncontrado.key;
-                            });
-
-                            if (index3 != -1) {
-                                var foundItem = vm.ExplanationTypeSub.find(function (item) {
-                                    return item.key === elementoEncontrado.key;
-                                });
-                                if (foundItem) {
-                                    foundItem.checked = false;
-                                }
-                                vm.ExplainabilityTechniqueSubSelect.splice(index3, 1);
-
-                                elementoEncontrado.children.forEach(element => {
-                                    if (element.checked == true) {
-                                        vm.ExplainabilityTechniqueSubSelect.push(element);
-                                    }
-                                });
-                            } else {
-                                var index2 = vm.ExplainabilityTechniqueSubSelect.findIndex(function (element) {
-                                    return element.key === item.key;
-                                });
-
-                                if (index2 == -1) {
-                                    vm.ExplainabilityTechniqueSubSelect.push(item);
-                                } else {
-                                    vm.ExplainabilityTechniqueSubSelect.splice(index2, 1);
-                                }
-                            }
-                        } else {
-                            var array = vm.ExplainabilityTechniqueSubSelect.filter(function (obj) {
-                                return obj.parent !== elementoEncontrado.key;
-                            });
-                            array.push(elementoEncontrado);
-                            elementoEncontrado.checked = true;
-                            vm.ExplainabilityTechniqueSubSelect = array;
-                        }
-                    }*/
-
-                    vm.setAllItemsUnchecked(vm.ExplainabilityTechniqueSub);
-                    vm.ExplainabilityTechniqueSubSelect = [];
-                    item.checked = true;
-                    if (item.children.length !== 0) {
-                        vm.checkDescendants(item);
+                        vm.ExplainabilityTechniqueSubSelect.push(item);
                     }
-                    vm.ExplainabilityTechniqueSubSelect.push(item);
 
                     break;
                 case 'Explainer Concurrentnes':
@@ -583,7 +465,6 @@
                                     }
                                     return null;
                                 }
-
                                 if (foundItem) {
                                     foundItem.checked = false;
                                 }
@@ -606,16 +487,6 @@
                                     });
 
                                     if (index2 != -1) {
-                                        /*
-                                        vm.PresentationFormatSubSelect.splice(index2, 1);
-                                        console.log("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
-                                        elementoEncontrado.children.forEach(element => {
-                                            console.log(elementoEncontrado);
-                                            if (element.checked == true) {
-                                                vm.PresentationFormatSubSelect.push(element);
-                                            }
-                                        });*/
-
                                         var arrayDatos = [];
                                         vm.selectTextDDD(vm.PresentationformatSub, arrayDatos);
                                         vm.PresentationFormatSubSelect = arrayDatos;
@@ -678,7 +549,6 @@
                 if (element.checked == true) {
                     array.push(element);
                 }
-
                 if (element.children && (element.checked == false || !element.hasOwnProperty('checked'))) {
                     this.selectTextDDD(element.children, array);
                 }
@@ -868,15 +738,18 @@
 
         vm.expandAdvancedPropertis = function () {
             var ButtonDeploy = document.getElementsByClassName("advanced-properties-button")[0];
+            var ifAdvancedProperties = document.getElementById("IfAdvancedProperties");
 
             switch ($scope.divExpanded) {
                 case true:
                     ButtonDeploy.innerText = "Advanced properties";
+                    ifAdvancedProperties.style.display = 'block';
                     $scope.divExpanded = false;
                     break;
                 case false:
                 case undefined:
                     ButtonDeploy.innerText = "Hide advanced properties";
+                    ifAdvancedProperties.style.display = 'none';
                     $scope.divExpanded = true;
                     break;
                 default:
@@ -1356,7 +1229,7 @@
 
             if (vm.ExplanationTypeSubSelect.length > 0) {
 
-                jsonDataNew.explanation_type = [] ;
+                jsonDataNew.explanation_type = [];
                 select(vm.ExplanationTypeSubSelect, jsonDataNew.explanation_type);
                 /*
                 vm.ExplanationTypeSubSelect.forEach(function (item) {
@@ -1368,8 +1241,8 @@
                 });*/
             }
             if (vm.ExplainabilityTechniqueSubSelect.length > 0) {
-                jsonDataNew.technique = [] ;
-                select(vm.ExplainabilityTechniqueSubSelect,jsonDataNew.technique);
+                jsonDataNew.technique = [];
+                select(vm.ExplainabilityTechniqueSubSelect, jsonDataNew.technique);
             }
 
             /*DELETE Concurrentness FORM
@@ -1409,8 +1282,8 @@
                     });
                 }*/
 
-                jsonDataNew.presentations = [] ;
-                select(vm.PresentationFormatSubSelect,jsonDataNew.presentations);
+                jsonDataNew.presentations = [];
+                select(vm.PresentationFormatSubSelect, jsonDataNew.presentations);
             }
 
             if (vm.ExplanationScopeSubSelect != "") {
@@ -1422,7 +1295,7 @@
                 });
             }
 
-            function select(array,json) {
+            function select(array, json) {
                 array.forEach(function (item) {
                     json.push(item.key);
 

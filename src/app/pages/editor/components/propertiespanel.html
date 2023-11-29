@@ -122,18 +122,17 @@
             <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
                 <div class="DivModel">
                     <label>Model</label>
-                  <!--  <button ng-click="propertiespanel.GetModelsPublic()">Load Public Models</button> -->
+                    <!--  <button ng-click="propertiespanel.GetModelsPublic()">Load Public Models</button> -->
                 </div>
 
                 <div class="form-group">
                     <div id="header">
                         <ul class="nav">
                             <li>
-                                <a ng-model="propertiespanel.modelsSelect"
-                                    >{{propertiespanel.modelsSelect}}</a>
+                                <a ng-model="propertiespanel.modelsSelect">{{propertiespanel.modelsSelect}}</a>
 
 
-                              <!-- 
+                                <!-- 
                                 <a ng-model="propertiespanel.Models"
                                 ng-init="propertiespanel.loadModel()"
                                     >{{propertiespanel.modelsSelect}}</a>
@@ -452,7 +451,8 @@
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ExplanationScopeSub">
                                                                 <div class="DivCheckboxFormSub">
-                                                                    <label ng-class="{ 'bold-text': propertiespanel.ExplanationScopeSubSelect === item }">
+                                                                    <label
+                                                                        ng-class="{ 'bold-text': propertiespanel.ExplanationScopeSubSelect === item }">
                                                                         <input type="radio" name="explanationScopeRadio"
                                                                             ng-model="propertiespanel.ExplanationScopeSubSelect"
                                                                             ng-value="item"
@@ -506,7 +506,8 @@
                                                                         ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
                                                                         ng-click="propertiespanel.toggleItem(item, $event)"></i>
 
-                                                                    <label ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
+                                                                    <label
+                                                                        ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
                                                                         <input type="checkbox" class="CheckboxCircule"
                                                                             ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection( 'Explanation Type',item,true)"
@@ -525,7 +526,8 @@
                                                                                 ng-class="{'fa-caret-down': childItem.expanded && propertiespanel.hasChildren(childItem) && childItem.checked, 'fa-caret-right': !childItem.expanded || !propertiespanel.hasChildren(childItem) || !childItem.checked}"
                                                                                 ng-click="propertiespanel.toggleItem(childItem, $event)"></i>
 
-                                                                            <label ng-class="{ 'bold-text': childItem.checked }">
+                                                                            <label
+                                                                                ng-class="{ 'bold-text': childItem.checked }">
                                                                                 <input type="checkbox"
                                                                                     class="CheckboxCircule"
                                                                                     ng-model="childItem.checked"
@@ -584,7 +586,8 @@
                                                                         ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
                                                                         ng-click="propertiespanel.toggleItem(item, $event)"></i>
 
-                                                                    <label ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
+                                                                    <label
+                                                                        ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
                                                                         <input type="checkbox" class="CheckboxCircule"
                                                                             ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection( 'Explainability Technique',item,true)"
@@ -682,7 +685,8 @@
                                                                         ng-class="{'fa-caret-down': item.expanded && propertiespanel.hasChildren(item) && item.checked, 'fa-caret-right': !item.expanded || !propertiespanel.hasChildren(item) || !item.checked}"
                                                                         ng-click="propertiespanel.toggleItem(item, $event)"></i>
 
-                                                                    <label ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
+                                                                    <label
+                                                                        ng-class="{ 'bold-text': item.checked || propertiespanel.hasSelectedChild(item)}">
                                                                         <input type="checkbox" ng-model="item.checked"
                                                                             ng-change="propertiespanel.toggleItemSelection( 'Presentation format',item,true)"
                                                                             ng-click="$event.stopPropagation()">
@@ -790,7 +794,8 @@
                                                             <li class="LiSelect"
                                                                 ng-repeat="item in propertiespanel.ComputationalComplexitySub">
                                                                 <div class="DivCheckboxFormSub">
-                                                                    <label ng-class="{ 'bold-text': propertiespanel.ComputationalComplexitySubSelect === item }">
+                                                                    <label
+                                                                        ng-class="{ 'bold-text': propertiespanel.ComputationalComplexitySubSelect === item }">
                                                                         <input type="radio"
                                                                             name="computationalComplexityRadio"
                                                                             ng-model="propertiespanel.ComputationalComplexitySubSelect"
@@ -931,14 +936,18 @@
                                             -->
                                         </div>
 
+                                        <div ng-show="propertiespanel.original.category == 'composite'" id="IfAdvancedProperties">
+                                            *If you need explainers with specific properties in your sub tree, please click on advanced properties
+                                        </div>
                                         <div id="buttonContainer">
                                             <button class="advanced-properties-button"
                                                 ng-show="propertiespanel.original.category == 'composite'"
-                                                ng-click=" propertiespanel.expandAdvancedPropertis()">Advanced
-                                                properties</button>
+                                                ng-click=" propertiespanel.expandAdvancedPropertis()">
+                                                Advanced properties
+                                            </button>
                                             <div>
                                                 <button type="button" class="CleanSutitutebutton"
-                                                    ng-click="propertiespanel.resetFormSub()">Clean</button>
+                                                    ng-click="propertiespanel.resetFormSub()">Clear</button>
                                                 <button type="button" class="SearchSutitutebutton"
                                                     ng-click="propertiespanel.submitFormSub(propertiespanel.original)">Search</button>
                                             </div>
