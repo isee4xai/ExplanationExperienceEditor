@@ -59,7 +59,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 28/11/23";
+        vm.date = "version 29/11/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
