@@ -15,3 +15,12 @@
 <div class="editor-page">
     <div ui-view class="editor-anim"></div>
 </div>
+
+<div ng-controller="EditorController as Editor" >
+    <div ng-if="!Editor.cookie" class="sidebar cookie" data-tooltip="{{Editor.alertError}}">
+        <a href="https://cockpit-dev.isee4xai.com/explainers">
+            <i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
+        </a>
+        
+    </div>
+</div>

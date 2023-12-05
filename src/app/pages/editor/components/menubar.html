@@ -148,19 +148,19 @@
             </a></li>
         </ul>
       </li>
-      <!--
+   
       <li><a>Random generator</a>
         <ul>
           <li>
             <a>Min siblings </a>
-            <input class="form-control" id="inputMin" type="number" ng-model="Random.MinSlibings" min="0"
+            <input class="form-control" id="inputMin" type="number" ng-model="Random.MinSlibings" min="1" max="3"
               ng-mouseover="menubar.addListPara()" />
             <a>Max siblings </a>
-            <input class="form-control" id="inputMax" type="number" ng-model="Random.MaxSlibings" max="20" />
+            <input class="form-control" id="inputMax" type="number" ng-model="Random.MaxSlibings" min="1" max="3" />
             <a>Max subtrees </a>
             <input class="form-control" id="inputMax" type="number" ng-model="Random.subtrees" min="0" />
             <a>Depth </a>
-            <input class="form-control" id="inputMax" type="number" ng-model="Random.depth" min="0" />
+            <input class="form-control" id="inputMax" type="number" ng-model="Random.depth" min="1"  max="3" />
             <div class="ButtonGenerate">
               <p class="PGenerate" ng-click="menubar.RandomGenerate(Random)"><b>Generate</b></p>
             </div>
@@ -175,7 +175,7 @@
           </li>
         </ul>
       </li>
-      -->
+ 
       <li><a>Help</a>
         <ul>
           <li><a ng-click="menubar.showHelp()">

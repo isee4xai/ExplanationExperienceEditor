@@ -728,6 +728,10 @@
     border: 1px solid #0075ff;
   }
 
+  .CheckboxCircule:checked:hover {
+    border: 1px solid #005cc8;
+  }
+
   .CheckboxCircule:checked::after {
     content: "\2022";
     font-size: 29px;
@@ -736,6 +740,10 @@
     top: 50%; 
     left: 53%; 
     transform: translate(-50%, -50%);
+  }
+  
+  .CheckboxCircule:checked:hover::after {
+    color: #005cc8;
   }
 
 }

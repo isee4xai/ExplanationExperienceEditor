@@ -13,7 +13,9 @@
         'dialogService',
         'notificationService',
         'storageService',
-        '$window'
+        '$window',
+        '$location',
+        '$state'
     ];
 
     function ExportController($scope,
@@ -23,7 +25,9 @@
         dialogService,
         notificationService,
         storageService,
-        window) {
+        window,
+        $location,
+        $state) {
         var vm = this;
         vm.type = null;
         vm.format = null;
@@ -37,6 +41,7 @@
         vm.select = select;
         vm.save = save;
         vm.saveJson = saveJson;
+        vm.redirect = redirect;
 
         _active();
 
@@ -68,6 +73,24 @@
             var sel = $window.getSelection();
             sel.removeAllRanges();
             sel.addRange(range);
+        }
+
+        function redirect() {
+            var url = $location.url();
+    
+            var indexId = url.indexOf("/id/");
+            var idParam ;
+            if (indexId !== -1) {
+                 idParam = url.substring(indexId + 4);
+                var indexNextSlash = idParam.indexOf("/");
+                if (indexNextSlash !== -1) {
+                    idParam = idParam.substring(0, indexNextSlash);
+                }
+              console.log(idParam);
+            } else {
+                console.log("ID no encontrado en la URL.");
+            }
+            $state.go('id', { vid: idParam, usercase: url.split("usecaseId=")[1] });
         }
 
         function save() {

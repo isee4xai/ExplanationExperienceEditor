@@ -12,7 +12,8 @@
         '$stateParams',
         'dialogService',
         'notificationService',
-        'storageService'
+        'storageService',
+        '$location'
     ];
 
     function ImportController($scope,
@@ -21,7 +22,9 @@
         $stateParams,
         dialogService,
         notificationService,
-        storageService) {
+        storageService,
+        $location
+        ) {
         var vm = this;
         vm.type = null;
         vm.format = null;
@@ -29,6 +32,7 @@
         vm.loadFromFile = loadFromFile;
         vm.data = '';
         vm.loadArchive = loadArchive;
+        vm.redirect = redirect;
  
         _active();
 
@@ -47,6 +51,23 @@
                             vm.data = JSON.stringify(data, null, 2);
                         });
                 });
+        }
+
+        function redirect() {
+            var url = $location.url();
+    
+            var indexId = url.indexOf("/id/");
+            var idParam ;
+            if (indexId !== -1) {
+                 idParam = url.substring(indexId + 4);
+                var indexNextSlash = idParam.indexOf("/");
+                if (indexNextSlash !== -1) {
+                    idParam = idParam.substring(0, indexNextSlash);
+                }
+            } else {
+                console.log("ID no encontrado en la URL.");
+            }
+            $state.go('id', { vid: idParam, usercase: url.split("usecaseId=")[1] });
         }
 
         function loadArchive() {
@@ -90,8 +111,9 @@
                 );
             }
 
-            $state.go('editor');
+            redirect();
         }
+
     }
 
 })();

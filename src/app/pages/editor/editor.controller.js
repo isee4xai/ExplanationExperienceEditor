@@ -12,8 +12,12 @@ EditorController.$inject = [
 ];
 
 function EditorController($state, $window, $location, projectModel, dialogService, systemService) {
- 
+
     //get id from url
+    var vm = this;
+    vm.cookie = true;
+    vm.alertError = "Please log in to the cockpit to obtain it.";
+
     var url = $location.url().slice(1);
     urlSplit = url.split("/");
     var cmd = urlSplit[0];
@@ -45,6 +49,25 @@ function EditorController($state, $window, $location, projectModel, dialogServic
             case "id":
             case "vid":
 
+                projectModel.getTokenModel().then(function (x) {
+                    /*
+                    var redirigirDespuesDe5Segundos = function () {
+                        $window.location.href = 'https://cockpit-dev.isee4xai.com/explainers';
+                    };
+                    */
+                    switch (x) {
+                        case "CookieExpire":
+                        case "NoExistCookie":
+                            vm.cookie = false;
+                            break;
+                        default:
+                            break;
+                    }
+                }).catch(function (error) {
+                    console.error(error);
+                });
+
+
                 if (Id == "") {
                     $state.go('id.error');
                 } else {
@@ -52,21 +75,17 @@ function EditorController($state, $window, $location, projectModel, dialogServic
                         .getRecentProjects()
                         .then(function (recents) {
                             const resultado = recents.find(elemento => elemento.id === Id);
-/*
-                            console.log(recents);
-                            console.log(resultado);
-                            console.log(Id);
-*/
+
                             if (recents != undefined && resultado != undefined) {
                                 recents.forEach(element => {
                                     if (element.isOpen == true && element.id != Id) {
-                                        element.isOpen = false ;
-                                    }else if( element.id == Id){
-                                        element.isOpen = true ;
+                                        element.isOpen = false;
+                                    } else if (element.id == Id) {
+                                        element.isOpen = true;
                                     }
-                                }); 
+                                });
                             }
-                           
+
                             if (resultado == undefined) {
                                 projectModel
                                     .openProjectId(Id)
@@ -94,7 +113,7 @@ function EditorController($state, $window, $location, projectModel, dialogServic
             default:
                 break;
         }
-        
+
 
     }
 

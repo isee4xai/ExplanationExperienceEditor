@@ -13,7 +13,8 @@
         'projectModel',
         'notificationService',
         '$http',
-        '$q'
+        '$q',
+        '$location'
     ];
 
     function MenubarController($scope,
@@ -23,7 +24,8 @@
         projectModel,
         notificationService,
         $http,
-        $q) {
+        $q,
+        $location) {
         var vm = this;
         vm.onNewTree = onNewTree;
         vm.onCloseProject = onCloseProject;
@@ -54,12 +56,69 @@
         vm.RandomGenerate10 = RandomGenerate10;
         vm.NotificationSuccess = NotificationSuccess;
         vm.addListPara = addListPara;
-        vm.NameNodes = ["Explanation Method", "Failer", "Succeeder"];
+
+        //random
+        vm.Quetions = {
+            "DEBUGGING": ["Is this the same outcome for similar instances?", "Is this instance a common occurrence?"],
+            "TRANSPARENCY": [
+                "What is the impact of feature X on the outcome?",
+                "How does feature X impact the outcome?",
+                "What are the necessary features that guarantee this outcome?",
+                "Why does the AI system have given outcome A?",
+                "Which feature contributed to the current outcome?",
+                "How does the AI system respond to feature X?",
+                "What is the goal of the AI system?",
+                "What is the scope of the AI system capabilities?",
+                "What features does the AI system consider?",
+                "What are the important features for the AI system?",
+                "What is the impact of feature X on the AI system?",
+                "How much evidence has been considered to build the AI system?",
+                "How much evidence has been considered in the current outcome?",
+                "What are the possible outcomes of the AI system?",
+                "What features are used by the AI system?"
+            ],
+            "PERFORMANCE": [
+                "How confident is the AI system with the outcome?",
+                "Which instances get a similar outcome?",
+                "Which instances get outcome A?",
+                "What are the results when others use the AI System?",
+                "How accurate is the AI system?",
+                "How reliable is the AI system?",
+                "In what situations does the AI system make errors?",
+                "What are the limitations of the AI system?",
+                "In what situations is the AI system likely to be correct?"
+            ],
+            "COMPLIANCY": ["How well does the AI system capture the real-world?", "Why are instances A and B given different outcomes?"],
+            "COMPREHENSIBILITY": [
+                "How to improve the AI system performance?",
+                "What does term X mean?",
+                "What is the overall logic of the AI system?",
+                "What kind of algorithm is used in the AI system?"
+            ],
+            "EFFECTIVENESS": [
+                "What would be the outcome if features X is changed to value V?",
+                "What other instances would get the same outcome?",
+                "How does the AI system react if feature X is changed?",
+                "What is the impact of the current outcome?"
+            ],
+            "ACTIONABILITY": [
+                "What are the alternative scenarios available?",
+                "What type of instances would get a different outcome?",
+                "How can I change feature X to get the same outcome?",
+                "How to get a different outcome?",
+                "How to change the instance to get a different outcome?",
+                "How to change the instance to get outcome {outcome}?",
+                "Why does the AI system have given outcome A not B?",
+                "Which features need changed to get a different outcome?"
+            ]
+        }
+
+        vm.NameNodes = ["Explanation Method", "User Question"];
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 29/11/23";
+        vm.date = "version 5/12/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -88,7 +147,7 @@
 
             if (vm.url.includes("modelid")) {
                 vm.isEditor = "modelid";
-            } else if(vm.url.includes("id")) {
+            } else if (vm.url.includes("id")) {
                 vm.isEditor = "id";
             } else {
                 vm.isEditor = "editor";
@@ -218,15 +277,25 @@
         }
 
         function onExportProjectJson() {
+            var url = $location.url();
+
+            var index = url.indexOf("usecaseId=");
+            if (index !== -1) {
+                console.log(url.split("usecaseId=")[1]);
+
+            } else {
+                console.log("usecaseId no encontrado en la URL.");
+            }
+
             switch (vm.isEditor) {
                 case "modelid":
-                    $state.go('idModel.export', { type: 'project', format: 'json' });
+                    $state.go('idModel.export', { type: 'project', format: 'json', usecaseId: url.split("usecaseId=")[1] });
                     break;
                 case "id":
-                    $state.go('id.export', { type: 'project', format: 'json' });
+                    $state.go('id.export', { type: 'project', format: 'json', usecaseId: url.split("usecaseId=")[1] });
                     break;
                 case "editor":
-                    $state.go('editor.export', { type: 'project', format: 'json' });
+                    $state.go('editor.export', { type: 'project', format: 'json', usecaseId: url.split("usecaseId=")[1] });
                     break;
                 default:
                     break;
@@ -503,24 +572,24 @@
 
                         var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
                         for (var x = 0; x < NumeroAle; x++) {
-
+                            /*
                             if (NumeroAle == 1 || x == NumeroAle - 1) {
                                 var p = 0;
                             } else {
                                 var NumeroAle1 = getRndInteger(0, 2);
                                 var p = NumeroAle1;
+                            }*/
+
+                            for (let y = 0; y < 2; y++) {
+                                var BlockConditions = tree.blocks.add(vm.NameNodes[y], point.x, point.y);
+                                tree.connections.add(element, BlockConditions);
+
+                                BlockConditions = PropertieSelect(y);
+
+                                var s = tree.blocks.getSelected();
+                                tree.blocks.update(s[0], BlockConditions);
                             }
 
-                            //Create a method evaluation or explanation
-                            //Make sure they always have an explainer
-                            var BlockConditions = tree.blocks.add(vm.NameNodes[p], point.x, point.y);
-                            tree.connections.add(element, BlockConditions);
-                            //define properties a method of evaluation or explanation
-
-                            BlockConditions = PropertieSelect(p);
-
-                            var s = tree.blocks.getSelected();
-                            tree.blocks.update(s[0], BlockConditions);
                         }
 
                         if ((depth - index) != 1) {
@@ -584,13 +653,9 @@
                     } else {
                         BlockCondition = PropertiesCreate("Explanation Method", "Explanation Method");
                     }
-
                     return BlockCondition;
-                case "Succeeder":
-                    BlockCondition = PropertiesCreate(vm.NameNodes[IndexNameNodeNodes], "Evaluation Method");
-                    return BlockCondition;
-                case "Failer":
-                    BlockCondition = PropertiesCreate(vm.NameNodes[IndexNameNodeNodes], "Evaluation Method");
+                case "User Question":
+                    BlockCondition = PropertiesCreate(vm.NameNodes[IndexNameNodeNodes], "User Question");
                     return BlockCondition;
             }
         }
@@ -606,19 +671,34 @@
                 });
             }
 
+            switch (NameNode) {
+                case "Explanation Method":
+                    var BlockConditions = {
+                        title: DataJson.value || DataJson,
+                        params: json,
+                    };
+                    break;
+                case "User Question":
+                    //Get Quetion intent 
+                    var transparencyQuestions =  vm.Quetions.TRANSPARENCY;
+                    //radnom Questions
+                    var randomInRange = Math.random() * ((transparencyQuestions.length-1) - 0) + 0;
+                    var randomInt = Math.floor(randomInRange);
 
-            if (NameNode == "Explanation Method") {
-                var BlockConditions = {
-                    title: DataJson.value || DataJson,
-                    params: json,
-                    description: DataJson.description,
-                };
-            } else {
-                var BlockConditions = {
-                    title: DataJson.value || DataJson,
-                    params: json,
-                    description: DataJson.description
-                };
+                    var questionInsert = {
+                        "Question": {
+                            "key": "Question",
+                            "value":  transparencyQuestions[randomInt],
+                        }
+                    }
+
+                    var BlockConditions = {
+                        title: DataJson.value || DataJson,
+                        params: questionInsert,
+                    };
+                    break;
+                default:
+                    break;
             }
 
             return BlockConditions;

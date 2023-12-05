@@ -1016,7 +1016,6 @@
 
             if (url.includes("usecaseId=")) {
                 vm.idModelUrl = url.split("usecaseId=")[1];
-
                 return projectModel.getModelsRootPrivate(vm.idModelUrl)
                     .then(function (x) {
                         switch (true) {
@@ -1579,6 +1578,7 @@
                                         'No substitution options found', 'No options available for substitution in this context.'
                                     );
                                     break;
+                                
                                 default:
                                     DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
                                     break;
@@ -1652,16 +1652,31 @@
 
             var cont = 0;
             var aaa;
+            var button1 ;
+
             TressOptions.forEach(element => {
                 var button = document.createElement('button');
-                button.textContent = 'Botón';
                 button.style.marginLeft = "5px";
                 button.textContent = 'option ' + (cont + 1);
+                button.classList.add('option-button');
                 button.style.backgroundColor = '#1b6d85';
                 button.style.border = "none";
                 button.addEventListener('click', function () {
+                    document.querySelectorAll('.option-button').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.style.backgroundColor = '#1b6d85'; 
+                        btn.style.color = '#ffffff'; 
+                    });
+            
+                    button.classList.add('active');
+                    button.style.backgroundColor = '#2c3e50'; 
                     aaa = CambiarOptionTree(element, editor1);
                 });
+
+                if (cont == 0) {
+                    button1 = button;  
+                }
+             
                 divbuttons.appendChild(button);
                 var buttonAdd = document.createElement('button');
                 //buttonAdd.textContent = '<i class="fa-sharp fa-solid fa-plus"></i>';
@@ -1694,6 +1709,12 @@
                 cont++;
             });
 
+            if (button1) {        
+                button1.classList.add('active');
+                button1.style.backgroundColor = '#2c3e50'; 
+                  CambiarOptionTree(TressOptions[0], editor1);
+            }
+          
             $window.editor._initialize();
 
             //zoom canvas from 1 to 1.75
@@ -1716,6 +1737,7 @@
             t.view.zoom(1.75);
             return s;
         }
+
         function updateNodeSub(TreeSub, nodeSelect, editor1, aaa, divGeneral) {
             if (aaa == undefined) {
                 aaa = CambiarOptionTree(TreeSub, editor1)

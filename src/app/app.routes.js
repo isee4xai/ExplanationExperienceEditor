@@ -12,7 +12,7 @@ angular.module('app')
                     controllerAs: 'editor',
                 })
                 .state('id', {
-                    url: "/id/{vid}",
+                    url: "/id/{vid}?usecaseId",
                     templateUrl: 'pages/editor/editor.html',
                     controller: 'EditorController',
                     controllerAs: 'editor'
@@ -24,13 +24,13 @@ angular.module('app')
                     controllerAs: 'editnode',
                 })
                 .state('id.export', {
-                    url: "/export/:type/:format",
+                    url: "/export/:type/:format/:usecaseId",
                     templateUrl: 'pages/editor/modals/export.html',
                     controller: 'ExportController',
                     controllerAs: 'export',
                 })
                 .state('id.import', {
-                    url: "/import/:type/:format",
+                    url: "/import/:type/:format/:usecaseId",
                     templateUrl: 'pages/editor/modals/import.html',
                     controller: 'ImportController',
                     controllerAs: 'import',

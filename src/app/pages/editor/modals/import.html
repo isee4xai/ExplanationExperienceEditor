@@ -1,5 +1,5 @@
 <div class="b3modal">
-  <div class="b3modal-background" ng-click="go('editor');"></div>
+  <div class="b3modal-background" ng-click="import.redirect()"></div>
   <div class="b3modal-window">
 
     <div class="b3modal-wrap">
@@ -14,7 +14,7 @@
       <button class="btn btn-default btn-lg pull-left" ng-show="isDesktop" ng-click="import.loadFromFile()">
         Load from file
       </button>
-      <button class="btn btn-default btn-lg" ui-sref="editor">
+      <button class="btn btn-default btn-lg" ng-click="import.redirect()">
         Cancel
       </button>
       <button class="btn btn-info btn-lg" ng-click="import.loadArchive()">

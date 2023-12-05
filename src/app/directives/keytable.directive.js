@@ -12,7 +12,7 @@
         var directive = {
             require: '^ngModel',
             restrict: 'EA',
-            replace: true,
+            replace: true, 
             bindToController: true,
             controller: 'KeyTableController',
             controllerAs: 'keytable',
@@ -55,10 +55,10 @@
         function _activate() {
             vm.Condition = false;
             if (vm.model) {
-                /*
+                
                 for (var key in vm.model.properties) {
                     add(key, vm.model.properties[key], false);
-                }*/
+                }
 
                 if (vm.model.DataType == "Datatype" || vm.model.DataType == "Integer" || vm.model.DataType == "Boolean") {
                     vm.Condition = true;
