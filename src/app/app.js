@@ -35,11 +35,9 @@ angular.module('app', [
             */
 
             // add drop to canvas
-            angular
-                .element($window.editor._game.canvas)
-                .attr('b3-drop-node', true);
+            angular.element($window.editor._game.canvas).attr('b3-drop-node', true);
 
-            // initialize editor
+            // initialize editor 
             settingsModel.getSettings();
 
             //initialize nodes and trees when opening the app
@@ -48,6 +46,7 @@ angular.module('app', [
             projectModel
                 .getRecentProjects()
                 .then(async function (projects) {
+
                     function closePreload() {
                         $timeout(function () {
                             var element = angular.element(document.getElementById('page-preload'));
@@ -65,99 +64,51 @@ angular.module('app', [
                             });
                     }
 
-                    console.log(projects);
+                    if (projects.length > 0) {
 
-                    projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (x) {
-
-                        if (x === "Error in computer network communications") {
-                            notificationService.warning(
-                                'Applicability Not Found',
-                                'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
-                            );
+                        var url = $location.url().slice(1);
+                        urlSplit = url.split("/");
+                        var Id = "";
+                        var elementoEncontrado;
+                        if (urlSplit.length > 1) {
+                            Id = urlSplit[1];
+                            if (Id.includes("?")) {
+                                Id = Id.split("?")[0];
+                            }
                         }
 
-                        if (projects.length > 0) {
-
-                            var url = $location.url().slice(1);
-                            urlSplit = url.split("/");
-                            var Id = "";
-                            var elementoEncontrado;
-                            if (urlSplit.length > 1) {
-                                Id = urlSplit[1];
-                                if (Id.includes("?")) {
-                                    Id = Id.split("?")[0];
-                                }
-                            }
-
-                            if (Id != "") {
-                                elementoEncontrado = projects.find(elemento => elemento.id === Id);
-                            } else {
-                                elementoEncontrado = projects.find(elemento => elemento.isOpen === true);
-                            }
-
-                            projectModel
-                                .openProject(elementoEncontrado.path, x)
-                                .then(function () {
-                                    closePreload();
-                                });
-
+                        if (Id != "") {
+                            elementoEncontrado = projects.find(elemento => elemento.id === Id);
                         } else {
-                            var nameProject = "Project 1";
-                            projectModel
-                                .getRecentProjects()
-                                .then(function (recents) {
-                                    if (recents.length == 0) {
-                                        var path = 'b3projects-' + b3.createUUID();
-                                        _newProject(path, nameProject);
-
-                                        projectModel
-                                            .openProject(path)
-                                            .then(function () {
-                                                closePreload();
-                                                location.reload();
-                                            });
-                                    }
-                                });
+                            elementoEncontrado = projects.find(elemento => elemento.isOpen === true);
                         }
-                    });
 
+                        projectModel
+                            .openProject(elementoEncontrado.path)
+                            .then(function () {
+                                closePreload();
+                            });
+
+                    } else {
+
+                        var nameProject = "Project 1";
+                        projectModel
+                            .getRecentProjects()
+                            .then(function (recents) {
+                                if (recents.length == 0) {
+                                    var path = 'b3projects-' + b3.createUUID();
+                                    _newProject(path, nameProject);
+
+                                    projectModel
+                                        .openProject(path)
+                                        .then(function () {
+                                            closePreload();
+                                            location.reload();
+                                        });
+                                }
+                            });
+                    }
                 });
-
-
-            /*
-
-            //redirecion al cockpit
-            projectModel.getTokenModel().then(function (x) {
-
-                var redirigirDespuesDe5Segundos = function () {
-                    $window.location.href = 'https://cockpit-dev.isee4xai.com/explainers';
-                };
-
-                switch (x) {
-                    case "CookieExpire":
-                        notificationService.warning(
-                            'Cookie Expired',
-                            'The cookie has expired. Please log in to the cockpit to renew it.'
-                        );
-                        var tiempoEsperaEnMilisegundos = 8000; 
-                        $timeout(redirigirDespuesDe5Segundos, tiempoEsperaEnMilisegundos);
-                        break;
-                    case "NoExistCookie":
-                        notificationService.warning(
-                            'Cookie Not Found',
-                            'The cookie does not exist. Please log in to the cockpit to obtain it.'
-                        );
-                        var tiempoEsperaEnMilisegundos = 7000; 
-                        $timeout(redirigirDespuesDe5Segundos, tiempoEsperaEnMilisegundos);
-                        break;
-                    default:
-                        break;
-                }
-
-            }).catch(function (error) {
-                console.error(error);
-            });
-            */
 
         }
     ]);

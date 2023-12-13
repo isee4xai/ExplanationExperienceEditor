@@ -771,7 +771,7 @@
         $scope.$on('$destroy', _destroy);
 
         function _activate() {
-
+       
             var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
             if (existDiv.length > 0) {
                 existDiv[0].remove();

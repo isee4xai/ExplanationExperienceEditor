@@ -123,9 +123,10 @@
         function getRecentProjects() {
             return $q(function (resolve, reject) {
                 if (!recentCache) {
-                    var data;
+                    var data; 
                     try {
                         data = storageService.load(recentPath);
+                        ApplicabilityList = storageService.GetApplicabilityExplanationService($location.search().usecaseId);
                     } catch (e) { }
 
                     if (!data) {
@@ -212,12 +213,12 @@
         }
 
 
-        function openProject(path,applicability) {
+        function openProject(path) {
             return $q(function (resolve, reject) {
                 try {
                     var project = storageService.load(path);
-                    ApplicabilityList = applicability;
-                    editorService.openProject(project.data, project.outcome,applicability);
+                  
+                    editorService.openProject(project.data, project.outcome,ApplicabilityList);
                     _setProject(project);
                     resolve();
                 } catch (e) {
