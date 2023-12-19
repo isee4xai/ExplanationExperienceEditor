@@ -11,15 +11,17 @@
         '$state',
         '$stateParams',
         'dialogService',
-        'notificationService'
+        'notificationService',
+        '$location'
     ];
 
     function EditNodeController($scope,
         $window,
-        $state,
+        $state, 
         $stateParams,
         dialogService,
-        notificationService) {
+        notificationService,
+        $location) {
         var vm = this;
         vm.action = 'New';
         vm.node = null;
@@ -50,6 +52,7 @@
                 }
             });
             vm.blacklist = blacklist.join(',');
+
         }
 
         function save() {
@@ -60,7 +63,8 @@
             } else {
                 p.nodes.add(vm.node);
             }
-            $state.go('editor');
+          //  $state.go('editor');
+          redirect();
             notificationService
                 .success('Node created', 'Node has been created successfully.');
         }
@@ -79,6 +83,23 @@
                 );
                 $state.go('editor');
             });
+        }
+
+        function redirect() {
+            var url = $location.url();
+    
+            var indexId = url.indexOf("/id/");
+            var idParam ;
+            if (indexId !== -1) {
+                 idParam = url.substring(indexId + 4);
+                var indexNextSlash = idParam.indexOf("/");
+                if (indexNextSlash !== -1) {
+                    idParam = idParam.substring(0, indexNextSlash);
+                }
+            } else {
+                console.log("ID no encontrado en la URL.");
+            }
+            $state.go('id', { vid: idParam, usercase: url.split("usecaseId=")[1] });
         }
     }
 

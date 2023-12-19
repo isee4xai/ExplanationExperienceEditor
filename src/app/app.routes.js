@@ -18,8 +18,8 @@ angular.module('app')
                     controllerAs: 'editor'
                 })
                 .state('id.editnode', {
-                    url: "/node/:name",
-                    templateUrl: 'pages/id/modals/editnode.html',
+                    url: "/node/:usecaseId",
+                    templateUrl: 'pages/editor/modals/editnode.html',
                     controller: 'EditNodeController',
                     controllerAs: 'editnode',
                 })

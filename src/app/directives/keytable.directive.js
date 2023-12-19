@@ -54,6 +54,7 @@
         // BODY //
         function _activate() {
             vm.Condition = false;
+
             if (vm.model) {
                 
                 for (var key in vm.model.properties) {
@@ -109,7 +110,6 @@
                     value = parseFloat(value);
                 }
                 vm.model.properties[r.key] = value;
-
 
                 if (vm._onChange) {
                     vm._onChange($scope);
