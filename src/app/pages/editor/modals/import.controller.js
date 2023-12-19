@@ -94,10 +94,15 @@
         }
 
         function open() {
-            var i = $window.editor.import;
+            var i = $window.editor.import; 
             try { 
                 var data = JSON.parse(vm.data);
                 if (vm.type === 'project' && vm.format === 'json') {
+                    if (data.selectedTree == "33def3ec-31a8-47c1-856c-7fd724718df2") {
+                        var idNew = b3.createUUID();
+                        data.selectedTree = idNew;
+                        data.trees[0].id = idNew;
+                    }
                     i.projectAsData(data);
                 } else if (vm.type === 'tree' && vm.format === 'json') {
                     i.treeAsData(data);

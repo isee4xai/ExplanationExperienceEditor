@@ -63,6 +63,7 @@
             getExplainerFieldsFiltered: getExplainerFieldsFiltered,
             PostSubstituteSubtree: PostSubstituteSubtree,
             GetApplicabilityExplanation: GetApplicabilityExplanation,
+            getApplicability: getApplicability,
             SustituteSubTreeReuse: SustituteSubTreeReuse,
             GetExplainersListForm: GetExplainersListForm,
             GetInstanceModelSelect: GetInstanceModelSelect
@@ -123,10 +124,9 @@
         function getRecentProjects() {
             return $q(function (resolve, reject) {
                 if (!recentCache) {
-                    var data; 
+                    var data;
                     try {
                         data = storageService.load(recentPath);
-                        ApplicabilityList = storageService.GetApplicabilityExplanationService($location.search().usecaseId);
                     } catch (e) { }
 
                     if (!data) {
@@ -213,12 +213,12 @@
         }
 
 
-        function openProject(path) {
+        function openProject(path,applicability) {
             return $q(function (resolve, reject) {
                 try {
                     var project = storageService.load(path);
-                  
-                    editorService.openProject(project.data, project.outcome,ApplicabilityList);
+                    ApplicabilityList = applicability;
+                    editorService.openProject(project.data, project.outcome,applicability);
                     _setProject(project);
                     resolve();
                 } catch (e) {
@@ -501,6 +501,15 @@
         //draw the dotted line
         function GetApplicabilityExplanation(usecaseId) {
             return $q(function (resolve, reject) {
+                try {
+                    var data = storageService.GetApplicabilityExplanationService(usecaseId);
+                    resolve(data);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+            /*
+            return $q(function (resolve, reject) {
                 if (ApplicabilityList == null) {
                     try {
                         const promise = Promise.resolve(storageService.GetApplicabilityExplanationService(usecaseId));
@@ -518,7 +527,18 @@
                 }else{
                     resolve(ApplicabilityList);
                 }
-            });
+            });*/
+        }
+
+        function getApplicability(usecaseId) {
+
+            if (ApplicabilityList) {
+                return ApplicabilityList;
+            }else{
+                var data = storageService.GetApplicabilityExplanationService(usecaseId);
+                return data;
+            }
+
         }
 
         function getTokenModel() {

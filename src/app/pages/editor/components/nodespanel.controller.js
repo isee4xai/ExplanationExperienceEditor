@@ -39,9 +39,8 @@
                 decorator: [],
             };
 
-
+ 
             var p = $window.editor.project.get();
-
 
             p.nodes.each(function (node) {
 

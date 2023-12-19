@@ -112,13 +112,16 @@
                 "Which features need changed to get a different outcome?"
             ]
         }
+        vm.usedIndices = [];
+        vm.applicability = null;
+        vm.randomCategory = null;
 
         vm.NameNodes = ["Explanation Method", "User Question"];
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 13/12/23";
+        vm.date = "version 21/05/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -529,11 +532,16 @@
         }
 
         function GetModels() {
-            /*
-            projectModel.getModelsRoot()
-                .then(function(x) {
+            var url = $location.url().slice(1);
+            var urlSplit = url.split("/");
+            projectModel.getModelsRootPrivate(url.split("usecaseId=")[1])
+                .then(function (x) {
                     vm.models = x;
-                });*/
+                });
+            projectModel.getApplicability($location.search().usecaseId)
+                .then(function (x) {
+                    vm.applicability = x
+                });
         }
 
         function GetIdModels() {
@@ -544,84 +552,141 @@
 
         function RandomGenerate(DataInput, IndexSucces) {
 
-            if (DataInput === undefined) {
-                DataInput = { MinSlibings: 0, MaxSlibings: 0 };
-            }
+            projectModel.GetApplicabilityExplanation(DataInput.Model)
+                .then(function (x) {
+                    vm.applicability = x;
 
-            var MinSlibings = DataInput.MinSlibings;
-            var MaxSlibings = DataInput.MaxSlibings;
-            var subtrees = DataInput.subtrees;
-            var depth = DataInput.depth;
 
-            if (MaxSlibings != "" && MinSlibings != "" && MinSlibings < MaxSlibings) {
-                //Create a new project
-                var project = $window.editor.project.get();
-                project.trees.add();
-                var tree = project.trees.getSelected();
-                var point = tree.view.getLocalPoint(0, 0);
-                //Select the root and add a newly created composites
-                var blockRoot = tree.blocks.getAll();
-                blockRoot[0].idModel = GetIdModels();
-                var blockComposites = tree.blocks.add("Sequence", point.x, point.y);
-                tree.connections.add(blockRoot[0], blockComposites);
-                //we add in a array the Composites that did not finish their journey
-                vm.ArrayComposites.push(blockComposites);
-                for (var index = 0; index < depth; index++) {
-                    //travel all the composites that are unfinished to continue them
-                    vm.ArrayComposites.forEach(element => {
+                    vm.usedIndices = [];
+                    var categories = Object.keys(vm.Quetions);
+                    vm.randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-                        var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
-                        for (var x = 0; x < NumeroAle; x++) {
-                            /*
-                            if (NumeroAle == 1 || x == NumeroAle - 1) {
-                                var p = 0;
-                            } else {
-                                var NumeroAle1 = getRndInteger(0, 2);
-                                var p = NumeroAle1;
-                            }*/
+                    if (DataInput === undefined) {
+                        DataInput = { MinSlibings: 0, MaxSlibings: 0 };
+                    }
 
-                            for (let y = 0; y < 2; y++) {
-                                var BlockConditions = tree.blocks.add(vm.NameNodes[y], point.x, point.y);
-                                tree.connections.add(element, BlockConditions);
+                    var MinSlibings = DataInput.MinSlibings;
+                    var MaxSlibings = DataInput.MaxSlibings;
+                    if (vm.Quetions[vm.randomCategory].length < MaxSlibings) {
+                        MaxSlibings = vm.Quetions[vm.randomCategory].length;
+                    }
 
-                                BlockConditions = PropertieSelect(y);
+                    //   var subtrees = DataInput.subtrees;
+                    var depth = DataInput.depth;
 
-                                var s = tree.blocks.getSelected();
-                                tree.blocks.update(s[0], BlockConditions);
-                            }
+                    if (MaxSlibings != "" && MinSlibings != "" && MinSlibings <= MaxSlibings) {
+                        //Create a new project
+                        var project = $window.editor.project.get();
+                        project.trees.add();
+                        var tree = project.trees.getSelected();
+                        var point = tree.view.getLocalPoint(0, 0);
+                        //Select the root and add a newly created composites
+                        var blockRoot = tree.blocks.getAll();
+                        blockRoot[0].idModel = GetIdModels();
 
+                        var blockComposites = tree.blocks.add("Sequence", point.x, point.y);
+                        tree.connections.add(blockRoot[0], blockComposites);
+                        //we add in a array the Composites that did not finish their journey
+                        vm.ArrayComposites.push(blockComposites);
+                        for (var index = 0; index < depth; index++) {
+                            //travel all the composites that are unfinished to continue them
+                            vm.ArrayComposites.forEach(element => {
+
+                                var NumBol = 0;
+                                var NumeroAle = getRndInteger(MinSlibings, MaxSlibings);
+                                if (index == 0) {
+                                    for (var x = 0; x < NumeroAle; x++) {
+
+                                        var BlockConditions = tree.blocks.add(vm.NameNodes[1], point.x, point.y);
+                                        tree.connections.add(element, BlockConditions);
+
+                                        BlockConditions = PropertieSelect(1);
+
+                                        var s = tree.blocks.getSelected();
+                                        tree.blocks.update(s[0], BlockConditions);
+
+
+                                        var NumeroAle1;
+                                        if ((depth - index) == 1) {
+                                            NumeroAle1 = 0;
+                                        } else {
+                                            if ((x - NumeroAle) == 1 && NumBol == 0) {
+                                                var NumeroAle1 = 1;
+                                            } else {
+                                                NumeroAle1 = getRndInteger(0, 1);
+                                            }
+                                        }
+
+
+                                        if (NumeroAle1 == 1) {
+                                            var SubBlockComposites = null;
+
+                                            var y = getRndInteger(0, 1);
+                                            SubBlockComposites = tree.blocks.add(vm.NameCompositites[y], point.x, point.y);
+                                            tree.connections.add(element, SubBlockComposites);
+                                            vm.ArrayCompositesNew.push(SubBlockComposites);
+
+                                            blockComposites = SubBlockComposites;
+                                        } else {
+                                            var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
+                                            tree.connections.add(element, BlockConditions);
+
+                                            BlockConditions = PropertieSelect(0);
+
+                                            var s = tree.blocks.getSelected();
+                                            tree.blocks.update(s[0], BlockConditions);
+                                            NumBol++;
+                                        }
+                                    }
+                                } else if (index == 1) {
+                                    if (depth == 3) {
+                                        var SubBlockComposites = null;
+
+                                        var y = getRndInteger(0, 1);
+                                        SubBlockComposites = tree.blocks.add(vm.NameCompositites[y], point.x, point.y);
+                                        tree.connections.add(element, SubBlockComposites);
+                                        vm.ArrayCompositesNew.push(SubBlockComposites);
+
+                                        blockComposites = SubBlockComposites;
+                                    }
+
+
+                                    var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
+                                    tree.connections.add(element, BlockConditions);
+
+                                    BlockConditions = PropertieSelect(0);
+
+                                    var s = tree.blocks.getSelected();
+                                    tree.blocks.update(s[0], BlockConditions);
+
+                                } else {
+                                    var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
+                                    tree.connections.add(element, BlockConditions);
+
+                                    BlockConditions = PropertieSelect(0);
+
+                                    var s = tree.blocks.getSelected();
+                                    tree.blocks.update(s[0], BlockConditions);
+                                }
+                            });
+                            //clean ArrayComposites and add the new composites created
+                            vm.ArrayComposites = [];
+                            vm.ArrayComposites = vm.ArrayCompositesNew;
+                            vm.ArrayCompositesNew = [];
                         }
-
-                        if ((depth - index) != 1) {
-                            var NumeroAle1 = getRndInteger(1, subtrees);
-                            var SubBlockComposites = null;
-                            for (var x = 0; x < NumeroAle1; x++) {
-                                var y = getRndInteger(0, 1);
-                                //create a Compositites
-                                SubBlockComposites = tree.blocks.add(vm.NameCompositites[y], point.x, point.y);
-                                tree.connections.add(element, SubBlockComposites);
-                                vm.ArrayCompositesNew.push(SubBlockComposites);
-                            }
-                            blockComposites = SubBlockComposites;
-                        }
-                    });
-                    //clean ArrayComposites and add the new composites created
-                    vm.ArrayComposites = [];
-                    vm.ArrayComposites = vm.ArrayCompositesNew;
-                    vm.ArrayCompositesNew = [];
-                }
-                vm.ArrayCompositesNew = [];
-                vm.ArrayComposites = [];
-                onAutoOrganize();
-                NotificationSuccess(IndexSucces, DataInput.TreeNumber);
-                return true;
-            } else {
-                notificationService.error(
-                    'Invalid Generate',
-                    'Error in the maximum or minimum of slibings'
-                );
-                return false;
-            }
+                        vm.ArrayCompositesNew = [];
+                        vm.ArrayComposites = [];
+                        onAutoOrganize();
+                        NotificationSuccess(IndexSucces, DataInput.TreeNumber);
+                        return true;
+                    } else {
+                        notificationService.error(
+                            'Invalid Generate',
+                            'Error in the maximum or minimum of slibings'
+                        );
+                        return false;
+                    }
+                });
         }
 
         function NotificationSuccess(index, NumTree) {
@@ -648,7 +713,11 @@
             switch (vm.NameNodes[IndexNameNodeNodes]) {
                 case "Explanation Method":
                     if (vm.explanation != null) {
-                        var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
+
+                        do {
+                            var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
+                        } while (vm.applicability[vm.explanation[indexExplanation]].flag == false);
+
                         BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
                     } else {
                         BlockCondition = PropertiesCreate("Explanation Method", "Explanation Method");
@@ -675,20 +744,23 @@
                 case "Explanation Method":
                     var BlockConditions = {
                         title: DataJson.value || DataJson,
+                        properties: {
+                            "Popularity": 1,
+                            "Applicability": true
+                        },
                         params: json,
                     };
                     break;
                 case "User Question":
                     //Get Quetion intent 
-                    var transparencyQuestions =  vm.Quetions.TRANSPARENCY;
+                    var transparencyQuestions = vm.Quetions[vm.randomCategory];
                     //radnom Questions
-                    var randomInRange = Math.random() * ((transparencyQuestions.length-1) - 0) + 0;
-                    var randomInt = Math.floor(randomInRange);
+                    var randomInt = getRandomIndex(transparencyQuestions);
 
                     var questionInsert = {
                         "Question": {
                             "key": "Question",
-                            "value":  transparencyQuestions[randomInt],
+                            "value": transparencyQuestions[randomInt],
                         }
                     }
 
@@ -702,6 +774,21 @@
             }
 
             return BlockConditions;
+        }
+
+        function getRandomIndex(transparencyQuestions) {
+            var randomIndex = Math.random() * ((transparencyQuestions.length - 1) - 0) + 0;
+            var randomInt = Math.floor(randomIndex);
+            // Verificar si el índice ya ha sido utilizado, si es así, intentar de nuevo
+            while (vm.usedIndices.includes(randomInt)) {
+                randomIndex = Math.random() * ((transparencyQuestions.length - 1) - 0) + 0;
+                randomInt = Math.floor(randomIndex);
+            }
+
+            // Agregar el índice al array de utilizados
+            vm.usedIndices.push(randomInt);
+
+            return randomInt;
         }
 
         function getParams(Explanation) {

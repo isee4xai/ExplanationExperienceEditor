@@ -17,7 +17,26 @@ b3e.editor.ImportManager = function (editor) {
         if (!p) return;
         var tree;
         var cont = 0;
+
         data.forEach(Option => {
+
+            var descendientes = [];
+
+            function buscarDescendientes(arbol,nodoId) {
+                var nodo = arbol[nodoId];
+                if (!nodo) return;
+                descendientes.push(nodo.id);
+                var child = nodo.firstChild;
+                if (child) {
+                    do {
+                        buscarDescendientes(arbol,child.Id);
+                        child = child.Next;
+                    } while (child != null);
+    
+                }
+            }
+            buscarDescendientes(Option.data.trees[0].nodes,rootNode);
+
             if (cont == 0) {
                 tree = p.trees.add(rootNode);
             } else {
@@ -26,13 +45,11 @@ b3e.editor.ImportManager = function (editor) {
             cont++;
             var spec, display;
             var Pricipal;
-            var draw=false;
 
             for (var id in Option.data.trees[0].nodes) {
                 spec = Option.data.trees[0].nodes[id];
 
-                if (draw || spec.id == rootNode) {
-                    draw = true;
+                if (descendientes.includes(spec.id)) {
                     var block = null;
                     display = spec.display || {};
 
@@ -120,13 +137,11 @@ b3e.editor.ImportManager = function (editor) {
                 }
             }
 
-            draw = false;
 
             for (var id in Option.data.trees[0].nodes) {
                 spec = Option.data.trees[0].nodes[id];
 
-                if (draw || spec.id == rootNode) {
-                    draw = true;
+                if (descendientes.includes(spec.id)) {
                     var inBlock = tree.blocks.get(id);
 
                     var children = null;
@@ -190,7 +205,7 @@ b3e.editor.ImportManager = function (editor) {
             TressOptions.push({
                 'id': tree._id,
                 'name': root.title || 'A behavior tree',
-                'active': tree === selected,
+                'active': tree === selected
             });
         });
         return TressOptions;
@@ -308,8 +323,8 @@ b3e.editor.ImportManager = function (editor) {
     }
 
 
-
     this.treeAsData = function (data, Popularity, Applicability) {
+
         var project = editor.project.get();
         if (!project) return;
 
@@ -358,7 +373,7 @@ b3e.editor.ImportManager = function (editor) {
             block.id = spec.id;
             block.title = spec.Instance || spec.title;
             block.description = spec.description;
-            // block.properties = tine.merge({}, block.properties, spec.properties);
+            block.properties = tine.merge({}, block.properties, spec.properties);
             block.params = tine.merge({}, block.params, spec.params);
             block.idModel = spec.idModel;
             block.query = spec.query;
@@ -439,6 +454,7 @@ b3e.editor.ImportManager = function (editor) {
 
                 first = block;
             }
+           
         }
 
         // Add connections
