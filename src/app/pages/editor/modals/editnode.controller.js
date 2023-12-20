@@ -25,7 +25,7 @@
         var vm = this;
         vm.action = 'New';
         vm.node = null;
-        vm.blacklist = null;
+        vm.blacklist = null; 
         vm.original = null;
         vm.save = save;
         vm.remove = remove;
@@ -81,7 +81,8 @@
                     'Node removed',
                     'The node has been removed from this project.'
                 );
-                $state.go('editor');
+              //  $state.go('editor');
+              redirect();
             });
         }
 

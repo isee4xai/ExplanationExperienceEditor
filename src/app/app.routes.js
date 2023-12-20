@@ -5,7 +5,7 @@ angular.module('app')
             
             $stateProvider
                 //id
-                .state('vid', {
+                .state('vid', { 
                     url: "/vid/{vid}",
                     templateUrl: 'pages/editor/editor-ro.html',
                     controller: 'EditorController',
@@ -18,7 +18,7 @@ angular.module('app')
                     controllerAs: 'editor'
                 })
                 .state('id.editnode', {
-                    url: "/node/:usecaseId",
+                    url: "/node/:name/case/:usecaseId/",
                     templateUrl: 'pages/editor/modals/editnode.html',
                     controller: 'EditNodeController',
                     controllerAs: 'editnode',
