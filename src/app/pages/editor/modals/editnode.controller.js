@@ -29,6 +29,7 @@
         vm.original = null;
         vm.save = save;
         vm.remove = remove;
+        vm.redirect = redirect;
 
         _active();
 
@@ -85,8 +86,9 @@
               redirect();
             });
         }
-
+ 
         function redirect() {
+            console.log("999999999999sss");
             var url = $location.url();
     
             var indexId = url.indexOf("/id/");
