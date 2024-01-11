@@ -36,7 +36,7 @@
         </div>
 
         <div class="title">
-            <a class="new btn btn-link btn-xs" style="display:none" onmouseover="this.style.display='inline-block';" onmouseout="this.style.display='none'" ui-sref="id.editnode">New</a>
+            <a class="new btn btn-link btn-xs" style="display:none" onmouseover="this.style.display='inline-block';" onmouseout="this.style.display='none'" ng-click="nodespanel.redirect('new')">New</a>
 
             <a onmouseover="this.parentElement.firstElementChild.style.display='inline-block';" onmouseout="this.parentElement.firstElementChild.style.display='none';">
          Nodes
@@ -48,7 +48,7 @@
                 <div ng-click="" class="node-list-title">{{category}}s</div>
                 <ul>
                     <li ng-repeat="node in nodes">
-                        <a class="edit btn btn-link btn-xs" style="display:none" onmouseover="this.style.display='inline-block';" onmouseout="this.style.display='none'" ng-hide="{{node.isDefault}}" ui-sref="id.editnode({name:node.name})">Edit</a>
+                        <a class="edit btn btn-link btn-xs" style="display:none" onmouseover="this.style.display='inline-block';" onmouseout="this.style.display='none'" ng-hide="{{node.isDefault}}"  ng-click="nodespanel.redirect('edit',node)">Edit</a>
 
                         <a class="no-select" data-name="{{node.name}}" onmouseover="this.parentElement.firstElementChild.style.display='inline-block';" onmouseout="this.parentElement.firstElementChild.style.display='none';" b3-drag-node>
 

@@ -819,6 +819,7 @@
                     Json: vm.original.Json
                 };
 
+
                 //  check if the property that is selected to define its values ​​in the properties component
                 //  is the explain method and the evaluate method or intends
 
@@ -895,6 +896,10 @@
                                     );
                                 }
                             } else {
+                                console.log("--------------");
+                                console.log(vm.models);
+                                console.log(vm.idModelUrl);
+                                console.log(vm.models[vm.idModelUrl]);
                                 SelectModel(vm.models[vm.idModelUrl]);
                             }
 
@@ -1013,40 +1018,62 @@
             var url = $location.url().slice(1);
             var urlSplit = url.split("/");
 
-            if (url.includes("usecaseId=")) {
-                vm.idModelUrl = url.split("usecaseId=")[1];
-                return projectModel.getModelsRootPrivate(vm.idModelUrl)
-                    .then(function (x) {
-                        switch (true) {
-                            case Object.keys(x).length === 0:
-                                notificationService.error(
-                                    'Error Adding Models Private',
-                                    'No Data Returned'
-                                );
-                                break;
-                            case typeof x === 'string':
-                                notificationService.error(
-                                    'Error Adding Models Private',
-                                    'Error in computer network communications'
-                                );
-                                break;
-                            case Object.keys(x).length != 0 && typeof x != 'string':
-                                vm.models = x;
-                                // delete models test
+            switch (urlSplit[0]) {
+                case 'id':
+                    if (url.includes("usecaseId=")) {
+                        vm.idModelUrl = url.split("usecaseId=")[1];
+                        return projectModel.getModelsRootPrivate(vm.idModelUrl)
+                            .then(function (x) {
+                                switch (true) {
+                                    case Object.keys(x).length === 0:
+                                        notificationService.error(
+                                            'Error Adding Models Private',
+                                            'No Data Returned'
+                                        );
+                                        break;
+                                    case typeof x === 'string':
+                                        notificationService.error(
+                                            'Error Adding Models Private',
+                                            'Error in computer network communications'
+                                        );
+                                        break;
+                                    case Object.keys(x).length != 0 && typeof x != 'string':
+                                        vm.models = x;
+                                        // delete models test
 
-                                var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
-                                for (let index = 0; index < deleteModels.length; index++) {
-                                    //delete vm.models[deleteModels[index]];
+                                        var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
+                                        for (let index = 0; index < deleteModels.length; index++) {
+                                            //delete vm.models[deleteModels[index]];
 
-                                    vm.models[deleteModels[index]] = "Model " + (index + 1);
+                                            vm.models[deleteModels[index]] = "Model " + (index + 1);
+                                        }
+
+                                        notificationService.success(
+                                            "Added Private Model"
+                                        );
+                                        break;
                                 }
+                            });
+                    } else {
+                        CreateModelUndefiled();
+                        return Promise.resolve(null);
+                    }
+                    break;
+                case 'editor':
+                    CreateModelUndefiled();
+                    return Promise.resolve(null);
+                    break;
+                default:
+                    return Promise.resolve(null)
+                    break;
+            }
 
-                                notificationService.success(
-                                    "Added Private Model"
-                                );
-                                break;
-                        }
-                    });
+            function CreateModelUndefiled(s) {
+                vm.idModelUrl = "Model";
+
+                vm.models = {
+                    Model: "model undefiled"
+                };
             }
         }
 
@@ -1302,8 +1329,6 @@
                     }
                 });
             }
-
-            console.log(jsonDataNew);
 
             this.closeForm();
 
@@ -1577,7 +1602,7 @@
                                         'No substitution options found', 'No options available for substitution in this context.'
                                     );
                                     break;
-                                
+
                                 default:
                                     DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
                                     break;
@@ -1651,7 +1676,7 @@
 
             var cont = 0;
             var aaa;
-            var button1 ;
+            var button1;
 
             TressOptions.forEach(element => {
                 var button = document.createElement('button');
@@ -1663,19 +1688,19 @@
                 button.addEventListener('click', function () {
                     document.querySelectorAll('.option-button').forEach(btn => {
                         btn.classList.remove('active');
-                        btn.style.backgroundColor = '#1b6d85'; 
-                        btn.style.color = '#ffffff'; 
+                        btn.style.backgroundColor = '#1b6d85';
+                        btn.style.color = '#ffffff';
                     });
-            
+
                     button.classList.add('active');
-                    button.style.backgroundColor = '#2c3e50'; 
+                    button.style.backgroundColor = '#2c3e50';
                     aaa = CambiarOptionTree(element, editor1);
                 });
 
                 if (cont == 0) {
-                    button1 = button;  
+                    button1 = button;
                 }
-             
+
                 divbuttons.appendChild(button);
                 var buttonAdd = document.createElement('button');
                 //buttonAdd.textContent = '<i class="fa-sharp fa-solid fa-plus"></i>';
@@ -1708,12 +1733,12 @@
                 cont++;
             });
 
-            if (button1) {        
+            if (button1) {
                 button1.classList.add('active');
-                button1.style.backgroundColor = '#2c3e50'; 
-                  CambiarOptionTree(TressOptions[0], editor1);
+                button1.style.backgroundColor = '#2c3e50';
+                CambiarOptionTree(TressOptions[0], editor1);
             }
-          
+
             $window.editor._initialize();
 
             //zoom canvas from 1 to 1.75

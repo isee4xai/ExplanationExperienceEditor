@@ -9,13 +9,17 @@
         '$scope',
         '$window',
         'dialogService',
-        'notificationService'
+        'notificationService',
+        '$location',
+        '$state'
     ];
 
     function NodespanelController($scope,
         $window,
         dialogService,
-        notificationService) {
+        notificationService,
+        $location,
+        $state) {
 
         // HEAD //
         var vm = this;
@@ -24,6 +28,7 @@
         vm.ViewProperties = ViewProperties;
         vm.select = select;
         vm.remove = remove;
+        vm.redirect = redirect;
 
         _create();
         _activate();
@@ -39,7 +44,7 @@
                 decorator: [],
             };
 
- 
+
             var p = $window.editor.project.get();
 
             p.nodes.each(function (node) {
@@ -62,7 +67,7 @@
                         })
                         break;
                 }
- 
+
             });
 
             var selected = p.trees.getSelected();
@@ -149,6 +154,26 @@
                         'The tree has been removed from this project.'
                     );
                 });
+        }
+
+        function redirect(type, node) {
+     
+            var url = $location.url();
+
+            var indexId = url.indexOf("/id/");
+            var idParam;
+            if (indexId !== -1) {
+                idParam = url.substring(indexId + 4);
+                var indexNextSlash = idParam.indexOf("/");
+                if (indexNextSlash !== -1) {
+                    idParam = idParam.substring(0, indexNextSlash);
+                }
+                $state.go('id.editnode', { name: (type === 'edit') ? node.name : null });
+            } else {
+                $state.go('editor.editnode', { name: (type === 'edit') ? node.name : null });
+            }
+
+
         }
     }
 })();
