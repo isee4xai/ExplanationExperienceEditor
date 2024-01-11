@@ -77,20 +77,19 @@
 
         function redirect() {
             var url = $location.url();
-    
+
             var indexId = url.indexOf("/id/");
-            var idParam ;
+            var idParam;
             if (indexId !== -1) {
-                 idParam = url.substring(indexId + 4);
+                idParam = url.substring(indexId + 4);
                 var indexNextSlash = idParam.indexOf("/");
                 if (indexNextSlash !== -1) {
                     idParam = idParam.substring(0, indexNextSlash);
                 }
-              console.log(idParam);
+                $state.go('id', { vid: idParam, usercase: url.split("usecaseId=")[1] });
             } else {
-                console.log("ID no encontrado en la URL.");
+                $state.go('editor');
             }
-            $state.go('id', { vid: idParam, usercase: url.split("usecaseId=")[1] });
         }
 
         function save() {

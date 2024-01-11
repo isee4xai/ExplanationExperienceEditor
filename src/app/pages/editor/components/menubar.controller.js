@@ -155,6 +155,7 @@
             } else {
                 vm.isEditor = "editor";
             }
+            console.log(vm.isEditor);
         }
 
 
@@ -534,14 +535,21 @@
         function GetModels() {
             var url = $location.url().slice(1);
             var urlSplit = url.split("/");
-            projectModel.getModelsRootPrivate(url.split("usecaseId=")[1])
-                .then(function (x) {
-                    vm.models = x;
-                });
-            projectModel.getApplicability($location.search().usecaseId)
-                .then(function (x) {
-                    vm.applicability = x
-                });
+
+            if (url.split("usecaseId=")[1]) {
+                projectModel.getModelsRootPrivate(url.split("usecaseId=")[1])
+                    .then(function (x) {
+                        vm.models = x;
+                    });
+                projectModel.getApplicability($location.search().usecaseId)
+                    .then(function (x) {
+                        vm.applicability = x
+                    });
+            } else {
+                vm.models = {};
+                vm.applicability = {};
+            }
+
         }
 
         function GetIdModels() {
@@ -660,13 +668,15 @@
                                     tree.blocks.update(s[0], BlockConditions);
 
                                 } else {
-                                    var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
-                                    tree.connections.add(element, BlockConditions);
+                                    for (var x = 0; x < 2; x++) {
+                                        var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
+                                        tree.connections.add(element, BlockConditions);
 
-                                    BlockConditions = PropertieSelect(0);
+                                        BlockConditions = PropertieSelect(0);
 
-                                    var s = tree.blocks.getSelected();
-                                    tree.blocks.update(s[0], BlockConditions);
+                                        var s = tree.blocks.getSelected();
+                                        tree.blocks.update(s[0], BlockConditions);
+                                    }
                                 }
                             });
                             //clean ArrayComposites and add the new composites created
