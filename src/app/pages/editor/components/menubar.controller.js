@@ -56,6 +56,8 @@
         vm.RandomGenerate10 = RandomGenerate10;
         vm.NotificationSuccess = NotificationSuccess;
         vm.addListPara = addListPara;
+        vm.redirect = redirect;
+
 
         //random
         vm.Quetions = {
@@ -121,7 +123,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 21/05/23";
+        vm.date = "version 15/01/24";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -559,9 +561,10 @@
         }
 
         function RandomGenerate(DataInput, IndexSucces) {
-
+            console.log(DataInput);
             projectModel.GetApplicabilityExplanation(DataInput.Model)
                 .then(function (x) {
+                    console.log(x);
                     vm.applicability = x;
 
 
@@ -726,6 +729,11 @@
 
                         do {
                             var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
+                            console.log(vm.applicability);
+                            console.log(vm.explanation);
+                            console.log( Object.keys(vm.explanation).length);
+                            console.log(indexExplanation);
+                            console.log(vm.applicability[vm.explanation[indexExplanation]]);
                         } while (vm.applicability[vm.explanation[indexExplanation]].flag == false);
 
                         BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
@@ -884,6 +892,25 @@
 
         function TreesExample() {
             window.open('http://localhost:8000/#/id/643fc364a3402ba28c44b14a', '_blank');
+        }
+
+        function redirect() {
+            console.log("655646546546546546");
+            var url = $location.url();
+
+            var indexId = url.indexOf("/id/");
+            var idParam;
+            if (indexId !== -1) {
+                idParam = url.substring(indexId + 4);
+                var indexNextSlash = idParam.indexOf("/");
+                if (indexNextSlash !== -1) {
+                    idParam = idParam.substring(0, indexNextSlash);
+                }
+                $state.go('id.editnode');
+            } else {
+                $state.go('editor.editnode');
+            }
+
         }
     }
 })();
