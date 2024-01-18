@@ -771,10 +771,10 @@
         $scope.$on('$destroy', _destroy);
 
         function _activate() {
-            var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
-            if (existDiv.length > 0) {
-                existDiv[0].remove();
-            }
+            /* var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
+             if (existDiv.length > 0) {
+                 existDiv[0].remove();
+             }*/
             vm.TitleSelect = null;
             vm.ArrayParams = [];
 
@@ -1574,11 +1574,12 @@
         }
 
         function SubstituteNodes(NodeSelect, dataCriteria) {
+            console.log(NodeSelect);
             notificationService.load(
                 'Loading', 'Please wait while your request is being processed...'
             );
             GetProjectData(NodeSelect).then(function (x) {
-
+                console.log(x);
                 var DataSubstituteSubtree = {
                     "treeId": x.projectData.id,
                     "subtreeId": NodeSelect.id,
@@ -2141,7 +2142,112 @@
             return propertiesExpl;
         }
 
+        /*
+        function verificarInstanciaRepetida(nodos, nodoId, nuevaInstancia, nivel,nodeId) {
+            
+            const nodoInfo = nodos[nodoId];
+            console.log("--------------------");
+            console.log(nodoInfo);
+            console.log(nivel);
+
+            if (nodoInfo.Instance && nodoInfo.Instance === nuevaInstancia && nivel >  2 ) {
+                return true;  // La instancia ya existe en otro nodo
+            }
+     
+            var child = nodoInfo.firstChild;
+            if (child) {
+                if (nivel <= 2 && nodeId == nodoInfo.id) {
+                    return false;
+                }
+
+                var existe = false;
+                do {
+                    existe = verificarInstanciaRepetida(nodos, child.Id, nuevaInstancia, nivel+1 );
+                    if (existe) {
+                        return true;
+                    }
+                    child = child.Next;
+                } while (child != null);
+
+
+                return false;
+            }
+            return false;  
+        }
+        */
+        function existeExplainer(nodos, nodoId, nodoSelect, elementosEncontrados) {
+            var SelectSubTree = {
+                IdSelect: false,
+                IdRepetido: false
+            };
+
+            var child = nodos[nodoId].firstChild;
+            if (child) {
+                do {
+                    if (nodos[child.Id].firstChild) {
+                        var datos = existeExplainer(nodos, child.Id, nodoSelect, elementosEncontrados);
+
+                        if (datos.IdRepetido) {
+                            SelectSubTree.IdRepetido = true;
+                        }
+
+                        if (datos.IdSelect) {
+                            SelectSubTree.IdSelect = true;
+                        }
+                    }
+
+                    var idEstaEnLista = elementosEncontrados.some(function (elemento) {
+                        return elemento.id === child.Id;
+                    });
+                    if (idEstaEnLista) {
+                        SelectSubTree.IdRepetido = true;
+                    }
+
+                    if (nodoSelect == child.Id) {
+                        SelectSubTree.IdSelect = true;
+                    }
+
+                    child = child.Next;
+                } while (child != null);
+            }
+            return SelectSubTree;
+        }
+
+        function verificarInstanciaRepetida(nodos, nodoId, nuevaInstancia, nodeSelect, elementosEncontrados) {
+            var child = nodos[nodoId].firstChild;
+            if (child) {
+                do {
+                    if (nodos[child.Id].firstChild) {
+                        var datos = existeExplainer(nodos, child.Id, nodeSelect, elementosEncontrados);
+                        if (datos.IdRepetido && datos.IdSelect) {
+                            return true;
+                        }
+                    }
+                    child = child.Next;
+                } while (child != null);
+            }
+            return false;
+        }
+
+
         async function UpdateProperties(option, block, nodeId) {
+
+            var e = $window.editor.export;
+            var CompositeFirst = e.treeToData().root;
+
+            var elementosEncontrados = Object.values(e.treeToData().nodes).filter(function (elemento) {
+                return elemento.hasOwnProperty("Instance") && elemento["Instance"] === option;
+            });
+
+            if (elementosEncontrados.length > 0) {
+                if (verificarInstanciaRepetida(e.treeToData().nodes, e.treeToData().root, option, nodeId, elementosEncontrados)) {
+                    notificationService.warning(
+                        option,
+                        "The explainer already exists within this sub-tree"
+                    );
+                } 
+            } 
+
             if (option != block.title) {
                 var Continue = true;
                 if (vm.original.name == "Explanation Method") {
