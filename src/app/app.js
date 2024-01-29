@@ -44,7 +44,7 @@ angular.module('app', [
             editorService.newProject();
 
 
-            projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (y) {
+          //  projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (y) {
 
                 projectModel
                     .getRecentProjects()
@@ -67,12 +67,12 @@ angular.module('app', [
                                 });
                         }
 
-                        if (y === "Error in computer network communications") {
+                    /*    if (y === "Error in computer network communications") {
                             notificationService.warning(
                                 'Applicability Not Found',
                                 'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
                             );
-                        }
+                        }*/
 
                         if (projects.length > 0) {
 
@@ -94,7 +94,7 @@ angular.module('app', [
                             }
    
                             projectModel
-                                .openProject(elementoEncontrado.path, y)
+                                .openProject(elementoEncontrado.path, null)
                                 .then(function () {
                                     closePreload();
                                 });
@@ -119,7 +119,7 @@ angular.module('app', [
                                 });
                         }
                     });
-            });
+        //    });
 
 
         }

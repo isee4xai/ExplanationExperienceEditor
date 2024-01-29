@@ -35,7 +35,7 @@
                             <ul>
                                 <li ng-if="propertiespanel.original.name == 'Explanation Method'"
                                     ng-repeat="option in propertiespanel.Explainers"
-                                    ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id)"
+                                    ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id,propertiespanel.original)"
                                     ng-disabled="item.fixed"
                                     ng-mouseenter="propertiespanel.startTimeout(option,'Explanation')"
                                     ng-mouseleave="propertiespanel.cancelTimeout(option,'Explanation')">
@@ -110,7 +110,7 @@
                     <ul class="nav">
                         <li>
                             <a ng-model="propertiespanel.block.title"
-                                ng-click="propertiespanel.SubstituteNodes(propertiespanel.original)"
+                                ng-click="propertiespanel.SubstituteNodes(propertiespanel.original,null,'WithoutCriteria')"
                                 class="search-link">
                                 Search substitute subtree</a>
                         </li>
@@ -130,8 +130,6 @@
                         <ul class="nav">
                             <li>
                                 <a ng-model="propertiespanel.modelsSelect">{{propertiespanel.modelsSelect}}</a>
-
-
                                 <!-- 
                                 <a ng-model="propertiespanel.Models"
                                 ng-init="propertiespanel.loadModel()"
@@ -315,6 +313,34 @@
                                     </div>
                                 </li>
                             </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="DivModel">
+                <label >QUERY</label>    
+            </div>
+            <div>
+                <div id="header">
+                    <ul class="nav">
+                        <li>
+                            <a ng-model="propertiespanel.block.title"
+                                ng-click="propertiespanel.AutomaticApplicability()" class="search-link">
+                                Automatic applicability all tree</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <div id="header">
+                    <ul class="nav">
+                        <li>
+                            <a ng-model="propertiespanel.block.title"
+                                ng-click="propertiespanel.AutomaticReuseAllTree()"
+                                class="search-link">
+                                Automatic reuse all tree</a>
                         </li>
                     </ul>
                 </div>

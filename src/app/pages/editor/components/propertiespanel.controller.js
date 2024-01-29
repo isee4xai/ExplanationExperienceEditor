@@ -62,6 +62,9 @@
         vm.CambiarOptionTree = CambiarOptionTree;
         vm.updateNodeSub = updateNodeSub;
         vm.isLoading = false;
+        //Automatic
+        vm.AutomaticReuseAllTree = AutomaticReuseAllTree;
+        vm.AutomaticApplicability = AutomaticApplicability;
 
         vm.explainerAccordionOpen = false
         vm.ExplainerConcurrentnessAccordionOpen = false
@@ -771,10 +774,7 @@
         $scope.$on('$destroy', _destroy);
 
         function _activate() {
-            /* var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
-             if (existDiv.length > 0) {
-                 existDiv[0].remove();
-             }*/
+
             vm.TitleSelect = null;
             vm.ArrayParams = [];
 
@@ -832,7 +832,7 @@
                         vm.isLoading = false;
 
                         if (vm.block.params) {
-                            CreateParams(vm.block.params);
+                            CreateParams(vm.block.params, vm.block, '', vm.original);
                         }
 
                         if (vm.Explainers == null) {
@@ -896,10 +896,6 @@
                                     );
                                 }
                             } else {
-                                console.log("--------------");
-                                console.log(vm.models);
-                                console.log(vm.idModelUrl);
-                                console.log(vm.models[vm.idModelUrl]);
                                 SelectModel(vm.models[vm.idModelUrl]);
                             }
 
@@ -1243,11 +1239,6 @@
             });
         }
 
-        async function CleanFormSubtitute(NodeSelect) {
-
-        }
-
-
         async function submitFormSub(NodeSelect) {
             var jsonDataNew = {
             };
@@ -1366,7 +1357,7 @@
                     }
                     break;
                 case "composite":
-                    SubstituteNodes(NodeSelect, jsonDataNew);
+                    SubstituteNodes(NodeSelect, jsonDataNew, 'WithCriteria');
                     break;
                 default:
                     break;
@@ -1448,7 +1439,7 @@
                 buttonAddPlus.style.backgroundColor = '#47A447';
                 buttonAddPlus.style.border = "none";
                 buttonAddPlus.addEventListener('click', function () {
-                    UpdateProperties(OptionNodeSub[i].explainer, block, NodeSelect.id);
+                    UpdateProperties(OptionNodeSub[i].explainer, block, NodeSelect.id, vm.original);
                     nuevoDiv.remove();
                 });
 
@@ -1559,7 +1550,8 @@
                         var arbolesContenedores = trees.filter(arbol => arbol.nodes[NodeSelect.id]);
                         var arbolContenedor = arbolesContenedores[0];
                         var idNodoRaiz = arbolContenedor.root;
-                        var nodoRaiz = arbolContenedor.nodes[idNodoRaiz];
+                        var nodoRaiz =
+                            arbolContenedor.nodes[idNodoRaiz];
 
                         var idNodoPadre = nodoRaiz && Object.keys(arbolContenedor.nodes).find(
                             (key) => true == GetFatherNodeSub(arbolContenedor.nodes[idNodoRaiz], NodeSelect.id)
@@ -1573,13 +1565,14 @@
             });
         }
 
-        function SubstituteNodes(NodeSelect, dataCriteria) {
-            console.log(NodeSelect);
+        function SubstituteNodes(NodeSelect, dataCriteria, type) {
+
             notificationService.load(
                 'Loading', 'Please wait while your request is being processed...'
             );
             GetProjectData(NodeSelect).then(function (x) {
-                console.log(x);
+
+                var usecaseId = $location.search().usecaseId;
                 var DataSubstituteSubtree = {
                     "treeId": x.projectData.id,
                     "subtreeId": NodeSelect.id,
@@ -1587,48 +1580,84 @@
                     "k": 3,
                     "criteria": dataCriteria
                 };
-                var usecaseId = $location.search().usecaseId;
 
-                if (dataCriteria) {
-                    projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId)
-                        .then(function (data) {
-                            switch (data.length) {
-                                case 40:
-                                    notificationService.error(
-                                        'An error occurred. Please try again later.'
-                                    );
-                                    break;
-                                case 0:
-                                    notificationService.info(
-                                        'No substitution options found', 'No options available for substitution in this context.'
-                                    );
-                                    break;
+                switch (type) {
+                    case "WithCriteria":
+                        projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId)
+                            .then(function (data) {
+                                switch (data.length) {
+                                    case 40:
+                                        notificationService.error(
+                                            'An error occurred. Please try again later.'
+                                        );
+                                        break;
+                                    case 0:
+                                        notificationService.info(
+                                            'No substitution options found', 'No options available for substitution in this context.'
+                                        );
+                                        break;
 
-                                default:
-                                    DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
-                                    break;
-                            }
-                        });
-                } else {
-                    delete DataSubstituteSubtree.criteria;
-                    projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
-                        .then(function (data) {
-                            switch (data.length) {
-                                case 40:
-                                    notificationService.error(
-                                        'An error occurred. Please try again later.'
-                                    );
-                                    break;
-                                case 0:
-                                    notificationService.info(
-                                        'No substitution options found', 'No options available for substitution in this context.'
-                                    );
-                                    break;
-                                default:
-                                    DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
-                                    break;
-                            }
-                        });
+                                    default:
+                                        DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
+                                        break;
+                                }
+                            });
+                        break;
+                    case "WithoutCriteria":
+                        delete DataSubstituteSubtree.criteria;
+                        projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
+                            .then(function (data) {
+                                switch (data.length) {
+                                    case 40:
+                                        notificationService.error(
+                                            'An error occurred. Please try again later.'
+                                        );
+                                        break;
+                                    case 0:
+                                        notificationService.info(
+                                            'No substitution options found', 'No options available for substitution in this context.'
+                                        );
+                                        break;
+                                    default:
+                                        DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
+                                        break;
+                                }
+                            });
+                        break;
+                    case "Automatic":
+                        delete DataSubstituteSubtree.criteria;
+                        DataSubstituteSubtree.k = 1;
+                        projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
+                            .then(function (data) {
+                                switch (data.length) {
+                                    case 40:
+                                        notificationService.error(
+                                            'An error occurred. Please try again later.'
+                                        );
+                                        break;
+                                    case 0:
+                                        notificationService.info(
+                                            'No substitution options found', 'No options available for substitution in this context.'
+                                        );
+                                        break;
+                                    default:
+                                        //DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
+                                        var editor1 = new b3e.editor.Editor();
+                                        editor1.project.create();
+                                        var p = editor1.project.get();
+
+                                        var TressOptions = editor1.import.treeAsDataSubti(data, p, x.parentNode.id, data[0].data.trees[0].root, vm.applicabilityList, x.decendents);
+                                        TressOptions.shift();
+                                        console.log(TressOptions);
+
+
+                                        updateNodeSub(TressOptions[0], NodeSelect, editor1, 1, null);
+
+                                }
+                            });
+                        break;
+                    default:
+                        break;
                 }
             });
 
@@ -1788,7 +1817,11 @@
             //Organize Canvas
             t.organize.organize();
             //delete div sub
-            divGeneral.remove();
+            if (divGeneral) {
+                divGeneral.remove();
+            } else {
+                editor1._game.canvas.remove();
+            }
             //delete button close 
             var elementos = document.getElementsByClassName('mi.close');
             if (elementos.length != 0) {
@@ -1798,7 +1831,57 @@
             update();
         }
 
-        // puede eliminarse 
+        //Automatic Reuse tree
+
+        function AutomaticReuseAllTree() {
+            var e = $window.editor.export;
+            SubstituteNodes(e.treeToData().nodes[e.treeToData().root], null, "Automatic");
+        }
+
+        async function AutomaticApplicability() {
+            var ListExplainerInTree = [];
+            var e = $window.editor.export;
+            var nodes = e.treeToData().nodes;
+        
+            var p = $window.editor.project.get();
+            var t = p.trees.getSelected();
+        
+            for (const key in nodes) {
+                if (nodes[key].Concept == "Explanation Method" && nodes[key].properties.Applicability == false) {
+                    var datos2 = t.blocks.get(nodes[key].id);
+                    var data = {
+                        "explainer": datos2.title
+                    };
+                    try {
+                        const x = await projectModel.GetSubstituteExplainer(data, $location.search().usecaseId);
+                        let index = 0;
+                        let explainerLength = x.length;
+                        if (explainerLength > 0) {
+                            vm.ExplainersSubstituteAll[datos2.title] = x;
+        
+                            let primeraClave;
+                            if (x[0].similarity != 0) {
+                                do {
+                                    primeraClave = x[index].explainer;
+                                    index++;
+                                } while (ListExplainerInTree.includes(primeraClave));
+                            } else {
+                                do {
+                                    const randomIndex = Math.floor(Math.random() * explainerLength);
+                                    primeraClave = x[randomIndex].explainer
+                                } while (ListExplainerInTree.includes(primeraClave));
+                            }
+                            ListExplainerInTree.push(primeraClave);
+                            UpdateProperties(primeraClave, datos2, nodes[key].id, datos2);
+                        }
+                    } catch (error) {
+                        notificationService.error('An error occurred. Please try again later.');
+                        vm.isLoading = false;
+                    }
+                }
+            }
+        }
+
         function getChildExplanations(DataAll, parentKey) {
             var children = [];
             for (var i = 0; i < DataAll.length; i++) {
@@ -2142,39 +2225,7 @@
             return propertiesExpl;
         }
 
-        /*
-        function verificarInstanciaRepetida(nodos, nodoId, nuevaInstancia, nivel,nodeId) {
-            
-            const nodoInfo = nodos[nodoId];
-            console.log("--------------------");
-            console.log(nodoInfo);
-            console.log(nivel);
 
-            if (nodoInfo.Instance && nodoInfo.Instance === nuevaInstancia && nivel >  2 ) {
-                return true;  // La instancia ya existe en otro nodo
-            }
-     
-            var child = nodoInfo.firstChild;
-            if (child) {
-                if (nivel <= 2 && nodeId == nodoInfo.id) {
-                    return false;
-                }
-
-                var existe = false;
-                do {
-                    existe = verificarInstanciaRepetida(nodos, child.Id, nuevaInstancia, nivel+1 );
-                    if (existe) {
-                        return true;
-                    }
-                    child = child.Next;
-                } while (child != null);
-
-
-                return false;
-            }
-            return false;  
-        }
-        */
         function existeExplainer(nodos, nodoId, nodoSelect, elementosEncontrados) {
             var SelectSubTree = {
                 IdSelect: false,
@@ -2230,10 +2281,9 @@
         }
 
 
-        async function UpdateProperties(option, block, nodeId) {
+        async function UpdateProperties(option, block, nodeId, originalBlock) {
 
             var e = $window.editor.export;
-            var CompositeFirst = e.treeToData().root;
 
             var elementosEncontrados = Object.values(e.treeToData().nodes).filter(function (elemento) {
                 return elemento.hasOwnProperty("Instance") && elemento["Instance"] === option;
@@ -2245,55 +2295,57 @@
                         option,
                         "The explainer already exists within this sub-tree"
                     );
-                } 
-            } 
+                }
+            }
 
             if (option != block.title) {
                 var Continue = true;
-                if (vm.original.name == "Explanation Method") {
-                    await paramsExp(option, block, nodeId)
+                if (originalBlock.name == "Explanation Method") {
+                    await paramsExp(option, block, nodeId, originalBlock)
                         .catch((error) => {
                             Continue = false;
                         });
                 }
                 if (Continue) {
-                    if (vm.original.Json != undefined) {
-                        vm.original.Json = undefined;
+                    if (originalBlock.Json != undefined) {
+                        originalBlock.Json = undefined;
                         const miDiv = document.getElementById('mi-div');
                         if (miDiv !== null) {
                             miDiv.innerHTML = "";
                         }
-                    } else if (vm.original.Image != undefined) {
-                        vm.original.Image = undefined;
+                    } else if (originalBlock.Image != undefined) {
+                        originalBlock.Image = undefined;
                         if (document.getElementById("ImgExpl") !== null) {
                             document.getElementById("ImgExpl").src = "";
                         }
                     }
                     //we check if any selected "Evaluation" or "Explanation" method is in AllPropertis
-                    var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == vm.original.id);
+                    var selecionado = vm.AllProperties.find(element => element.value === option.value && element.id == originalBlock.id);
                     //define the properties
 
                     if (selecionado != undefined) {
-                        vm.block = {
+                        block = {
                             title: selecionado.value,
                             properties: tine.merge({}, selecionado.properties) || null,
                             description: selecionado.description,
                             propertyExpl: selecionado.propertyExpl,
                         };
                     } else {
-                        vm.block = {
+                        block = {
                             title: option,
-                            properties: tine.merge({}, vm.original.properties),
-                            description: vm.original.description,
+                            properties: tine.merge({}, originalBlock.properties),
+                            description: originalBlock.description,
                         };
                     }
 
                     // _SearchSubstituteExplainers(block.title);
                     vm.ExplainersSubstitute = [];
                     cancelTimeout();
-                    update();
+                    updateBlockid(originalBlock, block);
 
-                    if (vm.block.properties.Applicability == true) {
+                    //update();
+
+                    if (block.properties.Applicability == true) {
                         notificationService.success(
                             option + " Explanation Method selected",
                             "Applicability: Is applicable"
@@ -2311,16 +2363,15 @@
         }
 
 
-        function change(block, nodeId) {
-
-            switch (vm.original.name) {
+        function change(block, nodeId, originalBlock) {
+            switch (originalBlock.name) {
                 case "Explanation Method":
 
-                    vm.block.params = {};
-                    for (var keyParam in vm.block.params) {
-                        if (vm.block.params.hasOwnProperty(keyParam)) {
+                    block.params = {};
+                    for (var keyParam in block.params) {
+                        if (block.params.hasOwnProperty(keyParam)) {
                             if (keyParam == "key" || keyParam == "value") {
-                                delete vm.block.params[keyParam];
+                                delete block.params[keyParam];
                             }
                         }
                     }
@@ -2374,10 +2425,10 @@
                             description: r.description,
                             type: r.type,
                         }
-                        if (!vm.block.params) {
-                            vm.block.params = {}; // si vm.block.params no está definido, se crea como un objeto vacío
+                        if (!block.params) {
+                            block.params = {}; // si vm.block.params no está definido, se crea como un objeto vacío
                         }
-                        vm.block.params[r.key] = jsonParam;
+                        block.params[r.key] = jsonParam;
                     }
                     break;
                 case "User Question":
@@ -2386,13 +2437,15 @@
                         Question: vm.ArrayParams[0].value
                     };
 
-                    vm.block.params = jsonParam;
+                    block.params = jsonParam;
                     break;
 
                 default:
                     break;
             }
-            update();
+            //  update();
+            updateBlockid(originalBlock, block);
+
         }
 
         function PopUpImg(ImagenSrc) {
@@ -2513,29 +2566,29 @@
         }
 
 
-        function paramsExp(option, block, nodeId) {
+        function paramsExp(option, block, nodeId, originalBlock) {
 
             var IdModel = "";
             return new Promise((resolve, reject) => {
 
-                for (var i = 0; i < vm.original.parent.children.length; i++) {
-                    if (vm.original.parent.children[i].category === "root") {
-                        if (!vm.original.parent.children[i].hasOwnProperty("ModelRoot")) {
-                            IdModel = vm.original.parent.children[i].idModel
+                for (var i = 0; i < originalBlock.parent.children.length; i++) {
+                    if (originalBlock.parent.children[i].category === "root") {
+                        if (!originalBlock.parent.children[i].hasOwnProperty("ModelRoot")) {
+                            IdModel = originalBlock.parent.children[i].idModel
                         } else {
-                            IdModel = vm.original.parent.children[i].ModelRoot.idModel;
+                            IdModel = originalBlock.parent.children[i].ModelRoot.idModel;
                         }
                     }
                 }
                 projectModel.getConditionsEvaluationEXP(option, IdModel)
                     .then(function (x) {
                         if (x != "Error in computer network communications") {
-                            paintExplanation(x, option, block, nodeId);
+                            paintExplanation(x, option, block, nodeId, originalBlock);
                             resolve();
                         } else {
                             projectModel.getConditionsEvaluationEXP(option, "")
                                 .then(function (y) {
-                                    paintExplanation(y, option, block, nodeId);
+                                    paintExplanation(y, option, block, nodeId, originalBlock);
                                     resolve();
                                 })
                         }
@@ -2550,7 +2603,7 @@
 
         }
 
-        function paintExplanation(x, option, block, nodeId) {
+        function paintExplanation(x, option, block, nodeId, originalBlock) {
             if (!vm.applicabilityList) {
                 notificationService.info(
                     'Checking the applicability of the explainer...'
@@ -2560,13 +2613,15 @@
                     switch (true) {
                         case x.hasOwnProperty("params"):
                             if (vm.applicabilityList[option] != undefined) {
-                                vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                                block.properties.Applicability = vm.applicabilityList[option].flag;
                             } else {
-                                vm.block.properties.Applicability = false
+                                block.properties.Applicability = false
                             }
-                            vm.block.properties.Popularity = 1;
-                            vm.block.title = option;
-                            CreateParams(x.params, block, nodeId);
+                            block.properties.Popularity = 1;
+                            block.title = option;
+                            console.log('*********************************');
+                            console.log(x.params);
+                            CreateParams(x.params, block, nodeId, originalBlock);
                             break;
                         case x == "Error in computer network communications":
                             vm.ArrayParams = [];
@@ -2578,15 +2633,15 @@
                         default:
                             // example of values Popularity and Applicability
                             if (vm.applicabilityList[option] != undefined) {
-                                vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                                block.properties.Applicability = vm.applicabilityList[option].flag;
                             } else {
-                                vm.block.properties.Applicability = false
+                                block.properties.Applicability = false
                             }
-                            vm.block.properties.Popularity = 1;
-                            vm.block.title = option;
+                            block.properties.Popularity = 1;
+                            block.title = option;
                             vm.ArrayParams = [];
-
-                            update();
+                            updateBlockid(originalBlock, block);
+                            // update();
                             break;
                     }
                 });
@@ -2594,13 +2649,13 @@
                 switch (true) {
                     case x.hasOwnProperty("params"):
                         if (vm.applicabilityList[option] != undefined) {
-                            vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                            block.properties.Applicability = vm.applicabilityList[option].flag;
                         } else {
-                            vm.block.properties.Applicability = false
+                            block.properties.Applicability = false
                         }
-                        vm.block.properties.Popularity = 1;
-                        vm.block.title = option;
-                        CreateParams(x.params, block, nodeId);
+                        block.properties.Popularity = 1;
+                        block.title = option;
+                        CreateParams(x.params, block, nodeId, originalBlock);
                         break;
                     case x == "Error in computer network communications":
                         vm.ArrayParams = [];
@@ -2612,11 +2667,11 @@
                     default:
                         // example of values Popularity and Applicability
                         if (vm.applicabilityList[option] != undefined) {
-                            vm.block.properties.Applicability = vm.applicabilityList[option].flag;
+                            block.properties.Applicability = vm.applicabilityList[option].flag;
                         } else {
-                            vm.block.properties.Applicability = false
+                            block.properties.Applicability = false
                         }
-                        vm.block.properties.Popularity = 1;
+                        block.properties.Popularity = 1;
                         vm.ArrayParams = [];
 
                         update();
@@ -2626,7 +2681,7 @@
         }
 
 
-        function CreateParams(params, block, nodeId) {
+        function CreateParams(params, block, nodeId, originalBlock) {
             vm.JsonParams = {};
             vm.ArrayParams = [];
             vm.JsonParams = params;
@@ -2680,7 +2735,9 @@
                 });
             }
 
-            change(block, nodeId);
+            //  block.params = vm.ArrayParams;
+
+            change(block, nodeId, originalBlock);
         }
 
         function paramsExpValue(option) {
@@ -2859,6 +2916,13 @@
             t.blocks.update(vm.original, vm.block);
         }
 
+        function updateBlockid(original, block) {
+
+            var p = $window.editor.project.get();
+            var t = p.trees.getSelected();
+            t.blocks.update(original, block);
+        }
+
         async function RunBt() {
             vm.RunBtString.push("START RUN BT");
             vm.jsonData = projectModel.runBT();
@@ -3027,7 +3091,7 @@
             var result = false;
             var jsonParam = {};
 
-            CreateParams(ExpBlock.params);
+            CreateParams(ExpBlock.params, vm.block, '', vm.original);
 
             for (var i = 0; i < vm.ArrayParams.length; i++) {
                 if (vm.ArrayParams[i].value !== null && vm.ArrayParams[i].value !== "[ ]") {
