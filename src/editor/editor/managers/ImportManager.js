@@ -383,19 +383,23 @@ b3e.editor.ImportManager = function (editor) {
             block.Json = spec.Json;
 
 
-
             if (block.name == "Explanation Method") {
                 //Popularity
+    
                 if (typeof Popularity !== 'undefined' && Popularity !== null && typeof Popularity.Popularity !== 'undefined') {
                     if (block.id in Popularity.Popularity) {
                         block.properties.Popularity = Popularity.Popularity[block.id];
                     } else {
-                        block.properties.Popularity = 1;
+                        if (![0, 1, 2].includes(block.properties.Popularity)) {
+                            block.properties.Popularity = 1;
+                        }
                     }
                 } else {
-                    block.properties.Popularity = 1;
+                    if (![0, 1, 2].includes(block.properties.Popularity)) {
+                        block.properties.Popularity = 1;
+                    }
                 }
-
+                
                 //Applicability
                 if (Applicability != null) {
                     if (Applicability[block.title] != undefined) {

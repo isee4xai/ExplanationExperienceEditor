@@ -91,7 +91,6 @@ function EditorController($state, $window, $location, projectModel, dialogServic
                                     .openProjectId(Id)
                                     .then(function (x) {
                                         // send you to the error page if the call to the service does not return data
-
                                         console.log(x);
                                         if (x == null) {
                                             $state.go('id.error');
@@ -101,7 +100,7 @@ function EditorController($state, $window, $location, projectModel, dialogServic
                                                 var tree = project.trees.getSelected();
                                                 tree.organize.organize();
                                             } else {
-                                                //   location.reload();
+                                                location.reload();
                                             }
                                         }
                                     });
@@ -113,7 +112,6 @@ function EditorController($state, $window, $location, projectModel, dialogServic
             default:
                 break;
         }
-
 
     }
 

@@ -766,6 +766,7 @@
                 _create();
                 _activate();
             });
+
         } else {
             _create();
             _activate();
@@ -781,7 +782,6 @@
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
             var s = t.blocks.getSelected();
-
             if (s.length === 1) {
                 vm.original = s[0];
                 var ModelGet = {};
@@ -818,7 +818,6 @@
                     Image: vm.original.Image,
                     Json: vm.original.Json
                 };
-
 
                 //  check if the property that is selected to define its values ​​in the properties component
                 //  is the explain method and the evaluate method or intends
@@ -883,24 +882,29 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
                         vm.IdModel = vm.block.ModelRoot;
-                        if (!getCallMade) {
-                            if (vm.block.ModelRoot && (vm.block.ModelRoot.img || vm.block.ModelRoot.query)) {
-                                if (vm.block.ModelRoot.img) {
-                                    notificationService.success(
-                                        'Add image Model', 'image model by default'
-                                    );
+                        if ($location.search().usecaseId != undefined) {
+                            if (!getCallMade || vm.block.ModelRoot.idModel == undefined) {
+                                if (vm.block.ModelRoot && (vm.block.ModelRoot.img || vm.block.ModelRoot.query)) {
+                                    if (vm.block.ModelRoot.img) {
+                                        notificationService.success(
+                                            'Add image Model', 'image model by default'
+                                        );
+                                    }
+                                    if (vm.block.ModelRoot.query) {
+                                        notificationService.success(
+                                            'Add Query Model', 'Query model by default'
+                                        );
+                                    }
+                                } else {
+                                    SelectModel(vm.models[vm.idModelUrl]);
                                 }
-                                if (vm.block.ModelRoot.query) {
-                                    notificationService.success(
-                                        'Add Query Model', 'Query model by default'
-                                    );
-                                }
-                            } else {
-                                SelectModel(vm.models[vm.idModelUrl]);
-                            }
 
-                            getCallMade = true;
+                                getCallMade = true;
+                            }
                         }
+
+
+                        // t.blocks.update(vm.original, vm.block);
                         break;
                     case "User Question":
                         vm.TitleName = vm.original.name;
@@ -1550,29 +1554,37 @@
                         var arbolesContenedores = trees.filter(arbol => arbol.nodes[NodeSelect.id]);
                         var arbolContenedor = arbolesContenedores[0];
                         var idNodoRaiz = arbolContenedor.root;
-                        var nodoRaiz =
-                            arbolContenedor.nodes[idNodoRaiz];
+                        var nodoRaiz = arbolContenedor.nodes[idNodoRaiz];
 
                         var idNodoPadre = nodoRaiz && Object.keys(arbolContenedor.nodes).find(
                             (key) => true == GetFatherNodeSub(arbolContenedor.nodes[idNodoRaiz], NodeSelect.id)
                         );
 
                         var nodosDescendientes = obtenerDescendientes(arbolContenedor.nodes, arbolContenedor.nodes[idNodoPadre].id);
-
                         x.data = e.projectToData();
+                        // get only select Tree
+                        const selectedTreeId = x.data.selectedTree;
+                        x.data.trees = x.data.trees.filter(tree => tree.id === selectedTreeId);
+                        if (x.data.trees[0].img) {
+                           delete x.data.trees[0].img;  
+                        }
+
                         resolve({ projectData: x, parentNode: arbolContenedor.nodes[idNodoPadre], decendents: nodosDescendientes });
                     });
             });
         }
 
-        function SubstituteNodes(NodeSelect, dataCriteria, type) {
+        async function SubstituteNodes(NodeSelect, dataCriteria, type) {
+            var loaderDiv = document.querySelector('#loader');
+            loaderDiv.style.display = 'block';
 
             notificationService.load(
                 'Loading', 'Please wait while your request is being processed...'
             );
-            GetProjectData(NodeSelect).then(function (x) {
 
-                var usecaseId = $location.search().usecaseId;
+            try {
+                const x = await GetProjectData(NodeSelect);
+                const usecaseId = $location.search().usecaseId;
                 var DataSubstituteSubtree = {
                     "treeId": x.projectData.id,
                     "subtreeId": NodeSelect.id,
@@ -1583,125 +1595,118 @@
 
                 switch (type) {
                     case "WithCriteria":
-                        projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId)
-                            .then(function (data) {
-                                switch (data.length) {
-                                    case 40:
-                                        notificationService.error(
-                                            'An error occurred. Please try again later.'
-                                        );
-                                        break;
-                                    case 0:
-                                        notificationService.info(
-                                            'No substitution options found', 'No options available for substitution in this context.'
-                                        );
-                                        break;
-
-                                    default:
-                                        DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
-                                        break;
-                                }
-                            });
+                        const dataWithCriteria = await projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId);
+                        handleData(dataWithCriteria, NodeSelect, x.parentNode, x.decendents);
                         break;
                     case "WithoutCriteria":
                         delete DataSubstituteSubtree.criteria;
-                        projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
-                            .then(function (data) {
-                                switch (data.length) {
-                                    case 40:
-                                        notificationService.error(
-                                            'An error occurred. Please try again later.'
-                                        );
-                                        break;
-                                    case 0:
-                                        notificationService.info(
-                                            'No substitution options found', 'No options available for substitution in this context.'
-                                        );
-                                        break;
-                                    default:
-                                        DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
-                                        break;
-                                }
-                            });
+                        const dataWithoutCriteria = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
+                        handleData(dataWithoutCriteria, NodeSelect, x.parentNode, x.decendents);
                         break;
                     case "Automatic":
                         delete DataSubstituteSubtree.criteria;
                         DataSubstituteSubtree.k = 1;
-                        projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId)
-                            .then(function (data) {
-                                switch (data.length) {
-                                    case 40:
-                                        notificationService.error(
-                                            'An error occurred. Please try again later.'
-                                        );
-                                        break;
-                                    case 0:
-                                        notificationService.info(
-                                            'No substitution options found', 'No options available for substitution in this context.'
-                                        );
-                                        break;
-                                    default:
-                                        //DrawCanvas(data, NodeSelect, x.parentNode, x.decendents);
-                                        var editor1 = new b3e.editor.Editor();
-                                        editor1.project.create();
-                                        var p = editor1.project.get();
-
-                                        var TressOptions = editor1.import.treeAsDataSubti(data, p, x.parentNode.id, data[0].data.trees[0].root, vm.applicabilityList, x.decendents);
-                                        TressOptions.shift();
-                                        console.log(TressOptions);
-
-
-                                        updateNodeSub(TressOptions[0], NodeSelect, editor1, 1, null);
-
-                                }
-                            });
+                        const dataAutomatic = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
+                        handleAutomaticData(dataAutomatic, NodeSelect, x.parentNode, x.decendents);
                         break;
                     default:
                         break;
                 }
-            });
-
+            } catch (error) {
+                console.error("An error occurred: ", error);
+                notificationService.error('An error occurred. Please try again later.');
+            }
+            loaderDiv.style.display = "none";
         }
 
-        function DrawCanvas(a, NodeSelect, IdSub, decendents) {
-            var existDiv = document.getElementsByClassName("mi-divCanvasGeneral");
-            if (existDiv.length > 0) {
-                existDiv[0].remove();
+        function handleData(data, NodeSelect, parentNode, decendents) {
+            switch (data.length) {
+                case 40:
+                    notificationService.error(
+                        'An error occurred. Please try again later.'
+                    );
+                    break;
+                case 0:
+                    notificationService.info(
+                        'No substitution options found', 'No options available for substitution in this context.'
+                    );
+                    break;
+                default:
+                    DrawCanvas(data, NodeSelect, parentNode, decendents);
+                    break;
             }
+        }
 
-            var padre = document.querySelector('.editor-page');
-            var divGeneral = document.createElement('div');
+        function handleAutomaticData(data, NodeSelect, parentNode, decendents) {
+            switch (data.length) {
+                case 40:
+                    notificationService.error(
+                        'An error occurred. Please try again later.'
+                    );
+                    break;
+                case 0:
+                    notificationService.info(
+                        'No substitution options found', 'No options available for substitution in this context.'
+                    );
+                    break;
+                default:
+                    var editor1 = new b3e.editor.Editor();
+                    editor1.project.create();
+                    var p = editor1.project.get();
 
-            divGeneral.style.padding = '10px';
-            divGeneral.style.zIndex = '10';
-            divGeneral.style.borderRadius = "10px 0 0 10px";
-            divGeneral.style.marginRight = "250px";
-            divGeneral.style.marginLeft = "260px";
-            divGeneral.style.marginBottom = "20px";
-            divGeneral.style.bottom = '0';
-            divGeneral.style.position = 'absolute';
+                    var TressOptions = editor1.import.treeAsDataSubti(data, p, parentNode.id, data[0].data.trees[0].root, vm.applicabilityList, decendents);
+                    TressOptions.shift();
+                    updateNodeSub(TressOptions[0], NodeSelect, editor1, 1, null);
+                    break;
+            }
+        }
+
+
+        function DrawCanvas(a, NodeSelect, IdSub, decendents) {
+            const padre = document.querySelector('.editor-page');
+            const divGeneral = document.createElement('div');
+
+            divGeneral.style.cssText = `
+                padding: 10px;
+                z-index: 10;
+                border-radius: 10px 0 0 10px;
+                margin-right: 250px;
+                margin-left: 260px;
+                margin-bottom: 20px;
+                bottom: 0;
+                position: absolute;
+            `;
             divGeneral.className = "mi-divCanvasGeneral";
-            padre.appendChild(divGeneral);
 
-            var divbuttons = document.createElement('div');
-            divbuttons.style.width = '100%';
-            divbuttons.style.marginRight = "auto";
+            const divbuttons = document.createElement('div');
+            divbuttons.style.cssText = `
+                width: 100%;
+                margin-right: auto;
+            `;
             divbuttons.className = "mi-divButtons";
             divGeneral.appendChild(divbuttons);
 
+            // Eliminar elemento existente si hay alguno
+            const existDiv = document.querySelector(".mi-divCanvasGeneral");
+            if (existDiv) {
+                existDiv.remove();
+            }
+
+            padre.appendChild(divGeneral);
+
             CreateButtonExit(divGeneral, padre, true);
 
-            var editor1 = new b3e.editor.Editor();
+            const editor1 = new b3e.editor.Editor();
             editor1.scaleX = 1.5;
             editor1.scaleY = 1.5;
             editor1.project.create();
-            var p = editor1.project.get();
+            const p = editor1.project.get();
 
             editor1.applySettingsFormat(editor1._game.canvas);
 
             divGeneral.appendChild(editor1._game.canvas);
 
-            var TressOptions = editor1.import.treeAsDataSubti(a, p, IdSub.id, a[0].data.trees[0].root, vm.applicabilityList, decendents);
+            const TressOptions = editor1.import.treeAsDataSubti(a, p, IdSub.id, a[0].data.trees[0].root, vm.applicabilityList, decendents);
             TressOptions.shift();
 
             var cont = 0;
@@ -1741,25 +1746,26 @@
                     updateNodeSub(element, IdSub, editor1, aaa, divGeneral);
                 });
 
-                var buttonAddInfo = document.createElement('button');
-                buttonAddInfo.insertAdjacentHTML('beforeend', '<i class="fa fa-info-circle"></i> ');
-                buttonAddInfo.style.backgroundColor = '#5bc0de';
-                buttonAddInfo.style.border = "none";
-                /*buttonAddInfo.addEventListener('mouseenter', function () {
-                    startTimeout("Description Sub", 'substituteExpl', function () {
-                        var tooltip = document.querySelector(".mi-tooltip");
-                        if (tooltip) {
-                            tooltip.style.marginBottom = nuevoDiv.offsetHeight + 20 + "px";
-                            tooltip.style.marginLeft = 300 + "px";
-                        }
-                    });
-                });
-                buttonAddInfo.addEventListener('mouseleave', function () {
-                    cancelTimeout(OptionNodeSub[i].explanation, 'substituteExpl');
-                });
-                */
+                /* var buttonAddInfo = document.createElement('button');
+                 buttonAddInfo.insertAdjacentHTML('beforeend', '<i class="fa fa-info-circle"></i> ');
+                 buttonAddInfo.style.backgroundColor = '#5bc0de';
+                 buttonAddInfo.style.border = "none";
+                 buttonAddInfo.addEventListener('mouseenter', function () {
+                     startTimeout("Description Sub", 'substituteExpl', function () {
+                         var tooltip = document.querySelector(".mi-tooltip");
+                         if (tooltip) {
+                             tooltip.style.marginBottom = nuevoDiv.offsetHeight + 20 + "px";
+                             tooltip.style.marginLeft = 300 + "px";
+                         }
+                     });
+                 });
+                 buttonAddInfo.addEventListener('mouseleave', function () {
+                     cancelTimeout(OptionNodeSub[i].explanation, 'substituteExpl');
+                 });
+                 */
+
                 divbuttons.appendChild(buttonAdd);
-                divbuttons.appendChild(buttonAddInfo);
+                //divbuttons.appendChild(buttonAddInfo);
                 cont++;
             });
 
@@ -1833,19 +1839,22 @@
 
         //Automatic Reuse tree
 
-        function AutomaticReuseAllTree() {
-            var e = $window.editor.export;
-            SubstituteNodes(e.treeToData().nodes[e.treeToData().root], null, "Automatic");
-        }
+        async function AutomaticReuseAllTree() {
 
+            var e = $window.editor.export;
+            await SubstituteNodes(e.treeToData().nodes[e.treeToData().root], null, "Automatic");
+        }
+ 
         async function AutomaticApplicability() {
+            var loaderDiv = document.querySelector('#loader');
+            loaderDiv.style.display = 'block';
             var ListExplainerInTree = [];
             var e = $window.editor.export;
             var nodes = e.treeToData().nodes;
-        
+
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
-        
+
             for (const key in nodes) {
                 if (nodes[key].Concept == "Explanation Method" && nodes[key].properties.Applicability == false) {
                     var datos2 = t.blocks.get(nodes[key].id);
@@ -1858,7 +1867,7 @@
                         let explainerLength = x.length;
                         if (explainerLength > 0) {
                             vm.ExplainersSubstituteAll[datos2.title] = x;
-        
+
                             let primeraClave;
                             if (x[0].similarity != 0) {
                                 do {
@@ -1880,6 +1889,7 @@
                     }
                 }
             }
+            loaderDiv.style.display = "none";
         }
 
         function getChildExplanations(DataAll, parentKey) {
@@ -1932,6 +1942,7 @@
                         'Query Model', 'No model query was found, or the call failed'
                     );
                 });
+
             update();
         }
 
@@ -1946,7 +1957,6 @@
 
             return base64WithoutHeader;
         }
-
 
         function RunNew(NodeId, block) {
 
@@ -2126,7 +2136,6 @@
                     }
                 });
         }
-
 
         function _event(e) {
             setTimeout(function () { $scope.$apply(function () { _activate(); }); }, 0);

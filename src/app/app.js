@@ -15,7 +15,7 @@ angular.module('app', [
     ])
 
     .run(['$state', '$window', 'dialogService', '$animate', '$location', '$document', '$timeout', 'settingsModel', 'projectModel', 'editorService', 'notificationService',
-        function Execute($state,
+        async function Execute($state,
             $window,
             dialogService,
             $animate,
@@ -43,8 +43,10 @@ angular.module('app', [
             //initialize nodes and trees when opening the app
             editorService.newProject();
 
-
-          //  projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (y) {
+            try {
+                // Wait for GetApplicability to finish before proceeding
+                // const y = await GetApplicability();
+                //  projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (y) {
 
                 projectModel
                     .getRecentProjects()
@@ -67,13 +69,6 @@ angular.module('app', [
                                 });
                         }
 
-                    /*    if (y === "Error in computer network communications") {
-                            notificationService.warning(
-                                'Applicability Not Found',
-                                'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
-                            );
-                        }*/
-
                         if (projects.length > 0) {
 
                             var url = $location.url().slice(1);
@@ -92,9 +87,17 @@ angular.module('app', [
                             } else {
                                 elementoEncontrado = projects.find(elemento => elemento.isOpen === true);
                             }
-   
+
+                            const y = await GetApplicability();
+                        
+                            if (y === "Error in computer network communications") {
+                                notificationService.warning(
+                                    'Applicability Not Found',
+                                    'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
+                                );
+                            }
                             projectModel
-                                .openProject(elementoEncontrado.path, null)
+                                .openProject(elementoEncontrado.path, y)
                                 .then(function () {
                                     closePreload();
                                 });
@@ -119,8 +122,21 @@ angular.module('app', [
                                 });
                         }
                     });
-        //    });
+            } catch (error) {
+                console.error('Error while fetching applicability:', error);
+                // Handle error as needed
+            }
 
 
+            async function GetApplicability() {
+                try {
+                    const y = await projectModel.GetApplicabilityExplanation($location.search().usecaseId);
+                    return y;
+                } catch (error) {
+                    console.error('Error while getting applicability explanation:', error);
+                    throw error; 
+                }
+            }
         }
     ]);
+

@@ -44,7 +44,7 @@
                             </ul>
                         </li>
                         <li ng-if="propertiespanel.original.category == 'root'"
-                            ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id)">
+                            ng-click="propertiespanel.UpdateProperties(option,propertiespanel.block,propertiespanel.original.id,propertiespanel.original)">
                             <a ng-model="propertiespanel.block.title"
                                 ng-click="propertiespanel.renameIntends(propertiespanel.block.title)">{{propertiespanel.block.title}}
                             </a>
@@ -81,7 +81,7 @@
                     ng-change="propertiespanel.update()">
             </div>
 
-            <div class="form-group" >
+            <div class="form-group">
                 <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()"
                     class="no-border">
                 </b3-key-table>
@@ -239,16 +239,6 @@
                     ng-click="propertiespanel.RunNew(propertiespanel.original.id,propertiespanel.block)">Run</button>
             </div>
 
-            <div id="loader" style="display: none;">
-                <div class="load">
-                    <hr />
-                    <hr />
-                    <hr />
-                    <hr />
-                </div>
-            </div>
-
-
             <div ng-if="propertiespanel.original.name == 'Explanation Method'">
                 <div id="TextAreaEpl" class="form-group"
                     ng-if="propertiespanel.original.Json.type == 'dict'|| propertiespanel.original.Json.type == 'text'">
@@ -300,7 +290,7 @@
                                 <li ng-if="!propertiespanel.isLoading"
                                     ng-repeat="item in propertiespanel.ExplainersSubstitute" g-disabled="item.fixed"
                                     ng-model="item.key" readonly="readonly"
-                                    ng-click="propertiespanel.UpdateProperties(item.explainer, propertiespanel.block, propertiespanel.original.id)"
+                                    ng-click="propertiespanel.UpdateProperties(item.explainer, propertiespanel.block, propertiespanel.original.id,propertiespanel.original)"
                                     ng-mouseenter="propertiespanel.startTimeout(item,'substitute')"
                                     ng-mouseleave="propertiespanel.cancelTimeout(item,'substitute')">
                                     <div class="progress" ng-if="!isEmpty(propertiespanel.ExplainersSubstitute)">
@@ -319,7 +309,7 @@
             </div>
 
             <div class="DivModel">
-                <label >QUERY</label>    
+                <label>Automatic</label>
             </div>
             <div>
                 <div id="header">
@@ -337,12 +327,20 @@
                 <div id="header">
                     <ul class="nav">
                         <li>
-                            <a ng-model="propertiespanel.block.title"
-                                ng-click="propertiespanel.AutomaticReuseAllTree()"
+                            <a ng-model="propertiespanel.block.title" ng-click="propertiespanel.AutomaticReuseAllTree()"
                                 class="search-link">
                                 Automatic reuse all tree</a>
                         </li>
                     </ul>
+                </div>
+            </div>
+
+            <div id="loader" style="display: none;">
+                <div class="load">
+                    <hr />
+                    <hr />
+                    <hr />
+                    <hr />
                 </div>
             </div>
 
@@ -962,8 +960,10 @@
                                             -->
                                         </div>
 
-                                        <div ng-show="propertiespanel.original.category == 'composite'" id="IfAdvancedProperties">
-                                            *If you need explainers with specific properties in your sub tree, please click on advanced properties
+                                        <div ng-show="propertiespanel.original.category == 'composite'"
+                                            id="IfAdvancedProperties">
+                                            *If you need explainers with specific properties in your sub tree, please
+                                            click on advanced properties
                                         </div>
                                         <div id="buttonContainer">
                                             <button class="advanced-properties-button"
@@ -1025,7 +1025,7 @@
                         experience, the interface will look like this:
                         <p style="text-align: center;">
                             <img width="100%" alt="image"
-                                src="https://user-images.githubusercontent.com/71895708/207819838-2a3e9c65-d439-4577-8efe-dcdbf722a44d.png">
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/dca6f6a7-a972-4208-8ce6-6ffa092a7eff">
                         </p>
                         <p>At first glance, the interface might be overwhelming, so we cover
                             each of its components next:</p>
@@ -1063,7 +1063,7 @@
                         <h3 id="trees-and-nodes-panel">Trees and Nodes Panel</h3>
                         <p style="text-align: center;">
                             <img width="349" alt="image"
-                                src="https://user-images.githubusercontent.com/71895708/207820894-e5be21fe-e740-4013-8523-d3efd338c1db.png">
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/822fbfb3-2b02-4b71-8d25-924f98277c5e">
                         </p>
                         <p>On the left side of the interface, we have the trees and nodes panel.
                             The <strong>“Trees”</strong> section displays all the trees contained in
@@ -1084,13 +1084,30 @@
                                         src="https://user-images.githubusercontent.com/71895708/207826990-f26ea539-9e01-49de-8aa7-33d77c3bfa07.png">
                                 </p>
                             </li>
-                            <li><strong>Failer and Succeeder:</strong> return failure or success
-                                accordingly.
+                            <li><strong>Applicability</strong>This aspect indicates whether the explanation method
+                                is applicable to the specific use case of the tree. If the explanation method is not
+                                suitable for the particular use case, the component is marked with a red line to
+                                indicate
+                                that it is not applicable.
                                 <p style="text-align: center;">
-                                    <img width="545" alt="image"
-                                        src="https://user-images.githubusercontent.com/71895708/207826544-323b8977-f1ca-4613-8180-e4a81e30c6ba.png">
+                                    <img width="100%" alt="image"
+                                        src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/9b3e1b4e-40e1-4a9c-9d90-05e848e5eac0">
                                 </p>
                             </li>
+                            <li><strong>Popularity</strong>The popularity of the explanation method is visually
+                                represented in the component. It is set at three different levels and reflected in the
+                                intensity
+                                of the component's color. The darker the component, the higher its popularity. For
+                                example,
+                                a very dark component would indicate that the explanation method is very popular, while
+                                a lighter
+                                component would indicate lower popularity.
+                                <p style="text-align: center;">
+                                    <img width="100%" alt="image"
+                                        src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/dcbe53b3-07f3-42f0-83d1-aabcf82c253f">
+                                </p>
+                            </li>
+
                             <li><strong>Condition:</strong> This node can be used to check for
                                 external variables to meet a particular condition (equals, not equals,
                                 less than, greater than)
@@ -1105,8 +1122,8 @@
                                 children failing. A priority node will return immediately upon one of
                                 its children succeeding.
                                 <p style="text-align: center;">
-                                    <img width="217" alt="image"
-                                        src="https://user-images.githubusercontent.com/71895708/207827132-b3950731-ce3f-493e-8c1f-53ece28ea42f.png">
+                                    <img width="100%" alt="image"
+                                        src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/96c5802c-e9eb-49c7-b946-b237fb8ef365">
                                 </p>
                             </li>
                             <li><strong>Decorator Nodes:</strong> these are additional nodes that
@@ -1129,15 +1146,14 @@
                             like this:</p>
                         <p style="text-align: center;">
                             <img width="293" alt="image"
-                                src="https://user-images.githubusercontent.com/71895708/207836434-11a66c43-a497-4765-8b77-014a0f62dfb3.png">
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/e1d3b937-9cce-455d-a43c-f66bbae54089">
                         </p>
                         <ul>
                             <li><strong>Run BT button:</strong> executes the entire behavior
                                 tree.</li>
                             <li><strong>Intent:</strong> it allows renaming the current explanation
                                 experience.</li>
-                            <li><strong>Description and Properties:</strong> a description for this
-                                tree can be added in the provided text field. Additional properties can
+                            <li><strong>Properties:</strong>Additional properties can
                                 be added as key-value pairs by clicking on the “+” button.</li>
                             <li><strong>Model:</strong> a dropdown menu with the names of the models
                                 that were uploaded to the iSee database. You can select the model you
@@ -1155,11 +1171,11 @@
                                 query is provided afterward, then it will overwrite the previous
                                 one.</li>
                         </ul>
-                        <p>Most nodes have properties like title, description, and user-defined
+                        <p>Most nodes have properties like title, and user-defined
                             properties:</p>
                         <p style="text-align: center;">
                             <img width="289" alt="image"
-                                src="https://user-images.githubusercontent.com/71895708/207841650-5e4b068c-cbd8-4f42-88cd-5cdb6bbc7ea7.png">
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/c38636e4-f2a5-4195-9e73-e5183a4ea40c">
                         </p>
                         <p>However, explanation method nodes are initially generic, waiting for
                             a specific method to be selected. Hovering over the title of this node
@@ -1171,8 +1187,9 @@
                         </p>
                         <p style="text-align: center;">
                             <img width="292" alt="image"
-                                src="https://user-images.githubusercontent.com/71895708/207842600-c108605d-bb77-4fba-b436-0121cece8347.png">
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/fe2ac32b-62eb-4372-bbf9-4487988e9208">
                         </p>
+
                         <p>Hovering over the names of the parameters, you can get information
                             about what is the expected input format and their effect on the
                             generated explanation. If parameters are left blank, default values will
@@ -1180,6 +1197,49 @@
                             may exceptionally require a parameter to be specified by the user, so it
                             is encouraged to check the documentation for each specific
                             parameter.</p>
+                        <p><strong>Search Substitute Explainers and Substitute explainer with criteria</strong>
+                            In the "Search Substitute Explainers" section, the system will search the
+                            database for Explanation Methods that closely match the selected one. These
+                            substitutes will be presented in a dropdown menu, sorted by similarity percentage.
+                            Hovering over each option will provide a description of the Explanation Method.
+                        </p>
+                        <p style="text-align: center;">
+                            <img width="292" alt="image"
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/ad07405a-4112-4210-8b3f-713ea6e9b8ec">
+                        </p>
+                        <p>
+                            On the other hand, we have the "Substitute Explainer with Criteria" button. Upon clicking
+                            it, a form will be displayed, allowing you to search for Explanation Methods with specific
+                            characteristics. This feature enables you to customize your search based on criteria . By
+                            providing detailed criteria, you can efficiently find Explanation Methods that best suit
+                            your needs and preferences.
+                        </p>
+                        <p><strong>Automatic</strong>
+                            Automatic Applicability for Entire Tree:
+                            This button will search the tree for Explanation Methods that are not applicable and replace
+                            them with the most similar Explanation Methods.
+                        </p>
+                        <p>
+                            Automatic Reuse for Entire Tree:
+                            This button will seek to replace our current tree with a similar one.
+                        </p>
+
+                        <p>The Properties panel of the <strong>composites</strong> node looks like this:</p>
+                        <p style="text-align: center;">
+                            <img width="293" alt="image"
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/e4532c31-c720-4781-8f9b-afa07ca31175">
+                        </p>
+                        <p>
+                            Search Substitute Subtree:
+                            This button will search from the selected composite for a potential replacement of the
+                            subtree.
+                        </p>
+                        <p>
+                            Substitute Subtree with Criteria:
+                            This button will display a form where you can select characteristics for the replacement of
+                            the subtree from the selected composite.
+                        </p>
+
                         <p>Finally, the <em>Properties</em> panel for explanation method nodes
                             includes a “Run” button, that will execute this explanation method,
                             given that you have specified a model and query if required, and that
@@ -1198,18 +1258,16 @@
                                     provide a query if needed. Remember to save the query.</strong></li>
                         </ol>
                         <p style="text-align: center;">
-                            <img width="557" alt="image"
-                                src="https://user-images.githubusercontent.com/71895708/207846884-0d6da57e-890f-47cc-81a3-a13402093058.png">
+                            <img width="292" alt="image"
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/fc3a8de2-c892-4644-a43b-105c0866505a">
                         </p>
                         <ol start="5" type="1">
                             <li><strong>Drag and drop the desired nodes from the <em>Nodes</em>
-                                    section to build your explanation experience. In this example, we build
-                                    a simple tree that ensures that at least one global and one local
-                                    explanation is provided to the user:</strong></li>
+                                    section to build your explanation experience.</strong></li>
                         </ol>
                         <p style="text-align: center;">
                             <img width="100%" alt="image"
-                                src="https://user-images.githubusercontent.com/71895708/207848462-66f4c4d8-fc5f-4760-b75f-19d98e2af927.png">
+                                src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/164ca356-bc02-42aa-b823-a69af01a74d3">
                         </p>
                         <ol start="6" type="1">
                             <li><strong>Specify execution parameters for the explanation methods (if

@@ -470,7 +470,7 @@
                             resolve(value);
                         })
                         .catch((err) => {
-                            reject("error");
+                            reject("error"); 
                         });
 
                 } catch (e) {

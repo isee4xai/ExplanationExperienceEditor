@@ -13,7 +13,8 @@
         'dialogService',
         'notificationService',
         'storageService',
-        '$location'
+        '$location',
+        'projectModel'
     ];
 
     function ImportController($scope,
@@ -23,7 +24,8 @@
         dialogService,
         notificationService,
         storageService,
-        $location
+        $location,
+        projectModel
         ) {
         var vm = this;
         vm.type = null;
@@ -97,6 +99,7 @@
         function open() {
             var i = $window.editor.import; 
             try { 
+                const ListApplicability = projectModel.getApplicability();
                 var data = JSON.parse(vm.data);
                 if (vm.type === 'project' && vm.format === 'json') {
                     if (data.selectedTree == "33def3ec-31a8-47c1-856c-7fd724718df2") {
@@ -104,9 +107,9 @@
                         data.selectedTree = idNew;
                         data.trees[0].id = idNew;
                     }
-                    i.projectAsData(data);
+                    i.projectAsData(data,null,ListApplicability);
                 } else if (vm.type === 'tree' && vm.format === 'json') {
-                    i.treeAsData(data);
+                    i.treeAsData(data,null,ListApplicability);
                 } else if (vm.type === 'nodes' && vm.format === 'json') {
                     i.nodesAsData(data);
                 }

@@ -480,6 +480,7 @@
     /*change these sizes to fit into your project*/
     width: 50px;
     height: 50px;
+    bottom: 0;
   }
 
   .load hr {
@@ -731,7 +732,7 @@
   .CheckboxCircule:checked:hover {
     border: 1px solid #005cc8;
   }
-
+  
   .CheckboxCircule:checked::after {
     content: "\2022";
     font-size: 29px;
@@ -741,9 +742,8 @@
     left: 53%; 
     transform: translate(-50%, -50%);
   }
-  
   .CheckboxCircule:checked:hover::after {
-    color: #005cc8;
+    color: #005cc8; 
   }
 
 }
