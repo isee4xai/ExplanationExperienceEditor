@@ -119,11 +119,12 @@
         vm.randomCategory = null;
 
         vm.NameNodes = ["Explanation Method", "User Question"];
+        vm.NameType = ["/Images","/Tabular"]
         vm.NameCompositites = ["Sequence", "Priority"];
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 29/01/24";
+        vm.date = "version 06/02/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -135,6 +136,8 @@
         vm.evaluation = null;
         vm.url = window.location.href;
         vm.isEditor;
+
+        vm.modeloUso="model";
 
         _create();
         _activate();
@@ -535,15 +538,15 @@
         }
 
         function GetModels() {
-            var url = $location.url().slice(1);
-            var urlSplit = url.split("/");
+           const IdModel = $location.search().usecaseId;
 
-            if (url.split("usecaseId=")[1]) {
-                projectModel.getModelsRootPrivate(url.split("usecaseId=")[1])
+            if (IdModel) {
+            
+                projectModel.getModelsRootPrivate(IdModel)
                     .then(function (x) {
                         vm.models = x;
                     });
-                projectModel.getApplicability($location.search().usecaseId)
+                projectModel.getApplicability(IdModel)
                     .then(function (x) {
                         vm.applicability = x
                     });
@@ -561,13 +564,17 @@
         }
 
         function RandomGenerate(DataInput, IndexSucces) {
-            console.log(DataInput);
-            projectModel.GetApplicabilityExplanation(DataInput.Model)
-                .then(function (x) {
-                    console.log(x);
-                    vm.applicability = x;
 
-
+            if (vm.modeloUso != DataInput.Model) {
+                vm.modeloUso = DataInput.Model; 
+                 projectModel.GetApplicabilityExplanation(DataInput.Model)
+                .then(function (u) {
+                    console.log(u);
+                });
+            }
+                  //  vm.applicability = x;
+                    var TypeExpaliner = getRndInteger(0, 1); ;
+                
                     vm.usedIndices = [];
                     var categories = Object.keys(vm.Quetions);
                     vm.randomCategory = categories[Math.floor(Math.random() * categories.length)];
@@ -616,7 +623,6 @@
                                         var s = tree.blocks.getSelected();
                                         tree.blocks.update(s[0], BlockConditions);
 
-
                                         var NumeroAle1;
                                         if ((depth - index) == 1) {
                                             NumeroAle1 = 0;
@@ -627,7 +633,6 @@
                                                 NumeroAle1 = getRndInteger(0, 1);
                                             }
                                         }
-
 
                                         if (NumeroAle1 == 1) {
                                             var SubBlockComposites = null;
@@ -642,7 +647,7 @@
                                             var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
                                             tree.connections.add(element, BlockConditions);
 
-                                            BlockConditions = PropertieSelect(0);
+                                            BlockConditions = PropertieSelect(0,TypeExpaliner);
 
                                             var s = tree.blocks.getSelected();
                                             tree.blocks.update(s[0], BlockConditions);
@@ -665,7 +670,7 @@
                                     var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
                                     tree.connections.add(element, BlockConditions);
 
-                                    BlockConditions = PropertieSelect(0);
+                                    BlockConditions = PropertieSelect(0,TypeExpaliner);
 
                                     var s = tree.blocks.getSelected();
                                     tree.blocks.update(s[0], BlockConditions);
@@ -675,7 +680,7 @@
                                         var BlockConditions = tree.blocks.add(vm.NameNodes[0], point.x, point.y);
                                         tree.connections.add(element, BlockConditions);
 
-                                        BlockConditions = PropertieSelect(0);
+                                        BlockConditions = PropertieSelect(0,TypeExpaliner);
 
                                         var s = tree.blocks.getSelected();
                                         tree.blocks.update(s[0], BlockConditions);
@@ -699,7 +704,7 @@
                         );
                         return false;
                     }
-                });
+                
         }
 
         function NotificationSuccess(index, NumTree) {
@@ -721,21 +726,25 @@
             }
         }
 
-        function PropertieSelect(IndexNameNodeNodes) {
+        function PropertieSelect(IndexNameNodeNodes,TypeExpaliner) {
             var BlockCondition;
             switch (vm.NameNodes[IndexNameNodeNodes]) {
                 case "Explanation Method":
                     if (vm.explanation != null) {
-
-                        do {
+                        console.log( vm.NameType[TypeExpaliner]);
+                       // do {
                             var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
-                            console.log(vm.applicability);
+                      /*      console.log(vm.applicability);
                             console.log(vm.explanation);
                             console.log( Object.keys(vm.explanation).length);
                             console.log(indexExplanation);
                             console.log(vm.applicability[vm.explanation[indexExplanation]]);
-                        } while (vm.applicability[vm.explanation[indexExplanation]].flag == false);
+                        } while (vm.applicability[vm.explanation[indexExplanation]].flag == false);*/
 
+                        do {
+                            var indexExplanation = getRndInteger(0, Object.keys(vm.explanation).length - 1);
+                        } while (!vm.explanation[indexExplanation].includes(vm.NameType[TypeExpaliner]));
+                       
                         BlockCondition = PropertiesCreate(vm.explanation[indexExplanation], "Explanation Method");
                     } else {
                         BlockCondition = PropertiesCreate("Explanation Method", "Explanation Method");
@@ -762,10 +771,11 @@
                 case "Explanation Method":
                     var BlockConditions = {
                         title: DataJson.value || DataJson,
+                        /*
                         properties: {
-                            "Popularity": 1,
+                            "Popularity": 1
                             "Applicability": true
-                        },
+                        },*/
                         params: json,
                     };
                     break;

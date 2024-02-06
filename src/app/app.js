@@ -44,10 +44,6 @@ angular.module('app', [
             editorService.newProject();
 
             try {
-                // Wait for GetApplicability to finish before proceeding
-                // const y = await GetApplicability();
-                //  projectModel.GetApplicabilityExplanation($location.search().usecaseId).then(function (y) {
-
                 projectModel
                     .getRecentProjects()
                     .then(async function (projects) {
@@ -68,7 +64,7 @@ angular.module('app', [
                                     $state.go('editor');
                                 });
                         }
-
+           
                         if (projects.length > 0) {
 
                             var url = $location.url().slice(1);
@@ -89,13 +85,7 @@ angular.module('app', [
                             }
 
                             const y = await GetApplicability();
-                        
-                            if (y === "Error in computer network communications") {
-                                notificationService.warning(
-                                    'Applicability Not Found',
-                                    'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
-                                );
-                            }
+                          
                             projectModel
                                 .openProject(elementoEncontrado.path, y)
                                 .then(function () {
@@ -129,12 +119,20 @@ angular.module('app', [
 
 
             async function GetApplicability() {
+                const usecaseId = $location.search().usecaseId;
                 try {
-                    const y = await projectModel.GetApplicabilityExplanation($location.search().usecaseId);
-                    return y;
+                    const applicability = await projectModel.GetApplicabilityExplanation(usecaseId);
+                    if (applicability === "Error in computer network communications") {
+                        notificationService.warning(
+                            'Applicability Not Found',
+                            'Without applicability, many functions may not work properly. Please log in to the cockpit to obtain it.'
+                        );
+                        return null;
+                    }
+                    return applicability;
                 } catch (error) {
                     console.error('Error while getting applicability explanation:', error);
-                    throw error; 
+                    throw error;
                 }
             }
         }

@@ -97,32 +97,50 @@
         }
 
         function open() {
-            var i = $window.editor.import; 
+            const i = $window.editor.import; 
             try { 
                 const ListApplicability = projectModel.getApplicability();
                 var data = JSON.parse(vm.data);
+
                 if (vm.type === 'project' && vm.format === 'json') {
-                    if (data.selectedTree == "33def3ec-31a8-47c1-856c-7fd724718df2") {
-                        var idNew = b3.createUUID();
+                    const e = $window.editor.export;
+                    // If a tree with the same ID is found, generate a new ID for the selected tree and update the ID of the first tree
+                    const treeWithId = e.projectToData().trees.find(tree => tree.id === data.trees[0].id);
+                    if (treeWithId) {
+                        const idNew = b3.createUUID();
                         data.selectedTree = idNew;
                         data.trees[0].id = idNew;
                     }
-                    i.projectAsData(data,null,ListApplicability);
+
+                    if (data.hasOwnProperty("selectedTree")) {
+                        i.projectAsData(data,null,ListApplicability);
+                    }else{
+                        notifyInvalidData();
+                    }
                 } else if (vm.type === 'tree' && vm.format === 'json') {
-                    i.treeAsData(data,null,ListApplicability);
+                    if (data.hasOwnProperty("root")) {
+                        i.treeAsData(data,null,ListApplicability);
+                    }else{
+                        notifyInvalidData(); 
+                    }
+                   
                 } else if (vm.type === 'nodes' && vm.format === 'json') {
                     i.nodesAsData(data);
                 }
+
             } catch (e) {
-                notificationService.error(
-                    'Invalid data',
-                    'The provided data is invalid.'
-                );
+                notifyInvalidData();
             }
 
             redirect();
         }
 
+        function notifyInvalidData() {
+            notificationService.error(
+                'Invalid data',
+                'The provided data is invalid.'
+            );
+        }
     }
 
 })();

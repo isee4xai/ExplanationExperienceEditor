@@ -39,9 +39,7 @@ function EditorController($state, $window, $location, projectModel, dialogServic
         if (typeof url === 'undefined') {
             $state.go('dash.projects');
         }
-
         switch (Type) {
-
             case "editor":
             case "view":
             case "":
@@ -91,7 +89,6 @@ function EditorController($state, $window, $location, projectModel, dialogServic
                                     .openProjectId(Id)
                                     .then(function (x) {
                                         // send you to the error page if the call to the service does not return data
-                                        console.log(x);
                                         if (x == null) {
                                             $state.go('id.error');
                                         } else {

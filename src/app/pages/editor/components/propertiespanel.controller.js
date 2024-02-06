@@ -1547,34 +1547,44 @@
             return new Promise((resolve, reject) => {
                 projectModel.getProjecAllData()
                     .then(function (x) {
-                        var e = $window.editor.export;
-                        var ProjectExpor = e.projectToData();
-                        // Get Father ID
-                        var trees = ProjectExpor.trees;
-                        var arbolesContenedores = trees.filter(arbol => arbol.nodes[NodeSelect.id]);
-                        var arbolContenedor = arbolesContenedores[0];
-                        var idNodoRaiz = arbolContenedor.root;
-                        var nodoRaiz = arbolContenedor.nodes[idNodoRaiz];
-
-                        var idNodoPadre = nodoRaiz && Object.keys(arbolContenedor.nodes).find(
-                            (key) => true == GetFatherNodeSub(arbolContenedor.nodes[idNodoRaiz], NodeSelect.id)
+                        const editorExport = $window.editor.export;
+                        const projectData = editorExport.projectToData();
+                        const trees = projectData.trees;
+                        
+                        // Filter the container tree by the selected node
+                        const containerTrees = trees.filter(tree => tree.nodes[NodeSelect.id]);
+                        const containerTree = containerTrees[0];
+                        
+                        const rootNodeId = containerTree.root;
+                        const rootNode = containerTree.nodes[rootNodeId];
+                     
+                        // Find the parent node ID
+                        const parentNodeId = rootNode && Object.keys(containerTree.nodes).find(
+                            (key) => true == GetFatherNodeSub(containerTree.nodes[rootNodeId], NodeSelect.id)
                         );
-
-                        var nodosDescendientes = obtenerDescendientes(arbolContenedor.nodes, arbolContenedor.nodes[idNodoPadre].id);
-                        x.data = e.projectToData();
-                        // get only select Tree
+        
+                        // Get the descendant nodes
+                        const descendantNodes = obtenerDescendientes(containerTree.nodes, containerTree.nodes[parentNodeId].id);
+        
+                        // Filter the selected tree
+                        x.data = editorExport.projectToData();
                         const selectedTreeId = x.data.selectedTree;
                         x.data.trees = x.data.trees.filter(tree => tree.id === selectedTreeId);
+        
+                        // Remove the tree image if it exists
                         if (x.data.trees[0].img) {
-                           delete x.data.trees[0].img;  
+                            delete x.data.trees[0].img;
                         }
-
-                        resolve({ projectData: x, parentNode: arbolContenedor.nodes[idNodoPadre], decendents: nodosDescendientes });
+        
+                        // Resolve the promise with the project data and other details
+                      //  resolve({ projectData: x, parentNode: containerTree.nodes[parentNodeId], descendants: descendantNodes, rootNodeId: rootNodeId });
+                      resolve({ projectData: x, parentNode: containerTree.nodes[rootNodeId], descendants: descendantNodes, rootNodeId: rootNodeId });
                     });
             });
         }
 
         async function SubstituteNodes(NodeSelect, dataCriteria, type) {
+
             var loaderDiv = document.querySelector('#loader');
             loaderDiv.style.display = 'block';
 
@@ -1584,79 +1594,137 @@
 
             try {
                 const x = await GetProjectData(NodeSelect);
-                const usecaseId = $location.search().usecaseId;
-                var DataSubstituteSubtree = {
-                    "treeId": x.projectData.id,
-                    "subtreeId": NodeSelect.id,
-                    "tree": x.projectData,
-                    "k": 3,
-                    "criteria": dataCriteria
-                };
 
-                switch (type) {
-                    case "WithCriteria":
-                        const dataWithCriteria = await projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId);
-                        handleData(dataWithCriteria, NodeSelect, x.parentNode, x.decendents);
-                        break;
-                    case "WithoutCriteria":
-                        delete DataSubstituteSubtree.criteria;
-                        const dataWithoutCriteria = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
-                        handleData(dataWithoutCriteria, NodeSelect, x.parentNode, x.decendents);
-                        break;
-                    case "Automatic":
-                        delete DataSubstituteSubtree.criteria;
-                        DataSubstituteSubtree.k = 1;
-                        const dataAutomatic = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
-                        handleAutomaticData(dataAutomatic, NodeSelect, x.parentNode, x.decendents);
-                        break;
-                    default:
-                        break;
+                if (NodeSelect.id == x.parentNode.id) {
+                    const usecaseId = $location.search().usecaseId;
+                    var DataSubstituteSubtree = {
+                        "treeId": x.projectData.id,
+                        "subtreeId": NodeSelect.id,
+                        "tree": x.projectData,
+                        "k": 3,
+                        "criteria": dataCriteria
+                    };
+
+                    switch (type) {
+                        case "WithCriteria":
+                            const dataWithCriteria = await projectModel.PostSubstituteSubtree(DataSubstituteSubtree, usecaseId);
+                            handleData(dataWithCriteria, NodeSelect, x.parentNode, x.descendants);
+                            break;
+                        case "WithoutCriteria":
+                            delete DataSubstituteSubtree.criteria;
+                            const dataWithoutCriteria = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
+                            handleData(dataWithoutCriteria, NodeSelect, x.parentNode, x.descendants);
+                            break;
+                        case "Automatic":
+                            delete DataSubstituteSubtree.criteria;
+                            DataSubstituteSubtree.k = 1;
+                            const dataAutomatic = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
+                            handleAutomaticData(dataAutomatic, NodeSelect, x.parentNode, x.descendants);
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    notificationService.error(
+                        'The operation cannot be completed', ' Please select the sequence node that is directly under the root node.'
+                    );
                 }
             } catch (error) {
                 console.error("An error occurred: ", error);
                 notificationService.error('An error occurred. Please try again later.');
             }
+
             loaderDiv.style.display = "none";
         }
 
-        function handleData(data, NodeSelect, parentNode, decendents) {
-            switch (data.length) {
-                case 40:
-                    notificationService.error(
-                        'An error occurred. Please try again later.'
-                    );
-                    break;
-                case 0:
+        function updateDataWithIdRoot(data, NodeSelect) {
+            var datos = [];
+            let rootBad;
+
+            const datosFiltrados = data.filter(item => {
+                return !(item.data && item.data.trees && item.data.trees.some(arbol => arbol.root === NodeSelect));
+            });
+
+            if (datosFiltrados.length === 0) {
+                return data;
+            }
+
+            const idsCambiadas = new Set();
+
+            data.forEach(item => {
+                if (item.data && item.data.trees) {
+                    item.data.trees.forEach(arbol => {
+                        if (arbol.root !== NodeSelect) {
+                            rootBad = arbol.root;
+                            arbol.root = NodeSelect;
+                            idsCambiadas.add(rootBad);
+                        }
+                    });
+                }
+            });
+
+            data.forEach(item => {
+                if (item.data && item.data.trees) {
+                    item.data.trees.forEach(arbol => {
+                        idsCambiadas.forEach(rootBad => {
+                            if (arbol.nodes[rootBad]) {
+                                const nodo = arbol.nodes[rootBad];
+                                nodo.id = NodeSelect;
+                                arbol.nodes[NodeSelect] = nodo;
+                                delete arbol.nodes[rootBad];
+                            }
+                        });
+                    });
+                }
+            });
+
+            return data;
+        }
+
+        function handleData(data, nodeSelect, parentNode, descendants) {
+            try {
+                const updatedData = updateDataWithIdRoot(data, nodeSelect.id);
+
+                if (updatedData.length === 0) {
                     notificationService.info(
-                        'No substitution options found', 'No options available for substitution in this context.'
+                        'No substitution options found',
+                        'No options available for substitution in this context.'
                     );
-                    break;
-                default:
-                    DrawCanvas(data, NodeSelect, parentNode, decendents);
-                    break;
+                } else {
+                    DrawCanvas(updatedData, nodeSelect, parentNode, descendants);
+                }
+            } catch (error) {
+                console.error('An error occurred while processing the data:', error);
+                notificationService.error(
+                    'An error occurred. Please try again later.'
+                );
             }
         }
 
-        function handleAutomaticData(data, NodeSelect, parentNode, decendents) {
-            switch (data.length) {
+
+        function handleAutomaticData(data, nodeSelect, parentNode, descendants) {
+            const updatedData = updateDataWithIdRoot(data, nodeSelect.id);
+
+            switch (updatedData.length) {
                 case 40:
-                    notificationService.error(
-                        'An error occurred. Please try again later.'
-                    );
+                    notificationService.error('An error occurred. Please try again later.');
                     break;
                 case 0:
-                    notificationService.info(
-                        'No substitution options found', 'No options available for substitution in this context.'
-                    );
+                    notificationService.info('No substitution options found', 'No options available for substitution in this context.');
                     break;
                 default:
-                    var editor1 = new b3e.editor.Editor();
-                    editor1.project.create();
-                    var p = editor1.project.get();
+                    try {
+                        const editor = new b3e.editor.Editor();
+                        editor.project.create();
+                        const project = editor.project.get();
 
-                    var TressOptions = editor1.import.treeAsDataSubti(data, p, parentNode.id, data[0].data.trees[0].root, vm.applicabilityList, decendents);
-                    TressOptions.shift();
-                    updateNodeSub(TressOptions[0], NodeSelect, editor1, 1, null);
+                        const treeOptions = editor.import.treeAsDataSubti(updatedData, project, parentNode.id, parentNode.id, vm.applicabilityList, descendants);
+                        treeOptions.shift();
+                        updateNodeSub(treeOptions[0], nodeSelect, editor, 1, null);
+                    } catch (error) {
+                        console.error('An error occurred while processing the data:', error);
+                        notificationService.error('An error occurred. Please try again later.');
+                    }
                     break;
             }
         }
@@ -1706,7 +1774,7 @@
 
             divGeneral.appendChild(editor1._game.canvas);
 
-            const TressOptions = editor1.import.treeAsDataSubti(a, p, IdSub.id, a[0].data.trees[0].root, vm.applicabilityList, decendents);
+            const TressOptions = editor1.import.treeAsDataSubti(a, p, IdSub.id, IdSub.id, vm.applicabilityList, decendents);
             TressOptions.shift();
 
             var cont = 0;
@@ -1840,11 +1908,10 @@
         //Automatic Reuse tree
 
         async function AutomaticReuseAllTree() {
-
             var e = $window.editor.export;
             await SubstituteNodes(e.treeToData().nodes[e.treeToData().root], null, "Automatic");
         }
- 
+
         async function AutomaticApplicability() {
             var loaderDiv = document.querySelector('#loader');
             loaderDiv.style.display = 'block';
