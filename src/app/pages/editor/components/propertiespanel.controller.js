@@ -878,13 +878,13 @@
                         }
                         break;
                     case "Root":
-
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
                         vm.IdModel = vm.block.ModelRoot;
+                        
                         if ($location.search().usecaseId != undefined) {
                             if (!getCallMade || vm.block.ModelRoot.idModel == undefined) {
-                                if (vm.block.ModelRoot && (vm.block.ModelRoot.img || vm.block.ModelRoot.query)) {
+                                if (vm.block.ModelRoot.id && (vm.block.ModelRoot.img || vm.block.ModelRoot.query)) {
                                     if (vm.block.ModelRoot.img) {
                                         notificationService.success(
                                             'Add image Model', 'image model by default'
@@ -898,9 +898,8 @@
                                 } else {
                                     SelectModel(vm.models[vm.idModelUrl]);
                                 }
-
                                 getCallMade = true;
-                            }
+                            } 
                         }
 
 
@@ -1020,8 +1019,8 @@
 
             switch (urlSplit[0]) {
                 case 'id':
-                    if (url.includes("usecaseId=")) {
-                        vm.idModelUrl = url.split("usecaseId=")[1];
+                    if ($location.search().usecaseId) {
+                        vm.idModelUrl = $location.search().usecaseId;
                         return projectModel.getModelsRootPrivate(vm.idModelUrl)
                             .then(function (x) {
                                 switch (true) {
@@ -1038,16 +1037,14 @@
                                         );
                                         break;
                                     case Object.keys(x).length != 0 && typeof x != 'string':
-                                        vm.models = x;
-                                        // delete models test
-
-                                        var deleteModels = Object.keys(x).filter(key => x[key].includes('6'));
-                                        for (let index = 0; index < deleteModels.length; index++) {
-                                            //delete vm.models[deleteModels[index]];
-
-                                            vm.models[deleteModels[index]] = "Model " + (index + 1);
+                                        let count = 0;
+                                        for (const key in x) {
+                                            if (x.hasOwnProperty(key)) {
+                                                vm.models[key] = "Model " + (parseInt(count) + 1);
+                                                count++;
+                                            }
                                         }
-
+                                        console.log(vm.models);
                                         notificationService.success(
                                             "Added Private Model"
                                         );
@@ -1068,7 +1065,7 @@
                     break;
             }
 
-            function CreateModelUndefiled(s) {
+            function CreateModelUndefiled() {
                 vm.idModelUrl = "Model";
 
                 vm.models = {
@@ -1550,35 +1547,35 @@
                         const editorExport = $window.editor.export;
                         const projectData = editorExport.projectToData();
                         const trees = projectData.trees;
-                        
+
                         // Filter the container tree by the selected node
                         const containerTrees = trees.filter(tree => tree.nodes[NodeSelect.id]);
                         const containerTree = containerTrees[0];
-                        
+
                         const rootNodeId = containerTree.root;
                         const rootNode = containerTree.nodes[rootNodeId];
-                     
+
                         // Find the parent node ID
                         const parentNodeId = rootNode && Object.keys(containerTree.nodes).find(
                             (key) => true == GetFatherNodeSub(containerTree.nodes[rootNodeId], NodeSelect.id)
                         );
-        
+
                         // Get the descendant nodes
                         const descendantNodes = obtenerDescendientes(containerTree.nodes, containerTree.nodes[parentNodeId].id);
-        
+
                         // Filter the selected tree
                         x.data = editorExport.projectToData();
                         const selectedTreeId = x.data.selectedTree;
                         x.data.trees = x.data.trees.filter(tree => tree.id === selectedTreeId);
-        
+
                         // Remove the tree image if it exists
                         if (x.data.trees[0].img) {
                             delete x.data.trees[0].img;
                         }
-        
+
                         // Resolve the promise with the project data and other details
-                      //  resolve({ projectData: x, parentNode: containerTree.nodes[parentNodeId], descendants: descendantNodes, rootNodeId: rootNodeId });
-                      resolve({ projectData: x, parentNode: containerTree.nodes[rootNodeId], descendants: descendantNodes, rootNodeId: rootNodeId });
+                        //  resolve({ projectData: x, parentNode: containerTree.nodes[parentNodeId], descendants: descendantNodes, rootNodeId: rootNodeId });
+                        resolve({ projectData: x, parentNode: containerTree.nodes[rootNodeId], descendants: descendantNodes, rootNodeId: rootNodeId });
                     });
             });
         }
@@ -1640,7 +1637,8 @@
         function updateDataWithIdRoot(data, NodeSelect) {
             var datos = [];
             let rootBad;
-
+            console.log("--------------");
+            console.log(data);
             const datosFiltrados = data.filter(item => {
                 return !(item.data && item.data.trees && item.data.trees.some(arbol => arbol.root === NodeSelect));
             });
@@ -1682,30 +1680,7 @@
         }
 
         function handleData(data, nodeSelect, parentNode, descendants) {
-            try {
-                const updatedData = updateDataWithIdRoot(data, nodeSelect.id);
-
-                if (updatedData.length === 0) {
-                    notificationService.info(
-                        'No substitution options found',
-                        'No options available for substitution in this context.'
-                    );
-                } else {
-                    DrawCanvas(updatedData, nodeSelect, parentNode, descendants);
-                }
-            } catch (error) {
-                console.error('An error occurred while processing the data:', error);
-                notificationService.error(
-                    'An error occurred. Please try again later.'
-                );
-            }
-        }
-
-
-        function handleAutomaticData(data, nodeSelect, parentNode, descendants) {
-            const updatedData = updateDataWithIdRoot(data, nodeSelect.id);
-
-            switch (updatedData.length) {
+            switch (data.length) {
                 case 40:
                     notificationService.error('An error occurred. Please try again later.');
                     break;
@@ -1713,6 +1688,42 @@
                     notificationService.info('No substitution options found', 'No options available for substitution in this context.');
                     break;
                 default:
+                    try {
+                        const updatedData = updateDataWithIdRoot(data, nodeSelect.id);
+
+                        if (updatedData.length === 0) {
+                            notificationService.info(
+                                'No substitution options found',
+                                'No options available for substitution in this context.'
+                            );
+                        } else {
+                            DrawCanvas(updatedData, nodeSelect, parentNode, descendants);
+                        }
+                    } catch (error) {
+                        console.error('An error occurred while processing the data:', error);
+                        notificationService.error(
+                            'An error occurred. Please try again later.'
+                        );
+                    }
+                    break;
+            }
+
+
+        }
+
+
+        function handleAutomaticData(data, nodeSelect, parentNode, descendants) {
+
+
+            switch (data.length) {
+                case 40:
+                    notificationService.error('An error occurred. Please try again later.');
+                    break;
+                case 0:
+                    notificationService.info('No substitution options found', 'No options available for substitution in this context.');
+                    break;
+                default:
+                    const updatedData = updateDataWithIdRoot(data, nodeSelect.id);
                     try {
                         const editor = new b3e.editor.Editor();
                         editor.project.create();
@@ -1987,30 +1998,32 @@
             vm.modelsSelect = data;
             vm.block.ModelRoot.idModel = Object.keys(vm.models).find(key => vm.models[key] === data);
 
-            projectModel.GetInstanceModelSelect(vm.block.ModelRoot.idModel)
-                .then(function (x) {
-                    if (x && x.instance && x.type) {
-                        var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
-                        miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
-                        notificationService.success(
-                            'Add Query Model', 'Query model by default'
-                        );
-                    } else {
-                        //Clean Quey
-                        var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
-                        miDirectiva.scope().ProperParams.InstanceModeldefault(null, null);
+            if (vm.block.ModelRoot.img == undefined && vm.block.ModelRoot.query == undefined) {
+                projectModel.GetInstanceModelSelect(vm.block.ModelRoot.idModel)
+                    .then(function (x) {
+                        if (x && x.instance && x.type) {
+                            var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
+                            miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
+                            notificationService.success(
+                                'Add Query Model', 'Query model by default'
+                            );
+                        } else {
+                            //Clean Quey
+                            var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
+                            miDirectiva.scope().ProperParams.InstanceModeldefault(null, null);
+                            notificationService.info(
+                                'Query Model', 'No model query was found, or the call failed'
+                            );
+                        }
+                    })
+                    .catch(function (error) {
                         notificationService.info(
                             'Query Model', 'No model query was found, or the call failed'
                         );
-                    }
-                })
-                .catch(function (error) {
-                    notificationService.info(
-                        'Query Model', 'No model query was found, or the call failed'
-                    );
-                });
-
-            update();
+                    });
+                update();
+            }
+            
         }
 
         function removeBase64Header(base64String) {
