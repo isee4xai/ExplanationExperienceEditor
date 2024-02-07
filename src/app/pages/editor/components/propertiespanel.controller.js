@@ -881,7 +881,7 @@
                         vm.TitleName = vm.original.name;
                         vm.TitleSelect = vm.node;
                         vm.IdModel = vm.block.ModelRoot;
-                        
+
                         if ($location.search().usecaseId != undefined) {
                             if (!getCallMade || vm.block.ModelRoot.idModel == undefined) {
                                 if (vm.block.ModelRoot.id && (vm.block.ModelRoot.img || vm.block.ModelRoot.query)) {
@@ -1044,7 +1044,6 @@
                                                 count++;
                                             }
                                         }
-                                        console.log(vm.models);
                                         notificationService.success(
                                             "Added Private Model"
                                         );
@@ -2075,7 +2074,8 @@
                 jsonObjectInstance.type = "dict"
             }
 
-            projectModel.RunNew(jsonObjectInstance, vm.original.title)
+            if (jsonObjectInstance.instance != undefined) {
+                projectModel.RunNew(jsonObjectInstance, vm.original.title)
                 .then(function (x) {
                     if (x.hasOwnProperty("type")) {
                         switch (x.type) {
@@ -2155,6 +2155,13 @@
                         );
                     }
                 });
+            }else{
+                loaderDiv.style.display = "none";
+                notificationService.error(
+                    'Root Node Error', 'Empty Query Error for Root Node. Please ensure to provide a valid query'
+                );
+            }
+            
         }
 
         function ejecutarScripts(Datos, IdDiv) {
