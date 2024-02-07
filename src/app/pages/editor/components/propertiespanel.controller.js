@@ -1636,8 +1636,6 @@
         function updateDataWithIdRoot(data, NodeSelect) {
             var datos = [];
             let rootBad;
-            console.log("--------------");
-            console.log(data);
             const datosFiltrados = data.filter(item => {
                 return !(item.data && item.data.trees && item.data.trees.some(arbol => arbol.root === NodeSelect));
             });
@@ -1931,9 +1929,11 @@
 
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
+            let IsApplicableAll = true;
 
             for (const key in nodes) {
                 if (nodes[key].Concept == "Explanation Method" && nodes[key].properties.Applicability == false) {
+                    IsApplicableAll= false;
                     var datos2 = t.blocks.get(nodes[key].id);
                     var data = {
                         "explainer": datos2.title
@@ -1965,6 +1965,11 @@
                         vm.isLoading = false;
                     }
                 }
+            }
+
+            if (IsApplicableAll) {
+                notificationService.info('All applicators are applicable.');
+                vm.isLoading = false;
             }
             loaderDiv.style.display = "none";
         }
@@ -2715,8 +2720,6 @@
                             }
                             block.properties.Popularity = 1;
                             block.title = option;
-                            console.log('*********************************');
-                            console.log(x.params);
                             CreateParams(x.params, block, nodeId, originalBlock);
                             break;
                         case x == "Error in computer network communications":
