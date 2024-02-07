@@ -1710,8 +1710,6 @@
 
 
         function handleAutomaticData(data, nodeSelect, parentNode, descendants) {
-
-
             switch (data.length) {
                 case 40:
                     notificationService.error('An error occurred. Please try again later.');
@@ -3120,8 +3118,8 @@
         async function sequenceAndpriority(node) {
             vm.RunBtString.push("⏩ Running " + node.Concept + "  █ Id : " + node.id + " Name : " + node.Instance);
             var child = node.firstChild;
-            var p = $window.editor.project.get();
-            var t = p.trees.getSelected();
+            const p = $window.editor.project.get();
+            const t = p.trees.getSelected();
 
             do {
                 var ExpBlock = t.blocks.get(vm.jsonData.nodes[child.Id]);
@@ -3197,8 +3195,8 @@
                     jsonParam[vm.ArrayParams[i].key] = vm.ArrayParams[i].value;
                 }
             }
-
-            var jsonObjectInstance = {
+            /**
+              var jsonObjectInstance = {
                 id: vm.IdModel.idModel,
                 params: jsonParam
             };
@@ -3206,6 +3204,31 @@
             if (isBase64Image(vm.IdModel.query)) {
                 jsonObjectInstance.instance = vm.IdModel.query;
                 jsonObjectInstance.type = "image"
+            } else {
+                if (esJSONValido(vm.IdModel.query)) {
+                    jsonObjectInstance.instance = JSON.parse(vm.IdModel.query);
+                } else {
+                    jsonObjectInstance.instance = vm.IdModel.query;
+                }
+                jsonObjectInstance.type = "dict"
+            }
+             */
+
+            var jsonObjectInstance = {
+                id: vm.IdModel.idModel,
+                params: jsonParam
+            };
+
+            if (vm.IdModel.hasOwnProperty('img')) {
+                if (isBase64Image(vm.IdModel.img)) {
+                    const base64SinEncabezado = removeBase64Header(vm.IdModel.img);
+                    jsonObjectInstance.instance = base64SinEncabezado;
+                    jsonObjectInstance.type = "image"
+                } else {
+                    notificationService.error(
+                        'File Model error', 'the file is not an image'
+                    );
+                }
             } else {
                 if (esJSONValido(vm.IdModel.query)) {
                     jsonObjectInstance.instance = JSON.parse(vm.IdModel.query);
