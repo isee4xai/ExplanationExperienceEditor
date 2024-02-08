@@ -899,7 +899,7 @@
                                     SelectModel(vm.models[vm.idModelUrl]);
                                 }
                                 getCallMade = true;
-                            } 
+                            }
                         }
 
 
@@ -1147,20 +1147,36 @@
         }
 
         function setExplainersSubstitute(title) {
+
             if (vm.ExplainersSubstituteAll && title != "Explanation Method") {
                 var entriesArray = Object.entries(vm.ExplainersSubstituteAll[title] || {});
-                var filteredEntries = entriesArray
-                    .filter(([key, entry]) => entry.similarity !== 0)
-                    .map(([key, entry]) => {
-                        return {
-                            "explainer": entry.explainer,
-                            "explanation": entry.explanation,
-                            "similarity": entry.similarity
-                        };
-                    })
-                    .sort((a, b) => b.similarity - a.similarity);
+                if (title == "/Misc/AIModelPerformance") {
+                    var filteredEntries = entriesArray
+                        .map(([key, entry]) => {
+                            return {
+                                "explainer": entry.explainer,
+                                "explanation": entry.explanation,
+                                "similarity": entry.similarity
+                            };
+                        })
+                        .sort((a, b) => b.similarity - a.similarity);
 
-                vm.isLoading = false;
+                    vm.isLoading = false;
+                } else {
+                    var filteredEntries = entriesArray
+                        .filter(([key, entry]) => entry.similarity !== 0)
+                        .map(([key, entry]) => {
+                            return {
+                                "explainer": entry.explainer,
+                                "explanation": entry.explanation,
+                                "similarity": entry.similarity
+                            };
+                        })
+                        .sort((a, b) => b.similarity - a.similarity);
+
+                    vm.isLoading = false;
+                }
+
 
                 if (filteredEntries.length === 0) {
                     notificationService.error('No similarity was found');
@@ -1240,6 +1256,8 @@
         }
 
         async function submitFormSub(NodeSelect) {
+            var loaderDiv = document.querySelector('#loader');
+            loaderDiv.style.display = 'block';
             var jsonDataNew = {
             };
 
@@ -1296,7 +1314,8 @@
                         jsonDataNew.presentations.push(item.key);
                         vm.addChildrenKeys(item);
                     });
-                }*/
+                }
+                */
 
                 jsonDataNew.presentations = [];
                 select(vm.PresentationFormatSubSelect, jsonDataNew.presentations);
@@ -1338,19 +1357,41 @@
                                 switch (true) {
                                     case x === "Error in computer network communications":
                                         notificationService.error(x);
+                                        loaderDiv.style.display = "none";
                                         break;
                                     case x.length > 0:
                                         x.sort(function (a, b) {
                                             return b.similarity - a.similarity;
                                         });
                                         SubstituteOneNode(x, vm.original, vm.block);
+                                        loaderDiv.style.display = "none";
                                         break;
-
                                     default:
-                                        notificationService.error('No matches found');
+                                        
+                                        if (NodeSelect.title = "/Misc/AIModelPerformance") {
+                                            var data = {
+                                                "explainer": NodeSelect.title
+                                            }
+                                            try {
+                                                notificationService.info('No examples found matching those criteria',' You can try substituting the explainer.');
+                                                projectModel.GetSubstituteExplainer(data, $location.search().usecaseId)
+                                                    .then(function (x) {
+                                                        loaderDiv.style.display = "none";
+                                                        SubstituteOneNode(x, vm.original, vm.block);
+                                                    });
+                                            } catch (error) {
+                                                loaderDiv.style.display = "none";
+                                                console.log(error);
+                                            }
+                                        }else{
+                                            loaderDiv.style.display = "none";
+                                            notificationService.error('No matches found');
+                                        }
                                 }
                             });
+
                     } catch (error) {
+                        loaderDiv.style.display = "none";
                         notificationService.error(
                             'An error occurred. Please try again later.'
                         );
@@ -1358,8 +1399,10 @@
                     break;
                 case "composite":
                     SubstituteNodes(NodeSelect, jsonDataNew, 'WithCriteria');
+                    loaderDiv.style.display = "none";
                     break;
                 default:
+                    loaderDiv.style.display = "none";
                     break;
             }
         }
@@ -1931,7 +1974,7 @@
 
             for (const key in nodes) {
                 if (nodes[key].Concept == "Explanation Method" && nodes[key].properties.Applicability == false) {
-                    IsApplicableAll= false;
+                    IsApplicableAll = false;
                     var datos2 = t.blocks.get(nodes[key].id);
                     var data = {
                         "explainer": datos2.title
@@ -1940,6 +1983,7 @@
                         const x = await projectModel.GetSubstituteExplainer(data, $location.search().usecaseId);
                         let index = 0;
                         let explainerLength = x.length;
+
                         if (explainerLength > 0) {
                             vm.ExplainersSubstituteAll[datos2.title] = x;
 
@@ -1956,6 +2000,10 @@
                                 } while (ListExplainerInTree.includes(primeraClave));
                             }
                             ListExplainerInTree.push(primeraClave);
+                            console.log(ListExplainerInTree.length == explainerLength);
+                            if (ListExplainerInTree.length == explainerLength) {
+                                ListExplainerInTree = [];
+                            }
                             UpdateProperties(primeraClave, datos2, nodes[key].id, datos2);
                         }
                     } catch (error) {
@@ -2025,7 +2073,6 @@
                     });
                 update();
             }
-            
         }
 
         function removeBase64Header(base64String) {
@@ -2079,92 +2126,92 @@
 
             if (jsonObjectInstance.instance != undefined) {
                 projectModel.RunNew(jsonObjectInstance, vm.original.title)
-                .then(function (x) {
-                    if (x.hasOwnProperty("type")) {
-                        switch (x.type) {
-                            case "image":
-                                var img = new Image();
-                                var base64 = x.explanation;
-                                block.Image = "data:image/png;base64," + base64;
-                                //Actualizar la imagen o cargar imagen
-                                var imagen = document.querySelector('#ImgExpl');
-                                if (imagen) {
-                                    imagen.src = block.Image;
-                                }
-                                delete block.Json;
-                                break;
-                            case "html":
-                                var existsButton = document.getElementById('ButtonPlotly');
-                                if (x.explanation.includes("Plotly.newPlot")) {
-                                    if (!existsButton) {
-                                        var miDiv = document.getElementById('mi-div');
-                                        var boton = document.createElement("button");
-                                        boton.style.backgroundColor = '#0F4501';
-                                        boton.innerHTML = "Visualize data";
-                                        boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
-                                        boton.setAttribute("id", "ButtonPlotly");
-                                        miDiv.innerHTML = "";
-                                        miDiv.appendChild(boton);
+                    .then(function (x) {
+                        if (x.hasOwnProperty("type")) {
+                            switch (x.type) {
+                                case "image":
+                                    var img = new Image();
+                                    var base64 = x.explanation;
+                                    block.Image = "data:image/png;base64," + base64;
+                                    //Actualizar la imagen o cargar imagen
+                                    var imagen = document.querySelector('#ImgExpl');
+                                    if (imagen) {
+                                        imagen.src = block.Image;
+                                    }
+                                    delete block.Json;
+                                    break;
+                                case "html":
+                                    var existsButton = document.getElementById('ButtonPlotly');
+                                    if (x.explanation.includes("Plotly.newPlot")) {
+                                        if (!existsButton) {
+                                            var miDiv = document.getElementById('mi-div');
+                                            var boton = document.createElement("button");
+                                            boton.style.backgroundColor = '#0F4501';
+                                            boton.innerHTML = "Visualize data";
+                                            boton.setAttribute("class", "btn btn-success btn-xs pull-right ng-scope");
+                                            boton.setAttribute("id", "ButtonPlotly");
+                                            miDiv.innerHTML = "";
+                                            miDiv.appendChild(boton);
+                                        }
+
+                                    } else {
+                                        if (existsButton) {
+                                            existsButton.remove();
+                                        }
+                                        const miDiv = document.getElementById('mi-div');
+                                        miDiv.innerHTML = x.explanation;
                                     }
 
-                                } else {
-                                    if (existsButton) {
-                                        existsButton.remove();
+                                    var ImageElement = document.getElementById('ImgExpl');
+                                    if (ImageElement) {
+                                        ImageElement.remove();
                                     }
-                                    const miDiv = document.getElementById('mi-div');
-                                    miDiv.innerHTML = x.explanation;
-                                }
 
-                                var ImageElement = document.getElementById('ImgExpl');
-                                if (ImageElement) {
-                                    ImageElement.remove();
-                                }
+                                    block.Json = x;
+                                    delete block.Image;
 
-                                block.Json = x;
-                                delete block.Image;
+                                    break;
+                                case "dict":
+                                case "text":
+                                    block.Json = {
+                                        explanation: JSON.stringify(x.explanation, null, 4),
+                                        type: x.type
+                                    }
+                                    var ElementTextArea = document.getElementById('TextArea');
+                                    if (ElementTextArea) {
+                                        ElementTextArea.innerHTML = block.Json.explanation;
+                                    }
 
-                                break;
-                            case "dict":
-                            case "text":
-                                block.Json = {
-                                    explanation: JSON.stringify(x.explanation, null, 4),
-                                    type: x.type
-                                }
-                                var ElementTextArea = document.getElementById('TextArea');
-                                if (ElementTextArea) {
-                                    ElementTextArea.innerHTML = block.Json.explanation;
-                                }
+                                    delete block.Image;
+                                    break;
 
-                                delete block.Image;
-                                break;
-
-                            default:
-                                break;
-                                LoadHtmlCode();
+                                default:
+                                    break;
+                                    LoadHtmlCode();
+                            }
+                            notificationService.success(
+                                "The explainer ran successfully"
+                            );
+                            loaderDiv.style.display = "none";
+                            //update Explanation
+                            var p = $window.editor.project.get();
+                            var t = p.trees.getSelected();
+                            var ExpBlock = t.blocks.get(NodeId);
+                            t.blocks.update(ExpBlock, block);
+                        } else {
+                            loaderDiv.style.display = "none";
+                            notificationService.error(
+                                x
+                            );
                         }
-                        notificationService.success(
-                            "The explainer ran successfully"
-                        );
-                        loaderDiv.style.display = "none";
-                        //update Explanation
-                        var p = $window.editor.project.get();
-                        var t = p.trees.getSelected();
-                        var ExpBlock = t.blocks.get(NodeId);
-                        t.blocks.update(ExpBlock, block);
-                    } else {
-                        loaderDiv.style.display = "none";
-                        notificationService.error(
-                            x
-                        );
-                    }
-                });
-            }else{
+                    });
+            } else {
                 loaderDiv.style.display = "none";
                 notificationService.error(
                     'Root Node Error', 'Empty Query Error for Root Node. Please ensure to provide a valid query'
                 );
             }
-            
+
         }
 
         function ejecutarScripts(Datos, IdDiv) {
@@ -3026,6 +3073,7 @@
 
             for (const identificador in vm.jsonData.nodes) {
                 if (vm.jsonData.root == identificador) {
+                    console.log(vm.jsonData.nodes[identificador]);
                     await runNode(vm.jsonData.nodes[identificador].id);
                 }
             }
