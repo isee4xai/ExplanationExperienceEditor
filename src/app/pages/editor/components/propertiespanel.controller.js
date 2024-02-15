@@ -1367,13 +1367,13 @@
                                         loaderDiv.style.display = "none";
                                         break;
                                     default:
-                                        
+
                                         if (NodeSelect.title = "/Misc/AIModelPerformance") {
                                             var data = {
                                                 "explainer": NodeSelect.title
                                             }
                                             try {
-                                                notificationService.info('No examples found matching those criteria',' You can try substituting the explainer.');
+                                                notificationService.info('No examples found matching those criteria', ' You can try substituting the explainer.');
                                                 projectModel.GetSubstituteExplainer(data, $location.search().usecaseId)
                                                     .then(function (x) {
                                                         loaderDiv.style.display = "none";
@@ -1383,7 +1383,7 @@
                                                 loaderDiv.style.display = "none";
                                                 console.log(error);
                                             }
-                                        }else{
+                                        } else {
                                             loaderDiv.style.display = "none";
                                             notificationService.error('No matches found');
                                         }
@@ -1614,6 +1614,11 @@
                         if (x.data.trees[0].img) {
                             delete x.data.trees[0].img;
                         }
+                        x.data.trees.forEach(tree => {
+                            Object.values(tree.nodes).forEach(node => {
+                                delete node.Image;
+                            });
+                        });
 
                         // Resolve the promise with the project data and other details
                         //  resolve({ projectData: x, parentNode: containerTree.nodes[parentNodeId], descendants: descendantNodes, rootNodeId: rootNodeId });
