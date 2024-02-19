@@ -52,15 +52,42 @@
             var e = $window.editor.export;
 
             if (vm.type === 'project' && vm.format === 'json') {
-                _createJson(e.projectToData());
+                _createJson(e.projectToData(), "project");
             } else if (vm.type === 'tree' && vm.format === 'json') {
-                _createJson(e.treeToData());
+                _createJson(e.treeToData(), "tree");
             } else if (vm.type === 'nodes' && vm.format === 'json') {
-                _createJson(e.nodesToData());
+                _createJson(e.nodesToData(), "nodes");
             }
         }
 
-        function _createJson(data) {
+        function _createJson(data, type) {
+            switch (type) {
+                case "project":
+                    if (data.trees[0].img) {
+                        delete data.trees[0].img;
+                    }
+                    data.trees.forEach(tree => {
+                        Object.values(tree.nodes).forEach(node => {
+                            delete node.Image;
+                        });
+                    });
+                    break;
+                case "tree":
+                    if (data.img) {
+                        delete data.img;
+                    }
+   
+                    Object.values(data.nodes).forEach(node => {
+                        delete node.Image;
+                    });
+
+                    break;
+                case "nodes":
+                    break;
+                default:
+                    break;
+            }
+
             vm.data = data;
             vm.compact = JSON.stringify(data);
             vm.pretty = JSON.stringify(data, null, 2);
