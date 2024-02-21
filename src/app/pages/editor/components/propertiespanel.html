@@ -13,6 +13,50 @@
             <div class="form-group">
                 <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
                     <button id="ButtonSave" type="button" ng-click="propertiespanel.RunBt()">RUN BT</button>
+                    <br>
+                    <br>
+                    <button id="ButtonSave"  type="button" ng-click="propertiespanel.CheckBTforiSee()">Check BT for iSee</button>
+                    <br>
+                    <br>
+                  <!--  <div>
+                        <div id="header">
+                            <ul class="nav">
+                                <li>
+                                    <a ng-model="propertiespanel.block.title"
+                                        ng-click="propertiespanel.CheckBTforiSee()" class="search-link">
+                                        Check BT for iSee</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    -->
+                    <div class="DivModel">
+                        <label>Automatic</label>
+                    </div>
+                    <div>
+                        <div id="header">
+                            <ul class="nav">
+                                <li>
+                                    <a ng-model="propertiespanel.block.title"
+                                        ng-click="propertiespanel.AutomaticApplicability()" class="search-link">
+                                        Fix no applicable explainers</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="header">
+                            <ul class="nav">
+                                <li>
+                                    <a ng-model="propertiespanel.block.title"
+                                        ng-click="propertiespanel.AutomaticReuseAllTree()" class="search-link">
+                                        Adapt subtree to be applicable</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -308,32 +352,7 @@
                 </div>
             </div>
 
-            <div class="DivModel">
-                <label>Automatic</label>
-            </div>
-            <div>
-                <div id="header">
-                    <ul class="nav">
-                        <li>
-                            <a ng-model="propertiespanel.block.title"
-                                ng-click="propertiespanel.AutomaticApplicability()" class="search-link">
-                                Fix no applicable explainers</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <div>
-                <div id="header">
-                    <ul class="nav">
-                        <li>
-                            <a ng-model="propertiespanel.block.title" ng-click="propertiespanel.AutomaticReuseAllTree()"
-                                class="search-link">
-                                Adapt subtree to be applicable</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
             <div id="loader" style="display: none;">
                 <div class="load">
@@ -1261,12 +1280,14 @@
                         <p>The process for building and executing explanation experiences can be
                             summarized in the following steps:</p>
                         <ol type="1">
-                            <li><strong>Access the editor from https://cockpit-dev.isee4xai.com to utilize all functionalities.</strong></li>
-                            <li><strong>Upon opening the editor, the Explanation Experience will be automatically selected.</strong></li>
+                            <li><strong>Access the editor from https://cockpit-dev.isee4xai.com to utilize all
+                                    functionalities.</strong></li>
+                            <li><strong>Upon opening the editor, the Explanation Experience will be automatically
+                                    selected.</strong></li>
                             <li><strong>The model will also be predefined with default data based on the use case,
-                                 but you can customize it according to your needs.</strong></li>
-                            <li><strong>  Please note that the model may not have default data available and 
-                                remember to save these settings before proceeding.</strong></li>
+                                    but you can customize it according to your needs.</strong></li>
+                            <li><strong> Please note that the model may not have default data available and
+                                    remember to save these settings before proceeding.</strong></li>
                         </ol>
                         <p style="text-align: center;">
                             <img width="292" alt="image"
@@ -1292,6 +1313,33 @@
                     <div id="caption"></div>
                 </div>
             </div>
+<!--
+            <div id="ErrorCheckBtIsee" class="modal">
+                <div id="contenedor-help">
+                    <div id="modal-content-help" style="width: 100%;padding: 10px;" class="modal-content">
+                        <h1>Errors check bt for iSee </h1>
+                        <ul>
+                            <li ng-repeat="item in propertiespanel.ErrorCheckBT">{{ item }}</li>
+                        </ul>
+                        <span id="closeErrorCheckBtButton" style="color: #000;" class="close">&times;</span>
+                    </div>
+                    <div id="caption"></div>
+                </div>
+            </div>
+-->
+            <div id="ErrorCheckBtIsee" class="modalLight">
+                <div id="contenedor-help">
+                    <div id="modal-content-help" style="width: 100%;padding: 10px;" class="modal-content">
+                        <h1>Errors check bt for iSee </h1>
+                        <ul>
+                            <li ng-repeat="item in propertiespanel.ErrorCheckBT">{{ item }}</li>
+                        </ul>
+                        <span id="closeErrorCheckBtButton" style="color: #000;" class="close">&times;</span>
+                    </div>
+                </div>
+            </div>
+
+
         </form>
     </div>
 

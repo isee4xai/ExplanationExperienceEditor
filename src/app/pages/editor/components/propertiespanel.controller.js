@@ -65,6 +65,9 @@
         //Automatic
         vm.AutomaticReuseAllTree = AutomaticReuseAllTree;
         vm.AutomaticApplicability = AutomaticApplicability;
+        // Check BT for iSee
+        vm.CheckBTforiSee = CheckBTforiSee;
+        vm.ErrorCheckBT = [];
 
         vm.explainerAccordionOpen = false
         vm.ExplainerConcurrentnessAccordionOpen = false
@@ -1655,6 +1658,7 @@
                             handleData(dataWithCriteria, NodeSelect, x.parentNode, x.descendants);
                             break;
                         case "WithoutCriteria":
+                            console.log(DataSubstituteSubtree.tree);
                             delete DataSubstituteSubtree.criteria;
                             const dataWithoutCriteria = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
                             handleData(dataWithoutCriteria, NodeSelect, x.parentNode, x.descendants);
@@ -2025,6 +2029,229 @@
             loaderDiv.style.display = "none";
         }
 
+        //Check BT for iSee
+
+        function ShowErrorCheckBt() {
+            if (vm.ErrorCheckBT.length != 0) {
+                var ErrorCheckBtIsee = document.getElementById("ErrorCheckBtIsee");
+                ErrorCheckBtIsee.style.display = "block";
+                var buttonClose = document.getElementById("closeErrorCheckBtButton");
+
+                buttonClose.onclick = function () {
+                    ErrorCheckBtIsee.style.display = "none";
+                    vm.ErrorCheckBT = [];
+                };
+            } else {
+                notificationService.success(
+                    'Structure of the BT is correct'
+                );
+            }
+        }
+
+        async function CheckBTforiSee() {
+            const e = $window.editor.export;
+            const nodes = e.treeToData().nodes;
+            const nodeComposite = nodes[e.treeToData().root];
+
+            switch (nodeComposite.Concept) {
+                case "Priority":
+                    await MultiQuestion(nodes, nodeComposite);
+                    break;
+                case "Sequence":
+                    await OnlyQuestion(nodes, nodeComposite);
+                    break;
+                case "Supplement":
+                case "Replacement":
+                case "Variant":
+                case "Complement":
+                    vm.ErrorCheckBT.push("🔴Root should hang a node type Sequence or Priority and not a " + nodeComposite.Concept);
+
+                    var nodesIds = nodeComposite.firstChild;
+                    var cont = 0;
+                    var UserQuestion = false;
+                    while (nodesIds != null) {
+                        var node = nodes[nodesIds.Id];
+                        if (node.Concept == "User Question") {
+                            UserQuestion = true;
+                        }
+                        nodesIds = nodesIds.Next;
+                        cont++;
+                    }
+                    if (UserQuestion && cont > 1) {
+                        await OnlyQuestion(nodes, nodeComposite);
+                    } else {
+                        await MultiQuestion(nodes, nodeComposite);
+                    }
+                    break;
+                default:
+                    vm.ErrorCheckBT.push("🔴Root should hang a node type Sequence or Priority and not a " + nodeComposite.Concept);
+                    break;
+            }
+
+            ShowErrorCheckBt();
+        }
+
+        async function MultiQuestion(nodes, nodeComposite) {
+            if (nodeComposite.hasOwnProperty('firstChild') || nodeComposite.firstChild.Id == undefined) {
+                var nodesIds = nodeComposite.firstChild;
+                var cont = 0;
+                do {
+                    var node = nodes[nodesIds.Id];
+                    switch (node.Concept) {
+                        case "Sequence":
+                            OnlyQuestion(nodes, node);
+                            break;
+                        case "Priority":
+                        case "Supplement":
+                        case "Replacement":
+                        case "Variant":
+                        case "Complement":
+                            vm.ErrorCheckBT.push("🔴Only nodes of type 'sequence' can be added under the 'Priority' node. Please remember to replace '" + nodeComposite.Concept + "' with 'Priority'.");
+                            var nodesIdsSub = node.firstChild;
+                            var contSub = 0;
+                            var UserQuestion = false;
+                            while (nodesIdsSub != null) {
+                                var nodeSub = nodes[nodesIdsSub.Id];
+                                if (nodeSub.Concept == "User Question") {
+                                    UserQuestion = true;
+                                }
+                                nodesIdsSub = nodesIdsSub.Next;
+                                contSub++;
+                            }
+                            if (UserQuestion && contSub > 1) {
+                                await OnlyQuestion(nodes, node);
+                            } else {
+                                const numUserQuestions = Object.values(nodes).filter(obj => obj.Concept === "User Question").length;
+                                if (numUserQuestions == 1) {
+                                    vm.ErrorCheckBT.push("🔴Incorrect structure of the behavior tree for a user question. The structure should consist of a root node with a 'Sequence' child, and the 'Sequence' node should depend on a user question with an 'explainer' or an 'explainer tree");
+                                } else {
+                                    vm.ErrorCheckBT.push("🔴Incorrect structure of multi-question user behavior tree. Please modify the behavior tree so that the root node must have 'Priority' as its child, and 'Priority' node must have more than one 'Sequence' node attached to it for each user question");
+                                }
+
+                            }
+                            break;
+                        default:
+                            vm.ErrorCheckBT.push("🔴Only nodes of type 'sequence' can be added under the 'Priority' node. Please remember to replace '" + nodeComposite.Concept + "' with 'Priority'.");
+                            break;
+                    }
+                    nodesIds = nodesIds.Next;
+                    cont++;
+                } while (nodesIds != null);
+
+                if (cont <= 1) {
+                    vm.ErrorCheckBT.push("🔴The " + nodeComposite.Concept + " node should have at least two sequences as children.");
+                }
+            } else {
+                vm.ErrorCheckBT.push("🔴The " + nodeComposite.Concept + " node must have at least one child.");
+            }
+        }
+
+        async function OnlyQuestion(nodes, nodeComposite) {
+            if (nodeComposite.hasOwnProperty('firstChild') || nodeComposite.firstChild.Id == undefined) {
+                var nodesIds = nodeComposite.firstChild;
+                var ifExistQuestion = false;
+
+                do {
+                    var node = nodes[nodesIds.Id];
+                    switch (node.Concept) {
+                        case "User Question":
+                            ifExistQuestion = true;
+                            break;
+                        case "Explanation Method":
+                            break;
+                        case "Supplement":
+                        case "Replacement":
+                        case "Variant":
+                        case "Complement":
+                            ExplainerTree(nodes, node);
+                            break;
+                        case "Priority":
+                        case "Sequence":
+                            vm.ErrorCheckBT.push("🔴The " + node.Concept + " node cannot be a child of the " + nodeComposite.Concept + " node.");
+                            ExplainerTree(nodes, node);
+                            break;
+                        default:
+                            vm.ErrorCheckBT.push("🔴The " + node.Concept + " node cannot be a child of the " + nodeComposite.Concept + " node.");
+                            break;
+                    }
+                    nodesIds = nodesIds.Next;
+                } while (nodesIds != null);
+
+                if (!ifExistQuestion) {
+                    vm.ErrorCheckBT.push("🔴" + nodeComposite.Concept + " should have a user question with an explainer or an explainer tree");
+                }
+            } else {
+                vm.ErrorCheckBT.push("🔴The  " + nodeComposite.Concept + "node must have at least one child.");
+            }
+        }
+
+        function ExplainerTree(nodes, nodeRootSub) {
+            if (nodeRootSub.hasOwnProperty('firstChild') || nodeRootSub.firstChild.Id == undefined) {
+                var nodesIds = nodeRootSub.firstChild;
+
+                do {
+                    var node = nodes[nodesIds.Id];
+                    switch (node.Concept) {
+                        case "Explanation Method":
+                            break;
+                        case "Supplement":
+                        case "Replacement":
+                        case "Variant":
+                        case "Complement":
+                            childrenIfExplainer(nodes, node);
+                            break;
+                        case "Priority":
+                        case "Supplement":
+                            vm.ErrorCheckBT.push("🔴The " + node.Concept + " node cannot be a child of the " + nodeRootSub.Concept + " node.");
+                            childrenIfExplainer(nodes, node);
+                            break;
+                        default:
+                            console.log("--------------------");
+                            console.log(node);
+                            vm.ErrorCheckBT.push("🔴The " + node.Concept + " node cannot be a child of the " + nodeRootSub.Concept + " node.");
+                            break;
+                    }
+                    nodesIds = nodesIds.Next;
+                } while (nodesIds != null);
+
+            } else {
+                vm.ErrorCheckBT.push("🔴The  " + nodeRootSub.Concept + " node must have at least one child.");
+            }
+
+            function childrenIfExplainer(nodes, nodeSub) {
+                if (nodeSub.hasOwnProperty('firstChild') || nodeSub.firstChild.Id == undefined) {
+                    var nodesIds = nodeSub.firstChild;
+
+                    do {
+                        var node = nodes[nodesIds.Id];
+                        switch (node.Concept) {
+                            case "Explanation Method":
+                                break;
+                            case "Supplement":
+                            case "Replacement":
+                            case "Variant":
+                            case "Complement":
+                                childrenIfExplainer(nodes, node);
+                            case "Priority":
+                            case "Supplement":
+                                vm.ErrorCheckBT.push("🔴The " + node.Concept + " node cannot be a child of the " + nodeRootSub.Concept + " node. 1");
+                                childrenIfExplainer(nodes, node);
+                                break;
+                            default:
+                                vm.ErrorCheckBT.push("🔴The " + node.Concept + " node cannot be a child of the " + nodeSub.Concept + " node. 1");
+                                break;
+                        }
+                        nodesIds = nodesIds.Next;
+                    } while (nodesIds != null);
+
+                } else {
+                    vm.ErrorCheckBT.push("🔴The  " + nodeSub.Concept + " node must have at least one child.");
+                }
+            }
+
+        }
+
+
         function getChildExplanations(DataAll, parentKey) {
             var children = [];
             for (var i = 0; i < DataAll.length; i++) {
@@ -2078,6 +2305,7 @@
                     });
                 update();
             }
+
         }
 
         function removeBase64Header(base64String) {
@@ -2344,7 +2572,6 @@
             }
         }
 
-
         function PropertiesExplanation(option) {
             var propertiesExpl = {};
             var ArrayNameProperties = Object.keys(option);
@@ -2375,7 +2602,6 @@
 
             return propertiesExpl;
         }
-
 
         function existeExplainer(nodos, nodoId, nodoSelect, elementosEncontrados) {
             var SelectSubTree = {
@@ -2430,7 +2656,6 @@
             }
             return false;
         }
-
 
         async function UpdateProperties(option, block, nodeId, originalBlock) {
 
@@ -2512,7 +2737,6 @@
             }
 
         }
-
 
         function change(block, nodeId, originalBlock) {
             switch (originalBlock.name) {
@@ -3057,9 +3281,7 @@
             update();
         }
 
-
         function update() {
-            //update Explanation and Evaluation method properties
             var p = $window.editor.project.get();
             var t = p.trees.getSelected();
             t.blocks.update(vm.original, vm.block);
@@ -3184,7 +3406,6 @@
             return true;
         }
 
-
         async function composite(node) {
             vm.RunBtString.push("⏩ Running " + node.Concept + " node █ Id : " + node.id + " Name : " + node.Instance);
             var child = node.firstChild;
@@ -3253,7 +3474,7 @@
                 id: vm.IdModel.idModel,
                 params: jsonParam
             };
-
+ 
             if (isBase64Image(vm.IdModel.query)) {
                 jsonObjectInstance.instance = vm.IdModel.query;
                 jsonObjectInstance.type = "image"
