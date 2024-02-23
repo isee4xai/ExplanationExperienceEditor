@@ -124,7 +124,7 @@
         vm.ArrayComposites = [];
         vm.ArrayCompositesNew = [];
         vm.models = [];
-        vm.date = "version 06/02/23";
+        vm.date = "version 23/02/23";
         vm.showHelp = showHelp;
         vm.showVideo = showVideo;
         vm.TreesExample = TreesExample;
@@ -160,7 +160,6 @@
             } else {
                 vm.isEditor = "editor";
             }
-            console.log(vm.isEditor);
         }
 
 

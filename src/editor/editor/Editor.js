@@ -67,8 +67,8 @@
     this._systems.push(new b3e.editor.ShortcutSystem(this));
 
     // SETTINGS
-
-    this.applySettings('default');
+    
+    this.applySettings('default',this._settings);
   };
 
   /**
@@ -77,7 +77,7 @@
   p._update = function () {
     //udate canvas  button [more like this?]
     if (this.canvasSub) {
-      this.canvasSub.style.width =  window.innerWidth < 1400 ? "400px" : window.innerWidth / 3.5 + "px";
+      this.canvasSub.style.width = window.innerWidth < 1400 ? "400px" : window.innerWidth / 3.5 + "px";
       this.canvasSub.style.height = window.innerHeight < 747 ? "250px" : window.innerHeight / 3.5 + "px";
     }
 
@@ -97,9 +97,14 @@
     this.dispatchEvent(event);
   };
 
-  p.applySettings = function (settings) {
+  p.applySettings = function (settings,SubSettings) {
     if (settings === 'default') {
-      settings = b3e.DEFAULT_SETTINGS;
+      if (Object.keys(SubSettings._dict).length) {
+        settings =   SubSettings._dict;
+      }else{
+        settings = b3e.DEFAULT_SETTINGS;
+      }
+
       this._settings.clear();
     }
 
@@ -117,30 +122,30 @@
   };
 
   p.applySettingsFormatOnlyNode = function (div, blockTitle, category) {
-      var p = this.project.get();
-      var tree = p.trees.getSelected();
-      var block = new b3e.Block(blockTitle);
-  
-      var canvas = document.createElement('canvas');
-      
-      block.category = category,
+    var p = this.project.get();
+    var tree = p.trees.getSelected();
+    var block = new b3e.Block(blockTitle);
+
+    var canvas = document.createElement('canvas');
+
+    block.category = category,
       block.title = blockTitle,
       block._applySettings(this._settings);
-      block.x = block._width/1.2;
-      block.y = block._height*1.2;
+    block.x = block._width / 1.2;
+    block.y = block._height * 1.2;
 
-      canvas.setAttribute('width', block._width/1.2 * tree.scaleX * 2);
-      canvas.setAttribute('height', block._height*1.2 * tree.scaleY * 2);
-      canvas.style.border = '3px solid black';
-      canvas.style.backgroundColor = '#2f2f2f';
+    canvas.setAttribute('width', block._width / 1.2 * tree.scaleX * 2);
+    canvas.setAttribute('height', block._height * 1.2 * tree.scaleY * 2);
+    canvas.style.border = '3px solid black';
+    canvas.style.backgroundColor = '#2f2f2f';
 
-      var stage = new createjs.Stage(canvas);
-      stage.scaleX = 1;
-      stage.scaleY = 1;
-      stage.addChild(block);
-      stage.update();
-      div.appendChild(canvas);
-   
+    var stage = new createjs.Stage(canvas);
+    stage.scaleX = 1;
+    stage.scaleY = 1;
+    stage.addChild(block);
+    stage.update();
+    div.appendChild(canvas);
+
     return canvas;
   }
 
