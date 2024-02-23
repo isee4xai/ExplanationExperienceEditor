@@ -35,6 +35,9 @@
         vm.pretty = '';
         vm.result = null;
         vm.data = null;
+        vm.dataDefault = null;
+        vm.datawithoutImg = null;
+        vm.toggleSwitch = false;
         vm.hideCompact = false;
         vm.showCompact = showCompact;
         vm.showPretty = showPretty;
@@ -42,6 +45,10 @@
         vm.save = save;
         vm.saveJson = saveJson;
         vm.redirect = redirect;
+        //switch
+        vm.includeImage = true;
+        vm.switchText = 'Include image';
+        vm.toggleImage = toggleImage;
 
         _active();
 
@@ -52,40 +59,50 @@
             var e = $window.editor.export;
 
             if (vm.type === 'project' && vm.format === 'json') {
-                _createJson(e.projectToData(), "project");
+                vm.dataDefault = e.projectToData();
+                _createJson(vm.dataDefault, "project");
             } else if (vm.type === 'tree' && vm.format === 'json') {
-                _createJson(e.treeToData(), "tree");
+                vm.dataDefault = e.treeToData();
+                _createJson(vm.dataDefault, "tree");
             } else if (vm.type === 'nodes' && vm.format === 'json') {
-                _createJson(e.nodesToData(), "nodes");
+                vm.dataDefault = e.nodesToData();
+                _createJson(vm.dataDefault, "nodes");
             }
         }
 
-        function _createJson(data, type) {
-            switch (type) {
-                case "project":
-                    if (data.trees[0].img) {
-                        delete data.trees[0].img;
-                    }
-                    data.trees.forEach(tree => {
-                        Object.values(tree.nodes).forEach(node => {
-                            delete node.Image;
-                        });
-                    });
-                    break;
-                case "tree":
-                    if (data.img) {
-                        delete data.img;
-                    }
-   
-                    Object.values(data.nodes).forEach(node => {
-                        delete node.Image;
-                    });
+        function _createJson(data, type, RemoveImage) {
+            if (RemoveImage) {
+                if (vm.datawithoutImg == null) {
+                    switch (type) {
+                        case "project":
+                            if (data.trees[0].img) {
+                                delete data.trees[0].img;
+                            }
+                            data.trees.forEach(tree => {
+                                Object.values(tree.nodes).forEach(node => {
+                                    delete node.Image;
+                                });
+                            });
+                            break;
+                        case "tree":
+                            if (data.img) {
+                                delete data.img;
+                            }
+                            Object.values(data.nodes).forEach(node => {
+                                delete node.Image;
+                            });
 
-                    break;
-                case "nodes":
-                    break;
-                default:
-                    break;
+                            break;
+                        case "nodes":
+                            break;
+                        default:
+                            break;
+                    }
+                    vm.datawithoutImg = data;
+                }else{
+                    data = vm.datawithoutImg ;
+                }
+
             }
 
             vm.data = data;
@@ -153,6 +170,18 @@
         function showPretty() {
             vm.result = vm.pretty;
         }
+
+        function toggleImage() {
+            const datos = angular.copy(vm.dataDefault);
+            if (vm.includeImage) {
+                vm.switchText = 'Include image';
+                _createJson(datos, vm.type, false);
+            } else {
+                vm.switchText = 'Remove image';
+                _createJson(datos, vm.type, true);
+            }
+        }
     }
+
 
 })();

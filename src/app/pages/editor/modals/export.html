@@ -20,6 +20,11 @@
                 ng-hide="export.hideCompact || export.result === export.pretty" ng-click="export.showPretty()">
                 Pretty
             </button>
+            <label class="switch btn   pull-left" style="margin-right:10px">
+                <input type="checkbox" ng-model="export.includeImage" ng-click="export.toggleImage()">
+                <span class="slider round"></span> 
+                <span class="sliderText">{{ export.switchText }}</span>
+            </label>
             <button class="btn btn-default btn-lg pull-left" ng-show="isDesktop" ng-click="export.save()">
                 Save
             </button>
