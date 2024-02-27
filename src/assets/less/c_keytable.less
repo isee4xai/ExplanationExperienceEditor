@@ -1,168 +1,186 @@
 .keytable {
   width: 100%;
+  margin-top: 15px;
+
+  input[type=button] {
+    width: 40px;
+  }
+
+  th {
+    margin: 0px;
+    padding: 0px 2px !important;
+    background-color: @color-light4 ;
+    margin-bottom: 5px;
+
+    label {
+      font-size: 19.2px;
+      color: @color-dark1;
+
+      margin-left: 15px;
+      padding-bottom: 0px;
+      font-weight: normal;
+    }
+
     input[type=button] {
-      width: 40px;
-    }
-  
-    th {
-      margin: 0px;
-      padding: 0px 2px !important;
-  
-      label {
-        padding-bottom: 0px;
-      }
-    }
-  
-    td {
-      border: 0px !important;
-      padding: 2px 2px !important;
-  
-      input:not([type=button]) {
-        padding: 0px @padding-small;
-        margin: 0px;
-        background-color: #ffffff;
-      }
-  
-      div input:first-child {
-        margin-top: 2px;
-      }
-    }
-  
-    .keyPropertiesTd {
-      input:not([type=button]) {
-        background-color: #5bc0de;
-  
-        color: black;
-      }
-    }
-  
-    td.keyPropertiesTdParams {
-      input:not([type=button]) {
-        background-color: #5bc0de;
-        font-weight: bold;
-        color: black;
-      }
-    }
-  
-    td.TdCheckBox {
-      width: 250px;
-      height: fit-content;
-  
-      input:not([type=button]) {
-        background-color: #5bc0de;
-        font-weight: bold;
-        color: black;
-      }
-  
-      .panel-heading {
-        padding: 0%;
-        background-color: @color-blue ;
-      }
-  
-      div.panel.panel-default.panel-open {
-        background-color: @color-blue;
-      }
-  
-      div.panel.panel-default {
-        background-color: @color-blue;
-      }
-  
-      .panel-body {
-        padding: 5px 5px 1px 10px;
-        background-color: @color-light1;
-      }
-  
-      .Textaccordion-heading {
-        font-size: 14px;
-        font-weight: bold;
-        color: black;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        padding-left: 5px;
-      }
-  
-      .panel-collapse .ng-binding.ng-scope {
-        font-size: 12.5px;
-        font-weight: bold;
-        color: black;
-  
-        input[type="checkbox"] {
-          margin-right: 3px;
-        }
-      }
-    }
-  
-    .form-control {
-      height: 25px;
-    }
-  
-    &.no-border {
-      th {
-        border: 0px;
-      }
-    }
-  
-  
-    #headerCond {
-      position: relative;
-      display: flex;
-      margin-bottom: 1em;
-      border-radius: .25em;
-    }
-  
-  
-    ul,
-    ol {
-      list-style: none;
-    }
-  
-    ul,
-    li {
-      margin: 0 0 0 0;
-      padding: 0 0 0 0;
-    }
-  
-    .navCondi li a {
-      background-color: #2c3e50;
-      color: #fff;
-      text-decoration: none;
-      display: block;
-      width: 100%;
-      text-align: center;
-      line-height: 80%;
-    }
-  
-    .navCondi li a:hover {
-      background-color: @color-blue-light;
-      width: 100px;
-    }
-  
-    .navCondi li ul {
-      display: none;
-    }
-  
-    .navCondi li ul a {
-      padding: @padding-small;
-      background-color: @color-light4;
-    }
-  
-    .navCondi li:hover>ul {
-      display: block;
-      background-color: @color-light4;
-      width: 100%;
-    }
-  
-    .navCondi li ul li {
-      margin-left: 2px;
-      position: relative;
-      color: #fff;
-      background-color: @color-light4;
-  
-    }
-  
-    .navCondi>li {
-      width: 100px;
-      float: left;
-      height: 20px;
+      margin-top: 4px;
     }
   }
+
+  td {
+    margin-top: 10px;
+    border: 0px !important;
+    padding: 2px 2px !important;
+
+    input:not([type=button]) {
+      padding: 0px @padding-small;
+      margin: 0px;
+      background-color: #ffffff;
+    }
+
+    div input:first-child {
+      margin-top: 2px;
+    }
+  }
+
+  .keyPropertiesTd {
+    input:not([type=button]) {
+      background-color: #5bc0de;
+
+      color: black;
+    }
+  }
+
+  td.keyPropertiesTdParams {
+    input:not([type=button]) {
+      background-color: #5bc0de;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  td.TdCheckBox {
+    width: 250px;
+    height: fit-content;
+
+    input:not([type=button]) {
+      background-color: #5bc0de;
+      font-weight: bold;
+      color: black;
+    }
+
+    .panel-heading {
+      padding: 0%;
+      background-color: @color-blue ;
+    }
+
+    div.panel.panel-default.panel-open {
+      background-color: @color-blue;
+    }
+
+    div.panel.panel-default {
+      background-color: @color-blue;
+    }
+
+    .panel-body {
+      padding: 5px 5px 1px 10px;
+      background-color: @color-light1;
+    }
+
+    .Textaccordion-heading {
+      font-size: 14px;
+      font-weight: bold;
+      color: black;
+      margin-top: 4px;
+      margin-bottom: 4px;
+      padding-left: 5px;
+    }
+
+    .panel-collapse .ng-binding.ng-scope {
+      font-size: 12.5px;
+      font-weight: bold;
+      color: black;
+
+      input[type="checkbox"] {
+        margin-right: 3px;
+      }
+    }
+  }
+
+  .form-control {
+    height: 25px;
+  }
+
+  &.no-border {
+    th {
+      border: 0px;
+    }
+  }
+
+
+  #headerCond {
+    position: relative;
+    display: flex;
+    margin-bottom: 1em;
+    border-radius: .25em;
+  }
+
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  ul,
+  li {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+  }
+
+  .navCondi li a {
+    background-color: #2c3e50;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: center;
+    line-height: 80%;
+  }
+
+  .navCondi li a:hover {
+    background-color: @color-blue-light;
+    width: 100px;
+  }
+
+  .navCondi li ul {
+    display: none;
+  }
+
+  .navCondi li ul a {
+    padding: @padding-small;
+    background-color: @color-light4;
+  }
+
+  .navCondi li:hover>ul {
+    display: block;
+    background-color: @color-light4;
+    width: 100%;
+  }
+
+  .navCondi li ul li {
+    margin-left: 2px;
+    position: relative;
+    color: #fff;
+    background-color: @color-light4;
+
+  }
+
+  .navCondi>li {
+    width: 100px;
+    float: left;
+    height: 20px;
+  }
+}
+
+.keytable tbody {
+  border-top: 10px solid transparent;
+}

@@ -96,6 +96,28 @@
     height: 120%;
     font-weight: bold;
   }
+//button root
+  .button-container {
+    margin-bottom: 20px;
+  }
+
+
+  .button-container button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: @color-green;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .button-container button:hover {
+    background-color: #0056b3;
+  }
 
 
   #ButtonRun {
@@ -194,7 +216,8 @@
     /* Location of the box */
     left: 0;
     top: 0;
-    width: auto; /* Cambia de 100% a auto */
+    width: auto;
+    /* Cambia de 100% a auto */
     height: auto;
     /* Full height */
     overflow: auto;
@@ -742,7 +765,7 @@
     border: 1px solid #5d5d5d;
     outline: none;
     cursor: pointer;
-    position: relative; 
+    position: relative;
   }
 
   .CheckboxCircule:checked {
@@ -752,18 +775,19 @@
   .CheckboxCircule:checked:hover {
     border: 1px solid #005cc8;
   }
-  
+
   .CheckboxCircule:checked::after {
     content: "\2022";
     font-size: 29px;
     color: #0075ff;
     position: absolute;
-    top: 50%; 
-    left: 53%; 
+    top: 50%;
+    left: 53%;
     transform: translate(-50%, -50%);
   }
+
   .CheckboxCircule:checked:hover::after {
-    color: #005cc8; 
+    color: #005cc8;
   }
 
 }

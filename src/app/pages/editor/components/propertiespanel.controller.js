@@ -17,7 +17,7 @@
         '$timeout',
         '$compile'
     ];
-
+ 
     function PropertiespanelController($scope,
         $window,
         $location,
@@ -1153,33 +1153,19 @@
 
             if (vm.ExplainersSubstituteAll && title != "Explanation Method") {
                 var entriesArray = Object.entries(vm.ExplainersSubstituteAll[title] || {});
-                if (title == "/Misc/AIModelPerformance") {
-                    var filteredEntries = entriesArray
-                        .map(([key, entry]) => {
-                            return {
-                                "explainer": entry.explainer,
-                                "explanation": entry.explanation,
-                                "similarity": entry.similarity
-                            };
-                        })
-                        .sort((a, b) => b.similarity - a.similarity);
 
-                    vm.isLoading = false;
-                } else {
-                    var filteredEntries = entriesArray
-                        .filter(([key, entry]) => entry.similarity !== 0)
-                        .map(([key, entry]) => {
-                            return {
-                                "explainer": entry.explainer,
-                                "explanation": entry.explanation,
-                                "similarity": entry.similarity
-                            };
-                        })
-                        .sort((a, b) => b.similarity - a.similarity);
+                var filteredEntries = entriesArray
+                    .filter(([key, entry]) => entry.similarity !== 0)
+                    .map(([key, entry]) => {
+                        return {
+                            "explainer": entry.explainer,
+                            "explanation": entry.explanation,
+                            "similarity": entry.similarity
+                        };
+                    })
+                    .sort((a, b) => b.similarity - a.similarity);
 
-                    vm.isLoading = false;
-                }
-
+                vm.isLoading = false;
 
                 if (filteredEntries.length === 0) {
                     notificationService.error('No similarity was found');
@@ -1370,26 +1356,8 @@
                                         loaderDiv.style.display = "none";
                                         break;
                                     default:
-
-                                        if (NodeSelect.title = "/Misc/AIModelPerformance") {
-                                            var data = {
-                                                "explainer": NodeSelect.title
-                                            }
-                                            try {
-                                                notificationService.info('No examples found matching those criteria', ' You can try substituting the explainer.');
-                                                projectModel.GetSubstituteExplainer(data, $location.search().usecaseId)
-                                                    .then(function (x) {
-                                                        loaderDiv.style.display = "none";
-                                                        SubstituteOneNode(x, vm.original, vm.block);
-                                                    });
-                                            } catch (error) {
-                                                loaderDiv.style.display = "none";
-                                                console.log(error);
-                                            }
-                                        } else {
-                                            loaderDiv.style.display = "none";
-                                            notificationService.error('No matches found');
-                                        }
+                                        loaderDiv.style.display = "none";
+                                        notificationService.error('No matches found');
                                 }
                             });
 
@@ -1658,7 +1626,6 @@
                             handleData(dataWithCriteria, NodeSelect, x.parentNode, x.descendants);
                             break;
                         case "WithoutCriteria":
-                            console.log(DataSubstituteSubtree.tree);
                             delete DataSubstituteSubtree.criteria;
                             const dataWithoutCriteria = await projectModel.SustituteSubTreeReuse(DataSubstituteSubtree, usecaseId);
                             handleData(dataWithoutCriteria, NodeSelect, x.parentNode, x.descendants);
@@ -2150,7 +2117,7 @@
             if (nodeComposite.hasOwnProperty('firstChild') || nodeComposite.firstChild.Id == undefined) {
                 var nodesIds = nodeComposite.firstChild;
                 var ifExistQuestion = false;
-
+                var cont = 0;
                 do {
                     var node = nodes[nodesIds.Id];
                     switch (node.Concept) {
@@ -2175,10 +2142,14 @@
                             break;
                     }
                     nodesIds = nodesIds.Next;
+                    cont++;
                 } while (nodesIds != null);
 
                 if (!ifExistQuestion) {
                     vm.ErrorCheckBT.push("🔴" + nodeComposite.Concept + " should have a user question with an explainer or an explainer tree");
+                }
+                if (cont <= 1) {
+                    vm.ErrorCheckBT.push("🔴The " + nodeComposite.Concept + " node should have at least user question with an explainer or an explainer tree.");
                 }
             } else {
                 vm.ErrorCheckBT.push("🔴The  " + nodeComposite.Concept + "node must have at least one child.");

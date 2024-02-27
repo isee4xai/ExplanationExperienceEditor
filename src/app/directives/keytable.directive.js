@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -12,7 +12,7 @@
         var directive = {
             require: '^ngModel',
             restrict: 'EA',
-            replace: true, 
+            replace: true,
             bindToController: true,
             controller: 'KeyTableController',
             controllerAs: 'keytable',
@@ -27,7 +27,7 @@
             scope.keytable._onChange = $parse(attrs.ngChange);
 
             var variable = attrs.ngModel;
-            scope.$watch(variable, function(model) {
+            scope.$watch(variable, function (model) {
                 scope.keytable.reset(model);
             });
         }
@@ -56,7 +56,7 @@
             vm.Condition = false;
 
             if (vm.model) {
-                
+
                 for (var key in vm.model.properties) {
                     add(key, vm.model.properties[key], false);
                 }
@@ -96,24 +96,26 @@
         }
 
         function change() {
-            for (var key in vm.model.properties) {
-                if (vm.model.properties.hasOwnProperty(key)) {
-                    delete vm.model.properties[key];
-                }
-            }
+            var updatedProperties = {};
+
             for (var i = 0; i < vm.rows.length; i++) {
                 var r = vm.rows[i];
                 if (!r.key) continue;
-
+        
                 var value = r.value;
-                if (!isNaN(value) && value !== '') {
+                if (value === true || value === false) {
+                    value = value === true;
+                } else if (!isNaN(value) && value !== '') {
                     value = parseFloat(value);
                 }
-                vm.model.properties[r.key] = value;
-
-                if (vm._onChange) {
-                    vm._onChange($scope);
-                }
+        
+                updatedProperties[r.key] = value;
+            }
+        
+            angular.copy(updatedProperties, vm.model.properties);
+        
+            if (vm._onChange) {
+                vm._onChange($scope);
             }
         }
 
