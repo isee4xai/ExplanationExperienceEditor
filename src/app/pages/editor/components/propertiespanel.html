@@ -2,9 +2,10 @@
 
     <!-- <div class="title">Properties</div>-->
      <div ng-show="propertiespanel.block">
-         <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()"
+         <b3-key-table ng-show="propertiespanel.original.name != 'Condition'" heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()"
              class="no-border">
          </b3-key-table>
+         <div ng-show="propertiespanel.original.name == 'Condition'" class="title">Properties</div>
      </div>
  
      <div ng-hide="propertiespanel.block" class="properties">
@@ -88,12 +89,12 @@
                      ng-keydown="propertiespanel.keydown($event)" ng-model="propertiespanel.block.VariableName"
                      ng-change="propertiespanel.update()">
              </div>
-             <!-- propertiss 
-             <div class="form-group">
+          
+             <div class="form-group" ng-if="propertiespanel.original.name == 'Condition'">
                  <b3-key-table heading="Properties" ng-model="propertiespanel.block" ng-change="propertiespanel.update()"
                      class="no-border">
                  </b3-key-table>
-             </div>-->
+             </div>
  
              <div class="form-group" ng-if="propertiespanel.original.name == 'Explanation Method'">
                  <b3-key-table-Expl heading="Properties EXP" ng-model="propertiespanel.block.propertyExpl"
@@ -1008,7 +1009,7 @@
                          experience, the interface will look like this:
                          <p style="text-align: center;">
                              <img width="100%" alt="image"
-                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/dca6f6a7-a972-4208-8ce6-6ffa092a7eff">
+                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/52e6995a-d9da-45b6-97b0-fceb18ca79ce">
                          </p>
                          <p>At first glance, the interface might be overwhelming, so we cover
                              each of its components next:</p>
@@ -1139,11 +1140,17 @@
                              like this:</p>
                          <p style="text-align: center;">
                              <img width="293" alt="image"
-                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/e1d3b937-9cce-455d-a43c-f66bbae54089">
+                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/8d7c657c-5977-4e37-ab3b-01275049280e">
                          </p>
                          <ul>
                              <li><strong>Run BT button:</strong> executes the entire behavior
                                  tree.</li>
+                             <li><strong>Check BT for iSee</strong>This tool will notify us if the tree structure is correct or if it detects any errors in the layout</li>
+
+                             <li> <strong>Fix no applicable explainers:</strong> This button will search the tree for Explanation Methods that are not applicable and replace them with the most similar Explanation Methods.</li>
+                             <li><strong>Adapt subtree to be applicable:</strong> This button will seek to replace our current tree with a similar one.</li>
+
+                
                              <li><strong>Intent:</strong> it allows renaming the current explanation
                                  experience.</li>
                              <li><strong>Properties:</strong>Additional properties can
@@ -1168,7 +1175,7 @@
                              properties:</p>
                          <p style="text-align: center;">
                              <img width="289" alt="image"
-                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/c38636e4-f2a5-4195-9e73-e5183a4ea40c">
+                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/f66f3578-e8c2-4237-ac95-724f9ed50bd5">
                          </p>
                          <p>However, explanation method nodes are initially generic, waiting for
                              a specific method to be selected. Hovering over the title of this node
@@ -1180,7 +1187,7 @@
                          </p>
                          <p style="text-align: center;">
                              <img width="292" alt="image"
-                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/fe2ac32b-62eb-4372-bbf9-4487988e9208">
+                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/a512c57f-cdba-4d1c-9f00-70130d40d717">
                          </p>
  
                          <p>Hovering over the names of the parameters, you can get information
@@ -1220,7 +1227,7 @@
                          <p>The Properties panel of the <strong>composites</strong> node looks like this:</p>
                          <p style="text-align: center;">
                              <img width="293" alt="image"
-                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/e4532c31-c720-4781-8f9b-afa07ca31175">
+                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/686490d6-64fb-434d-a06d-7b665f7d51d6">
                          </p>
                          <p>
                              Search Substitute Subtree:
@@ -1255,7 +1262,7 @@
                          </ol>
                          <p style="text-align: center;">
                              <img width="292" alt="image"
-                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/fc3a8de2-c892-4644-a43b-105c0866505a">
+                                 src="https://github.com/isee4xai/ExplanationExperienceEditor/assets/102520857/878d2a47-5c5c-4f86-8373-37f307578ce7">
                          </p>
                          <ol start="5" type="1">
                              <li><strong>Drag and drop the desired nodes from the <em>Nodes</em>

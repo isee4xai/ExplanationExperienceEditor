@@ -1,6 +1,6 @@
 <table class="table table-condensed keytable">
    
-    <thead >
+    <thead ng-if="keytable.Condition == false">
         <tr>
             <th colspan="3">
                 <input ng-if="keytable.Condition == false" type="button" class="btn btn-success btn-xs pull-right" value="+" ng-click="keytable.add()">
@@ -19,7 +19,7 @@
                 <div id="headerCond">
                     <ul class="navCondi"> 
                         <li>
-                            <a class="form-control" ng-model="keytable.cond">{{item.key}}</a>
+                            <a class="form-control" ng-model="keytable.cond" >{{item.key || 'Operador'}}</a>
                             <ul>
                                 <li ng-repeat="data in keytable.ConditionProperties" ng-click="keytable.changeCondition(data,item.key)">
                                     <a>{{data}}</a>

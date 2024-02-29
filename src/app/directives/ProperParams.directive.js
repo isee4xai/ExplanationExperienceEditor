@@ -25,7 +25,6 @@
 
 
         function link(scope, element, attrs) {
-            // get the value of the `ng-model` attribute
             scope.ProperParams.heading = attrs.heading;
             scope.ProperParams._onChange = $parse(attrs.ngChange);
 
@@ -75,7 +74,7 @@
                 delete vm.model.query;
                 toggleImageDisplay(base64);
                 vm._onChange($scope);
-                $scope.$apply(); // actualizar el scope
+                $scope.$apply(); 
             };
             reader.readAsDataURL(file);
         }
@@ -84,7 +83,7 @@
 
         // BODY //
         function _activate() {
-
+            
         }
 
         function InstanceModeldefault(Instance, type) {
@@ -181,6 +180,7 @@
             switch (data) {
                 case "Tabular":
                     delete vm.model.img;
+                    toggleImageDisplay("");
                     vm.model.query = "";
                     vm.QueryText = "";
                     break;
