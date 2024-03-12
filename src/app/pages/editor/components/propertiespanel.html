@@ -17,7 +17,7 @@
      <div ng-show="propertiespanel.block" class="properties">
          <form>
              <div class="form-group" ng-if="propertiespanel.original.category == 'root'">
-                 <div class="button-container">
+                 <div class="button-container"  ng-if="propertiespanel.block.ModelRoot.idModel">
                      <button ng-click="propertiespanel.RunBt()">RUN BT</button>
                      <button ng-click="propertiespanel.CheckBTforiSee()">Check BT for iSee</button>
                      <button ng-click="propertiespanel.AutomaticApplicability()">Fix no applicable explainers</button>

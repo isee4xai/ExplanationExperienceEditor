@@ -456,6 +456,11 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     async function GetInstanceModelSelectStorage(ModelId) {
+
+        if (!ModelId) {
+            return Promise.reject(new Error("ModelId is not defined"));
+        }
+        
         var server_url = SettingsAddres.AddresInstanceModels + ModelId + '/0';
         return $q(function (resolve, reject) {
             try {
