@@ -17,7 +17,7 @@
         '$timeout',
         '$compile'
     ];
- 
+
     function PropertiespanelController($scope,
         $window,
         $location,
@@ -113,6 +113,8 @@
         vm.GetModelsPublic = GetModelsPublic;
         vm.models = [];
         var getCallMade = false;
+        var selectModelCalled = false;
+
 
         var timeoutPromise = null;
         vm.startTimeout = startTimeout;
@@ -778,7 +780,6 @@
         $scope.$on('$destroy', _destroy);
 
         function _activate() {
-
             vm.TitleSelect = null;
             vm.ArrayParams = [];
 
@@ -899,7 +900,9 @@
                                         );
                                     }
                                 } else {
+
                                     SelectModel(vm.models[vm.idModelUrl]);
+                                    
                                 }
                                 getCallMade = true;
                             }
@@ -1933,67 +1936,79 @@
         //Automatic Reuse tree
 
         async function AutomaticReuseAllTree() {
-            var e = $window.editor.export;
-            await SubstituteNodes(e.treeToData().nodes[e.treeToData().root], null, "Automatic");
+            if (vm.modelsSelect == "Model 1") {
+                var e = $window.editor.export;
+                await SubstituteNodes(e.treeToData().nodes[e.treeToData().root], null, "Automatic");
+            } else {
+                notificationService.warning(
+                    'Invalid Model', 'No valid model found'
+                );
+            }
         }
 
         async function AutomaticApplicability() {
-            var loaderDiv = document.querySelector('#loader');
-            loaderDiv.style.display = 'block';
-            var ListExplainerInTree = [];
-            var e = $window.editor.export;
-            var nodes = e.treeToData().nodes;
 
-            var p = $window.editor.project.get();
-            var t = p.trees.getSelected();
-            let IsApplicableAll = true;
+            if (vm.modelsSelect == "Model 1") {
+                var loaderDiv = document.querySelector('#loader');
+                loaderDiv.style.display = 'block';
+                var ListExplainerInTree = [];
+                var e = $window.editor.export;
+                var nodes = e.treeToData().nodes;
 
-            for (const key in nodes) {
-                if (nodes[key].Concept == "Explanation Method" && nodes[key].properties.Applicability == false) {
-                    IsApplicableAll = false;
-                    var datos2 = t.blocks.get(nodes[key].id);
-                    var data = {
-                        "explainer": datos2.title
-                    };
-                    try {
-                        const x = await projectModel.GetSubstituteExplainer(data, $location.search().usecaseId);
-                        let index = 0;
-                        let explainerLength = x.length;
+                var p = $window.editor.project.get();
+                var t = p.trees.getSelected();
+                let IsApplicableAll = true;
 
-                        if (explainerLength > 0) {
-                            vm.ExplainersSubstituteAll[datos2.title] = x;
+                for (const key in nodes) {
+                    if (nodes[key].Concept == "Explanation Method" && nodes[key].properties.Applicability == false) {
+                        IsApplicableAll = false;
+                        var datos2 = t.blocks.get(nodes[key].id);
+                        var data = {
+                            "explainer": datos2.title
+                        };
+                        try {
+                            const x = await projectModel.GetSubstituteExplainer(data, $location.search().usecaseId);
+                            let index = 0;
+                            let explainerLength = x.length;
 
-                            let primeraClave;
-                            if (x[0].similarity != 0) {
-                                do {
-                                    primeraClave = x[index].explainer;
-                                    index++;
-                                } while (ListExplainerInTree.includes(primeraClave));
-                            } else {
-                                do {
-                                    const randomIndex = Math.floor(Math.random() * explainerLength);
-                                    primeraClave = x[randomIndex].explainer
-                                } while (ListExplainerInTree.includes(primeraClave));
+                            if (explainerLength > 0) {
+                                vm.ExplainersSubstituteAll[datos2.title] = x;
+
+                                let primeraClave;
+                                if (x[0].similarity != 0) {
+                                    do {
+                                        primeraClave = x[index].explainer;
+                                        index++;
+                                    } while (ListExplainerInTree.includes(primeraClave));
+                                } else {
+                                    do {
+                                        const randomIndex = Math.floor(Math.random() * explainerLength);
+                                        primeraClave = x[randomIndex].explainer
+                                    } while (ListExplainerInTree.includes(primeraClave));
+                                }
+                                ListExplainerInTree.push(primeraClave);
+                                if (ListExplainerInTree.length == explainerLength) {
+                                    ListExplainerInTree = [];
+                                }
+                                UpdateProperties(primeraClave, datos2, nodes[key].id, datos2);
                             }
-                            ListExplainerInTree.push(primeraClave);
-                            console.log(ListExplainerInTree.length == explainerLength);
-                            if (ListExplainerInTree.length == explainerLength) {
-                                ListExplainerInTree = [];
-                            }
-                            UpdateProperties(primeraClave, datos2, nodes[key].id, datos2);
+                        } catch (error) {
+                            notificationService.error('An error occurred. Please try again later.');
+                            vm.isLoading = false;
                         }
-                    } catch (error) {
-                        notificationService.error('An error occurred. Please try again later.');
-                        vm.isLoading = false;
                     }
                 }
-            }
 
-            if (IsApplicableAll) {
-                notificationService.info('All applicators are applicable.');
-                vm.isLoading = false;
+                if (IsApplicableAll) {
+                    notificationService.info('All applicators are applicable.');
+                    vm.isLoading = false;
+                }
+                loaderDiv.style.display = "none";
+            } else {
+                notificationService.warning(
+                    'Invalid Model', 'No valid model found'
+                );
             }
-            loaderDiv.style.display = "none";
         }
 
         //Check BT for iSee
@@ -2250,31 +2265,43 @@
         function SelectModel(data) {
             vm.modelsSelect = data;
             vm.block.ModelRoot.idModel = Object.keys(vm.models).find(key => vm.models[key] === data);
-
             if (vm.block.ModelRoot.img == undefined && vm.block.ModelRoot.query == undefined) {
-                projectModel.GetInstanceModelSelect(vm.block.ModelRoot.idModel)
-                    .then(function (x) {
-                        if (x && x.instance && x.type) {
-                            var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
-                            miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
-                            notificationService.success(
-                                'Add Query Model', 'Query model by default'
-                            );
-                        } else {
-                            //Clean Quey
-                            var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
-                            miDirectiva.scope().ProperParams.InstanceModeldefault(null, null);
-                            notificationService.info(
-                                'Query Model', 'No model query was found, or the call failed'
-                            );   
-                        }
-                        update();
-                    })
-                    .catch(function (error) {
-                        notificationService.info(
-                            'Query Model', 'No model query was found, or the call failed'
-                        );
-                    });
+                if (vm.block.ModelRoot.idModel) {
+                    projectModel.GetInstanceModelSelect(vm.block.ModelRoot.idModel)
+                        .then(function (x) {
+                            if (x && x.instance && x.type) {
+                                var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
+                                miDirectiva.scope().ProperParams.InstanceModeldefault(x.instance, x.type);
+                                if (!selectModelCalled) {
+                                    notificationService.success(
+                                        'Add Query Model', 'Query model by default'
+                                    );
+                                    selectModelCalled = true;
+                                }
+
+                            } else {
+                                //Clean Quey
+                                var miDirectiva = angular.element(document.querySelector('#b3-Proper-Params'));
+                                miDirectiva.scope().ProperParams.InstanceModeldefault(null, null);
+                                if (!selectModelCalled) {
+                                    notificationService.info(
+                                        'Query Model', 'No model query was found, or the call failed'
+                                    );
+                                    selectModelCalled = true;
+                                }
+                            }
+
+                            update();
+                        })
+                        .catch(function (error) {
+                            if (!selectModelCalled) {
+                                notificationService.info(
+                                    'Query Model', 'No model query was found, or the call failed'
+                                ); selectModelCalled = true;
+                            }
+                        });
+                }
+
             }
 
         }
@@ -3266,21 +3293,33 @@
         }
 
         async function RunBt() {
-            vm.RunBtString.push("START RUN BT");
-            vm.jsonData = projectModel.runBT();
+            if (vm.modelsSelect == "Model 1") {
+                notificationService.load(
+                    'Run Bt', 'Please wait while your request is being processed...'
+                );
+                var loaderDiv = document.querySelector('#loader');
+                loaderDiv.style.display = 'block';
+                vm.RunBtString.push("START RUN BT");
+                vm.jsonData = projectModel.runBT();
 
-            for (const identificador in vm.jsonData.nodes) {
-                if (vm.jsonData.root == identificador) {
-                    console.log(vm.jsonData.nodes[identificador]);
-                    await runNode(vm.jsonData.nodes[identificador].id);
+                for (const identificador in vm.jsonData.nodes) {
+                    if (vm.jsonData.root == identificador) {
+                        await runNode(vm.jsonData.nodes[identificador].id);
+                    }
                 }
+
+                var myJsonString = JSON.stringify(vm.RunBtString);
+                var url = $state.href('dash.run', { data: myJsonString });
+
+                vm.RunBtString = [];
+                $window.open(url, '_blank');
+                loaderDiv.style.display = "none";
+            } else {
+                notificationService.warning(
+                    'Invalid Model', 'No valid model found'
+                );
             }
 
-            var myJsonString = JSON.stringify(vm.RunBtString);
-            var url = $state.href('dash.run', { data: myJsonString });
-
-            vm.RunBtString = [];
-            $window.open(url, '_blank');
         }
 
         async function runNode(id) {

@@ -460,7 +460,7 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
         if (!ModelId) {
             return Promise.reject(new Error("ModelId is not defined"));
         }
-        
+
         var server_url = SettingsAddres.AddresInstanceModels + ModelId + '/0';
         return $q(function (resolve, reject) {
             try {
@@ -656,7 +656,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                     }
                 })
                     .then(function (response) {
-                        console.log(response);
                         resolve(response.data);
                     })
                     .catch(function (err) {
@@ -700,7 +699,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
                     }
                 })
                     .then(function (response) {
-                        console.log(response);
                         resolve(response.data);
                     })
                     .catch(function (err) {
