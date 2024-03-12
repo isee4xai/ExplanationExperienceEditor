@@ -2266,15 +2266,15 @@
                             miDirectiva.scope().ProperParams.InstanceModeldefault(null, null);
                             notificationService.info(
                                 'Query Model', 'No model query was found, or the call failed'
-                            );
+                            );   
                         }
+                        update();
                     })
                     .catch(function (error) {
                         notificationService.info(
                             'Query Model', 'No model query was found, or the call failed'
                         );
                     });
-                update();
             }
 
         }

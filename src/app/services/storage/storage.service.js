@@ -456,7 +456,6 @@ function storageService($state, $q, localStorageService, fileStorageService, $ht
     }
 
     async function GetInstanceModelSelectStorage(ModelId) {
-        console.log(SettingsAddres.AddresInstanceModels + ModelId + '/0');
         var server_url = SettingsAddres.AddresInstanceModels + ModelId + '/0';
         return $q(function (resolve, reject) {
             try {
